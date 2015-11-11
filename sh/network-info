@@ -1,0 +1,91 @@
+#! /usr/bin/perl -w
+#
+# Extract numerical info from an unirelational dataset:  Number of
+# subject and object entities, number of edges, format and weights. 
+# 
+# INPUT 
+#	Dataset file, typically named out.* or rel.*
+#
+# OUTPUT 
+#	Six lines with the following info:
+#		n1	Number of subjects
+#		n2	Number of objects
+#		g	Number of lines
+#		emn_	Fill:   m / (n1 * n2) [DEPRECATED]
+#		format	Relationship format as defined in
+#			matlab/constants.m
+#		weights Weight range as defined in
+#			matlab/constants.m 
+#
+
+use strict; 
+use Switch; 
+
+$_ = <>; 
+
+/^\s*%\s+(\S+)\s+(\S+)/
+    or die "*** error:  Invalid first input line:  $_"; 
+
+my $relationship_format_text = $1;
+my $weight_range_text = $2; 
+
+my $relationship_format = -1;
+my $weight_range = -1; 
+
+switch ($relationship_format_text)
+{
+    case "sym"  { $relationship_format = 1; }
+    case "asym" { $relationship_format = 2; }
+    case "bip"  { $relationship_format = 3; }
+    else { die "*** error:  Invalid relationship format $relationship_format_text"; }
+}
+
+switch ($weight_range_text)
+{
+    case "unweighted"      { $weight_range = 1; }
+    case "positive"        { $weight_range = 2; }
+    case "posweighted"     { $weight_range = 3; }
+    case "signed"          { $weight_range = 4; }
+    case "multisigned"	   { $weight_range = 5; }
+    case "weighted"        { $weight_range = 6; }
+    case "multiweighted"   { $weight_range = 7; }
+    case "dynamic"     	   { $weight_range = 8; }
+    else { die "*** error:  Invalid weight range:  $weight_range_text"; }
+}
+
+my $m = -1;
+my $n = -1; 
+my $e = 0; 
+
+while (<>)
+{
+    if (/^%/) { next; }
+    if (/^\s*$/) {next; }
+
+    /^\s*(\S+)\s+(\S+)/
+	or die "*** error:  Invalid input:  $_"; 
+
+    my $subject = $1; 
+    my $object = $2; 
+    
+    ++ $e; 
+
+    if ($subject > $m) { $m = $subject; }
+    if ($object  > $n) { $n = $object;  }
+}
+
+if ($relationship_format != 3)
+{
+    if ($m < $n) { $m = $n; }
+    if ($n < $m) { $n = $m; }
+}
+
+my $emn = $e / ($m * $n); 
+
+print "$m\n";
+print "$n\n";
+print "$e\n";
+print "$emn\n";
+print "$relationship_format\n";
+print "$weight_range\n";
+

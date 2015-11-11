@@ -1,0 +1,50 @@
+#!/usr/bin/perl
+#
+# This script determines which files for a Makefile target are missing
+# and invokes make on each one of them.
+#
+# Usage: ./mkmissing.pl "make arguments" "make invoke command"
+#
+# where the parameters are:
+#	make arguments: make options and target
+#		e.g., "-f Makefile.dataset datasets.make"
+#	make invoke command: make command and the options with which it is invoked
+#		e.g., "make -f Makefile.dataset"
+
+my ($makeargs,$makeinvoke)=@ARGV;
+
+unless($makeargs){$makeargs="";}
+unless($makeinvoke){$makeinvoke="./mn 5 -k";}
+
+my @targets=();
+
+open MAKE,"LANG=en_US.utf-8 make -p -n $makeargs|";
+$prevline="";
+
+while($line=<MAKE>)
+{
+	if($line=~/^# @ := (.+)$/)
+	{
+		unless(-e $1)
+		{
+			push(@targets,$1);
+		}
+	}
+}
+
+close MAKE;
+
+$count= @targets;
+print "amount of targets: $count\n";
+
+print "running make\n";
+open MAKEOUT,"|xargs $makeinvoke";
+
+foreach $target(@targets)
+{
+	print MAKEOUT "$target\n";
+}
+
+close MAKEOUT;
+print "done\n";
+exit;

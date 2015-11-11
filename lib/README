@@ -1,0 +1,22 @@
+
+lib/ contains third-party libraries needed for analysis. 
+
+BGL 
+=== 
+
+Needed for various analyses. 
+
+http://www.stanford.edu/~dgleich/programs/matlab_bgl/
+
+Installation:  
+* Download version 4.0.1 from website (newer versions don't work-- copy the directory from estrella if necessary)
+* unzip
+* (on Ubuntu 10.04:  install libstdc++5 from http://packages.debian.org/stable/base/libstdc++5)
+* symlink the unzipped matlab_bgl to here
+
+WAFO
+====
+
+Needed to fit the generalized Gamma distribution.
+
+We used version 25. (i.e., the file wafo25.7z)

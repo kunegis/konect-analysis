@@ -1,5 +1,5 @@
 
-This is the KONECT analysis component (KONECT-Cloud).  It allows to run
+This is the KONECT analysis component (KONECT-Analysis).  It allows to run
 analyses of KONECT networks in parallel. 
 
 == How to Use ==
@@ -18,7 +18,23 @@ directories.
 
 == Needed packages ==
 
-* stu:  also available from the KONECT authors
+* Stu:  also available from the KONECT authors
 * g++
 * python-rdflib (for RDF generation only)
 * matlab_bgl
+
+== License ==
+
+Written by Jérôme Kunegis, Daniel Dünker and Jesús Cabello González. 
+
+The KONECT Toolbox is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your
+option) any later version. 
+
+The KONECT Toolbox is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details. 
+
+The full text of the GPLv3 is found in the file COPYING.

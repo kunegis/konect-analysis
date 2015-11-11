@@ -1,0 +1,153 @@
+#! /usr/bin/perl
+# 
+# Determine the data types and format/weights/loops (u/v/w/t/m/F/W/L) of a
+# network.  Each is a character.  
+#
+# PARAMETERS 
+#	$1	Name of network
+#
+# INPUT 
+#	uni/out.$NETWORK
+#	dat/info.$NETWORK
+#	
+# STDOUT 
+# 	Contains the five type characters on a single line, without
+# 	separators.  
+#
+
+use strict;
+use warnings;
+
+use Konect; 
+
+my $network = $ARGV[0]; 
+
+my $filename_info = "dat/info.$network";
+my $filename_out  = "uni/out.$network";
+
+open(INFO, "<", $filename_info)
+    or die "$filename_info:  $!";
+
+my $n1 = <INFO> + 0;
+my $n2 = <INFO> + 0;
+my $m  = <INFO> + 0;
+my $emn_unused = <INFO> + 0;
+my $format = <INFO> + 0;
+my $weights = <INFO> + 0;
+
+my $ret_u = Konect::bitwidth($n1);
+my $ret_v = Konect::bitwidth($n2); 
+
+# For the number of edges, use twice the amount for unipartite networks,
+# since when they are represented as undirected networks (which also
+# happens for directed networks), then each edge is saved twice. 
+my $ret_m = Konect::bitwidth( $format == 3 ? $m : 2 * $m ); 
+
+open(OUT, "<", $filename_out)
+    or die "$filename_out:  $!";
+
+#my $ret_w = '-';
+my $max_w = -1;    # Maximum encountered value.  Negative values X count as (-x-1)
+my $ret_t = '-'; 
+my $signed_w = 0; 
+my $signed_t = 0; 
+my $float_w = 0; 
+my $float_t = 0;
+my $zero_w = 0; 
+
+my $i = 0; 
+
+while (<OUT>) {
+    chomp; 
+    my $line = $_; 
+    ++$i;
+    last unless $i < 1000000; 
+
+    if ($line =~ /^\s*[0-9]+\s+[0-9]+\s+([0-9.e+-]+).*$/) {
+
+		my $width = $1; 
+
+		if ($width =~ /-/) { 
+			$signed_w = 1; 
+			$width =~ s/-//g;
+		}
+
+		if ($width =~ /[.e]/) {
+			$float_w = 1; 
+		} else {
+
+			my $weight_value = 0 + $width;
+			if ($weight_value < 0) {
+				$weight_value = -$weight_value - 1; 
+			}
+
+#			print STDERR "weight_value = $weight_value\n"; 
+
+			if ($weight_value > $max_w) {
+				$max_w = $weight_value; 
+#				print STDERR "new max_w $max_w\n"; 
+			}
+
+#			my $ret_w_new = Konect::bitwidth($width);
+#			if ($ret_w_new gt $ret_w) {
+#				$ret_w = $ret_w_new; 
+#			}
+	    
+			if ($width eq "0") {
+				$zero_w = 1; 
+			}
+		}
+
+		if ($line =~ /^\s*[0-9]+\s+[0-9]+\s+[0-9.e+-]+\s+([0-9.e+-]+).*$/) {
+
+			if ($ret_t eq '-') { $ret_t = 'a'; }
+
+			my $timestamp = $1; 
+
+			if ($timestamp =~ /-/) { 
+				$signed_t = 1; 
+				$timestamp =~ s/-//g;
+			}
+
+			if ($timestamp =~ /[.e]/) {
+				$float_t = 1;
+			} else {
+				my $ret_t_new = Konect::bitwidth($timestamp);
+				if ($ret_t_new gt $ret_t) {
+					$ret_t = $ret_t_new; 
+				}
+			}
+		}
+    }
+}
+
+my $ret_w = '-'; 
+
+if ($float_w) {
+    $ret_w = '5'; 
+} elsif ($signed_w) {
+	print STDERR "max_w = $max_w\n"; 
+	$ret_w = Konect::bitwidth(2 * $max_w); 
+    $ret_w = uc $ret_w; 
+    if ($ret_w eq "A" && $zero_w) {
+		$ret_w= 'B';
+    }
+} else { # Unsigned 
+	print STDERR "max_w = $max_w\n"; 
+	$ret_w = Konect::bitwidth($max_w);
+	if (!$zero_w && $ret_w eq "a") {
+		$ret_w = '-'; 
+	}
+} 
+
+if ($float_t) {
+    $ret_t = '5';
+} elsif ($signed_t) {
+    $ret_t = uc $ret_t; 
+} 
+
+# Whether the #loop tag is set
+
+my $loops= `fgrep tags: uni/meta.$network | fgrep -q '#loop' && echo 1 || echo 0`;
+
+print "$ret_m$ret_u$ret_v$ret_w$ret_t$format$weights$loops\n"; 

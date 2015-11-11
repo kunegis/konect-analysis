@@ -1,0 +1,15 @@
+UNUSED
+
+#! /bin/sh                                                                                                                                                                                  
+
+# route="output/llc."
+file="$1"
+# netzwerk="$route$file"
+size="`head -n 1 "$file" | tail -1`"
+
+if [ "$size" -ge 65536 ]
+then
+    ./sampling_algorithmB "$file" "$2"
+else
+    ./sampling_algorithmA "$file" "$2"
+fi

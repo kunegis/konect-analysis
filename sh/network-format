@@ -1,0 +1,32 @@
+#! /usr/bin/perl -w
+#
+# Extract format from an unirelational dataset. 
+# 
+# INPUT 
+#	Dataset file, typically named out.* or rel.*
+#
+# OUTPUT 
+#	One line with the numerical format
+#
+
+use strict; 
+use Switch; 
+
+$_ = <>; 
+
+/^\s*%\s+(\S+)\s+(\S+)/
+    or die "*** error:  Invalid first input line:  $_"; 
+
+my $relationship_format_text = $1;
+
+my $relationship_format = -1;
+
+switch ($relationship_format_text)
+{
+    case "sym"  { $relationship_format = 1; }
+    case "asym" { $relationship_format = 2; }
+    case "bip"  { $relationship_format = 3; }
+    else { die "*** error:  Invalid relationship format $relationship_format_text"; }
+}
+
+print "$relationship_format\n";

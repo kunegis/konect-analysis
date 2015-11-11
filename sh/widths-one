@@ -1,0 +1,19 @@
+#! /usr/bin/perl
+#
+# Given a number of characters, return the bitwidth character needed to
+# represent that number as an unsigned type.
+#
+# INVOCATION
+#	$0 N
+#
+
+use strict;
+use warnings;
+
+use Konect; 
+
+my $n = $ARGV[0];
+
+my $width = Konect::bitwidth($n);
+
+print "$width\n";

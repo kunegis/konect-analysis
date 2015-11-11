@@ -1,0 +1,9 @@
+#! /usr/bin/awk -f
+#
+# Convert result of runtime evaluation to Matlab matrix file for analysis.
+#
+# INPUT		text with data lines beginning with "%=". 
+# OUTPUT	Matlab file with same data.
+#
+
+! /^%=/ { next } {print $3 " " $4 " " $5 " " $6}

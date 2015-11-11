@@ -1,0 +1,35 @@
+#! /bin/sh
+#
+# Compute C/C++ dependencies.
+#
+# INVOCATION 
+#	$0 [FILE]
+#
+# STDOUT
+#	The needed files, one per line
+#
+
+set -e
+
+TMP="${TMP:-/tmp}"
+TMPFILE="$TMP/depc.$$"
+
+echo "$1" >$TMPFILE
+
+while :
+do
+    rm -f $TMPFILE.new
+    r=0
+    for file in $(cat $TMPFILE)
+    do
+	r=1
+	echo $file
+	if [ -e "$file" ]; then
+	    <$file >>$TMPFILE.new sed -re 's,^\s*#\s*include\s+"(.*)",c/\1,;t;d'
+	fi
+    done
+    if [ $r = 0 ]; then exit 0; fi
+    cp $TMPFILE.new $TMPFILE 
+done |
+sort -u 
+

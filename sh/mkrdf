@@ -1,0 +1,288 @@
+#!/usr/bin/perl
+#
+# creates RDF-DATA for a given network
+#
+# USAGE: ./mkrdf "network" 
+#   
+#
+#
+# STDOUT 
+#   RDF-DATA
+#   
+#
+
+
+my $network=shift();
+
+
+my $t_undirected=1;
+my $w_simple=1;
+
+
+my $metafile=readMeta($network);
+my %mfd=%$metafile;
+
+
+
+
+print "# this file is part of the KONECT project: http://konect.uni-koblenz.de\n";
+my $i=1;
+while($mfd{"n3-comment-$i"}){
+	print $mfd{"n3-comment-$i"}."\n";
+	$i++;
+}
+
+
+print "\@prefix void: <http://rdfs.org/ns/void#> .\n";
+print "\@prefix konect_networks: <http://konect.uni-koblenz.de/networks/> .\n";
+print "\@prefix dcterms: <http://purl.org/dc/terms/> .\n";
+#print "\@prefix sioc: <http://rdfs.org/sioc/ns#> .\n";
+print "\@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n";
+
+sub parseMetaLc {
+    my $meta = shift;
+    my %hash = %{ parseMeta($meta) };
+    %hash = map { lc $_ => $hash{$_} } keys %hash;
+    return \%hash;
+}
+
+sub parseMeta {
+    my $meta   = shift;
+    my %result = ();
+    foreach $line (@$meta) {
+        if ( $line =~ /^\s*([^\s:]+)\s*:\s*(.+?[^\s]+) *$/ ) {
+            $result{ lc($1) } = $2;
+        }
+    }
+    return \%result;
+}
+
+
+sub readMeta {
+    my $network = shift;
+    my $filename = "uni/meta.$network";
+    if ( -e $filename ) {
+        open F_META, "<$filename";
+        my @lines = <F_META>;
+        close F_META;
+        return parseMetaLc( \@lines );
+    }
+    else {
+        return 0;
+    }
+}
+
+
+
+sub print_network_info{
+    my ($metadata)=@_;
+	%metadata=%$metadata;
+	print "konect_networks:$network a void:Dataset .\n";
+	print "konect_networks:$network dcterms:title \"".$metadata{"name"}."\" .\n";
+	if($metadata{"long-description"}){
+		print "konect_networks:$network dcterms:description \"".escape_info($metadata{"long-description"})."\" .\n";
+	}
+	if($metadata{"url"}){
+		print "konect_networks:$network dcterms:source <".$metadata{"url"}."> .\n";
+	}
+}
+
+
+
+sub convert_timestamp{
+	my $timestamp=shift;
+	my ($sec,$min,$hour,$mday,$mon,$year)=localtime($timestamp);
+	$mon+=1;
+	$year+=1900;
+	if ($sec<10){$sec="0$sec";}
+	if($min<10){$min="0$min";}
+	if($hour<10){$hour="0$hour";}
+	return "$year-$mon-$mday"."T$hour:$min:$sec"."Z";
+}
+
+
+sub printData{
+	my ($ref)=@_;
+	%data=%$ref;
+	my $m=$data{"m"};
+	my $n=$data{"n"};
+	#my $prefix_j=$data{"prefix_j"};
+	#my $prefix_k=$data{"prefix_k"};
+	my $last_l=$data{"last_l"};
+	my $timestamp=$data{"timestamp"};
+	my $prefix_l=$data{"prefix_l"};
+	my $item=$data{"item"};
+	my $prefix_m=$data{"prefix_m"};
+	my $prefix_n=$data{"prefix_n"};
+	my %mfd=%{$data{"mfd"}};
+	##print STDERR "printData($item, $m, $n, $last_l, $prefix_l, $timestamp )\n";
+	#print STDERR "item: $item\n";
+	
+	my $data_prefix="";
+	if($item eq "l"){
+		$data_prefix="n3-edgedata-";
+		##print STDERR "timestamp: $timestamp\n";
+	}else{
+		$data_prefix="n3-nodedata-$item-";
+		#print STDERR "item: $item\n";
+	}
+	my $i=1;
+	while($mfd{$data_prefix.$i}){
+		$outdata=$mfd{$data_prefix.$i};
+		$outdata=~s/\$m/$prefix_m$m/g;
+		$outdata=~s/\$n/$prefix_n$n/g;
+		$outdata=~s/\$j/$m/g;
+		$outdata=~s/\$k/$n/g;
+		$outdata=~s/\$timestamp/"$timestamp"/g;
+		if($prefix_l){
+			$outdata=~s/\$l/$prefix_l$last_l/g;
+		}
+		print $outdata."\n";
+		$i=$i+1;
+	}
+}
+
+sub escape_info{
+	my $info=shift;
+	my $ret=$info;
+	$ret=~s/\\/\\\\/mgi;
+	#$ret=~s/'/\\'/mgi;
+	$ret=~s/"/\\"/mgi;
+	$ret=~s/\n/\\n/mgi;
+	$ret=~s/\r/\\r/mgi;
+	$ret=~s/\t/\\t/mgi;
+	return $ret
+}
+
+
+#print "network: $network\n";
+#print "	metadata: '".$nwhash{$network}{"metadata"}."'\n";
+#print "	format: ".$nwhash{$network}{"basic_type"}."\n";
+#print "	weights: ".$nwhash{$network}{"basic_weights"}."\n";
+
+
+
+# undirected network, not weighted, no timestamps
+#
+#
+#my $metafile=readMeta($network);
+#my %mfd=%$metafile;
+if($mfd{"n3-prefix-m"}){
+	my @typed_m=();
+	my @typed_n=();
+	my $last_l=0;
+
+
+	print "\@prefix ".$mfd{"n3-prefix-m"}."\n";
+	$mfd{"n3-prefix-m"}=~/^\s*([^\s:]*:).*$/;
+	my $prefix_m=$1."i";
+	my $prefix_n;
+	my $prefix_l;
+	my $prefix_j;
+	my $prefix_k;
+
+	if($mfd{"n3-prefix-n"}){
+		print "\@prefix ".$mfd{"n3-prefix-n"}."\n";
+		$mfd{"n3-prefix-n"}=~/^\s*([^\s:]*:).*$/;
+		$prefix_n=$1."i";
+	}else{$prefix_n=$prefix_m;}
+	if($mfd{"n3-prefix-l"}){
+		print "\@prefix ".$mfd{"n3-prefix-l"}."\n";
+		$mfd{"n3-prefix-l"}=~/^\s*([^\s:]*:).*$/;
+		$prefix_l=$1."i";
+	}
+	if($mfd{"n3-prefix-j"}){
+		print "\@prefix ".$mfd{"n3-prefix-j"}."\n";
+		$mfd{"n3-prefix-j"}=~/^\s*([^\s:]*:).*$/;
+		$prefix_j=$1."i";
+	}
+	if($mfd{"n3-prefix-k"}){
+		print "\@prefix ".$mfd{"n3-prefix-k"}."\n";
+		$mfd{"n3-prefix-k"}=~/^\s*([^\s:]*:).*$/;
+		$prefix_k=$1."i";
+	}
+
+
+	my $i=1;
+	while($mfd{"n3-add-prefix-$i"}){
+		print "\@prefix ".$mfd{"n3-add-prefix-$i"}."\n";
+		$i+=1;
+	}
+
+
+	print_network_info(\%mfd);
+
+	open F_MATRIX,"<uni/out.$network";
+	while (<F_MATRIX>){
+		unless($_=~/\s*%/){
+			my @entries=split(/\s+/,$_);
+			
+			my $m=$entries[0];
+			my $n=$entries[1];
+			my $timestamp;
+			if($entries[3]){
+				##print STDERR "entries[3]: ".$entries[3]."\n";
+				$timestamp=convert_timestamp($entries[3]);
+			}
+			my %printing_data=(
+				"m"=>$m,
+				"n"=>$n,
+				"last_l"=> $last_l,
+				"prefix_l"=>$prefix_l,
+				"timestamp"=>$timestamp,
+				"item"=>"m",
+				"mfd"=>\%mfd,
+				"prefix_m"=>$prefix_m,
+				"prefix_n"=>$prefix_n,
+				"prefix_k"=>$prefix_k,
+				"prefix_j"=>$prefix_j
+			);
+
+			unless($typed_m[$m]){
+				$typed_m[$m]=1;
+				print "$prefix_m$m a ".$mfd{"n3-type-m"}." .\n";
+				printData(\%printing_data);
+
+			}
+
+			if($mfd{"n3-prefix-n"}){
+				unless($typed_n[$n]){
+					$typed_n[$n]=1;
+					print "$prefix_n$n a ".$mfd{"n3-type-n"}." .\n";
+					$printing_data{"item"}="n";
+					printData(\%printing_data);
+				}
+			}else{
+				unless($typed_m[$n]){
+					$typed_m[$n]=1;
+					print "$prefix_m$n a ".$mfd{"n3-type-m"}." .\n";
+				}
+				unless($typed_n[$n]){
+					#print STDERR "typing $n\n";
+					$typed_n[$n]=1;
+					$printing_data{"item"}="n";
+					printData(\%printing_data);
+
+				}
+			}
+
+			$printing_data{"item"}="l";
+
+			if($mfd{"n3-prefix-l"}){
+				$last_l=$last_l+1;
+				$printing_data{"last_l"}=$last_l;
+				print "$prefix_l$last_l a ".$mfd{"n3-type-l"}." .\n";
+			
+			}
+			printData(\%printing_data);
+
+			
+		}
+	}
+
+
+	exit;
+}
+
+
+

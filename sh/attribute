@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Get the attribute of a statistic, i.e., the string describing the set
+# of networks that apply to it.
+#
+# INVOCATION 
+#	$0 $STATISTIC
+#
+# OUTPUT 
+#	The attribute is output.  Nothing is output when no attribute is
+#	known. 
+#
+
+if [ -z "$1" ] ; then
+    echo >&2 "*** $0:  first argument missing"
+    exit 1
+fi
+
+statistic="$1"
+
+file="../matlab/konect_statistic_$statistic.m"
+
+if [ ! -e "$file" ] ; then
+    echo >&2 "*** $0:  file '$file' not found"
+    exit 1
+fi
+
+if grep -Eq 'ATTRIBUTE\s*:' "$file"
+then
+    attribute="$(sed -re 's,^.*ATTRIBUTE\s*:\s*([^ 	]+)\s*$,\1,;t;d' "$file" | tr a-z A-Z)" 
+    echo "$attribute"
+fi
+
+exit 0

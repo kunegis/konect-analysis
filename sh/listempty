@@ -1,0 +1,22 @@
+#! /bin/sh
+# 
+# Output the name of empty plot/*.eps files.  
+#
+# Some plot/*.eps are erroneous:  Matlab crashes while generating them,
+# usually because there is too much data to plot.  This results in a
+# segmentation violation in Matlab which cannot be catched in Matlab
+# code.  This script finds such EPS fiels and outputs their names.
+#
+
+[ "$verbose" ] && exec 4>&2 || exec 4>/dev/null
+
+find plot/ -name '*.eps' |
+while read file
+do
+    echo >&4 Trying «$file»
+
+    if tail -1 "$file" | grep -Flvq '%%EOF' 
+    then
+	echo "$file"
+    fi
+done

@@ -1,0 +1,37 @@
+#! /usr/bin/perl -w
+#
+# Extract weights from an unirelational dataset. 
+# 
+# INPUT 
+#	Dataset file, typically named out.* or rel.*
+#
+# OUTPUT 
+#	Weights as a number 
+#
+
+use strict; 
+use Switch; 
+
+$_ = <>; 
+
+/^\s*%\s+(\S+)\s+(\S+)/
+    or die "*** error:  Invalid first input line:  $_"; 
+
+my $weight_range_text = $2; 
+
+my $weight_range = -1; 
+
+switch ($weight_range_text)
+{
+    case "unweighted"      { $weight_range = 1; }
+    case "positive"        { $weight_range = 2; }
+    case "posweighted"     { $weight_range = 3; }
+    case "signed"          { $weight_range = 4; }
+    case "multisigned"	   { $weight_range = 5; }
+    case "weighted"        { $weight_range = 6; }
+    case "multiweighted"   { $weight_range = 7; }
+    case "dynamic"     	   { $weight_range = 8; }
+    else { die "*** error:  Invalid weight range:  $weight_range_text"; }
+}
+
+print "$weight_range\n";

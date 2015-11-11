@@ -1,0 +1,3 @@
+This directory contains implementations of functions that are in Matlab
+but not in Octave. This directory is only added to the path when running
+Octave. 

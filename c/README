@@ -1,0 +1,13 @@
+
+These are C and C++ programs used in KONECT-Analysis.  These are much
+faster and use much less memory than Matlab, but are also more complex.  
+
+Each standalone program is a *.c file.  Libraries are simply *.h files.
+We always compile *.c files in a single step, without using *.o files.
+
+The compiled files are in bin/.
+
+We use the C99 standard.
+
+Programs use custom bit widths per dataset.
+

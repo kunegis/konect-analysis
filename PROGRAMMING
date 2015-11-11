@@ -1,0 +1,251 @@
+== Bugs & urgent stuff == 
+
+* make sure that @statistic.cocos only runs for ASYM networks.  
+** Also that cocos is not built in @network.$NETWORK for non-asym networks. 
+** make sure that cocos is also run for moreno_innovation 
+
+* graph layout:
+** stoch
+** delaunay
+** a min-dist-adjusting algorithm  (to get something grid-like, and preserving planarity) 
+*** use algorithm from [Farthest-Point Optimized Point Sets with Maximized Minimum Distance]
+*** e.g.
+**** at each step, put point such that the min dist to neighbors is maximal (or at distance one when onm the periphery) 
+**** scale such that the overall min dist is one
+
+* mediandist:  actually compute it from hyperanf. 
+
+* wikiconflict:  change to MULTISIGNED and recompute everything with it. (need to adjust  quite a few code parts)
+
+* re-insert prefatt, which doesn't work at the moment 
+
+* matlab/konect_statistic_twostars.m:  Also output the left/right out/in
+  twostars for BIP and ASYM networks.
+
+== Later == 
+* all standard statistics in function of time
+* sg1:  make the *_adj arrays have length n+1, where the last entry
+  always equals m, to simplify iteration over all edges.  
+* sg1:  for SYM, have an additional variant where each edge is only
+  saved once (will make programs such as hyperanf and matrix
+  decompositions use half of memory).   
+* @check (once more new datasets have been added)
+
+== Research ideas == 
+* draw the power law exponent in function of the degree
+* apply distrtest to the degree distribution 
+
+== Easy  ==
+* for rating networks:  mean rating 
+* new statistic:  maximal egde multiplicity 
+* statistic:  average edge multiplicity
+* statistic:  median degree 
+* temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
+* hopdistr.b:  Y axis labels:  write there the logit-transformed values.
+* laplacian of signed graph WITHOUT absolute value.  Models real
+repulsion, better than the absolute value, which models antipodal
+attraction.  This is used in [357] to draw signed graphs. 
+** decomposition: L= D-A without absolute value
+** Is there always an eigenvalue zero with constant eigenvector?
+** Eigenvalues may be negative even if every node has positive
+sum-of-weights. 
+** This is NOT the same as LAPQ (there is no implementation yet) 
+* read_metadata() and get_tags():  factor them into matlab/ in the form
+that they take filenames as arguments 
+* statistic:  number of loops
+* statistic:  median path length:  compute is properly (as the rounded-up 50-percentile effective diameter) 
+* statistic:  relative strongly connected component
+* version of the algebraic conflict that works for disconnected graphs (Re: Manuel Mittler):
+
+\xi' = (1/8m) \sum_c n_c \xi_c
+
+where the sum is over all connected components c, and n_c and \xi_c are
+computed for each connected component separately. 
+
+* normalized version of the algebraic conflict:  derive as a problem of
+assigning a number to each node such that the number is equal/opposite
+when two nodes are connected, and the algebraic conflict equals the sum
+of squared differences.  Normalize by the number of edges, and such that
+the mean square of numbers is one.
+\xi' = \xi * n / 2m = \xi / d
+(the exact definition is in projects/konect/presentations/komepol.opd)
+* scatter over all nodes of one network:  degree vs number of adjacent
+triangles.  There should be a power-law slope of a round 1.5, according
+to [Fast Counting of Triangles in Large Real Networks:
+Algorithms and Laws] p.8, fig 7.
+* size distribution of connected components (directed and undirected)
+* new count:  number of 4-cliques
+* new count:  number of T = [1 2; 1 3; 2 3; 2 4; 3 4].  I.e., K_4 minus
+one edge. 
+* new count:  number of 4-paths
+* new count:  number of T = [1 2; 1 3; 2 3; 3 4]
+* wegde coefficient = s / [m (n-2)].  I.e., the probability that an edge
+and another node are completed by a second edge.  
+* directed networks count statistic:  number of patterns of the form [1
+2; 2 1], i.e. reciprocated edge paris.
+* directed networks count statistics:  number of incident edge pairs:
+(1) pointed to the same node (2) pointing from the same node (3)
+sequential. 
+* directed networks count staistics:  Number of directed triangles,
+number of cyclic triangles.
+* https://marketplace.gephi.org/plugin/openord-layout/
+
+== Hard == 
+* better graph visualization for the website 
+* scatter:  add a plot variant that shows the correlation coefficient 
+* To what does A = D^-1/2 A D^-1/2 converge?
+* konect: cluscod: show the mean and median, and overall mean clustering
+coefficient on the plot  
+* symmlq/pcg/bigc(?) for lap decomposition 
+* spectral characterization:  which distribution is invariant under
+multiplication with the adjacency matrix?  
+* animation of eigenvector embedding over time
+* the spid of a network:  given a distance distribution (aka hop
+distribution), compute sigma^2/mu. [Four Degrees of Separation,
+WebSci'12]   
+* comparison:  use a scale in which the luminosity increases
+continuously and the hue rotates around the colors.  
+* new node statistic:  k-core number (largest k for which a node has
+degree >0 in the k-core). (as measure of centrality) 
+* new centrality measure:   C(i) = \sum_{j~i} d(i)^{-1}, where d(i) is the degree.
+ For directed networks, use the indegree and the out-neighbors. 
+* degree plots: have more and smaller ticks, even when no number is printed.
+* closeness and betweenness centralities as node distributions
+* New directed Laplacians:  L_out = D_out - A ; L_in = D_in - A. 
+** Eigenvalues should be nonnegative according to r. braun 
+** Send results to rosemary braun <rosemary.braun@gmail.com>
+* degree: also plot as semilogY (to visualize exponential distributions) 
+* for all decompositions:  use callback instead of prepare_matrix for
+computation (uses less memory) 
+* animated plots over time
+* new statistic:  SPID (shortest-path index of dispersion) [708].  
+* new distribution:  normalized degree, i.e. sum(A D^-1, 2) or sum(D^-1 A, 1). 
+* new statistic:  geometrical dimension of a network. Sum_k (λ_1/λ_k)
+with Laplacian eigenvalues.  
+* check out scatter plots involving AREDIS.  What was the argument again
+why a shrinking AREDIS is better/worse than a shrinking DIAMETER.  Write
+a paper about it.  
+* statistic time plots:  horizontal grid lines 
+* inspect RADIUS of networks and add it as a statistic to the website 
+* decomposition.b.stoch2 : axes:  Y_max should be 1. 
+* the core number as a node statistic (matlab_bgl function core_numbers.m)
+* Compute the "diago" statistic for all diagonality tests. (see projects/latent-negative/m/diagonality.m) 
+* edge betweenness as a link prediction measure?
+* new decomposition:  adjacency matrix normalized by dividing by (degree
+/ log(degree)), such that row sums equal the log node degrees 
+* nonnegative matrix decompositions
+* decompositions with missing values [Y. Koren et al.; Matrix
+factorization techniques for recommender systems]  
+* probabilistic models:  LDA, PLSA, etc.
+* distr:  use luinc() instead of lu()
+* distr:  use dynamic bins
+* The spectral radius divided by the spectral norm (a measure of the [a]cyclic-ness)
+* normalize additively with modularity kernel: subtract (d_i d_j) / 2m
+* denormalize multiplicatively:  take prediction using normalizing
+adjacency matrix, and multiply by the degree product afterwards 
+* path:  for bipartite graphs, find equivalents of the local prediction
+measures (i.e. number of common neighbors, Jaccard, etc.) 
+* find a variant of preferential attachment that works on weighted
+graphs (and can be evaluated on them) 
+* generate lattice random networks (but smarter than just a square lattice, and should be parameter-free) 
+* for link prediction in KONECT:  compute number of paths of length 3
+and 4 (use code from projects/latent-negative/m/pair_neib_[34].m) 
+* konect:  implement regression for link prediction
+* http://coldattic.info/shvedsky/s/blogs/a-foo-walks-into-a-bar/posts/40
+* preferentional attachment:  all 4 variants in-in/outy-out, etc. 
+* degree.m:  compute the degree distribution without building the full adjacency matrix 
+* mauc and map:  make it much faster by using sparse() instead of find to find all node pairs of the form (i, *). 
+* implement http://arxiv.org/abs/1209.1270v1
+* use http://www.mathworks.com/matlabcentral/fileexchange/16248 as data structure 
+* bipartite Laplacian, i.e. the Laplacian matrix in the bipartite double
+cover of a directed graph (only ASYM).  This is equivalent to the
+split-complex Laplacian. 
+* Mean Reciprocal Rank as new error measure:  sum of inverse ranks where a "1" is present. 
+* implement the 4-clustering coefficient for bipartite graphs
+(references are in [bipartivity]) 
+* implement the statistic of [680] 
+* gini vs jain:  although the scatter plots indicate that the measures
+correlate negatively (which corresponds to their definition), their time
+evolution has them both increasing.  In other words, "jain" should be
+decreasing over time, but is increasing. 
+* edge multiplicity distributions:  also the cumulated distribution
+plots (show them on the website)  
+* statistic:  variance of the degree distribution 
+* distribution of common neighbors of all connected nodes (Hans Akkermans)
+* hop plot power law from [535].  Exponent of the first half (or third)
+or the hop distribution.  
+* relation between the degree distribution (power law) and eigenvector
+distribution (lognormal).  Go from a power law to a lognormal by
+convolutions (consider the number of paths of length 2).  Go from
+lognormal to power law by sums of lognormals (consider the eigenvalue
+decomposition). 
+* scatter:  draw the QQ plot 
+* compute both types of clustering coefficient:  weighted by nodes, and
+weighted by half-edges.  (only one is used at the moment, but the second
+one can be derived trivially from the clustering coefficient
+distribution) 
+* on the website:  show the top nodes for each network by different
+centralities (using ent.*)  
+* relative clustering coefficient (relative to that of a random graph
+with same size and volume) (i.e., divide by the fill) 
+* power law:  measure distance to power law instead of statistical significance. 
+** measure power law exponent in function of degree (using a kernel?) 
+* compute the moments of a network.  I.e., the number of cycles of
+length N for N=1,2,3,4,....   The code for this is very similar to the
+code for computing the clustering coefficient. 
+* does the sequence A -> D^-1/2 A D^-1/2 converge?  if yes, to what (as
+  a function of A) ?  Can the limit be expressed as X^-1/2 A X^-1/2,
+  where X is diagonal?  What is the meaning of the values X(i,i)? 
+* under the lognormal degree distribution assumption:  compute the mean
+and standard deviation of the log-degrees.  What do they mean?  
+* statistic: network embeddedness
+* konect: new statistic: signed clustering coefficient 
+* eigl:  try out eigs(..., 'sa', ...). 
+* implement the ProfFlow method from [670] for link prediction. 
+* decomposition_{full,time}:   save the runtime of the decomposition 
+* decomposition:  AA' + A'A = UΛU'
+* decomposition:  αAA' + (1-α)A'A = UΛU'
+* statistic:  diameter divided by radius 
+* more bipartite clustering coefficient measures
+** Latapy et al in "Basic Notions for the Analysis of Large Two-mode Networks" [795]
+** Lind, P.G., González, M.C., Herrmann, H.J., 2005. Cycles and clustering in bipartite networks. Physical Review E 72, 056127.
+** (Opsahl 2012) from http://toreopsahl.com/tnet/two-mode-networks/clustering/; probably Opsahl, T., 2013. Triadic closure in two-mode networks: Redefining the global and local clustering coefficients. Social Networks 35, doi:10.1016/j.socnet.2011.07.001.
+*** probability that a 4-path is completed by 2 edges to form a 6-cycle
+** Robins, G., Alexander, M., 2004. Small worlds among interlocking Directors: Network structure and distance in bipartite graphs. Computational and Mathematical Organization Theory 10 (1), 69–94.
+*** the probability that a 3-path is completed by an edge to form a 4-cycle
+** Zhang, P., Wang, J., Li, X., Li, M., Di, Z., Fan, Y., 2008. Clustering coefficient and community structure of bipartite networks. Physica A 387, 6869–6875.
+** [612]
+* extend ANTICONFLICT to signed graphs, giving a statistic similar to
+CONFLICT, but that is normalized by network size, and thus can be used
+to compare networks.  Check whether, in signed/rating networks that
+change over time, the new measure grows or shrinks, validating or
+invalidating balance theory.  Cf. [797]. 
+* compute the moments (number of cycles of length R) empirically from medium-sized networks.  
+* connected component distribution plot:  for each size N, the
+probability that a randomly chosen connected component of a network has
+size ≥ N.  On a log-log plot.   Should exhibit a power-law for small N,
+and a big outlier for the connected component [PEGASUS: A Peta-Scale
+Graph Mining System - Implementation and Observations].
+* weight power law exponent as a new statistic
+* statistic only for directed acyclid graphs:  length of the longest
+path
+* statistic:  Soffer-Vasquez clustering coefficient and transitivity
+$\tilde C$ and $\tilde T$ [b845]. 
+* oddcycles:  This is implemented wrongly for signed networks.  It
+should be based on the unsigned adjacency matrix, not on the signed
+one.  For instance wikisigned-k2 has a negative value of the statistic now, which
+it should not have. 
+* maxdegree:  at the moment does not into account multiple edges (except for POSITIVE networks in which they are aggregated), but should
+* local sparsity plot:  for each integer k, the average fill of the
+k-ego-network, where the k-ego-network of a node is defined as the
+network consisting of that node and its neighbors at distance at most
+k.   The first entry of the plot is the clustering coefficient; the last
+entry is the fill of the total network. 
+* directed distance distribution 
+* [gp32] triangle closing coefficient:  percentage of edges created by
+triangles closing (as opposed to preferential attachment)
+** Already implemented in briclo 
+* julia-like map of generated synthetic graphs on the two-dimensional map 
+* for transparent plots:  http://www.mathworks.com/matlabcentral/fileexchange/23629-export-fig
+* The harmonic mean distance between nodes:
+ohttp://arxiv.org/abs/cond-mat/0008357

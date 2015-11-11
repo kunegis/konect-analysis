@@ -1,0 +1,70 @@
+#! /bin/sh
+#
+# Generate the dependencies of a network.
+#
+# PARAMETERS
+#	$NETWORK
+#
+
+{ 
+    for PLOT in $PLOTS ; do
+	echo @$PLOT.$NETWORK
+    done
+
+    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_SQUARE ; then
+	for PLOT in $PLOTS_SQUARE ; do 
+	    echo @$PLOT.$NETWORK
+	done
+    fi
+
+    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_ASYM ; then
+	for PLOT in $PLOTS_ASYM ; do 
+	    echo @$PLOT.$NETWORK
+	done
+    fi
+
+    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+	for PLOT in $PLOTS_TIME ; do 
+	    echo @$PLOT.$NETWORK
+	done
+    fi
+
+    for STATISTIC in $STATISTICS ; do
+	# check whether the statistic must be computed for this network 
+
+#	echo >&2 "STATISTIC=«$STATISTIC»"
+
+	compute=1
+	if [ -r "../matlab/konect_statistic_$STATISTIC.m" ] ; then
+	    for ATTRIBUTE in $(<../matlab/konect_statistic_$STATISTIC.m sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | 
+		tr a-z A-Z) ; do
+#		echo >&2 "ATTRIBUTE=«$ATTRIBUTE»"
+		if [ ! -r "dat/NETWORKS_$ATTRIBUTE" ] ; then 
+		    echo >&2 "../matlab/konect_statistic_$STATISTIC.m:  unknown attribute '$ATTRIBUTE'"
+		    exit 1
+		fi
+		if ! grep -Eq '^'"$NETWORK"'$' "dat/NETWORKS_$ATTRIBUTE" ; then
+#		    echo >&2 "«$NETWORK» not found in «dat/NETWORKS_$ATTRIBUTE»"
+#		    echo >&2 "setting compute to zero"
+		    compute=0
+		fi
+	    done
+	fi
+
+	if [ "$compute" != 0 ] ; then
+	    echo @statistic.$STATISTIC.$NETWORK
+	fi
+    done
+
+    # RDF
+    if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$NETWORK ; then
+	echo @rdf.$NETWORK
+    fi
+
+	#TSV
+	if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../web/allowed_src.txt; then
+	echo @tsv.$NETWORK
+	fi
+
+} >dat/dep.network.$NETWORK
+

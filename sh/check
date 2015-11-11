@@ -1,0 +1,16 @@
+#! /bin/sh
+#
+# Check all files in uni/ for consistency at the file level, i.e., encoding, etc.
+#
+
+for file in uni/*
+do
+
+    echo Checking "$file"...
+    if ! isutf8 $file ; then
+	exit 1
+    fi
+
+done
+
+exit 0

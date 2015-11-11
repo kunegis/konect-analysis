@@ -1,0 +1,78 @@
+#! /usr/bin/perl
+#
+# Given the bitswidths of a network, return the bitwidths of the
+# corresponding simple network.
+#
+#  * The format is transformed to SYM (undirected, 1)
+#  * The weights is transformed to UNWEIGHTED (1)
+#  * Weights and timestamps are set to unused (-)
+#  * LOOPS is transformed to zero (0)
+#  * If the input graph was bipartite, U and V are transformed to a bit
+#    width that is large enough to represent the sum of left and right
+#    nodes. 
+#  * If the graph is BIP or ASYM take into account that each edge must
+#    be stored twice and thus the bitwidth for M may be increased 
+#
+# PARAMETERS
+#	$NETWORK
+#
+# INPUT
+#	dat/widths.$NETWORK
+#	dat/statistic.size.$NETWORK
+#	dat/statistic.volume.$NETWORK
+#
+# OUTPUT
+#	The transformed bitwidth
+#
+
+use strict;
+use warnings;
+
+require Konect; 
+
+my $network = $ENV{"NETWORK"};
+
+open(WIDTHS, "<", "dat/widths.$network") or die $!; 
+
+my $in = <WIDTHS>;
+
+chomp $in; 
+
+$in =~ /(.)(.)(.)(.)(.)(.)(.)(.)/;
+
+my $format = $6;
+
+my $m = $1;
+my $u = $2;
+my $v = $3;
+
+if ($format == 3) {
+
+    # Bipartite 
+
+    open(SIZE, "<", "dat/statistic.size.$network") or die $!;
+    my @values= <SIZE>;
+    die unless (scalar @values) == 3; 
+    my $n  = $values[0];  chomp $n;
+    my $n1 = $values[1];  chomp $n1;
+    my $n2 = $values[2];  chomp $n2; 
+    die unless $n == $n1 + $n2;
+
+    open(VOLUME, "<", "dat/statistic.volume.$network") or die $!;
+    my $value_m= <VOLUME>;  chomp $value_m; 
+
+    $u = Konect::bitwidth($n);
+    $v = $u; 
+    
+    # Recompute the M bitwidth
+    $m = Konect::bitwidth(2 * $value_m); 
+
+} elsif ($format == 1 || $format == 2) {
+
+    # Unipartite:  Keep bitwidths of underlying network 
+
+} else {
+    die "Invalid format $format";
+}
+
+print "${m}${u}${v}--110\n";

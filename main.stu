@@ -1,0 +1,1688 @@
+
+%version 1.2
+
+#
+# @all:  everything that is shown on the website 
+#
+
+@all:   @all.everything;
+@test:   dat/check-meta @all.test;
+
+@all.$CLASS:  [dat/dep.all.$CLASS];
+
+>dat/dep.all.$CLASS:  dat/NETWORKS_CLASS_$CLASS $[SCATTERS]
+{
+	for NETWORK in $(cat dat/NETWORKS_CLASS_$CLASS) ; do
+		echo @network."$NETWORK"
+	done
+	# TODO where does $SCATTERS come from?
+	for SCATTER in $SCATTERS ; do
+		echo @scatter."$SCATTER".$CLASS
+	done
+}
+
+@network.$NETWORK:  
+	@check.$NETWORK 
+	[dat/dep.network.$NETWORK]
+	;
+
+dat/dep.network.$NETWORK:
+	sh/dep-network 
+	$[STATISTICS]
+	dat/NETWORKS_SQUARE
+	dat/NETWORKS_ASYM
+	dat/NETWORKS_TIME
+	$[PLOTS]
+	$[PLOTS_SQUARE]
+	$[PLOTS_ASYM]
+	$[PLOTS_TIME]
+{
+	sh/dep-network 
+}
+
+#
+# Matlab
+#
+
+>MATLABPATH:
+{
+	echo -n "$PWD/m/:$PWD/../matlab/:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/:$PWD/../../syngraphy/" 
+}
+
+#
+# Perl
+#
+
+>PERL5LIB
+{
+    echo -n 'pl' 
+}
+
+#
+# List of networks
+# 
+
+>dat/NETWORKS:  <dat/networks.asc
+{
+    cut -f1 -d ' '
+}
+
+# For the next two targets, the fields are separated by space and
+# described in sh/mkdatasetlist 
+
+# In ascending order of size
+>dat/networks.asc:  <dat/networks.list
+{
+    sed -re 's,^(.*) ([0-9]+)$$,\2 \1,' | sort -n | 
+    sed -re 's,^([0-9]+) (.*)$$,\2 \1,' 
+}
+
+# In unspecified order
+dat/networks.list:  sh/mkdatasetlist uni
+{
+    sh/mkdatasetlist
+}
+
+dat/CLASSES:  sh/classes dat/networks.asc
+{
+    sh/classes
+}
+
+dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
+
+>dat/NETWORKS_BIP:  dat/networks.asc
+{
+	grep -E " bip " dat/networks.asc | cut -f1 -d ' ' 
+}
+
+>dat/NETWORKS_SYM:  dat/networks.asc
+{
+	grep -E " sym " dat/networks.asc | cut -f1 -d ' '
+}
+
+>dat/NETWORKS_ASYM: dat/networks.asc
+{
+	grep -E " asym " dat/networks.asc | cut -f1 -d ' ' 
+}
+
+>dat/NETWORKS_SQUARE:  dat/networks.asc
+{
+	grep -E " (a|)sym " dat/networks.asc | cut -f1 -d ' '
+}
+
+>dat/NETWORKS_TIME:  dat/networks.asc
+{
+	grep ' t ' dat/networks.asc | cut -d ' ' -f 1
+}
+
+>dat/NETWORKS_CATEGORY_$CATEGORY:  
+	sh/category
+	<dat/NETWORKS
+{
+	sh/category
+}
+
+>dat/NETWORKS_WEIGHTS_$WEIGHTS:  
+	dat/networks.asc
+{
+	grep -F " $WEIGHTS " dat/networks.asc | cut -d ' ' -f 1 
+}
+
+#
+# C programs
+#
+
+
+>CFLAGS:  {
+	echo \
+		'-std=c99' -pedantic -Wall -Wextra -Werror \
+		-Wundef -D_GNU_SOURCE \
+		-lm \
+		-O3 -DNDEBUG -s 
+#       -g 
+
+	# -D_GNU_SOURCE:  for posix_madvise() 
+	# -lm:  used only in hyperanf.c / hyperloglog.h
+}
+
+bin/$NAME:
+	[dat/depc.$NAME.c] $[CFLAGS] !bin
+{
+	gcc $CFLAGS c/$NAME.c -o bin/$NAME
+}
+
+bin/$NAME.$PARAMETERS:
+	[dat/depc.$NAME.c] $[CFLAGS] !bin
+{
+	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
+	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
+	v="$(echo "$PARAMETERS" | sed -re 's,^..(.).....$,\1,')"
+	w="$(echo "$PARAMETERS" | sed -re 's,^...(.)....$,\1,')"
+	t="$(echo "$PARAMETERS" | sed -re 's,^....(.)...$,\1,')"
+	F="$(echo "$PARAMETERS" | sed -re 's,^.....(.)..$,\1,')"
+	W="$(echo "$PARAMETERS" | sed -re 's,^......(.).$,\1,')"
+	L="$(echo "$PARAMETERS" | sed -re 's,^.......(.)$,\1,')"
+
+	gcc c/$NAME.c $CFLAGS -o bin/$NAME.$PARAMETERS \
+		-DTYPE_ma="'$m'" \
+		-DTYPE_ua="'$u'" -DTYPE_va="'$v'" \
+		-DTYPE_wa="'$w'" -DTYPE_ta="'$t'" \
+		-DFORMAT_a="$F" -DWEIGHTS_a="$W" -DLOOPS_a="$L"
+}
+
+bin/$NAME.$PARAMETERS.$PARAMETERS_2:
+	[dat/depc.$NAME.c] $[CFLAGS] !bin
+{
+	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
+	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
+	v="$(echo "$PARAMETERS" | sed -re 's,^..(.).....$,\1,')"
+	w="$(echo "$PARAMETERS" | sed -re 's,^...(.)....$,\1,')"
+	t="$(echo "$PARAMETERS" | sed -re 's,^....(.)...$,\1,')"
+	F="$(echo "$PARAMETERS" | sed -re 's,^.....(.)..$,\1,')"
+	W="$(echo "$PARAMETERS" | sed -re 's,^......(.).$,\1,')"
+	L="$(echo "$PARAMETERS" | sed -re 's,^.......(.)$,\1,')"
+
+	f="$PARAMETERS_2"
+
+	gcc $CFLAGS c/$NAME.c -o bin/$NAME.$PARAMETERS.$PARAMETERS_2 \
+		-DTYPE_ma="'$m'" \
+		-DTYPE_ua="'$u'" -DTYPE_va="'$v'" \
+		-DTYPE_wa="'$w'" -DTYPE_ta="'$t'" \
+		-DFORMAT_a="$F" -DWEIGHTS_a="$W" -DLOOPS_a="$L" \
+		-DTYPE_fa="'$f'"
+}
+
+bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
+	[dat/depc.$NAME.c] $[CFLAGS] !bin
+{
+	ma="$(echo "$PARAMETERS_A" | sed -re 's,^(.).......$,\1,')"
+	ua="$(echo "$PARAMETERS_A" | sed -re 's,^.(.)......$,\1,')"
+	va="$(echo "$PARAMETERS_A" | sed -re 's,^..(.).....$,\1,')"
+	wa="$(echo "$PARAMETERS_A" | sed -re 's,^...(.)....$,\1,')"
+	ta="$(echo "$PARAMETERS_A" | sed -re 's,^....(.)...$,\1,')"
+	Fa="$(echo "$PARAMETERS_A" | sed -re 's,^.....(.)..$,\1,')"
+	Wa="$(echo "$PARAMETERS_A" | sed -re 's,^......(.).$,\1,')"
+	La="$(echo "$PARAMETERS_A" | sed -re 's,^.......(.)$,\1,')"
+	
+	mb="$(echo "$PARAMETERS_B" | sed -re 's,^(.).......$,\1,')"
+	ub="$(echo "$PARAMETERS_B" | sed -re 's,^.(.)......$,\1,')"
+	vb="$(echo "$PARAMETERS_B" | sed -re 's,^..(.).....$,\1,')"
+	wb="$(echo "$PARAMETERS_B" | sed -re 's,^...(.)....$,\1,')"
+	tb="$(echo "$PARAMETERS_B" | sed -re 's,^....(.)...$,\1,')"
+	Fb="$(echo "$PARAMETERS_B" | sed -re 's,^.....(.)..$,\1,')"
+	Wb="$(echo "$PARAMETERS_B" | sed -re 's,^......(.).$,\1,')"
+	Lb="$(echo "$PARAMETERS_B" | sed -re 's,^.......(.)$,\1,')"
+
+	gcc c/$NAME.c $CFLAGS -o bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B \
+		-DTYPE_ma="'$ma'" \
+		-DTYPE_ua="'$ua'" -DTYPE_va="'$va'" \
+		-DTYPE_wa="'$wa'" -DTYPE_ta="'$ta'" \
+		-DFORMAT_a="$Fa" -DWEIGHTS_a="$Wa" -DLOOPS_a="$La" \
+		-DTYPE_mb="'$mb'" \
+		-DTYPE_ub="'$ub'" -DTYPE_vb="'$vb'" \
+		-DTYPE_wb="'$wb'" -DTYPE_tb="'$tb'" \
+		-DFORMAT_b="$Fb" -DWEIGHTS_b="$Wb" -DLOOPS_b="$Lb"
+}
+
+>c/$NAME.$X.h:  <c/$NAME.h
+{
+	echo "/* Automatically generated on $(date) */"
+	echo "#line 1 \"c/$NAME.h\""
+	sed -re 's,\$,'"$X"',g' 
+}
+
+>c/$NAME.$X.$Y.h:  <c/$NAME.h
+{
+	echo "/* Automatically generated on $(date) */"
+	echo "#line 1 \"c/$NAME.h\""
+	sed -re 's,\$1,'"$X"',g;s,\$2,'"$Y"',g' 
+}
+
+# List of files included by c/$FILE, directly or indirectly (one file per line)
+>dat/depc.$FILE:  
+	c/$FILE sh/depc
+{
+	sh/depc c/$FILE 
+}
+
+# The program to use for each application
+>dat/dep.c.$NAME.$NETWORK:
+	dat/widths.$NETWORK
+{
+	echo "bin/$NAME.$(cat dat/widths.$NETWORK)" 
+}
+
+# Programs that need the additional degree width
+>dat/dep.c2.$NAME.$NETWORK:
+	dat/widths.$NETWORK
+	dat/widths.ft.degree.$NETWORK
+{
+	echo "bin/$NAME.$(cat dat/widths.$NETWORK).$(cat dat/widths.ft.degree.$NETWORK)"
+}
+
+# Transformers:  Programs that have a second set of widths (B) 
+>dat/dep.cx.$NAME.$NETWORK.$TRANSFORM:
+	dat/widths.$NETWORK 
+	dat/widths.$TRANSFORM~$NETWORK
+{
+	echo "bin/$NAME.x.$(cat dat/widths.$NETWORK).$(cat dat/widths.$TRANSFORM~$NETWORK)" 
+}
+
+# Location of compiled files
+bin
+{
+	mkdir bin
+}
+
+#
+# Bit widths
+#
+
+>dat/widths.$NETWORK:  
+	sh/widths 
+	$[PERL5LIB]
+	uni/out.$NETWORK 
+	dat/info.$NETWORK 
+{
+	sh/widths $NETWORK
+}
+
+#
+# Info files
+#
+
+>dat/info.$NETWORK:  
+	sh/network-info 
+	<uni/out.$NETWORK 
+	!dat  
+{
+	sh/network-info 
+}
+
+>dat/info.$TRANSFORM~$NETWORK:
+	dat/statistic.format.$TRANSFORM~$NETWORK
+	dat/statistic.lines.$TRANSFORM~$NETWORK
+	dat/statistic.format.$TRANSFORM~$NETWORK
+	dat/statistic.weights.$TRANSFORM~$NETWORK
+	dat/statistic.size.$TRANSFORM~$NETWORK
+{
+	FORMAT="$(cat dat/statistic.format.$TRANSFORM~$NETWORK)"
+	if [ "$FORMAT" = 3 ]; then # BIP
+		sed -re '1d;4~1d' <dat/statistic.size.$TRANSFORM~$NETWORK
+	else # SQUARE
+		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$NETWORK
+		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$NETWORK
+	fi
+	cat dat/statistic.lines.$TRANSFORM~$NETWORK
+	echo NaN
+	cat dat/statistic.format.$TRANSFORM~$NETWORK
+	cat dat/statistic.weights.$TRANSFORM~$NETWORK
+}
+
+#
+# Check
+#
+
+@check: [dat/dep.check];
+
+@check.$NETWORK:  dat/check.$NETWORK;
+
+dat/check.$NETWORK:  
+	m/check.m
+	uni/out.$NETWORK uni/meta.$NETWORK
+	dat/statistic.format.$NETWORK
+	dat/statistic.weights.$NETWORK
+	dat/statistic.size.$NETWORK
+	dat/statistic.lines.$NETWORK
+	$[MATLABPATH]
+{
+	./matlab m/check && echo OK >dat/check.$NETWORK
+}
+
+>dat/dep.check:  dat/NETWORKS
+{
+	for NETWORK in $(cat dat/NETWORKS)
+	do
+		echo @check.$NETWORK
+	done 
+}
+
+dat/check-meta:   dat/NETWORKS  sh/checkmeta 
+{
+	sh/checkmeta && touch dat/check-meta
+}
+
+#
+# Data files
+#
+
+dat/data.$NETWORK.mat:  uni/out.$NETWORK m/data.m 
+{
+	INPUT=uni/out.$NETWORK OUTPUT=dat/data.$NETWORK.mat ./matlab m/data.m
+}
+
+
+dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m 
+{
+	NETWORK="$TRANSFORM~$NETWORK" INPUT=dat/out.$TRANSFORM~$NETWORK OUTPUT=dat/data.$TRANSFORM~$NETWORK.mat ./matlab m/data.m
+}
+
+#
+# OUT files for derived networks
+#
+
+dat/out.$TRANSFORM~$NETWORK:  [dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK] dat/sg1.$TRANSFORM~$NETWORK
+{
+	$(cat dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK dat/out.$TRANSFORM~$NETWORK
+}
+
+#
+# sg0 files
+#
+
+@sg0: [dat/dep.sg0];
+
+>dat/dep.sg0:  dat/NETWORKS
+{
+	for network in $(cat dat/NETWORKS) ; do echo $network ; done | sed -re 's,^,@sg0.,' 
+}
+
+@sg0.$NETWORK:  dat/sg0.$NETWORK;
+
+dat/sg0.$NETWORK:
+	dat/widths.$NETWORK uni/out.$NETWORK dat/info.$NETWORK 
+	[dat/dep.c.sgraph0_create.$NETWORK]
+{
+	$(cat dat/dep.c.sgraph0_create.$NETWORK) \
+		uni/out.$NETWORK dat/sg0.$NETWORK \
+		$(head -3 dat/info.$NETWORK)
+}
+
+#
+# sg1 files
+#
+
+@sg1:  [dat/dep.sg1];
+
+>dat/dep.sg1: dat/NETWORKS
+{
+	for network in $(cat dat/NETWORKS) ; do echo $network ; done | sed -re 's,^,@sg1.,' 
+}
+
+@sg1.$NETWORK:  dat/sg1.$NETWORK;
+
+dat/sg1.$NETWORK:  
+	[dat/dep.c.sgraph1_create.$NETWORK]
+	dat/sg0.$NETWORK
+{
+	$(cat dat/dep.c.sgraph1_create.$NETWORK) \
+		dat/sg0.$NETWORK dat/sg1.$NETWORK
+}
+
+# 
+# Derived graphs
+#
+
+dat/sg1.simple~$NETWORK:
+	[dat/dep.cx.sgraph1_create_simple.$NETWORK.simple]
+	dat/sg0.$NETWORK
+{
+	$(cat dat/dep.cx.sgraph1_create_simple.$NETWORK.simple) dat/sg0.$NETWORK dat/sg1.simple~$NETWORK
+}
+
+dat/sg1.lcc~$NETWORK:
+	[dat/dep.c.sgraph1_create_lcc.$NETWORK]
+	dat/sg1.$NETWORK
+{
+	$(cat dat/dep.c.sgraph1_create_lcc.$NETWORK) dat/sg1.$NETWORK dat/sg1.lcc~$NETWORK
+}
+
+>dat/widths.simple~$NETWORK:
+	sh/widths-simple
+	$[PERL5LIB]
+	dat/widths.$NETWORK
+	dat/statistic.size.$NETWORK
+	dat/statistic.volume.$NETWORK
+{
+	sh/widths-simple 
+}
+
+dat/widths.lcc~$NETWORK:
+	dat/widths.$NETWORK
+{
+	cp dat/widths.$NETWORK dat/widths.lcc~$NETWORK
+}
+
+#
+# Split
+#
+
+dat/split.$NETWORK.mat: 
+	uni/out.$NETWORK m/split.m dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	./matlab m/split.m 
+}
+
+
+#
+# Means
+#
+
+dat/meansi.$NETWORK.mat:  dat/data.$NETWORK.mat m/means.m dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	TYPE=full ./matlab m/means 
+}
+
+dat/means.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	 TYPE=split ./matlab m/means 
+}
+
+dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	 TYPE=training ./matlab m/means
+}
+
+#
+# Assortativity plot
+#
+
+@assortativity: [dat/dep.assortativity];
+
+>dat/dep.assortativity:  dat/NETWORKS
+{ 
+	for network in $(cat dat/NETWORKS); do 
+		echo @assortativity.$network ; 
+	done 
+}
+
+@assortativity.$NETWORK:  plot/assortativity.a.$NETWORK.eps;
+
+plot/assortativity.a.$NETWORK.eps:
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK
+	m/assortativity.m m/assortativity_one.m 
+	$[MATLABPATH]
+{
+	 ./matlab m/assortativity
+}
+
+#
+# Statistics
+#
+
+@statistic.$STATISTIC:  [dat/dep.statistic.$STATISTIC];
+
+>dat/dep.statistic.$STATISTIC:  
+	dat/NETWORKS 
+	dat/NETWORKS_SQUARE
+	dat/NETWORKS_ASYM
+	dat/NETWORKS_TIME
+	../matlab/konect_statistic_$STATISTIC.m
+{
+	NETWORKS="$(cat dat/NETWORKS)"
+	attribute="$(sh/attribute "$STATISTIC")" 
+
+	if [ "$attribute" ] 
+	then
+		NETWORKS="$(cat "dat/NETWORKS_$attribute")"
+	fi
+
+	for network in $NETWORKS
+	do
+		echo @statistic.$STATISTIC.$network 
+	done 
+}
+
+@statistic.$STATISTIC.$NETWORK:
+	dat/statistic.$STATISTIC.$NETWORK;
+
+#
+# Statistics implemented in Matlab (the default) 
+#
+
+dat/statistic.$STATISTIC.$NETWORK:
+	m/statistic_comp.m 
+	$[MATLABPATH]
+	dat/data.$NETWORK.mat dat/info.$NETWORK dat/meansi.$NETWORK.mat
+{
+	./matlab m/statistic_comp.m
+}
+
+#
+# Sub-statistics (taken from subsequent lines of the main
+# statistic file).  $K is the line number to take.  Must be at least
+# 2. 
+# 
+
+>dat/statistic.${STATISTIC}_${K}.$NETWORK:
+	<dat/statistic.$STATISTIC.$NETWORK
+{
+	if [ "$K" -lt 2 ] ; then 
+		echo >&2 'K must be at least 2'
+		exit 1
+	fi
+	if [ "$K" -gt "$(wc -l dat/statistic.$STATISTIC.$NETWORK | cut -d' ' -f1)" ] ; then
+		echo >&2 'K cannot be larger than size of statistic file'
+		exit 1
+	fi
+	sed -re "$K"'!d'
+}
+
+#
+# Basic statistics, which may have different implementations for simple~
+# networks.   
+#
+
+>dat/statistic.format.$NETWORK: sh/network-format <uni/out.$NETWORK
+{
+	sh/network-format
+}
+
+>dat/statistic.format.$TRANSFORM~$NETWORK:  
+	<dat/widths.$TRANSFORM~$NETWORK
+{
+	sed -re 's,^.....(.)..$,\1,' 
+}
+
+>dat/statistic.weights.$NETWORK: sh/network-weights <uni/out.$NETWORK
+{
+	sh/network-weights
+}
+
+>dat/statistic.weights.$TRANSFORM~$NETWORK:  
+	<dat/widths.$TRANSFORM~$NETWORK
+{
+	sed -re 's,^......(.).$,\1,' 
+}
+
+dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	 ./matlab m/statistic_size.m
+}
+
+>dat/statistic.size.$TRANSFORM~$NETWORK:
+	[dat/dep.c.size.$TRANSFORM~$NETWORK]
+	dat/sg1.$TRANSFORM~$NETWORK 
+{
+	$(cat dat/dep.c.size.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+}
+
+dat/statistic.lines.$NETWORK:  
+	m/statistic_lines.m 
+	dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	 ./matlab m/statistic_lines.m
+}
+
+>dat/statistic.lines.$TRANSFORM~$NETWORK:
+	[dat/dep.c.lines.$TRANSFORM~$NETWORK]
+	dat/sg1.$TRANSFORM~$NETWORK 
+{
+	$(cat dat/dep.c.lines.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+}
+
+dat/statistic.volume.$NETWORK:  
+	dat/info.$NETWORK 
+	bin/statistic_volume 
+	uni/out.$NETWORK
+	$[MATLABPATH]
+{
+	 bin/statistic_volume 
+}
+
+>dat/statistic.volume.$TRANSFORM~$NETWORK:
+	[dat/dep.c.volume.$TRANSFORM~$NETWORK]
+	dat/sg1.$TRANSFORM~$NETWORK 
+{
+	$(cat dat/dep.c.volume.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+}
+
+dat/statistic.volume.simple~$NETWORK:
+	dat/statistic.volume.$NETWORK
+{
+	cp dat/statistic.volume.$NETWORK dat/statistic.volume.simple~$NETWORK
+}
+
+#
+# Statistics with special code (simple expressions or C programs) 
+#
+
+>dat/statistic.maxdegree.$NETWORK:
+	dat/sg1.$NETWORK
+	[dat/dep.c.maxdegree.$NETWORK]
+{
+	$(cat dat/dep.c.maxdegree.$NETWORK) dat/sg1.$NETWORK 
+}
+
+dat/statistic.triangles.$NETWORK:
+	dat/statistic.triangles.simple~$NETWORK
+{
+	cp dat/statistic.triangles.simple~$NETWORK dat/statistic.triangles.$NETWORK
+}
+
+>dat/statistic.triangles.simple~$NETWORK:
+	dat/sg1.simple~$NETWORK
+	[dat/dep.c.triangles.simple~$NETWORK]
+{
+	$(cat dat/dep.c.triangles.simple~$NETWORK) dat/sg1.simple~$NETWORK 
+}
+
+>dat/statistic.twostars.simple~$NETWORK:
+	[dat/dep.c2.statistic_twostars.simple~$NETWORK]
+	dat/ft.degree.simple~$NETWORK
+{
+	$(cat dat/dep.c2.statistic_twostars.simple~$NETWORK) dat/ft.degree.simple~$NETWORK 
+}
+
+dat/statistic.twostars.$NETWORK:
+	dat/statistic.twostars.simple~$NETWORK
+{
+	cp dat/statistic.twostars.simple~$NETWORK dat/statistic.twostars.$NETWORK
+}
+
+>dat/statistic.twostars_norm_d.$NETWORK:
+	dat/statistic.twostars.$NETWORK
+	dat/statistic.size.$NETWORK
+	dat/statistic.avgdegree.$NETWORK
+{
+	s="$(head -1 dat/statistic.twostars.$NETWORK)"
+	n="$(head -1 dat/statistic.size.$NETWORK)"
+	d="$(head -1 dat/statistic.avgdegree.$NETWORK)"
+	echo $s $n $d | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1)  }' 
+}
+
+>dat/statistic.clusco.$NETWORK:
+	dat/statistic.triangles.$NETWORK
+	dat/statistic.twostars.$NETWORK
+{
+	t="$(head -1 dat/statistic.triangles.$NETWORK)"
+	s="$(head -1 dat/statistic.twostars.$NETWORK)"
+	echo $t $s | awk '{ printf "%.12f\n", 3 * $1 / $2 }' 
+}
+
+dat/statistic.avgdegree.$NETWORK:
+	m/statistic_avgdegree.m 
+	dat/statistic.volume.$NETWORK
+	dat/statistic.size.$NETWORK
+	dat/statistic.format.$NETWORK
+	$[MATLABPATH]
+{
+	 ./matlab m/statistic_avgdegree.m
+}
+
+>dat/statistic.ifub$K.lcc~simple~$NETWORK:
+	[dat/dep.c.ifub.lcc~simple~$NETWORK]
+	dat/sg1.lcc~simple~$NETWORK
+{
+	$(cat dat/dep.c.ifub.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK $K ${TMP:-/tmp}/ifub.$NETWORK 
+}
+
+dat/statistic.ifub$K.simple~$NETWORK:
+	dat/statistic.ifub$K.lcc~simple~$NETWORK
+{
+	cp dat/statistic.ifub$K.lcc~simple~$NETWORK dat/statistic.ifub$K.simple~$NETWORK
+}
+
+dat/statistic.ifub$K.$NETWORK:
+	dat/statistic.ifub$K.simple~$NETWORK
+{
+	cp dat/statistic.ifub$K.simple~$NETWORK dat/statistic.ifub$K.$NETWORK
+}
+
+dat/statistic.diam.$NETWORK:
+	dat/statistic.ifub0.$NETWORK
+{
+	cp dat/statistic.ifub0.$NETWORK dat/statistic.diam.$NETWORK
+}
+
+>dat/statistic.relmaxdegree.$NETWORK:
+	dat/statistic.maxdegree.$NETWORK
+	dat/statistic.avgdegree.$NETWORK
+{
+	d_max="$(head -1 dat/statistic.maxdegree.$NETWORK)"
+	d="$(head -1 dat/statistic.avgdegree.$NETWORK)"
+	echo $d_max $d | awk '{ printf "%.12f\n", $1 / $2 }' 
+}
+
+>dat/statistic.coco.$NETWORK:
+	dat/statistic.coco.simple~$NETWORK
+{
+	coco="$(head -1 dat/statistic.coco.simple~$NETWORK)"
+	echo $coco 
+}
+
+>dat/statistic.coco.simple~$NETWORK:
+	dat/statistic.size.lcc~simple~$NETWORK
+{
+	coco="$(head -1 dat/statistic.size.lcc~simple~$NETWORK)"
+	echo $coco 
+}
+
+>dat/statistic.cocorel.$NETWORK:
+	dat/statistic.coco.$NETWORK
+	dat/statistic.size.$NETWORK
+{
+	coco="$(head -1 dat/statistic.coco.$NETWORK)"
+	n="$(head -1 dat/statistic.size.$NETWORK)"
+	echo $coco $n | awk '{ printf "%.12f\n", $1 / $2 }' 
+}
+
+>dat/statistic.cocorelinv.$NETWORK:
+	dat/statistic.coco.$NETWORK
+	dat/statistic.size.$NETWORK
+{
+	coco="$(head -1 dat/statistic.coco.$NETWORK)"
+	n="$(head -1 dat/statistic.size.$NETWORK)"
+	echo $coco $n | awk '{ printf "%.12f\n", 1.0 - ($1) / ($2 + 1) }' 
+}
+
+dat/statistic.meandist.$NETWORK:
+	m/statistic_meandist.m 
+	$[MATLABPATH]
+     	dat/hopdistr2.$NETWORK
+{
+	 ./octave m/statistic_meandist.m 
+}
+
+dat/statistic.diameff$PERCENTILE.$NETWORK:
+	m/statistic_diameff.m
+	$[MATLABPATH]
+	dat/hopdistr2.$NETWORK
+{
+	 ./octave m/statistic_diameff.m 
+}
+
+#
+# Statistics derived from decompositions
+#
+
+dat/statistic.oddcycles.$NETWORK:
+	m/statistic_comp_spectral.m 
+	$[MATLABPATH]
+	dat/info.$NETWORK
+	dat/decomposition.symabs.$NETWORK.mat
+{
+	 STATISTIC=oddcycles DECOMPOSITION=symabs \
+		./matlab m/statistic_comp_spectral.m 
+}
+
+#
+# Statistics over time
+#
+
+@statistic_time.$TYPE.$STATISTIC.$NETWORK:  
+	plot/statistic_time.$TYPE.a.$STATISTIC.$NETWORK.eps;
+
+dat/statistic_time.full.$STATISTIC.$NETWORK:  
+	m/statistic_time.m 
+	$[MATLABPATH]
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK 
+	dat/stepsi.$NETWORK 
+	dat/meansi.$NETWORK.mat 
+{
+	TYPE=full ./matlab m/statistic_time.m 
+}
+
+plot/statistic_time.full.a.$STATISTIC.$NETWORK.eps:   
+	m/statistic_time_plot.m 
+	$[MATLABPATH]
+	dat/statistic_time.$STATISTIC.$NETWORK 
+	dat/stepsi.$NETWORK
+{
+	TYPE=full ./matlab m/statistic_time_plot.m 
+}
+
+#
+# Feature:  degree
+#
+
+# An array of items 
+
+dat/ft.degree.$NETWORK:
+	[dat/dep.c2.feature_degree.$NETWORK]
+	dat/sg1.$NETWORK
+{
+	$(cat dat/dep.c2.feature_degree.$NETWORK) dat/sg1.$NETWORK dat/ft.degree.$NETWORK
+}
+
+>dat/widths.ft.degree.$NETWORK:
+	sh/widths-one
+	$[PERL5LIB]
+	dat/statistic.volume.$NETWORK
+{
+	sh/widths-one $(cat dat/statistic.volume.$NETWORK) 
+}
+
+#
+# Scatter 
+#
+
+@scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS:  
+	plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps;
+
+@scatter.$STATISTIC_X.$STATISTIC_Y: 
+	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y];
+
+plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
+	m/scatter_comp.m m/scatter_plot.m m/scatter_single.m 
+	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS]
+	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
+	$[MATLABPATH]
+{
+	NETWORKS="$(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)" \
+		KIND="$STATISTIC_X.$STATISTIC_Y" \
+		./matlab m/scatter_comp.m
+}
+
+>dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y:
+	dat/CLASSES
+{ 
+	for CLASS in $(cat dat/CLASSES) 
+	do
+		echo @scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS 
+	done
+}
+
+>dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS:
+	dat/NETWORKS_CLASS_$CLASS
+{
+	set -e
+
+	NETWORKS="$(cat dat/NETWORKS_CLASS_$CLASS)"
+
+	attribute_x="$(sh/attribute "$STATISTIC_X")" 
+	if [ "$attribute_x" ] 
+	then
+		NETWORKS_OLD="$NETWORKS"
+		NETWORKS=
+		for network in $NETWORKS_OLD 
+		do
+			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_x" 
+			then
+				NETWORKS="$NETWORKS $network"
+			fi
+		done
+	fi
+
+	attribute_y="$(sh/attribute "$STATISTIC_Y")" 
+	if [ "$attribute_y" ] 
+	then
+		NETWORKS_OLD="$NETWORKS"
+		NETWORKS=
+		for network in $NETWORKS_OLD 
+		do
+			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_y" 
+			then
+				NETWORKS="$NETWORKS $network"
+			fi
+		done
+	fi
+
+	for NETWORK in $NETWORKS 
+	do
+		echo "$NETWORK" 
+	done
+}
+
+>dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS:  
+	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
+{
+	for NETWORK in $(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)
+	do
+		echo dat/statistic.$STATISTIC_X.$NETWORK
+		echo dat/statistic.$STATISTIC_Y.$NETWORK
+	done
+}
+
+#
+# category table
+#
+
+tex/category-tabular.tex:
+	m/mkcategory.m
+	$[MATLABPATH]
+	dat/NETWORKS
+	[tex/dep.category-tabular.tex]
+{
+	NETWORKS="$(cat dat/NETWORKS)" ./matlab m/mkcategory.m
+}
+
+>tex/dep.category-tabular.tex:
+	dat/NETWORKS
+{
+	for NETWORK in $(cat dat/NETWORKS) ; do
+		echo uni/meta.$NETWORK dat/statistic.format.$NETWORK dat/statistic.weights.$NETWORK
+	done
+}
+
+#
+# Bidd (cumulated degree distribution)
+#
+
+@bidd.$NETWORK:  plot/bidd.a.$NETWORK.eps;
+
+plot/bidd.a.$NETWORK.eps:  
+	m/bidd.m m/bidd_one.m 
+	$[MATLABPATH]
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat 
+{
+	 ./matlab m/bidd.m
+}
+
+#
+# Layout
+#
+
+@layout:  @layout.class.everything; 
+@layout.class.$CLASS:  [dat/dep.layout.class.$CLASS];
+
+@layout.$NETWORK:  plot/layout.a.$NETWORK.eps;
+
+plot/layout.a.$NETWORK.eps:  
+	m/layout.m
+	dat/data.$NETWORK.mat  
+	dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	 ./matlab m/layout.m
+}
+
+>dat/dep.layout.class.$CLASS:  dat/NETWORKS_CLASS_$CLASS
+{
+	for NETWORK in $(cat dat/NETWORKS_CLASS_$CLASS) ; do
+		echo @layout."$NETWORK"
+	done
+}
+
+#
+# Degree
+#
+
+@degree.$NETWORK:  plot/degree.a.$NETWORK.eps;
+
+plot/degree.a.$NETWORK.eps:  
+	m/degree.m m/degree_print.m 
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat 
+	$[MATLABPATH]
+{
+	 ./matlab m/degree.m
+}
+
+@degreex.$NETWORK:  plot/degree.ax.$NETWORK.eps;
+
+plot/degree.ax.$NETWORK.eps:  
+	m/degree.m m/degree_print.m 
+	dat/data.$NETWORK.mat 
+	dat/statistic.power.$NETWORK
+	$[MATLABPATH]
+{
+	 ENABLE_POWER_LAW=1 ./matlab m/degree.m
+}
+
+@degreey.$NETWORK:  plot/degree.ay.$NETWORK.eps;
+
+plot/degree.ay.$NETWORK.eps:  
+	m/degree.m m/degree_print.m
+	dat/data.$NETWORK.mat 
+	dat/statistic.power2.$NETWORK
+	$[MATLABPATH]
+{
+	 ENABLE_POWER_LAW_2=1 ./matlab m/degree.m
+}
+
+@degree3.$NETWORK:  plot/degree.a3.$NETWORK.eps;
+
+plot/degree.a3.$NETWORK.eps:  
+	m/degree.m m/degree_print.m 
+	dat/data.$NETWORK.mat 
+	dat/statistic.power3.$NETWORK
+	$[MATLABPATH]
+{
+	 ENABLE_POWER_LAW_3=1 ./matlab m/degree.m
+}
+
+#
+# Lorenz plot
+#
+
+@lorenz.$NETWORK:  plot/lorenz.a.$NETWORK.eps; 
+
+plot/lorenz.a.$NETWORK.eps:  
+	m/lorenz.m m/lorenz_one.m 
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat 
+	$[MATLABPATH]
+{
+	 ./matlab m/lorenz.m 
+}
+
+#
+# Weight distribution 
+#
+
+@weights.$NETWORK:  plot/weights.a.$NETWORK.eps;
+
+plot/weights.a.$NETWORK.eps:  
+	m/weights_plot.m
+	$[MATLABPATH]
+	dat/data.$NETWORK.mat 
+{
+	 ./matlab m/weights_plot.m 
+}
+
+#
+# Time histogram
+#
+
+@time_histogram.$NETWORK:  plot/time_histogram.$NETWORK.eps; 
+
+>dat/time.$NETWORK:  
+	<uni/out.$NETWORK
+	dat/NETWORKS_TIME
+{
+	if ! grep '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+		exit 1
+	fi
+	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
+}
+
+plot/time_histogram.$NETWORK.eps:   
+	m/time_histogram.m 
+	$[MATLABPATH]
+	dat/time.$NETWORK 
+	uni/meta.$NETWORK 
+{
+	 ./matlab m/time_histogram.m
+}
+
+@time_histogram:  [dat/dep.time_histogram];
+
+>dat/dep.time_histogram:
+	dat/NETWORKS_TIME
+{
+	for NETWORK in $(cat dat/NETWORKS_TIME) ; do
+		echo @time_histogram."$NETWORK"
+	done
+}
+
+#
+# Signed time histogram
+#
+
+@time_histogram_signed.$NETWORK:  plot/time_histogram_signed.a.$NETWORK.eps;
+
+plot/time_histogram_signed.a.$NETWORK.eps:
+	m/time_histogram_signed.m
+	$[MATLABPATH]
+	uni/out.$NETWORK 
+	uni/meta.$NETWORK 
+{
+	 ./matlab m/time_histogram_signed.m
+}
+
+@time_histogram_signed:  [dat/dep.time_histogram_signed];
+
+>dat/dep.time_histogram_signed:
+	dat/NETWORKS_TIME
+	dat/NETWORKS_WEIGHTS_signed dat/NETWORKS_WEIGHTS_dynamic
+{
+	for NETWORK in $(cat dat/NETWORKS_TIME) ; do
+		if grep -qE '^\s*'"$NETWORK"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
+			grep -qE '^\s*'"$NETWORK"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ; then 
+			echo @time_histogram_signed."$NETWORK"
+		fi
+	done
+}
+
+#
+# Diadens
+#
+
+@diadens.$NETWORK:  plot/diadens.$NETWORK.eps;
+
+plot/diadens.$NETWORK.eps:  
+	m/diadens.m 
+	$[MATLABPATH]
+	dat/stepsi.$NETWORK 
+	dat/statistic_time.full.diameter.$NETWORK
+	dat/statistic_time.full.avgdegree.$NETWORK
+{
+	 ./matlab m/diadens.m 
+}
+
+#
+# Clustering coefficient distribution
+#
+
+@cluscod:  [dat/dep.cluscod];
+
+@cluscod.$NETWORK:  plot/cluscod.a.$NETWORK.eps;
+
+dat/cluscod.$NETWORK.mat:  
+	m/cluscod.m 
+	$[MATLABPATH]
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat 
+{
+	 ./matlab m/cluscod.m 
+}
+
+plot/cluscod.a.$NETWORK.eps:  
+	m/cluscod_plot.m
+	$[MATLABPATH]
+	dat/cluscod.$NETWORK.mat 
+{
+	 ./matlab m/cluscod_plot.m 
+}
+
+>dat/dep.cluscod:  dat/NETWORKS_SQUARE
+{
+	for NETWORK in $(cat dat/NETWORKS_SQUARE) ; do
+		echo @cluscod.$NETWORK
+	done
+}
+
+#
+# Distance distribution
+#
+
+@hopdistr:  [dat/dep.hopdistr];
+
+>dat/dep.hopdistr:  dat/NETWORKS
+{
+	for NETWORK in $(cat dat/NETWORKS) ; do
+		echo @hopdistr.$NETWORK
+	done
+}
+
+
+@hopdistr.square:  [dat/dep.hopdistr.square];
+
+>dat/dep.hopdistr.square:  dat/NETWORKS_SQUARE
+{
+	for NETWORK in $(cat dat/NETWORKS_SQUARE) ; do
+		echo @hopdistr.$NETWORK
+	done
+}
+
+@hopdistr.$NETWORK:  plot/hopdistr.a.$NETWORK.eps; 
+
+@hopdistr_time.full.$NETWORK:  plot/hopdistr_time.full.a.$NETWORK.eps; 
+
+dat/hopdistr2.$NETWORK:  dat/hopdistr2.simple~$NETWORK
+{
+	cp dat/hopdistr2.simple~$NETWORK dat/hopdistr2.$NETWORK
+}
+
+dat/hopdistr2.simple~$NETWORK:  dat/hopdistr2.lcc~simple~$NETWORK
+{
+	cp dat/hopdistr2.lcc~simple~$NETWORK dat/hopdistr2.simple~$NETWORK
+}
+
+>dat/hopdistr2.lcc~simple~$NETWORK:  
+	dat/sg1.lcc~simple~$NETWORK
+	[dat/dep.c.hyperanf.lcc~simple~$NETWORK]
+{
+	$(cat dat/dep.c.hyperanf.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK
+}
+
+plot/hopdistr.a.$NETWORK.eps:  
+	m/hopdistr_plot.m
+	$[MATLABPATH]
+	dat/hopdistr2.$NETWORK 
+{
+	 ./matlab m/hopdistr_plot.m 
+}
+
+dat/hopdistr_distrtest.$NETWORK.mat:  
+	m/hopdistr_distrtest.m 
+	m/distrtest_multi.m
+	$[MATLABPATH]
+	dat/hopdistr2.$NETWORK 
+	dat/info.$NETWORK 
+{
+	 ./matlab m/hopdistr_distrtest.m 
+}
+
+dat/hopdistr_time.full.$NETWORK:  
+	m/hopdistr_time_comp.m
+	$[MATLABPATH]
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK 
+	dat/stepsi.$NETWORK 
+{
+	 TYPE=full ./matlab m/hopdistr_time_comp.m 
+}
+
+plot/hopdistr_time.full.a.$NETWORK.eps:  
+	m/hopdistr_time_plot.m
+	$[MATLABPATH]
+	dat/hopdistr_time.full.$NETWORK 
+{
+	 TYPE=full ./matlab m/hopdistr_time_plot.m
+}
+
+#
+# Steps
+#
+
+# Full
+dat/stepsi.$NETWORK:  
+	m/stepsi.m 
+	$[MATLABPATH]
+	dat/info.$NETWORK 
+	dat/outs.$NETWORK
+{
+	 ./matlab m/stepsi.m 
+}
+
+# Split
+dat/steps.$NETWORK.mat:  
+	m/steps.m
+	$[MATLABPATH]
+	dat/split.$NETWORK.mat 
+	dat/means.$NETWORK.mat 
+{
+	 ./matlab m/steps.m 
+}
+
+#
+# Sorted out file
+#
+
+dat/outs.$NETWORK:  
+	uni/out.$NETWORK  
+	bin/outs 
+	dat/NETWORKS_TIME
+{
+	if ! grep '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+		exit 1
+	fi
+	bin/outs $NETWORK
+}
+
+#
+# Decompositions
+#
+
+@decomposition.$DECOMPOSITION.$NETWORK:   plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps;
+
+dat/decomposition.$DECOMPOSITION.$NETWORK.mat:  
+	m/decomposition_comp.m $[MATLABPATH]
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK 
+	dat/meansi.$NETWORK.mat 
+	dat/runtime
+{
+	./matlab m/decomposition_comp.m 
+}
+
+dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat:  
+	m/decomposition_comp.m $[MATLABPATH]
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK 
+	dat/meansi.$NETWORK.mat 
+	dat/runtime
+{
+	./matlab m/decomposition_map.m 
+}
+
+plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps:  
+	m/decomposition_plot.m $[MATLABPATH]
+	dat/decomposition.$DECOMPOSITION.$NETWORK.mat 
+{
+	./matlab m/decomposition_plot.m
+}
+
+@decomposition.$DECOMPOSITION: [dat/dep.decomposition.$DECOMPOSITION];
+
+>dat/dep.decomposition.$DECOMPOSITION:  
+	dat/NETWORKS 
+	dat/NETWORKS_ASYM
+	DECOMPOSITIONS_ASYM
+{
+	if grep -qE '^\s*'"$DECOMPOSITION"'\s*$' DECOMPOSITIONS_ASYM ; then
+		NETWORKS="$(cat dat/NETWORKS_ASYM)"
+	else
+		NETWORKS="$(cat dat/NETWORKS)"
+	fi
+
+	for NETWORK in $NETWORKS ; do
+		echo @decomposition.$DECOMPOSITION.$NETWORK
+	done
+}
+
+#
+# Prefatt statistics 
+# (only for networks with TIME)
+#
+
+dat/statistic.prefatt.$NETWORK:  
+	m/statistic_full_prefatt.m
+	$[MATLABPATH]
+	dat/pa.$NETWORK.mat 
+{
+	 ./matlab m/statistic_full_prefatt.m 
+}
+
+dat/pa.$NETWORK.mat:  
+	m/pa_compute.m m/pa_compute_one.m dat/split.$NETWORK.mat dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	./matlab m/pa_compute.m 
+}
+
+dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
+
+#
+# Preferential attachment plots
+#
+
+@pa:  [dat/dep.pa];
+
+>dat/dep.pa:  dat/NETWORKS_TIME
+{
+	cat dat/NETWORKS_TIME |
+	while read network ; do
+		echo @pa."$network"
+	done
+}
+
+@pa.$NETWORK:  plot/pa.aa.$NETWORK.eps;
+
+plot/pa.aa.$NETWORK.eps:  
+	m/pa_plot.m m/pa_plot_one.m dat/pa.$NETWORK.mat 
+	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
+	$[MATLABPATH]
+{
+	./matlab m/pa_plot
+}
+
+#
+# Spectral distribution
+#
+
+@distr.$DECOMPOSITION.$NETWORK:  plot/distr.a.$DECOMPOSITION.$NETWORK.eps;
+
+plot/distr.a.$DECOMPOSITION.$NETWORK.eps:  
+	m/distr_plot.m 
+	$[MATLABPATH]
+	dat/distr.$DECOMPOSITION.$NETWORK
+{
+	./matlab m/distr_plot.m 
+}
+
+dat/distr.$DECOMPOSITION.$NETWORK:  
+	m/distr.m 
+	$[MATLABPATH]
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat 
+	dat/meansi.$NETWORK.mat 
+{
+	./matlab m/distr.m 
+}
+
+#
+# Maps (graph drawings based on matrix decompositions)
+#
+
+@map.$DECOMPOSITION.$NETWORK:  plot/map.a.$DECOMPOSITION.$NETWORK.eps; 
+
+plot/map.a.$DECOMPOSITION.$NETWORK.eps:  
+	m/map.m 
+	m/map_one.m 
+	$[MATLABPATH]
+	dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat
+{
+	./matlab m/map.m 
+}
+
+@map.$DECOMPOSITION: [dat/dep.map.$DECOMPOSITION];
+
+>dat/dep.map.$DECOMPOSITION:  
+	dat/NETWORKS 
+	dat/NETWORKS_ASYM
+	DECOMPOSITIONS_ASYM
+{
+	if grep -qE '^\s*'"$DECOMPOSITION"'\s*$' DECOMPOSITIONS_ASYM ; then
+		NETWORKS="$(cat dat/NETWORKS_ASYM)"
+	else
+		NETWORKS="$(cat dat/NETWORKS)"
+	fi
+
+	for NETWORK in $NETWORKS ; do
+		echo @map.$DECOMPOSITION.$NETWORK
+	done
+}
+
+#
+# RDF files
+#
+
+@rdf.$NETWORK: dat/download.rdf.$NETWORK.n3.bz2;
+
+>dat/download.rdf.$NETWORK.n3.bz2: dat/download.rdf.$NETWORK.n3
+{
+	bzip2 -c dat/download.rdf.$NETWORK.n3 
+}
+
+dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
+{
+	set -e
+	sh/mkrdf $NETWORK >dat/download.rdf.$NETWORK.n3
+	head dat/download.rdf.$NETWORK.n3 -n 10000 | rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
+	# TODO: check for errors
+}
+
+@rdf: [dat/dep.rdf];
+
+>dat/dep.rdf:  dat/NETWORKS
+{
+	grep -El '^\s*n3-prefix-m\s*:' uni/meta.* | 
+	sed -re 's,^uni/meta\.,@rdf.,' 
+}
+
+
+#
+# TSV files
+#
+
+@tsv.$NETWORK:  dat/download.tsv.$NETWORK.tar.bz2;
+
+>dat/README.$NETWORK:  
+	sh/mkreadme sh/mkcite 
+{
+	sh/mkreadme "$NETWORK" matrices 
+}
+
+>dat/dep.download.tsv.$NETWORK: 
+{
+	set -e
+
+	echo dat/README.$NETWORK
+	echo uni/out.$NETWORK
+	echo uni/meta.$NETWORK
+	if [ -e uni/ent.$NETWORK ]
+	then
+		echo uni/ent.$NETWORK
+	fi
+	if ls uni/ent.$NETWORK.* >/dev/null 2>/dev/null
+	then
+		echo uni/ent.$NETWORK.*
+	fi
+	if ls uni/rel.$NETWORK.* >/dev/null 2>/dev/null
+	then
+		echo uni/rel.$NETWORK.*
+	fi
+}
+
+dat/download.tsv.$NETWORK.tar.bz2:
+	[dat/dep.download.tsv.$NETWORK] 
+{
+	set -e
+
+	DIR="dat-tmp/$NETWORK"
+
+	rm -rf "$DIR"
+	mkdir "$DIR"
+
+	for file in $(cat dat/dep.download.tsv.$NETWORK) 
+	do
+		file_canon="$(readlink -e "$file")"
+		if [ "$(basename "$file_canon")" = README ]
+		then
+			ln -s "$file_canon" "$DIR"/README
+		else
+			ln -s "$file_canon" "$DIR"/
+		fi
+	done
+
+	cd dat-tmp
+	tar -hcvj -f ../dat/download.tsv.$NETWORK.tar.bz2 "$NETWORK"
+	rm -rf "dat-tmp/$NETWORK"
+}  
+
+@tsv: [dat/dep.tsv];
+
+>dat/dep.tsv:  
+	dat/NETWORKS
+	../web/allowed_src.txt
+{
+	cat dat/NETWORKS |
+	while read network 
+	do
+		if <../web/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
+		then
+			echo "@tsv.$network"
+		fi
+	done
+}
+
+#
+# Delaunay
+#
+
+@delaunay.$NETWORK:  plot/delaunay.a.$NETWORK.png;
+
+plot/delaunay.a.$NETWORK.png:
+	m/delaunay_plot.m 
+	$[MATLABPATH]
+	dat/data.$NETWORK.mat
+	dat/info.$NETWORK
+{
+	 jvm_enable=1 ./matlab m/delaunay_plot.m 
+}
+
+@delaunay: [dat/dep.delaunay];
+
+>dat/dep.delaunay:  dat/NETWORKS
+{
+	for NETWORK in $(cat dat/NETWORKS) ; do
+		echo @delaunay.$NETWORK
+	done
+}
+
+#
+# Lybl
+#
+
+@lybl.$NETWORK:  plot/lybl.a.$NETWORK.png;
+
+plot/lybl.a.$NETWORK.png:
+	m/lybl.m
+	$[MATLABPATH]
+	dat/info.$NETWORK
+	dat/data.$NETWORK.mat
+	dat/decomposition_map.stoch.$NETWORK.mat
+{
+	 ./matlab m/lybl.m 
+}
+
+@lybl: [dat/dep.lybl];
+
+>dat/dep.lybl:  dat/NETWORKS
+{
+	for NETWORK in $(cat dat/NETWORKS) ; do
+		echo @lybl.$NETWORK
+	done
+}
+
+#
+# SynGraphy:  small synthetic networks generated to have similar
+# characteristics as the actual networks. 
+#
+
+@syngraphy.$NETWORK:  plot/syngraphy.a.$NETWORK.eps;
+
+plot/syngraphy.a.$NETWORK.eps:
+	m/syngraphy_plot.m 
+	$[MATLABPATH]
+	dat/statistic.size.$NETWORK
+	dat/statistic.uniquevolume.$NETWORK
+	dat/statistic.twostars.$NETWORK
+	dat/statistic.threestars.$NETWORK
+	dat/statistic.fourstars.$NETWORK
+	dat/statistic.triangles.$NETWORK
+	dat/statistic.squares.$NETWORK
+{
+	 ./matlab m/syngraphy_plot.m 
+}
+
+@syngraphy:  [dat/dep.syngraphy];
+
+>dat/dep.syngraphy:
+	dat/NETWORKS_ASYM
+{
+	for NETWORK in $(cat dat/NETWORKS_ASYM) ; do
+		echo @syngraphy.$NETWORK
+	done
+}
+
+#
+# outin - Out- vs indegree plot for directed networks
+#
+
+@outin:  [dat/dep.outin];
+
+@outin.$NETWORK:  plot/outin.a.$NETWORK.eps;
+
+plot/outin.a.$NETWORK.eps:  
+	$[MATLABPATH] m/outin.m 
+	dat/data.$NETWORK.mat 
+	dat/info.$NETWORK
+{
+	 ./matlab m/outin.m 
+}
+
+>dat/dep.outin:
+	dat/NETWORKS_ASYM
+{
+	for network in $(cat dat/NETWORKS_ASYM) ; do
+		echo @outin."$network"
+	done
+}
+
+#
+# Runtime 
+#
+
+>tmp.runtime:  sh/mkstat <runtime.source
+{
+	sh/mkstat 
+}
+
+dat/runtime:  tmp.runtime m/runtime.m !plot !dat
+{
+	$(OCTAVE) m/runtime
+}
+

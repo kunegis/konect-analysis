@@ -1,0 +1,121 @@
+#!/usr/bin/perl
+# usage: ./mkcite <network|konect>
+#
+#	prints bibtex for the given target
+use Switch;
+push( @INC, "../web/lib" );
+require "BibTeX/Parser.pm";
+require "TexToHtml/Converter.pm";
+use IO::File;
+my $networkname = $ARGV[0];
+
+
+
+my $name;
+my $ID;
+open my $F_IN,"<uni/meta.$networkname";
+while($line=<$F_IN>){
+    if ($line=~/\s*name\s*:\s*(.*)\s*$/){
+        unless (defined($name)){
+            $name=$1;
+        }
+    }
+    if ($line=~/\s*fullname\s*:\s*(.*)\s*$/){
+        $name=$1;
+    }
+	if ($line=~/\s*cite\s*:\s(.*)\s*$/){
+		$ID=$1;
+	}
+}
+close $F_IN;
+
+
+
+
+sub getkonectcite {
+    my $networkname = shift;
+    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst ) =
+      localtime();
+    $year += 1900;
+    my @bibm  = qw(jan feb mar apr may jun jul aug sep oct nov dec);
+    my $month = $bibm[$mon];
+    return '@MISC{konect:' . $year . ':' . $networkname . ",
+    title = {"
+      . $name
+      . " network dataset -- {KONECT}},
+    month = $month,
+    year = {$year},
+    url = {http://konect.uni-koblenz.de/networks/$networkname}
+}
+";
+
+}
+
+my $bibstring = "";
+my $bibssrc   = "";
+
+my $refdir = "../handbook/";
+opendir( in, $refdir );
+my @ref_files = readdir(in);
+close in;
+foreach $ref_file (@ref_files) {
+    $ref_file = $refdir . "/" . $ref_file;
+}
+if ( -e "../extr/konect.bib" ) {
+    push( @ref_files, "../extr/konect.bib" )
+      ;    #for the future existance of that file.
+}
+
+#push (@ref_files,"bibtest.bib");
+#open F_STATS,"<stats.txt";
+#my @lines=<F_STATS>;
+#close F_STATS;
+
+#$ID = $nwhash{$networkname}{"Cite"};
+
+$ID =~ s/ //g;
+$ID =~ s/,/|/g;
+if ( length($ID) == 0 ) { $ID = $networkname; }
+$ID = "($ID)";
+
+#print "<table>\n";
+#open F_BIBOUT,">cites/cite.".$networkname.".bib";
+
+unless ( $networkname eq "konect" ) {
+    $bibsrc = getkonectcite($networkname) . "\n";
+}
+
+#print F_BIBOUT $bibsrc;
+
+$foundbibtex = 0;
+foreach $ref_file (@ref_files) {
+    if ( $ref_file =~ /\.bib$/ ) {
+
+        #		print "reading: $ref_file\n";
+        my $fh     = IO::File->new($ref_file);
+        my $parser = BibTeX::Parser->new($fh);
+        while ( my $entry = $parser->next ) {
+            if (   ( length($ID) > 0 )
+                && ( $entry->parse_ok )
+                && ( $entry->key =~ /^$ID$/i ) )
+            {
+                @fields = $entry->fieldlist();
+
+                #print F_BIBOUT $entry->raw_bibtex();
+                $bibsrc .= $entry->raw_bibtex() . "\n\n";
+
+                #print F_BIBOUT "\n\n\n";
+                $foundbibtex = 1;
+            }elsif(!($entry->parse_ok)){
+	           warn "Error parsing file: " . $entry->error;
+			}									             
+        }
+    }
+}
+#open F_BIBOUT, ">cites/cite." . $networkname . ".bib";
+#print F_BIBOUT $bibsrc;
+#close F_BIBOUT;
+
+print $bibsrc;
+
+exit();

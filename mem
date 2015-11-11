@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Divide ulimit -v value by N and execute command.  ulimit -v must be
+# set to a finite value, and not equal "unlimited".   
+#
+# INVOCATION 
+#	$0 SIZE COMMAND
+#
+
+if [ `ulimit -v` = unlimited ]
+then
+    echo >&2 "*** $0: ulimit -v must be set"
+    exit 1
+fi
+
+ulimit -v $((`ulimit -v` / $1))
+shift
+exec "$@"

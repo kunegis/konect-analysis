@@ -1,0 +1,30 @@
+#! /bin/sh
+#
+# Execute make parallely, dividing used memory by N, and limiting
+# runtime of precosses.  Also, be NICE and use the -rR options for Make.   
+#
+# INVOCATION 
+#	$0 [N] args...
+#		N is the number of processes to run in parallel; if not
+#		given, defaults to a single process 
+#
+# PARAMETERS
+#	$MN_RUNTIME	Maximal runtime in hours; if not set, don't
+#			limit runtime 
+#
+
+N=1
+
+[ "$1" ] && echo "$1" | grep '^[0-9]*$' >/dev/null && {
+    N=$1
+    shift 
+}
+
+rm -f error.log 
+
+if [ "$MN_RUNTIME" ] ; then 
+    RUNTIME_S="`expr $MN_RUNTIME '*' 3600`"
+    ulimit -t "$RUNTIME_S"
+fi 
+
+exec nice ./mem $N make -rR -j$N "$@"

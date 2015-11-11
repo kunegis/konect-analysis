@@ -1,0 +1,6 @@
+#! /bin/sh
+#
+# Analogue to top that shows KONECT processes.
+#
+
+while :; do clear ; ./status ; sleep 60 ; done

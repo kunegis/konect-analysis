@@ -1,0 +1,146 @@
+#!/usr/bin/perl
+# usage: ./mkreadme <network> <matrices|code|full>
+#
+# prints a readme file for the website to stdoud, which should accompany the tarballs.
+
+
+push( @INC, "../web/lib" );
+require("HTML-Parser/Entities.pm");
+$network = $ARGV[0];
+
+
+
+sub has_timestamps {
+    open my $F_DATASETS, "<dat/networks.list";
+    my @lines = <$F_DATASETS>;
+	close $F_DATASETS;
+    foreach my $line (@lines) {
+        my @info = split(/ /, $line );
+        if ( uc( $info[0] ) eq uc($network) ) {
+            chomp $info[3];
+            return $info[3];
+        }
+    }
+}
+
+
+
+open my $F_IN,"<uni/meta.$network";
+
+while($line=<$F_IN>){
+	if ($line=~/\s*name\s*:\s*(.*)\s*$/){
+		unless (defined($name)){
+			$name=$1;
+		}
+	}
+	if ($line=~/\s*fullname\s*:\s*(.*)\s*$/){
+		$name=$1;
+	}
+	if ($line=~/\s*long-description\s*:\s*(.*)\s*$/){
+		$description=$1;
+	}
+}
+close $F_IN;
+
+
+if ( $ARGV[1] eq "code" ) {
+    print ""
+      . "The files in this folder are used to generate the TSV files of the "
+      . $ARGV[0]
+      . " network,
+about which more information is provided there: http://konect.uni-koblenz.de/networks/"
+      . $ARGV[0] . "
+
+
+The extraction code is licensed under GPLv3.\nFor more information concerning license visit http://konect.uni-koblenz.de/license.";
+
+}
+elsif ( $ARGV[1] eq "matrices" ) {
+    HTML::Entities::decode($description);
+	print $name;
+    print " network, part of the Koblenz Network Collection
+===========================================================================
+
+This directory contains the TSV and related files of the "
+      . $ARGV[0]
+      . " network:
+
+$description
+
+
+More information about the network is provided here: 
+http://konect.uni-koblenz.de/networks/" . $ARGV[0] . "
+
+Files: 
+    meta." . $ARGV[0] . " -- Metadata about the network 
+    out."
+      . $ARGV[0]
+      . " -- The adjacency matrix of the network in space separated values format, with one edge per line\n";
+
+    print "      The meaning of the columns in out." . $ARGV[0] . " are: 
+        First column: ID of from node 
+        Second column: ID of to node\n";
+
+    open F_INFO, "<dat/info.$network";
+    my @lines = <F_INFO>;
+    close F_INFO;
+    if ( $lines[5] > 1 ) {
+        print "        Third column: edge weight\n";
+    }
+    if ( has_timestamps() ) {
+        print "        Fourth column: timestamp of the edge\n";
+    }
+
+########################### entity files
+    opendir( DIR, "uni" );
+    @FILES = readdir(DIR);
+    foreach $file (@FILES) {
+        if ( $file =~ /^ent\.$network\.([^\.]*)\.([^\.]*)$/ ) {
+            print
+"    $file -- Contains the attribute `$2` of entity `$1` of the network\n";
+        }
+    }
+#########################
+
+    #todo: add these optional lines and make them optional. :P
+    #		Third column: edge weight
+    #		Fourth column: timestamp of the edge (OPTIONAL)
+    print "
+
+Complete documentation about the file format can be found in the KONECT
+handbook, in the section File Formats, available at:
+
+http://konect.uni-koblenz.de/publications
+
+All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
+For more information concerning license visit http://konect.uni-koblenz.de/license.
+
+
+
+Use the following References for citation:
+
+";
+	system("sh/mkcite $network");
+    #if ( -e "cites/cite.$network.bib" ) {
+    #    system("cat cites/cite.$network.bib");
+    #}
+    print "\n";
+    #system("cat cites/cite.konect.bib");
+	system("sh/mkcite konect");
+    print "\n";
+
+}
+elsif ( $ARGV[1] eq "full" ) {
+    print ""
+      . "This folder contains the full datasets from which the TSV files of "
+      . $ARGV[0]
+      . " network are extracted.
+Use the related extraction code for that matter.
+
+
+All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
+For more information concerning license visit http://konect.uni-koblenz.de/license.
+"
+
+}
+

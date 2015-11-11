@@ -1,0 +1,22 @@
+#! /bin/sh
+#
+# Filter networks by their category.
+#
+# PARAMETERS 
+#	$CATEGORY	Name of the category
+#
+# STDIN 
+#	One network name per line
+#
+# STDOUT 
+#	One network name per line, containing only those networks that
+#	are in the given category 
+#
+
+while read NETWORK
+do
+    if grep -qE '^\s*category\s*:\s*'"$CATEGORY"'\s*$' uni/meta."$NETWORK"
+    then
+	echo "$NETWORK"
+    fi
+done
