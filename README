@@ -1,0 +1,24 @@
+
+This is the KONECT analysis component (KONECT-Cloud).  It allows to run
+analyses of KONECT networks in parallel. 
+
+== How to Use ==
+
+* Mount, link, symlink or copy uni/ into this directory.  The uni/
+  directory must be present and contain all out.* and meta.* files.   
+* (optional) Mount, link, symlink or copy plot/ and dat/ from the analysis/
+  directory to here.  
+* (optional) Install libraries as described in lib/README.  Not all
+  targets need extra libraries. 
+* Execute "stu"; see main.stu for targets.
+
+Output is written to dat/ (data files) and plot/ (plots).  On most hosts
+where KONECT anlaysis is run, dat/ and plot/ are symlinks to mounted
+directories.  
+
+== Needed packages ==
+
+* stu:  also available from the KONECT authors
+* g++
+* python-rdflib (for RDF generation only)
+* matlab_bgl
