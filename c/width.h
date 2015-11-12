@@ -27,7 +27,7 @@
  *     SIGNED *	  2	1	'B'	{-2, -1, 0, +1}; enough for {-1,0,+1} weights
  *     SIGNED *   4	1	'C'	{-8, ..., +7}
  *     SIGNED *	  8	1	'D'	{-128, ..., +127}
- *     SIGNED * 16	1	'E'	    
+ *     SIGNED *  16	1	'E'	    
  *     SIGNED *	 32	1	'F'	
  *     SIGNED	 64	1	'G'	
  *
