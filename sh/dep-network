@@ -5,66 +5,67 @@
 # PARAMETERS
 #	$NETWORK
 #
+# STDOUT
+#	The list of dependencies in Stu format
+#
+# INPUT 
+#	STATISTICS
+#	PLOTS
+#	PLOTS_SQUARE
+#	PLOTS_ASYM
+#	PLOTS_TIME
+#
 
-{ 
-    for PLOT in $PLOTS ; do
+
+for PLOT in $(cat PLOTS) ; do
 	echo @$PLOT.$NETWORK
-    done
+done
 
-    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_SQUARE ; then
-	for PLOT in $PLOTS_SQUARE ; do 
-	    echo @$PLOT.$NETWORK
+if grep -q '^'"$NETWORK"'$' dat/NETWORKS_SQUARE ; then
+	for PLOT in $(cat PLOTS_SQUARE) ; do 
+		echo @$PLOT.$NETWORK
 	done
-    fi
+fi
 
-    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_ASYM ; then
-	for PLOT in $PLOTS_ASYM ; do 
-	    echo @$PLOT.$NETWORK
+if grep -q '^'"$NETWORK"'$' dat/NETWORKS_ASYM ; then
+	for PLOT in $(cat PLOTS_ASYM) ; do 
+		echo @$PLOT.$NETWORK
 	done
-    fi
+fi
 
-    if grep -q '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
-	for PLOT in $PLOTS_TIME ; do 
-	    echo @$PLOT.$NETWORK
+if grep -q '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+	for PLOT in $(cat PLOTS_TIME) ; do 
+		echo @$PLOT.$NETWORK
 	done
-    fi
-
-    for STATISTIC in $STATISTICS ; do
+fi
+	
+for STATISTIC in $(cat STATISTICS) ; do
 	# check whether the statistic must be computed for this network 
-
-#	echo >&2 "STATISTIC=«$STATISTIC»"
-
 	compute=1
 	if [ -r "../matlab/konect_statistic_$STATISTIC.m" ] ; then
-	    for ATTRIBUTE in $(<../matlab/konect_statistic_$STATISTIC.m sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | 
-		tr a-z A-Z) ; do
-#		echo >&2 "ATTRIBUTE=«$ATTRIBUTE»"
-		if [ ! -r "dat/NETWORKS_$ATTRIBUTE" ] ; then 
-		    echo >&2 "../matlab/konect_statistic_$STATISTIC.m:  unknown attribute '$ATTRIBUTE'"
-		    exit 1
-		fi
-		if ! grep -Eq '^'"$NETWORK"'$' "dat/NETWORKS_$ATTRIBUTE" ; then
-#		    echo >&2 "«$NETWORK» not found in «dat/NETWORKS_$ATTRIBUTE»"
-#		    echo >&2 "setting compute to zero"
-		    compute=0
-		fi
-	    done
+		for ATTRIBUTE in $(<../matlab/konect_statistic_$STATISTIC.m sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | 
+			tr a-z A-Z) ; do
+			if [ ! -r "dat/NETWORKS_$ATTRIBUTE" ] ; then 
+				echo >&2 "../matlab/konect_statistic_$STATISTIC.m:  unknown attribute '$ATTRIBUTE'"
+				exit 1
+			fi
+			if ! grep -Eq '^'"$NETWORK"'$' "dat/NETWORKS_$ATTRIBUTE" ; then
+				compute=0
+			fi
+		done
 	fi
-
+		
 	if [ "$compute" != 0 ] ; then
-	    echo @statistic.$STATISTIC.$NETWORK
+		echo @statistic.$STATISTIC.$NETWORK
 	fi
-    done
+done
 
-    # RDF
-    if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$NETWORK ; then
+# RDF
+if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$NETWORK ; then
 	echo @rdf.$NETWORK
-    fi
+fi
 
-	#TSV
-	if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../web/allowed_src.txt; then
+#TSV
+if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../web/allowed_src.txt; then
 	echo @tsv.$NETWORK
-	fi
-
-} >dat/dep.network.$NETWORK
-
+fi

@@ -18,7 +18,7 @@ fi
 
 statistic="$1"
 
-file="../matlab/konect_statistic_$statistic.m"
+file="konect-toolbox/m/konect_statistic_$statistic.m"
 
 if [ ! -e "$file" ] ; then
     echo >&2 "*** $0:  file '$file' not found"

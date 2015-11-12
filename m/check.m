@@ -18,6 +18,7 @@ tags = get_tags(meta);
 
 tag_loop = isfield(tags, 'loop')
 tag_acyclic = isfield(tags, 'acyclic')
+tag_nonreciprocal = isfield(tags, 'nonreciprocal')
 tag_zeroweight = isfield(tags, 'zeroweight')
 tag_lcc = isfield(tags, 'lcc')
 tag_incomplete= isfield(tags, 'incomplete')
@@ -247,7 +248,7 @@ end
 
 %
 % If a network is ASYM, is must contain at least one pair of
-% reciprocal edges, except when #acyclic is defined.
+% reciprocal edges, except when #acyclic or #reciprocal is defined.
 %
 
 if format == consts.ASYM 
@@ -257,13 +258,13 @@ if format == consts.ASYM
 
     A = sparse(T(:,1), T(:,2), 1, n, n); 
     
-    if tag_acyclic
+    if tag_acyclic | tag_nonreciprocal
 
-        assert(sum(sum(A .* A')) == 0, '*** acyclic network cannot contain reciprocal edges'); 
+        assert(sum(sum(A .* A')) == 0, '*** acyclic or network cannot contain reciprocal edges'); 
 
     else
 
-        assert(sum(sum(A .* A')) > 0, '*** non-acyclic networks must contain reciprocal edges'); 
+        assert(sum(sum(A .* A')) > 0, '*** non-acyclic and non-nonreciprocal networks must contain reciprocal edges'); 
 
     end
 

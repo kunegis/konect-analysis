@@ -122,9 +122,9 @@ $MATLAB -logfile $LOGFILE -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
      >$TMP_BASE.out 2>&1 <<EOF  ||
 EOF
 { 
-    echo >&2 "*** error in $TMP_BASE.log"; 
+    echo >&2 "*** error in $TMP_BASE.log"
     echo >&6 "*** error in $TMP_BASE.log"
-    exit 1; 
+    exit 1
 }
 
 # We have to use <<EOF or else Matlab will read its standard input and hang.
