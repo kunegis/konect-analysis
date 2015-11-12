@@ -11,30 +11,30 @@
  * 
  * List of types:
  *
- *     			  b C 	TYPE	NOTE
+ *     		  b     C 	TYPE	NOTE
  *
  *         NO *			'-'	
  *
  *   UNSIGNED *	  1	0	'a'    	{0, +1}; only when explicit 0 is needed
- *   UNSIGNED *	  2	0	'b'	    {0, ..., 3}
- *   UNSIGNED *   4	0	'c'		{0, ..., 15} enough for 5-star ratings
- *   UNSIGNED *	  8	0	'd'	    {0, ..., 255}
+ *   UNSIGNED *	  2	0	'b'	{0, ..., 3}
+ *   UNSIGNED *   4	0	'c'	{0, ..., 15} enough for 5-star ratings
+ *   UNSIGNED *	  8	0	'd'	{0, ..., 255}
  *   UNSIGNED *	 16	0	'e'	    
- *   UNSIGNED *	 32	0	'f'		enough for almost all known networks as node ID
- *   UNSIGNED *  64	0	'g'		there's one network with this at the moment
+ *   UNSIGNED *	 32	0	'f'	enough for almost all known networks as node ID
+ *   UNSIGNED *  64	0	'g'	there's one network with this at the moment
  *
- *     SIGNED *   1	1 	'A'		{-1, +1} with -1 mapping to 1 (sign bit) (special mapping)
- *     SIGNED *	  2	1	'B'		{-2, -1, 0, +1}; enough for {-1,0,+1} weights
- *     SIGNED *   4	1	'C'	    {-8, ..., +7}
- *     SIGNED *	  8	1	'D'	    {-128, ..., +127}
+ *     SIGNED *   1	1 	'A'	{-1, +1} with -1 mapping to 1 (sign bit) (special mapping)
+ *     SIGNED *	  2	1	'B'	{-2, -1, 0, +1}; enough for {-1,0,+1} weights
+ *     SIGNED *   4	1	'C'	{-8, ..., +7}
+ *     SIGNED *	  8	1	'D'	{-128, ..., +127}
  *     SIGNED * 16	1	'E'	    
  *     SIGNED *	 32	1	'F'	
  *     SIGNED	 64	1	'G'	
  *
- *      FLOAT    16	2	'4'		half-precision
- *      FLOAT *  32	2	'5'		standard float
- *		FLOAT *	 64	2	'6'		double precision 
- *      FLOAT   128	2	'7'		quad precision
+ *      FLOAT    16	2	'4'	half-precision
+ *      FLOAT *  32	2	'5'	standard float
+ *	FLOAT *	 64	2	'6'	double precision 
+ *      FLOAT   128	2	'7'	quad precision
  *
  *      (*) implemented
  *       b  bits
