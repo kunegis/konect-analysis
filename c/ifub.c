@@ -1,6 +1,6 @@
 /* 
  * Computer the diameter of a graph using the iFub algorithm [1].  The
- * algorithm has a parameter K which determine whether the computation
+ * algorithm has a parameter K which determines whether the computation
  * is exact (when k == 0) or an approximation (when k > 0). 
  * 
  * ABOUT 
