@@ -5,14 +5,13 @@
 # INPUT
 #	uni/*
 #
-# OUTPUT
-#	dat/networks.list
-# 		One network per line:
+# STDOUT
+#	One network per line:
 #
-# 		NETWORK <space> FORMAT <space> WEIGHTS <space> TIMESTAMPS <space> BYTES
+#	NETWORK <space> FORMAT <space> WEIGHTS <space> TIMESTAMPS <space> BYTES
 #
-# 		TIMESTAMPS is t for timestamps and 0 for no timestamps 
-# 		BYTES is the size in bytes.
+#	TIMESTAMPS is t for timestamps and 0 for no timestamps 
+#	BYTES is the size in bytes.
 #
 
 [ "$verbose" ] && exec 4>&2 || exec 4>/dev/null 
@@ -25,10 +24,10 @@ do
     file=uni/out.$name
     
     # Name, format and weight
-    echo -n "$name `head -1 $file | sed -re 's,^.* ([^ ]+) .*$,\1,'` `head -1 $file | sed -re 's,^.*\s([^ ]+)\s*$,\1,'` "
+    echo -n "$name $(head -1 $file | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 $file | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
 
     # Timestamps
-    if [ `head $file | tail -1 | wc -w` -gt 3 ]
+    if [ $(head $file | tail -1 | wc -w) -gt 3 ]
     then
 	echo -n t
     else
@@ -39,4 +38,4 @@ do
     # Bytes
     ls -lH $file | cut -d ' ' -f 5 
 
-done >dat/networks.list
+done

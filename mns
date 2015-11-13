@@ -1,11 +1,11 @@
 #! /bin/sh
 #
-# Execute Stu parallely, dividing used memory by N, and limiting
+# Execute Stu parallely, dividing used memory by K, and limiting
 # runtime of precosses.  Also, be NICE. 
 #
 # INVOCATION 
-#	$0 [N] args...
-#		N is the number of processes to run in parallel; if not
+#	$0 [K] args...
+#		K is the number of processes to run in parallel; if not
 #		given, defaults to a single process 
 #
 # PARAMETERS
@@ -13,10 +13,10 @@
 #			limit runtime 
 #
 
-N=1
+K=1
 
 [ "$1" ] && echo "$1" | grep '^[0-9]*$' >/dev/null && {
-    N=$1
+    K="$1"
     shift 
 }
 
@@ -27,4 +27,4 @@ if [ "$MN_RUNTIME" ] ; then
     ulimit -t "$RUNTIME_S"
 fi 
 
-exec nice ./mem $N stu -j$N "$@"
+exec nice sh/mem "$K" stu -j "$K" "$@"

@@ -2,26 +2,28 @@
 This is the KONECT analysis component (KONECT-Analysis).  It allows to run
 analyses of KONECT networks in parallel. 
 
-== How to Use ==
+== Requirements ==
+
+* Stu:  install from https://github.com/kunegis/stu
+* g++
+* python-rdflib (for RDF generation only)
+
+== Prepare ==
 
 * Mount, link, symlink or copy uni/ into this directory.  The uni/
   directory must be present and contain all out.* and meta.* files.   
-* (optional) Mount, link, symlink or copy plot/ and dat/ from the analysis/
-  directory to here.  
+* Mount, link, symlink or copy the dat/ and plot/ directories/ here.
 * (optional) Install libraries as described in lib/README.  Not all
-  targets need extra libraries. 
-* Execute "stu"; see main.stu for targets.
+  targets need extra libraries.  You may as well don't do it and wait
+  until you get a corresponding error message. 
+* Symlink (or copy) to ./konect-toolbox a version of the KONECT Toolbox
+  available at  https://github.com/kunegis/konect-toolbox
 
-Output is written to dat/ (data files) and plot/ (plots).  On most hosts
-where KONECT anlaysis is run, dat/ and plot/ are symlinks to mounted
-directories.  
+== Run ==
 
-== Needed packages ==
+* Execute "./mns", which calls Stu; see main.stu for targets.
 
-* Stu:  also available from the KONECT authors
-* g++
-* python-rdflib (for RDF generation only)
-* matlab_bgl
+Output is written to dat/ (data files) and plot/ (plots).  
 
 == License ==
 

@@ -7,12 +7,12 @@
 #	$0 SIZE COMMAND
 #
 
-if [ `ulimit -v` = unlimited ]
+if [ $(ulimit -v) = unlimited ]
 then
     echo >&2 "*** $0: ulimit -v must be set"
     exit 1
 fi
 
-ulimit -v $((`ulimit -v` / $1))
+ulimit -v $(($(ulimit -v) / $1))
 shift
 exec "$@"

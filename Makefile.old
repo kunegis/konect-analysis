@@ -1,0 +1,313 @@
+# Old bits of the Makefile; to be converted to Stu code.
+
+#
+# Steps 
+#
+
+# Full
+dat/stepsi.%:  dat/info.% m/stepsi.m dat/outs.% 
+	NETWORK=$* $(OCTAVE) m/stepsi 
+
+# Split
+dat/steps.%.mat:  dat/split.%.mat dat/means.%.mat m/steps.m
+	NETWORK=$* $(OCTAVE) m/steps
+
+#
+# Plot road networks
+#
+road:  plot/road.roadNet-CA.eps
+
+plot/road.roadNet-CA.eps:  uni/out.roadNet-CA m/road.m
+	NETWORK=roadNet-CA $(OCTAVE) m/road
+
+#
+# Spectral extrapolation (visualization)
+#
+
+define TEMPLATE_spectral_extrapolation_all
+
+$(foreach NETWORK, $(NETWORKS), spectral_extrapolation.$(1).$(NETWORK)):  \
+  spectral_extrapolation.$(1).%:  plot/spectral_extrapolation.$(1).%.eps
+
+plot/spectral_extrapolation.$(1).%.eps:  m/spectral_extrapolation.m dat/decomposition_time.split.$(1).%.mat dat/steps.%.mat 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/spectral_extrapolation
+
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ANY), $(eval $(call TEMPLATE_spectral_extrapolation_all,$(DECOMPOSITION))))
+
+define TEMPLATE_spectral_extrapolation_square
+
+$(foreach NETWORK, $(NETWORKS_SQUARE), spectral_extrapolation.$(1).$(NETWORK)):  \
+  spectral_extrapolation.$(1).%:  plot/spectral_extrapolation.$(1).%.eps
+
+plot/spectral_extrapolation.$(1).%.eps:  m/spectral_extrapolation.m dat/decomposition_time.split.$(1).%.mat dat/steps.%.mat 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/spectral_extrapolation
+
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_SQUARE), $(eval $(call TEMPLATE_spectral_extrapolation_square,$(DECOMPOSITION))))
+
+define TEMPLATE_spectral_extrapolation_asym 
+
+$(foreach NETWORK, $(NETWORKS_ASYM), spectral_extrapolation.$(1).$(NETWORK)):  \
+  spectral_extrapolation.$(1).%:  plot/spectral_extrapolation.$(1).%.eps
+
+plot/spectral_extrapolation.$(1).%.eps:  m/spectral_extrapolation.m dat/decomposition_time.split.$(1).%.mat dat/steps.%.mat 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/spectral_extrapolation
+
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ASYM), $(eval $(call TEMPLATE_spectral_extrapolation_asym,$(DECOMPOSITION))))
+
+$(foreach NETWORK, $(NETWORKS), spectral_extrapolation.all.$(NETWORK)): spectral_extrapolation.all.%:  $(foreach DECOMPOSITION, $(DECOMPOSITIONS_ANY), spectral_extrapolation.$(DECOMPOSITION).%)
+$(foreach NETWORK, $(NETWORKS_SQUARE), spectral_extrapolation.all.$(NETWORK)): spectral_extrapolation.all.%:  $(foreach DECOMPOSITION, $(DECOMPOSITIONS_SQUARE), spectral_extrapolation.$(DECOMPOSITION).%)
+$(foreach NETWORK, $(NETWORKS_ASYM), spectral_extrapolation.all.$(NETWORK)): spectral_extrapolation.all.%:  $(foreach DECOMPOSITION, $(DECOMPOSITIONS_ASYM), spectral_extrapolation.$(DECOMPOSITION).%)
+
+
+
+#
+# Comparison of link prediction precision
+#
+
+comparison.all.all:  $(foreach CLASS, $(CLASSES), comparison.any.$(CLASS) comparison.asym.$(CLASS) comparison.bip.$(CLASS) comparison.any-fast.$(CLASS) comparison.asym-fast.$(CLASS))
+comparison.any.all:  $(foreach CLASS, $(CLASSES), comparison.any.$(CLASS))
+comparison.asym.all:  $(foreach CLASS, $(CLASSES), comparison.asym.$(CLASS))
+comparison.bip.all:   $(foreach CLASS, $(CLASSES), comparison.bip.$(CLASS))
+comparison.any-fast.all:  $(foreach CLASS, $(CLASSES), comparison.any-fast.$(CLASS))
+comparison.asym-fast.all:  $(foreach CLASS, $(CLASSES), comparison.asym-fast.$(CLASS))
+
+define TEMPLATE_comparison # $(1) = $(CLASS) 
+
+comparison.all.$(1):  comparison.any.$(1) comparison.asym.$(1) comparison.bip.$(1)
+
+comparison.any.$(1):  plot/comparison.a.auc.any.$(1).eps 
+comparison.asym.$(1):  plot/comparison.a.auc.asym.$(1).eps
+comparison.bip.$(1):        plot/comparison.a.auc.bip.$(1).eps
+comparison.any-fast.$(1):  plot/comparison.a.auc.any-fast.$(1).eps 
+comparison.asym-fast.$(1):  plot/comparison.a.auc.asym-fast.$(1).eps
+
+plot/comparison.a.auc.any.$(1).eps:  m/comparison.m $$(foreach NETWORK, $$(NETWORKS_PREDICTION_$(1)), $$(foreach METHOD, $$(METHODS_LOCAL) $$(DECOMPOSITIONS_ANY), dat/precision.$$(METHOD).$$(NETWORK).mat))
+	NETWORKS="$$(NETWORKS_PREDICTION_$(1))" METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_ANY)" NAME=any.$(1) $(OCTAVE) m/comparison
+
+plot/comparison.a.auc.asym.$(1).eps:  m/comparison.m $$(foreach NETWORK, $$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_ASYM)), \
+  $$(foreach METHOD, $$(METHODS_LOCAL) $$(DECOMPOSITIONS), dat/precision.$$(METHOD).$$(NETWORK).mat))
+	NETWORKS="$$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_ASYM))" METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS)" NAME=asym.$(1) $(OCTAVE) m/comparison
+
+plot/comparison.a.auc.bip.$(1).eps:  m/comparison.m $$(foreach NETWORK, $$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_BIP)), \
+  $$(foreach METHOD, $$(METHODS_LOCAL) $$(DECOMPOSITIONS_ANY), dat/precision.$$(METHOD).$$(NETWORK).mat))
+	NETWORKS="$$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_BIP))" METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_ANY)" NAME=bip.$(1) $(OCTAVE) m/comparison
+
+plot/comparison.a.auc.any-fast.$(1).eps:  m/comparison.m $$(foreach NETWORK, $$(NETWORKS_PREDICTION_$(1)), $$(foreach METHOD, $$(METHODS_LOCAL) $$(DECOMPOSITIONS_ANY_FAST), \
+  dat/precision.$$(METHOD).$$(NETWORK).mat))
+	NETWORKS="$$(NETWORKS_PREDICTION_$(1))" METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_ANY_FAST)" NAME=any-fast.$(1) $(OCTAVE) m/comparison
+
+plot/comparison.a.auc.asym-fast.$(1).eps:  m/comparison.m $$(foreach NETWORK, $$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_ASYM)), \
+  $$(foreach METHOD, $$(METHODS_LOCAL) $$(DECOMPOSITIONS_FAST), dat/precision.$$(METHOD).$$(NETWORK).mat))
+	NETWORKS="$$(filter $$(NETWORKS_PREDICTION_$(1)), $$(NETWORKS_ASYM))" METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_FAST)" NAME=asym-fast.$(1) $(OCTAVE) m/comparison
+
+endef
+$(foreach CLASS, $(CLASSES), $(eval $(call TEMPLATE_comparison,$(CLASS))))
+
+#
+# Curve fitting
+#
+
+define TEMPLATE_fit
+
+$(foreach NETWORK, $(NETWORKS), fit.$(1).$(NETWORK)): \
+fit.$(1).%:  plot/fit.a.$(1).%.eps
+
+dat/fit.$(1).%.mat:  \
+  dat/info.% dat/decomposition_split.source.$(1).%.mat \
+  dat/split.%.mat dat/means.%.mat m/fit.m 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/fit
+
+plot/fit.a.$(1).%.eps: dat/fit.$(1).%.mat m/fit_plot.m 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/fit_plot
+
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS), $(eval $(call TEMPLATE_fit,$(DECOMPOSITION))))
+
+define TEMPLATE_fit_asym
+fit.$(1).all:  $(foreach NETWORK, $(NETWORKS_ASYM), fit.$(1).$(NETWORK))
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ASYM), $(eval $(call TEMPLATE_fit_asym,$(DECOMPOSITION))))
+
+define TEMPLATE_fit_any
+fit.$(1).all:  $(foreach NETWORK, $(NETWORKS), fit.$(1).$(NETWORK))
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ANY), $(eval $(call TEMPLATE_fit_any,$(DECOMPOSITION))))
+
+
+$(foreach NETWORK, $(NETWORKS), fit.all.$(NETWORK)): \
+fit.all.%:  $(foreach DECOMPOSITION, $(DECOMPOSITIONS_ANY), fit.$(DECOMPOSITION).%)
+$(foreach NETWORK, $(NETWORKS_ASYM), fit.all.$(NETWORK)): \
+fit.all.%:  $(foreach DECOMPOSITION, $(DECOMPOSITIONS_ASYM), fit.$(DECOMPOSITION).%)
+
+#
+# Local prediction
+#
+
+define TEMPLATE_prediction_local
+
+$(foreach NETWORK, $(NETWORKS), prediction.$(1).$(NETWORK)): \
+prediction.$(1).%: dat/prediction.$(1).%.mat
+
+dat/prediction.$(1).%.mat:  m/prediction_local.m dat/split.%.mat dat/meanst.%.mat dat/info.% 
+	NETWORK=$$* METHOD=$(1) $(OCTAVE) m/prediction_local
+
+endef
+$(foreach METHOD, $(METHODS_LOCAL), $(eval $(call TEMPLATE_prediction_local,$(METHOD))))
+
+#
+# Prediction by decomposition
+#
+
+define TEMPLATE_prediction_decomposition
+
+$(foreach NETWORK, $(NETWORKS), prediction.$(1).$(NETWORK)): \
+prediction.$(1).%:  dat/prediction.$(1).%.mat
+
+dat/prediction.$(1).%.mat:  m/prediction_decomposition.m dat/info.% dat/split.%.mat \
+  dat/decomposition_split.training.$(1).%.mat dat/decomposition_split.source.$(1).%.mat \
+  dat/fit.$(1).%.mat 
+	NETWORK=$$* DECOMPOSITION=$(1) $(OCTAVE) m/prediction_decomposition 
+
+endef
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS), $(eval $(call TEMPLATE_prediction_decomposition,$(DECOMPOSITION))))
+
+#
+# Precision of link prediction (ONE)
+#
+
+define TEMPLATE_precision # $(1) = $(METHOD)
+$(foreach NETWORK, $(NETWORKS), precision_one.$(1).$(NETWORK)): \
+precision_one.$(1).%:  plot/precision.one.a.auc.$(1).%.eps
+
+dat/precision.$(1).%.mat:  dat/prediction.$(1).%.mat m/precision_comp.m dat/split.%.mat dat/meanst.%.mat 
+	NETWORK=$$* METHOD=$(1) $(OCTAVE) m/precision_comp
+
+plot/precision.one.a.auc.$(1).%.eps:  dat/precision.$(1).%.mat m/precision_one.m
+	NETWORK=$$* METHOD=$(1) $(OCTAVE) m/precision_one 
+
+endef
+$(foreach METHOD, $(METHODS_LOCAL) $(DECOMPOSITIONS), $(eval $(call TEMPLATE_precision,$(METHOD))))
+
+precision_one.all.all:  $(foreach NETWORK, $(NETWORKS), precision_one.all.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS), precision_one.all.$(NETWORK)): \
+precision_one.all.%:  $(foreach METHOD, $(METHODS_LOCAL) $(DECOMPOSITIONS_ANY), precision_one.$(METHOD).%)
+
+$(foreach NETWORK, $(NETWORKS_ASYM), precision_one.all.$(NETWORK)): \
+precision_one.all.%:  $(foreach METHOD, $(DECOMPOSITIONS_ASYM), precision_one.$(METHOD).%)
+
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ANY), precision_one.$(DECOMPOSITION).all): \
+precision_one.%.all:  $(foreach NETWORK, $(NETWORKS), precision_one.%.$(NETWORK))
+
+$(foreach DECOMPOSITION, $(DECOMPOSITIONS_ASYM), precision_one.$(DECOMPOSITION).all): \
+precision_one.%.all:  $(foreach NETWORK, $(NETWORKS_ASYM), precision_one.%.$(NETWORK))
+
+#
+# Precision of link prediction (ALL)
+#
+
+precision_all.all:  $(foreach NETWORK, $(NETWORKS), precision_all.$(NETWORK))
+precision_all.asym:  $(foreach NETWORK, $(NETWORKS_ASYM), precision_all.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS), precision_all.$(NETWORK)): \
+precision_all.%:  plot/precision.all.a.auc.%.eps
+
+$(foreach NETWORK, $(NETWORKS_BIP) $(NETWORKS_SYM), plot/precision.all.a.auc.$(NETWORK).eps): \
+plot/precision.all.a.auc.%.eps:  m/precision_all.m \
+  $(foreach METHOD, $(METHODS_LOCAL) $(DECOMPOSITIONS_ANY), dat/precision.$(METHOD).%.mat) 
+	NETWORK=$* METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_ANY)" $(OCTAVE) m/precision_all
+
+$(foreach NETWORK, $(NETWORKS_ASYM), plot/precision.all.a.auc.$(NETWORK).eps): \
+plot/precision.all.a.auc.%.eps:  m/precision_all.m \
+  $(foreach METHOD, $(METHODS_LOCAL) $(DECOMPOSITIONS_ANY) $(DECOMPOSITIONS_ASYM), dat/precision.$(METHOD).%.mat)
+	NETWORK=$* METHODS="$(METHODS_LOCAL) $(DECOMPOSITIONS_ANY) $(DECOMPOSITIONS_ASYM)" $(OCTAVE) m/precision_all
+
+
+#
+# Check how well a matrix decomposition is an approximation
+#
+
+approximation.all:  $(foreach NETWORK, $(NETWORKS_ASYM), approximation.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS_ASYM), approximation.$(NETWORK)): \
+approximation.%:  plot/approximation.a.%.eps
+
+$(foreach NETWORK, $(NETWORKS_ASYM), dat/approximation.$(NETWORK).mat): \
+dat/approximation.%.mat:  m/approximation.m dat/data.%.mat dat/info.% dat/meansi.%.mat
+	NETWORK=$* $(OCTAVE) m/approximation
+
+$(foreach NETWORK, $(NETWORKS_ASYM), plot/approximation.a.$(NETWORK).eps): \
+plot/approximation.a.%.eps:  m/approximation_plot.m dat/approximation.%.mat
+	NETWORK=$* $(OCTAVE) m/approximation_plot
+
+#
+# Rating evolution
+#
+
+rating_evolution.all:  $(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution.$(NETWORK)): \
+rating_evolution.%: plot/rating_evolution.a.%.eps
+
+plot/rating_evolution.a.%.eps: dat/data.%.mat m/rating_evolution.m
+	NETWORK=$* $(OCTAVE) m/rating_evolution
+
+rating_evolution2.all:  $(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution2.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution2.$(NETWORK)): \
+rating_evolution2.%: plot/rating_evolution2.a.%.eps
+
+plot/rating_evolution2.a.%.eps: dat/data.%.mat m/rating_evolution2.m
+	NETWORK=$* $(OCTAVE) m/rating_evolution2
+
+#
+# Trend estimation
+#
+
+define TEMPLATE_trend # $(1) = $(STATISTIC), $(2) = $(TYPE)
+
+$$(foreach NETWORK, $$(NETWORKS), trend.$(2).$(1).$$(NETWORK)): \
+trend.$(2).$(1).%:  plot/trend.$(2).$(1).%.eps
+
+dat/trend.$(2).$(1).%.mat:  statistic_time.$(2).$(1).% m/trend.m
+	NETWORK=$$* STATISTIC=$(1) TYPE=$(2) $(OCTAVE) m/trend
+
+plot/trend.$(2).$(1).%.eps: dat/trend.$(2).$(1).%.mat m/trend_plot.m 
+	NETWORK=$$* STATISTIC=$(1) TYPE=$(2) $(OCTAVE) m/trend_plot
+
+endef
+$(foreach STATISTIC, $(STATISTICS), $(foreach TYPE, full split, $(eval $(call TEMPLATE_trend,$(STATISTIC),$(TYPE)))))
+
+#
+# Degree vs local clustering coefficient
+#
+
+degcc.all:  $(foreach NETWORK, $(NETWORKS_SQUARE), degcc.$(NETWORK))
+
+$(foreach NETWORK, $(NETWORKS_SQUARE), degcc.$(NETWORK)): \
+degcc.%:  plot/degcc.a.%.eps
+
+$(foreach NETWORK, $(NETWORKS_SQUARE), plot/degcc.a.$(NETWORK).eps): \
+plot/degcc.a.%.eps:  m/degcc.m dat/feature.degree.%.mat dat/cluscod.%.mat
+	NETWORK=$* $(OCTAVE) m/degcc
+
+#
+# Correlation analysis between statistics
+#
+
+STATISTICS_CORRELATION_SQUARE := size uniquevolume twostars triangles
+
+$(foreach CLASS, $(CLASSES), correlation.square.$(CLASS)): \
+correlation.square.%:   dat/correlation.square.%.mat
+
+dat/correlation.square.%.mat:  \
+  $(foreach STATISTIC, $(STATISTICS_CORRELATION_SQUARE), $(foreach NETWORK, $(filter $(NETWORKS_SQUARE), $(NETWORKS_%)), dat/statistic_full.$STATISTIC.$NETWORK)) \
+  m/correlation.m
+	NETWORKS="$(filter $(NETWORKS_SQUARE), $(NETWORKS_$*))" \
+        STATISTICS="$(STATISTICS_CORRELATION_SQUARE)" \
+        CLASS=$* FORMAT=square \
+          $(OCTAVE) m/correlation
+

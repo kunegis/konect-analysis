@@ -1,5 +1,19 @@
+#
+# This is the big stufile with all targets for KONECT analysis.  
+#
+# Important targets:
+#
+#	@all			Build everything
+#	@all.$CLASS		Build everything for one class; e.g.,
+# 				@all.7 builds everything for the 70
+# 				smallest networks  
+#	@network.$NETWORK	Build everything for one network
+#
+# Some commands use Matlab; others Octave.  In general, we are migrating
+# from Matlab to Octave, and one by one scripts are switched to octave. 
+#
 
-%version 1.2
+% version 1.6
 
 #
 # @all:  everything that is shown on the website 
@@ -26,16 +40,11 @@
 	[dat/dep.network.$NETWORK]
 	;
 
-dat/dep.network.$NETWORK:
+>dat/dep.network.$NETWORK:
 	sh/dep-network 
-	$[STATISTICS]
-	dat/NETWORKS_SQUARE
-	dat/NETWORKS_ASYM
-	dat/NETWORKS_TIME
-	$[PLOTS]
-	$[PLOTS_SQUARE]
-	$[PLOTS_ASYM]
-	$[PLOTS_TIME]
+	STATISTICS
+	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
+	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
 {
 	sh/dep-network 
 }
@@ -46,7 +55,7 @@ dat/dep.network.$NETWORK:
 
 >MATLABPATH:
 {
-	echo -n "$PWD/m/:$PWD/../matlab/:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/:$PWD/../../syngraphy/" 
+	printf "$PWD/m/:$PWD/konect-toolbox/m:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/" 
 }
 
 #
@@ -55,7 +64,7 @@ dat/dep.network.$NETWORK:
 
 >PERL5LIB
 {
-    echo -n 'pl' 
+	printf 'pl' 
 }
 
 #
@@ -73,19 +82,19 @@ dat/dep.network.$NETWORK:
 # In ascending order of size
 >dat/networks.asc:  <dat/networks.list
 {
-    sed -re 's,^(.*) ([0-9]+)$$,\2 \1,' | sort -n | 
-    sed -re 's,^([0-9]+) (.*)$$,\2 \1,' 
+	sed -re 's,^(.*) ([0-9]+)$$,\2 \1,' | sort -n | 
+	sed -re 's,^([0-9]+) (.*)$$,\2 \1,' 
 }
 
 # In unspecified order
-dat/networks.list:  sh/mkdatasetlist uni
+>dat/networks.list:  sh/mkdatasetlist uni
 {
-    sh/mkdatasetlist
+	sh/mkdatasetlist
 }
 
 dat/CLASSES:  sh/classes dat/networks.asc
 {
-    sh/classes
+	sh/classes
 }
 
 dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
@@ -294,7 +303,6 @@ bin
 >dat/info.$NETWORK:  
 	sh/network-info 
 	<uni/out.$NETWORK 
-	!dat  
 {
 	sh/network-info 
 }
@@ -336,7 +344,7 @@ dat/check.$NETWORK:
 	dat/statistic.lines.$NETWORK
 	$[MATLABPATH]
 {
-	./matlab m/check && echo OK >dat/check.$NETWORK
+	./octave m/check.m && echo OK >dat/check.$NETWORK
 }
 
 >dat/dep.check:  dat/NETWORKS
@@ -358,7 +366,7 @@ dat/check-meta:   dat/NETWORKS  sh/checkmeta
 
 dat/data.$NETWORK.mat:  uni/out.$NETWORK m/data.m 
 {
-	INPUT=uni/out.$NETWORK OUTPUT=dat/data.$NETWORK.mat ./matlab m/data.m
+	INPUT="uni/out.$NETWORK" OUTPUT="dat/data.$NETWORK.mat" ./matlab m/data.m
 }
 
 
@@ -472,19 +480,19 @@ dat/split.$NETWORK.mat:
 dat/meansi.$NETWORK.mat:  dat/data.$NETWORK.mat m/means.m dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	TYPE=full ./matlab m/means 
+	TYPE=full ./matlab m/means.m
 }
 
 dat/means.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	 TYPE=split ./matlab m/means 
+	 TYPE=split ./matlab m/means.m
 }
 
 dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	 TYPE=training ./matlab m/means
+	 TYPE=training ./matlab m/means.m
 }
 
 #
@@ -508,7 +516,7 @@ plot/assortativity.a.$NETWORK.eps:
 	m/assortativity.m m/assortativity_one.m 
 	$[MATLABPATH]
 {
-	 ./matlab m/assortativity
+	 ./matlab m/assortativity.m
 }
 
 #
@@ -522,7 +530,7 @@ plot/assortativity.a.$NETWORK.eps:
 	dat/NETWORKS_SQUARE
 	dat/NETWORKS_ASYM
 	dat/NETWORKS_TIME
-	../matlab/konect_statistic_$STATISTIC.m
+	konect-toolbox/m/konect_statistic_$STATISTIC.m
 {
 	NETWORKS="$(cat dat/NETWORKS)"
 	attribute="$(sh/attribute "$STATISTIC")" 
@@ -603,7 +611,7 @@ dat/statistic.$STATISTIC.$NETWORK:
 dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	 ./matlab m/statistic_size.m
+	./octave m/statistic_size.m
 }
 
 >dat/statistic.size.$TRANSFORM~$NETWORK:
@@ -618,7 +626,7 @@ dat/statistic.lines.$NETWORK:
 	dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	 ./matlab m/statistic_lines.m
+	./octave m/statistic_lines.m
 }
 
 >dat/statistic.lines.$TRANSFORM~$NETWORK:
@@ -1405,7 +1413,7 @@ plot/pa.aa.$NETWORK.eps:
 	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
 	$[MATLABPATH]
 {
-	./matlab m/pa_plot
+	./matlab m/pa_plot.m
 }
 
 #
@@ -1681,8 +1689,28 @@ plot/outin.a.$NETWORK.eps:
 	sh/mkstat 
 }
 
-dat/runtime:  tmp.runtime m/runtime.m !plot !dat
+dat/runtime:  tmp.runtime m/runtime.m
 {
-	$(OCTAVE) m/runtime
+	./octave m/runtime.m
 }
+
+#
+# Zipf plots
+#
+
+@zipf:  [dat/dep.zipf];
+
+>dat/dep.zipf:  <dat/NETWORKS
+{
+	sed -re 's,^,zipf.,'
+}
+
+@zipf.$NETWORK:  plot/zipf.a.$NETWORK.eps;
+
+plot/zipf.a.$NETWORK.eps:  
+	dat/data.$NETWORK.mat m/zipf.m m/zipf_one.m dat/info.$NETWORK
+{
+	./matlab m/zipf.m 
+}
+
 
