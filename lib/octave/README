@@ -1,3 +1,6 @@
 This directory contains implementations of functions that are in Matlab
 but not in Octave. This directory is only added to the path when running
 Octave. 
+
+The files here have the same license and authors as the main part of
+KONECT-Analysis.  

@@ -40,3 +40,8 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 for more details. 
 
 The full text of the GPLv3 is found in the file COPYING.
+
+== Third-party software ==
+
+This software contains third-party software included in the directory
+lib/.  See there for the respective licenses and copyright information. 

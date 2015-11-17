@@ -55,7 +55,7 @@
 
 >MATLABPATH:
 {
-	printf "$PWD/m/:$PWD/konect-toolbox/m:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/" 
+	printf "$PWD/m/:$PWD/konect-toolbox/m:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/:$PWD/lib/gridxy" 
 }
 
 #

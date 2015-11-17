@@ -1,6 +1,10 @@
 
 lib/ contains third-party libraries needed for analysis. 
 
+See the subdirectories for license and copyright information.  The
+libraries described in the following are *not* part of this distribution
+and must be installed by hand. 
+
 BGL 
 === 
 
@@ -20,3 +24,4 @@ WAFO
 Needed to fit the generalized Gamma distribution.
 
 We used version 25. (i.e., the file wafo25.7z)
+
