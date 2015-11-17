@@ -25,3 +25,9 @@ Needed to fit the generalized Gamma distribution.
 
 We used version 25. (i.e., the file wafo25.7z)
 
+Gplot2
+======
+
+Get the file gplot2.m from the following URL and put in into lib/
+
+http://www.mathworks.com/matlabcentral/fileexchange/10342-gplot-enhanced/content/gplot2.m
