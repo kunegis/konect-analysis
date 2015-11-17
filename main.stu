@@ -1709,6 +1709,7 @@ dat/runtime:  tmp.runtime m/runtime.m
 
 plot/zipf.a.$NETWORK.eps:  
 	dat/data.$NETWORK.mat m/zipf.m m/zipf_one.m dat/info.$NETWORK
+	$[MATLABPATH]
 {
 	./matlab m/zipf.m 
 }
