@@ -125,8 +125,7 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 }
 
 >dat/NETWORKS_CATEGORY_$CATEGORY:  
-	sh/category
-	<dat/NETWORKS
+	sh/category <dat/NETWORKS
 {
 	sh/category
 }
