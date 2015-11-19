@@ -1,14 +1,19 @@
-#!/usr/bin/perl
-# usage: ./mkreadme <network> <matrices|code|full>
+#! /usr/bin/perl -w
 #
-# prints a readme file for the website to stdoud, which should accompany the tarballs.
+# Prints a readme file for the website to stdoud, which should accompany
+# the tarballs.  
+#
+# INVOCATION
+#
+#	$0 <network> <matrices|code|full>
+#
 
+use strict;
+use warnings;
 
 push( @INC, "../web/lib" );
 require("HTML-Parser/Entities.pm");
 $network = $ARGV[0];
-
-
 
 sub has_timestamps {
     open my $F_DATASETS, "<dat/networks.list";
@@ -120,13 +125,9 @@ For more information concerning license visit http://konect.uni-koblenz.de/licen
 Use the following References for citation:
 
 ";
-	system("sh/mkcite $network");
-    #if ( -e "cites/cite.$network.bib" ) {
-    #    system("cat cites/cite.$network.bib");
-    #}
+    system("sh/mkcite $network");
     print "\n";
-    #system("cat cites/cite.konect.bib");
-	system("sh/mkcite konect");
+    system("sh/mkcite konect");
     print "\n";
 
 }
@@ -143,4 +144,3 @@ For more information concerning license visit http://konect.uni-koblenz.de/licen
 "
 
 }
-

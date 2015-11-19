@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/bin/perl -w
 #
 # Given the bitswidths of a network, return the bitwidths of the
 # corresponding simple network.

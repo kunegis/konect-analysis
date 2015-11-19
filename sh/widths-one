@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/bin/perl -w
 #
 # Given a number of characters, return the bitwidth character needed to
 # represent that number as an unsigned type.

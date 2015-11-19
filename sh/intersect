@@ -1,0 +1,17 @@
+#! /bin/sh
+#
+# Compute the intersection of two network lists.
+#
+# INVOCATION
+#
+# 	$0 FILE-1 FILE-2
+#
+
+tmp1="${TMP:-/tmp/}/$$.intersect.1"
+tmp2="${TMP:-/tmp/}/$$.intersect.2"
+
+sort -k 1b,1 "$1" >"$tmp1"
+sort -k 1b,1 "$2" >"$tmp2"
+
+join "$tmp1" "$tmp2" | 
+sh/sort-networks

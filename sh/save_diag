@@ -5,10 +5,8 @@
 # PARAMETERS
 #		$1	name of logfile
 #
-# INPUT:  $1
-# OUTPUT: Output the values on stdout 
+# STDIN		$1
+# STDOUT	The values 
 #
 
 tail -n900 $1 | tac | sed -e '/^Iteration/Q' | tac | sed -re '/^\s*[e+0-9.]+\s*$/!Q'
-
-

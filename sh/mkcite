@@ -1,19 +1,27 @@
-#!/usr/bin/perl
-# usage: ./mkcite <network|konect>
+#! /usr/bin/perl -w
 #
-#	prints bibtex for the given target
+# Print Bibtex for the given target. 
+#
+# INVOCATION
+#
+#	$0 <network|konect>
+#
+
+use strict;
+use warnings;
+
 use Switch;
+
 push( @INC, "../web/lib" );
 require "BibTeX/Parser.pm";
 require "TexToHtml/Converter.pm";
 use IO::File;
 my $networkname = $ARGV[0];
 
-
-
 my $name;
 my $ID;
-open my $F_IN,"<uni/meta.$networkname";
+open my $F_IN,"<uni/meta.$networkname" or die "$!";
+
 while($line=<$F_IN>){
     if ($line=~/\s*name\s*:\s*(.*)\s*$/){
         unless (defined($name)){
@@ -27,7 +35,7 @@ while($line=<$F_IN>){
 		$ID=$1;
 	}
 }
-close $F_IN;
+close $F_IN or die "$!";
 
 
 
@@ -57,41 +65,31 @@ my $bibssrc   = "";
 my $refdir = "../handbook/";
 opendir( in, $refdir );
 my @ref_files = readdir(in);
-close in;
+close in or die "$!";
+
 foreach $ref_file (@ref_files) {
     $ref_file = $refdir . "/" . $ref_file;
 }
+
 if ( -e "../extr/konect.bib" ) {
     push( @ref_files, "../extr/konect.bib" )
-      ;    #for the future existance of that file.
+	;    #for the future existence of that file 
 }
-
-#push (@ref_files,"bibtest.bib");
-#open F_STATS,"<stats.txt";
-#my @lines=<F_STATS>;
-#close F_STATS;
-
-#$ID = $nwhash{$networkname}{"Cite"};
 
 $ID =~ s/ //g;
 $ID =~ s/,/|/g;
 if ( length($ID) == 0 ) { $ID = $networkname; }
 $ID = "($ID)";
 
-#print "<table>\n";
-#open F_BIBOUT,">cites/cite.".$networkname.".bib";
-
 unless ( $networkname eq "konect" ) {
     $bibsrc = getkonectcite($networkname) . "\n";
 }
 
-#print F_BIBOUT $bibsrc;
-
 $foundbibtex = 0;
+
 foreach $ref_file (@ref_files) {
     if ( $ref_file =~ /\.bib$/ ) {
 
-        #		print "reading: $ref_file\n";
         my $fh     = IO::File->new($ref_file);
         my $parser = BibTeX::Parser->new($fh);
         while ( my $entry = $parser->next ) {
@@ -101,10 +99,8 @@ foreach $ref_file (@ref_files) {
             {
                 @fields = $entry->fieldlist();
 
-                #print F_BIBOUT $entry->raw_bibtex();
                 $bibsrc .= $entry->raw_bibtex() . "\n\n";
 
-                #print F_BIBOUT "\n\n\n";
                 $foundbibtex = 1;
             }elsif(!($entry->parse_ok)){
 	           warn "Error parsing file: " . $entry->error;
@@ -112,10 +108,5 @@ foreach $ref_file (@ref_files) {
         }
     }
 }
-#open F_BIBOUT, ">cites/cite." . $networkname . ".bib";
-#print F_BIBOUT $bibsrc;
-#close F_BIBOUT;
-
-print $bibsrc;
 
 exit();

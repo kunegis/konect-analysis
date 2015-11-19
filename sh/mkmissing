@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#! /usr/bin/perl -w
 #
 # This script determines which files for a Makefile target are missing
 # and invokes make on each one of them.
@@ -10,6 +10,9 @@
 #		e.g., "-f Makefile.dataset datasets.make"
 #	make invoke command: make command and the options with which it is invoked
 #		e.g., "make -f Makefile.dataset"
+
+use strict;
+use warnings;
 
 my ($makeargs,$makeinvoke)=@ARGV;
 
@@ -47,4 +50,4 @@ foreach $target(@targets)
 
 close MAKEOUT;
 print "done\n";
-exit;
+

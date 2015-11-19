@@ -2,10 +2,8 @@
 # 
 # Check that the meta.* files are correct. 
 #
-# Invocation: ./checkmeta [-e] 
-# 
 # PARAMETERS 
-#	$NETWORKS 
+#	$NETWORKS 	List of networks to check 
 #
 
 [ "$verbose" ] && exec 4>&2 || exec 4>/dev/null 
@@ -21,10 +19,6 @@ error()
     shift
     echo "Error in file $f: $@" >&2
 }
-
-# notify() {
-#     [ "$verbose" ] && echo "$@"
-# }
 
 FILES="$(sed -re 's,^,uni/meta.,' dat/NETWORKS)"   
 

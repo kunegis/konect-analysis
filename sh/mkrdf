@@ -1,29 +1,25 @@
-#!/usr/bin/perl
+#! /usr/bin/perl -w
 #
-# creates RDF-DATA for a given network
+# Create RDF data for a given network. 
 #
-# USAGE: ./mkrdf "network" 
-#   
-#
+# INVOCATION
+#	./mkrdf "$NETWORK" 
 #
 # STDOUT 
-#   RDF-DATA
+#	RDF-DATA
 #   
 #
 
+use strict;
+use warnings;
 
 my $network=shift();
-
 
 my $t_undirected=1;
 my $w_simple=1;
 
-
 my $metafile=readMeta($network);
 my %mfd=%$metafile;
-
-
-
 
 print "# this file is part of the KONECT project: http://konect.uni-koblenz.de\n";
 my $i=1;
@@ -32,11 +28,9 @@ while($mfd{"n3-comment-$i"}){
 	$i++;
 }
 
-
 print "\@prefix void: <http://rdfs.org/ns/void#> .\n";
 print "\@prefix konect_networks: <http://konect.uni-koblenz.de/networks/> .\n";
 print "\@prefix dcterms: <http://purl.org/dc/terms/> .\n";
-#print "\@prefix sioc: <http://rdfs.org/sioc/ns#> .\n";
 print "\@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n";
 
 sub parseMetaLc {
@@ -101,13 +95,11 @@ sub convert_timestamp{
 }
 
 
-sub printData{
+sub printData {
 	my ($ref)=@_;
 	%data=%$ref;
 	my $m=$data{"m"};
 	my $n=$data{"n"};
-	#my $prefix_j=$data{"prefix_j"};
-	#my $prefix_k=$data{"prefix_k"};
 	my $last_l=$data{"last_l"};
 	my $timestamp=$data{"timestamp"};
 	my $prefix_l=$data{"prefix_l"};
@@ -115,16 +107,12 @@ sub printData{
 	my $prefix_m=$data{"prefix_m"};
 	my $prefix_n=$data{"prefix_n"};
 	my %mfd=%{$data{"mfd"}};
-	##print STDERR "printData($item, $m, $n, $last_l, $prefix_l, $timestamp )\n";
-	#print STDERR "item: $item\n";
 	
 	my $data_prefix="";
-	if($item eq "l"){
+	if($item eq "l") {
 		$data_prefix="n3-edgedata-";
-		##print STDERR "timestamp: $timestamp\n";
-	}else{
+	} else {
 		$data_prefix="n3-nodedata-$item-";
-		#print STDERR "item: $item\n";
 	}
 	my $i=1;
 	while($mfd{$data_prefix.$i}){
@@ -142,39 +130,29 @@ sub printData{
 	}
 }
 
-sub escape_info{
+sub escape_info {
 	my $info=shift;
 	my $ret=$info;
+
 	$ret=~s/\\/\\\\/mgi;
-	#$ret=~s/'/\\'/mgi;
 	$ret=~s/"/\\"/mgi;
 	$ret=~s/\n/\\n/mgi;
 	$ret=~s/\r/\\r/mgi;
 	$ret=~s/\t/\\t/mgi;
+
 	return $ret
 }
 
 
-#print "network: $network\n";
-#print "	metadata: '".$nwhash{$network}{"metadata"}."'\n";
-#print "	format: ".$nwhash{$network}{"basic_type"}."\n";
-#print "	weights: ".$nwhash{$network}{"basic_weights"}."\n";
-
-
-
-# undirected network, not weighted, no timestamps
-#
-#
-#my $metafile=readMeta($network);
-#my %mfd=%$metafile;
-if($mfd{"n3-prefix-m"}){
+# Undirected network, not weighted, no timestamps
+if ($mfd{"n3-prefix-m"}) {
 	my @typed_m=();
 	my @typed_n=();
 	my $last_l=0;
 
-
 	print "\@prefix ".$mfd{"n3-prefix-m"}."\n";
 	$mfd{"n3-prefix-m"}=~/^\s*([^\s:]*:).*$/;
+
 	my $prefix_m=$1."i";
 	my $prefix_n;
 	my $prefix_l;
@@ -209,7 +187,6 @@ if($mfd{"n3-prefix-m"}){
 		$i+=1;
 	}
 
-
 	print_network_info(\%mfd);
 
 	open F_MATRIX,"<uni/out.$network";
@@ -221,7 +198,6 @@ if($mfd{"n3-prefix-m"}){
 			my $n=$entries[1];
 			my $timestamp;
 			if($entries[3]){
-				##print STDERR "entries[3]: ".$entries[3]."\n";
 				$timestamp=convert_timestamp($entries[3]);
 			}
 			my %printing_data=(
@@ -279,10 +255,4 @@ if($mfd{"n3-prefix-m"}){
 			
 		}
 	}
-
-
-	exit;
 }
-
-
-

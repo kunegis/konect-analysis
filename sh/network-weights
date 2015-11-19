@@ -2,10 +2,10 @@
 #
 # Extract weights from an unirelational dataset. 
 # 
-# INPUT 
+# STDIN
 #	Dataset file, typically named out.* or rel.*
 #
-# OUTPUT 
+# STDOUT 
 #	Weights as a number 
 #
 
