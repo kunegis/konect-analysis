@@ -29,7 +29,6 @@
 	for NETWORK in $(cat dat/NETWORKS_CLASS_$CLASS) ; do
 		echo @network."$NETWORK"
 	done
-	# TODO where does $SCATTERS come from?
 	for SCATTER in $SCATTERS ; do
 		echo @scatter."$SCATTER".$CLASS
 	done
@@ -553,22 +552,13 @@ plot/assortativity.a.$NETWORK.eps:
 @statistic.$STATISTIC:  [dat/dep.statistic.$STATISTIC];
 
 >dat/dep.statistic.$STATISTIC:  
-#	sh/attribute
-	[dat/dep.dep.statistic.$STATISTIC]
+	[dat/dep.dep.statistic.$STATISTIC] dat/dep.dep.statistic.$STATISTIC
 {
 	if [ ! -r "$(cat dat/dep.dep.statistic.$STATISTIC)" ] ; then
 		exit 1
 	fi
 
 	NETWORKS="$(cat "$(cat dat/dep.dep.statistic.$STATISTIC)")"
-
-#	NETWORKS="$(cat dat/NETWORKS)"
-
-#	attribute="$(sh/attribute "$STATISTIC")" 
-#	if [ "$attribute" ] 
-#	then
-#		NETWORKS="$(cat "dat/NETWORKS_$attribute")"
-#	fi
 
 	for network in $NETWORKS
 	do
@@ -600,6 +590,7 @@ dat/statistic.$STATISTIC.$NETWORK:
 	m/statistic_comp.m 
 	$[MATLABPATH]
 	dat/data.$NETWORK.mat dat/info.$NETWORK dat/meansi.$NETWORK.mat
+	konect-toolbox/m/konect_statistic_$STATISTIC.m
 {
 	./matlab m/statistic_comp.m
 }
@@ -865,11 +856,33 @@ dat/statistic.oddcycles.$NETWORK:
 }
 
 #
-# Statistics over time
+# Statistics over time.
+#
+# $TYPE can be 'full' or 'split'.  (The split case is not yet migrated
+# from the Makefile.)  
 #
 
 @statistic_time.$TYPE.$STATISTIC.$NETWORK:  
 	plot/statistic_time.$TYPE.a.$STATISTIC.$NETWORK.eps;
+
+@statistic_time.$TYPE.$STATISTIC:  [dat/dep.statistic_time.$TYPE.$STATISTIC];
+
+>dat/dep.statistic_time.$TYPE.$STATISTIC:  
+	[dat/dep.dep.statistic.$STATISTIC]
+	sh/intersect
+	dat/NETWORKS_TIME
+{
+	if [ ! -r "$(cat dat/dep.dep.statistic.$STATISTIC)" ] ; then
+		exit 1
+	fi
+
+	NETWORKS="$(sh/intersect dat/NETWORKS_TIME "$(cat dat/dep.dep.statistic.$STATISTIC)")"
+
+	for network in $NETWORKS
+	do
+		echo @statistic_time.$TYPE.$STATISTIC.$network
+	done 
+}
 
 dat/statistic_time.full.$STATISTIC.$NETWORK:  
 	m/statistic_time.m 
@@ -885,7 +898,7 @@ dat/statistic_time.full.$STATISTIC.$NETWORK:
 plot/statistic_time.full.a.$STATISTIC.$NETWORK.eps:   
 	m/statistic_time_plot.m 
 	$[MATLABPATH]
-	dat/statistic_time.$STATISTIC.$NETWORK 
+	dat/statistic_time.full.$STATISTIC.$NETWORK 
 	dat/stepsi.$NETWORK
 {
 	TYPE=full ./matlab m/statistic_time_plot.m 
@@ -944,9 +957,8 @@ plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 
 >dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS:
 	dat/NETWORKS_CLASS_$CLASS
+	sh/attribute
 {
-	set -e
-
 	NETWORKS="$(cat dat/NETWORKS_CLASS_$CLASS)"
 
 	attribute_x="$(sh/attribute "$STATISTIC_X")" 
@@ -1529,10 +1541,9 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 
 dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
 {
-	set -e
 	sh/mkrdf $NETWORK >dat/download.rdf.$NETWORK.n3
-	head dat/download.rdf.$NETWORK.n3 -n 10000 | rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
-	# TODO: check for errors
+	head dat/download.rdf.$NETWORK.n3 -n 10000 | 
+	rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
 }
 
 @rdf: [dat/dep.rdf];
@@ -1558,8 +1569,6 @@ dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
 
 >dat/dep.download.tsv.$NETWORK: 
 {
-	set -e
-
 	echo dat/README.$NETWORK
 	echo uni/out.$NETWORK
 	echo uni/meta.$NETWORK
@@ -1580,8 +1589,6 @@ dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
 dat/download.tsv.$NETWORK.tar.bz2:
 	[dat/dep.download.tsv.$NETWORK] 
 {
-	set -e
-
 	DIR="dat-tmp/$NETWORK"
 
 	rm -rf "$DIR"

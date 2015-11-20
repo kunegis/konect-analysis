@@ -42,8 +42,12 @@ int compar(const void *o1, const void *o2)
 
 int main(int argc, char **argv)
 {
-	assert(argc == 2); 
 	assert(sizeof(struct Entry) == 16); 
+
+	if (argc != 2) {
+		fprintf(stderr, "*** Expected two parameters\n"); 
+		exit(1); 
+	}
 
 	const char *const network = argv[1]; 
 	const char *filename_in= asxprintf("uni/out.%s", network); 

@@ -7,6 +7,11 @@
 # 	$0 FILE-1 FILE-2
 #
 
+if [ -z "$1" -o -z "$2" ] ; then
+	echo >&2 '*** Error in invocation'
+	exit 1
+fi
+
 tmp1="${TMP:-/tmp/}/$$.intersect.1"
 tmp2="${TMP:-/tmp/}/$$.intersect.2"
 

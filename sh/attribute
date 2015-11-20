@@ -3,6 +3,9 @@
 # Get the attribute of a statistic, i.e., the string describing the set
 # of networks that apply to it.
 #
+# If statistic is of the form [a-z]+_[0-9]+, only the part left of the
+# underscore is used. 
+#
 # INVOCATION 
 #	$0 $STATISTIC
 #
@@ -16,7 +19,7 @@ if [ -z "$1" ] ; then
     exit 1
 fi
 
-statistic="$1"
+statistic="$(echo $1 | sed -re 's,_[0-9]+$,,')"
 
 file="konect-toolbox/m/konect_statistic_$statistic.m"
 

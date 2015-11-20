@@ -148,3 +148,6 @@ do
 	echo >&3 'NETWORKS_PREDICTION_'$class' := $(filter-out $(NETWORKS_NOPREDICTION), $(NETWORKS_'$class'))'
     fi
 done
+
+# All dependencies should be older
+touch dat/NETWORKS_CLASS_*
