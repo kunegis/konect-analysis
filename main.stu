@@ -13,7 +13,7 @@
 # from Matlab to Octave, and one by one scripts are switched to octave. 
 #
 
-% version 1.6
+% version 1.7
 
 #
 # @all:  everything that is shown on the website 
@@ -181,13 +181,13 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 }
 
 bin/$NAME:
-	[dat/depc.$NAME.c] $[CFLAGS] !bin
+	[dat/depc.$NAME.c] $[&CFLAGS] !bin
 {
 	gcc $CFLAGS c/$NAME.c -o bin/$NAME
 }
 
 bin/$NAME.$PARAMETERS:
-	[dat/depc.$NAME.c] $[CFLAGS] !bin
+	[dat/depc.$NAME.c] $[&CFLAGS] !bin
 {
 	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
 	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
@@ -206,7 +206,7 @@ bin/$NAME.$PARAMETERS:
 }
 
 bin/$NAME.$PARAMETERS.$PARAMETERS_2:
-	[dat/depc.$NAME.c] $[CFLAGS] !bin
+	[dat/depc.$NAME.c] $[&CFLAGS] !bin
 {
 	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
 	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
@@ -228,7 +228,7 @@ bin/$NAME.$PARAMETERS.$PARAMETERS_2:
 }
 
 bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
-	[dat/depc.$NAME.c] $[CFLAGS] !bin
+	[dat/depc.$NAME.c] $[&CFLAGS] !bin
 {
 	ma="$(echo "$PARAMETERS_A" | sed -re 's,^(.).......$,\1,')"
 	ua="$(echo "$PARAMETERS_A" | sed -re 's,^.(.)......$,\1,')"
@@ -273,7 +273,7 @@ bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
 	sed -re 's,\$1,'"$X"',g;s,\$2,'"$Y"',g' 
 }
 
-# List of files included by c/$FILE, directly or indirectly (one file per line)
+# List of files included by c/$FILE, directly or indirectly
 >dat/depc.$FILE:  
 	c/$FILE sh/depc
 {
@@ -315,7 +315,7 @@ bin
 
 >dat/widths.$NETWORK:  
 	sh/widths 
-	$[PERL5LIB]
+	$[&PERL5LIB]
 	uni/out.$NETWORK 
 	dat/info.$NETWORK 
 {
@@ -368,7 +368,7 @@ dat/check.$NETWORK:
 	dat/statistic.weights.$NETWORK
 	dat/statistic.size.$NETWORK
 	dat/statistic.lines.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./octave m/check.m && echo OK >dat/check.$NETWORK
 }
@@ -473,7 +473,7 @@ dat/sg1.lcc~$NETWORK:
 
 >dat/widths.simple~$NETWORK:
 	sh/widths-simple
-	$[PERL5LIB]
+	$[&PERL5LIB]
 	dat/widths.$NETWORK
 	dat/statistic.size.$NETWORK
 	dat/statistic.volume.$NETWORK
@@ -493,7 +493,7 @@ dat/widths.lcc~$NETWORK:
 
 dat/split.$NETWORK.mat: 
 	uni/out.$NETWORK m/split.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./matlab m/split.m 
 }
@@ -504,19 +504,19 @@ dat/split.$NETWORK.mat:
 #
 
 dat/meansi.$NETWORK.mat:  dat/data.$NETWORK.mat m/means.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	TYPE=full ./matlab m/means.m
 }
 
 dat/means.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 TYPE=split ./matlab m/means.m
 }
 
 dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 TYPE=training ./matlab m/means.m
 }
@@ -540,7 +540,7 @@ plot/assortativity.a.$NETWORK.eps:
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK
 	m/assortativity.m m/assortativity_one.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ./matlab m/assortativity.m
 }
@@ -588,7 +588,7 @@ plot/assortativity.a.$NETWORK.eps:
 
 dat/statistic.$STATISTIC.$NETWORK:
 	m/statistic_comp.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/data.$NETWORK.mat dat/info.$NETWORK dat/meansi.$NETWORK.mat
 	konect-toolbox/m/konect_statistic_$STATISTIC.m
 {
@@ -643,7 +643,7 @@ dat/statistic.$STATISTIC.$NETWORK:
 }
 
 dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./octave m/statistic_size.m
 }
@@ -658,7 +658,7 @@ dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
 dat/statistic.lines.$NETWORK:  
 	m/statistic_lines.m 
 	dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./octave m/statistic_lines.m
 }
@@ -674,7 +674,7 @@ dat/statistic.volume.$NETWORK:
 	dat/info.$NETWORK 
 	bin/statistic_volume 
 	uni/out.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 bin/statistic_volume 
 }
@@ -754,7 +754,7 @@ dat/statistic.avgdegree.$NETWORK:
 	dat/statistic.volume.$NETWORK
 	dat/statistic.size.$NETWORK
 	dat/statistic.format.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ./matlab m/statistic_avgdegree.m
 }
@@ -827,7 +827,7 @@ dat/statistic.diam.$NETWORK:
 
 dat/statistic.meandist.$NETWORK:
 	m/statistic_meandist.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
      	dat/hopdistr2.$NETWORK
 {
 	 ./octave m/statistic_meandist.m 
@@ -835,7 +835,7 @@ dat/statistic.meandist.$NETWORK:
 
 dat/statistic.diameff$PERCENTILE.$NETWORK:
 	m/statistic_diameff.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/hopdistr2.$NETWORK
 {
 	 ./octave m/statistic_diameff.m 
@@ -847,7 +847,7 @@ dat/statistic.diameff$PERCENTILE.$NETWORK:
 
 dat/statistic.oddcycles.$NETWORK:
 	m/statistic_comp_spectral.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK
 	dat/decomposition.symabs.$NETWORK.mat
 {
@@ -886,7 +886,7 @@ dat/statistic.oddcycles.$NETWORK:
 
 dat/statistic_time.full.$STATISTIC.$NETWORK:  
 	m/statistic_time.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK 
 	dat/stepsi.$NETWORK 
@@ -897,7 +897,7 @@ dat/statistic_time.full.$STATISTIC.$NETWORK:
 
 plot/statistic_time.full.a.$STATISTIC.$NETWORK.eps:   
 	m/statistic_time_plot.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/statistic_time.full.$STATISTIC.$NETWORK 
 	dat/stepsi.$NETWORK
 {
@@ -919,7 +919,7 @@ dat/ft.degree.$NETWORK:
 
 >dat/widths.ft.degree.$NETWORK:
 	sh/widths-one
-	$[PERL5LIB]
+	$[&PERL5LIB]
 	dat/statistic.volume.$NETWORK
 {
 	sh/widths-one $(cat dat/statistic.volume.$NETWORK) 
@@ -939,7 +939,7 @@ plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 	m/scatter_comp.m m/scatter_plot.m m/scatter_single.m 
 	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS]
 	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	NETWORKS="$(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)" \
 		KIND="$STATISTIC_X.$STATISTIC_Y" \
@@ -1011,7 +1011,7 @@ plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 
 tex/category-tabular.tex:
 	m/mkcategory.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/NETWORKS
 	[tex/dep.category-tabular.tex]
 {
@@ -1034,7 +1034,7 @@ tex/category-tabular.tex:
 
 plot/bidd.a.$NETWORK.eps:  
 	m/bidd.m m/bidd_one.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat 
 {
@@ -1054,7 +1054,7 @@ plot/layout.a.$NETWORK.eps:
 	m/layout.m
 	dat/data.$NETWORK.mat  
 	dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ./matlab m/layout.m
 }
@@ -1076,7 +1076,7 @@ plot/degree.a.$NETWORK.eps:
 	m/degree.m m/degree_print.m 
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ./matlab m/degree.m
 }
@@ -1087,7 +1087,7 @@ plot/degree.ax.$NETWORK.eps:
 	m/degree.m m/degree_print.m 
 	dat/data.$NETWORK.mat 
 	dat/statistic.power.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ENABLE_POWER_LAW=1 ./matlab m/degree.m
 }
@@ -1098,7 +1098,7 @@ plot/degree.ay.$NETWORK.eps:
 	m/degree.m m/degree_print.m
 	dat/data.$NETWORK.mat 
 	dat/statistic.power2.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ENABLE_POWER_LAW_2=1 ./matlab m/degree.m
 }
@@ -1109,7 +1109,7 @@ plot/degree.a3.$NETWORK.eps:
 	m/degree.m m/degree_print.m 
 	dat/data.$NETWORK.mat 
 	dat/statistic.power3.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ENABLE_POWER_LAW_3=1 ./matlab m/degree.m
 }
@@ -1124,7 +1124,7 @@ plot/lorenz.a.$NETWORK.eps:
 	m/lorenz.m m/lorenz_one.m 
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	 ./matlab m/lorenz.m 
 }
@@ -1137,7 +1137,7 @@ plot/lorenz.a.$NETWORK.eps:
 
 plot/weights.a.$NETWORK.eps:  
 	m/weights_plot.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/data.$NETWORK.mat 
 {
 	 ./matlab m/weights_plot.m 
@@ -1161,7 +1161,7 @@ plot/weights.a.$NETWORK.eps:
 
 plot/time_histogram.$NETWORK.eps:   
 	m/time_histogram.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/time.$NETWORK 
 	uni/meta.$NETWORK 
 {
@@ -1186,7 +1186,7 @@ plot/time_histogram.$NETWORK.eps:
 
 plot/time_histogram_signed.a.$NETWORK.eps:
 	m/time_histogram_signed.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	uni/out.$NETWORK 
 	uni/meta.$NETWORK 
 {
@@ -1215,7 +1215,7 @@ plot/time_histogram_signed.a.$NETWORK.eps:
 
 plot/diadens.$NETWORK.eps:  
 	m/diadens.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/stepsi.$NETWORK 
 	dat/statistic_time.full.diameter.$NETWORK
 	dat/statistic_time.full.avgdegree.$NETWORK
@@ -1233,7 +1233,7 @@ plot/diadens.$NETWORK.eps:
 
 dat/cluscod.$NETWORK.mat:  
 	m/cluscod.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat 
 {
@@ -1242,7 +1242,7 @@ dat/cluscod.$NETWORK.mat:
 
 plot/cluscod.a.$NETWORK.eps:  
 	m/cluscod_plot.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/cluscod.$NETWORK.mat 
 {
 	 ./matlab m/cluscod_plot.m 
@@ -1301,7 +1301,7 @@ dat/hopdistr2.simple~$NETWORK:  dat/hopdistr2.lcc~simple~$NETWORK
 
 plot/hopdistr.a.$NETWORK.eps:  
 	m/hopdistr_plot.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/hopdistr2.$NETWORK 
 {
 	 ./matlab m/hopdistr_plot.m 
@@ -1310,7 +1310,7 @@ plot/hopdistr.a.$NETWORK.eps:
 dat/hopdistr_distrtest.$NETWORK.mat:  
 	m/hopdistr_distrtest.m 
 	m/distrtest_multi.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/hopdistr2.$NETWORK 
 	dat/info.$NETWORK 
 {
@@ -1319,7 +1319,7 @@ dat/hopdistr_distrtest.$NETWORK.mat:
 
 dat/hopdistr_time.full.$NETWORK:  
 	m/hopdistr_time_comp.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK 
 	dat/stepsi.$NETWORK 
@@ -1329,7 +1329,7 @@ dat/hopdistr_time.full.$NETWORK:
 
 plot/hopdistr_time.full.a.$NETWORK.eps:  
 	m/hopdistr_time_plot.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/hopdistr_time.full.$NETWORK 
 {
 	 TYPE=full ./matlab m/hopdistr_time_plot.m
@@ -1342,7 +1342,7 @@ plot/hopdistr_time.full.a.$NETWORK.eps:
 # Full
 dat/stepsi.$NETWORK:  
 	m/stepsi.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK 
 	dat/outs.$NETWORK
 {
@@ -1352,7 +1352,7 @@ dat/stepsi.$NETWORK:
 # Split
 dat/steps.$NETWORK.mat:  
 	m/steps.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/split.$NETWORK.mat 
 	dat/means.$NETWORK.mat 
 {
@@ -1381,7 +1381,7 @@ dat/outs.$NETWORK:
 @decomposition.$DECOMPOSITION.$NETWORK:   plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps;
 
 dat/decomposition.$DECOMPOSITION.$NETWORK.mat:  
-	m/decomposition_comp.m $[MATLABPATH]
+	m/decomposition_comp.m $[&MATLABPATH]
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK 
 	dat/meansi.$NETWORK.mat 
@@ -1391,7 +1391,7 @@ dat/decomposition.$DECOMPOSITION.$NETWORK.mat:
 }
 
 dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat:  
-	m/decomposition_comp.m $[MATLABPATH]
+	m/decomposition_comp.m $[&MATLABPATH]
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK 
 	dat/meansi.$NETWORK.mat 
@@ -1401,7 +1401,7 @@ dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat:
 }
 
 plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps:  
-	m/decomposition_plot.m $[MATLABPATH]
+	m/decomposition_plot.m $[&MATLABPATH]
 	dat/decomposition.$DECOMPOSITION.$NETWORK.mat 
 {
 	./matlab m/decomposition_plot.m
@@ -1432,7 +1432,7 @@ plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps:
 
 dat/statistic.prefatt.$NETWORK:  
 	m/statistic_full_prefatt.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/pa.$NETWORK.mat 
 {
 	 ./matlab m/statistic_full_prefatt.m 
@@ -1440,7 +1440,7 @@ dat/statistic.prefatt.$NETWORK:
 
 dat/pa.$NETWORK.mat:  
 	m/pa_compute.m m/pa_compute_one.m dat/split.$NETWORK.mat dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./matlab m/pa_compute.m 
 }
@@ -1466,7 +1466,7 @@ dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
 plot/pa.aa.$NETWORK.eps:  
 	m/pa_plot.m m/pa_plot_one.m dat/pa.$NETWORK.mat 
 	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./matlab m/pa_plot.m
 }
@@ -1479,7 +1479,7 @@ plot/pa.aa.$NETWORK.eps:
 
 plot/distr.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/distr_plot.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/distr.$DECOMPOSITION.$NETWORK
 {
 	./matlab m/distr_plot.m 
@@ -1487,7 +1487,7 @@ plot/distr.a.$DECOMPOSITION.$NETWORK.eps:
 
 dat/distr.$DECOMPOSITION.$NETWORK:  
 	m/distr.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat 
 	dat/meansi.$NETWORK.mat 
@@ -1504,7 +1504,7 @@ dat/distr.$DECOMPOSITION.$NETWORK:
 plot/map.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/map.m 
 	m/map_one.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat
 {
 	./matlab m/map.m 
@@ -1634,7 +1634,7 @@ dat/download.tsv.$NETWORK.tar.bz2:
 
 plot/delaunay.a.$NETWORK.png:
 	m/delaunay_plot.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/data.$NETWORK.mat
 	dat/info.$NETWORK
 {
@@ -1658,7 +1658,7 @@ plot/delaunay.a.$NETWORK.png:
 
 plot/lybl.a.$NETWORK.png:
 	m/lybl.m
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/info.$NETWORK
 	dat/data.$NETWORK.mat
 	dat/decomposition_map.stoch.$NETWORK.mat
@@ -1684,7 +1684,7 @@ plot/lybl.a.$NETWORK.png:
 
 plot/syngraphy.a.$NETWORK.eps:
 	m/syngraphy_plot.m 
-	$[MATLABPATH]
+	$[&MATLABPATH]
 	dat/statistic.size.$NETWORK
 	dat/statistic.uniquevolume.$NETWORK
 	dat/statistic.twostars.$NETWORK
@@ -1715,7 +1715,7 @@ plot/syngraphy.a.$NETWORK.eps:
 @outin.$NETWORK:  plot/outin.a.$NETWORK.eps;
 
 plot/outin.a.$NETWORK.eps:  
-	$[MATLABPATH] m/outin.m 
+	$[&MATLABPATH] m/outin.m 
 	dat/data.$NETWORK.mat 
 	dat/info.$NETWORK
 {
@@ -1759,7 +1759,7 @@ dat/runtime:  tmp.runtime m/runtime.m
 
 plot/zipf.a.$NETWORK.eps:  
 	dat/data.$NETWORK.mat m/zipf.m m/zipf_one.m dat/info.$NETWORK
-	$[MATLABPATH]
+	$[&MATLABPATH]
 {
 	./matlab m/zipf.m 
 }
