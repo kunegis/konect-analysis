@@ -20,6 +20,8 @@
 network = getenv('NETWORK');
 statistic = getenv('STATISTIC'); 
 
+format long; 
+
 data = load(sprintf('dat/data.%s.mat', network)); 
 T = data.T; 
 

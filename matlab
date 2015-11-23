@@ -1,7 +1,8 @@
 #! /bin/sh
 #
 # Execute a Matlab script.  This is a wrapper around Matlab that makes
-# it easier to run Matlab in batch mode and log the output of scripts. 
+# it easier to run Matlab in batch mode and log the output of scripts.
+# Used with Matlab 2009B.  
 #
 # PARAMETERS
 # 	$1	    	The Matlab program (with or without .m; may contain directory) 
@@ -118,28 +119,33 @@ fi
 export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
 
+# We have to use <<EOF or else Matlab will read its standard input and hang.
 $MATLAB -logfile $LOGFILE -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
      >$TMP_BASE.out 2>&1 <<EOF  ||
 EOF
 { 
-    echo >&2 "*** error in $TMP_BASE.log"
-    echo >&6 "*** error in $TMP_BASE.log"
-    exit 1
+	# Note: Matlab normally always exists with exit code 0, so if we
+	# are here Matlab probably crashed. 
+	echo >&2 "*** error in $TMP_BASE.log"
+	echo >&6 "*** error in $TMP_BASE.log"
+	exit 1
 }
 
-# We have to use <<EOF or else Matlab will read its standard input and hang.
 
 # Matlab does not exit(!=0) on error but prints ???. 
-grep -E '(\?\?\?|^\*\*\* )' $TMP_BASE.log && 
+grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log && 
 {
     echo "*** error in $TMP_BASE.log"
     echo >&6 "*** error in $TMP_BASE.log"
-    <$TMP_BASE.log sed -re '
-/^(\?\?\?|\*\*\*)/h
-/^Error in ==> /!d
-s,^Error in ==> ([^ ]+) at ([0-9]+)$,\1.m:\2:,
-n
-	' >&2
+    <$TMP_BASE.log >&2 sed -re '
+	# Matlab output actually contains { and } sequences. 
+	s,.,,g
+	/\?\?\?|\*\*\*|[Ee]rror/!d
+	s,^(|\?\?\? )Error (in|using) ==> ([^ ]+) at ([0-9]+)$,\3.m:\4: ,
+	T
+	N
+	s,\n,,
+    '
     exit 1
 }
 
