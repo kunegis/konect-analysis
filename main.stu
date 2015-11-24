@@ -935,11 +935,13 @@ dat/ft.degree.$NETWORK:
 @scatter.$STATISTIC_X.$STATISTIC_Y: 
 	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y];
 
-plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
+plot/scatter.$TYPE.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
+	$[&MATLABPATH]
 	m/scatter_comp.m m/scatter_plot.m m/scatter_single.m 
+	konect-toolbox/m/konect_data_statistic.m
+	konect-toolbox/m/konect_label_statistic.m
 	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS]
 	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
-	$[&MATLABPATH]
 {
 	NETWORKS="$(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)" \
 		KIND="$STATISTIC_X.$STATISTIC_Y" \
