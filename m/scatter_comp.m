@@ -57,8 +57,11 @@ if strcmp(statistic_x, 'size_2') & strcmp(statistic_y, 'size_3'), equal_axes = 1
 
 [logarithmic] = konect_data_statistic();
 
-x_log = logarithmic.(statistic_x);
-y_log = logarithmic.(statistic_y); 
+statistic_x_field = konect_tofieldname(statistic_x);
+statistic_y_field = konect_tofieldname(statistic_y);
+
+x_log = logarithmic.(statistic_x_field);
+y_log = logarithmic.(statistic_y_field); 
 
 s_1 = s(:,1)'; 
 s_2 = s(:,2)'; 

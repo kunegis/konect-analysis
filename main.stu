@@ -72,7 +72,7 @@
 
 >dat/NETWORKS:  <dat/networks.asc
 {
-    cut -f1 -d ' '
+	cut -f1 -d ' '
 }
 
 # For the next two targets, the fields are separated by space and
@@ -161,6 +161,13 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 	sh/intersect
 {
 	sh/intersect dat/NETWORKS_NEGATIVE dat/NETWORKS_ASYM
+}
+
+>dat/NETWORKS_SQUARENEGATIVE:
+	dat/NETWORKS_NEGATIVE dat/NETWORKS_SQUARE
+	sh/intersect
+{
+	sh/intersect dat/NETWORKS_NEGATIVE dat/NETWORKS_SQUARE
 }
 
 #
@@ -568,15 +575,50 @@ plot/assortativity.a.$NETWORK.eps:
 
 # The dat/NETWORKS{,_$NAME} file to read
 >dat/dep.dep.statistic.$STATISTIC:
-	konect-toolbox/m/konect_statistic_$STATISTIC.m
-	sh/attribute
+	dat/statistic-attribute.$STATISTIC
+#	konect-toolbox/m/konect_statistic_$STATISTIC.m
+#	sh/attribute
 {
-	attribute="$(sh/attribute "$STATISTIC")" 
+	attribute="$(cat dat/statistic-attribute.$STATISTIC)"
 	if [ -z "$attribute" ] ; then
 		echo dat/NETWORKS
 	else
-		echo dat/NETWORKS_$attribute
+		echo "dat/NETWORKS_$attribute"
 	fi
+
+	# attribute="$(sh/attribute "$STATISTIC")" 
+	# if [ -z "$attribute" ] ; then
+	# 	echo dat/NETWORKS
+	# else
+	# 	echo dat/NETWORKS_$attribute
+	# fi
+}
+
+# # The dat/NETWORKS{,_$NAME} file to read
+# >dat/dep.dep.statistic.${STATISTIC}+${K}:
+# 	konect-toolbox/m/konect_statistic_$STATISTIC.m
+# 	sh/attribute
+# {
+# 	attribute="$(sh/attribute "$STATISTIC")" 
+# 	if [ -z "$attribute" ] ; then
+# 		echo dat/NETWORKS
+# 	else
+# 		echo dat/NETWORKS_$attribute
+# 	fi
+# }
+
+# The group used for the given statistic, or empty when all networks
+# should be used
+>dat/statistic-attribute.$STATISTIC:
+	sh/attribute [dat/dep.statistic-attribute.$STATISTIC]
+{
+	sh/attribute "$STATISTIC"
+}
+
+>dat/dep.statistic-attribute.$STATISTIC:
+{
+	statistic_base="$(echo "$STATISTIC" | sed -re 's,\+.+$,,')"
+	echo konect-toolbox/m/konect_statistic_"$statistic_base".m 
 }
 
 @statistic.$STATISTIC.$NETWORK:
@@ -601,7 +643,7 @@ dat/statistic.$STATISTIC.$NETWORK:
 # 2. 
 # 
 
->dat/statistic.${STATISTIC}_${K}.$NETWORK:
+>dat/statistic.${STATISTIC}+${K}.$NETWORK:
 	<dat/statistic.$STATISTIC.$NETWORK
 {
 	if [ "$K" -lt 2 ] ; then 
@@ -895,6 +937,20 @@ dat/statistic_time.full.$STATISTIC.$NETWORK:
 	TYPE=full ./matlab m/statistic_time.m 
 }
 
+>dat/statistic_time.full.${STATISTIC}+${K}.$NETWORK:
+	<dat/statistic_time.full.$STATISTIC.$NETWORK
+{
+	expr "$K" : '[0-9][0-9]*' >/dev/null || {
+		echo >&2 "*** Invalid K='$K'"
+		exit 1
+	}
+	sed -re 's,\s+, ,g' |
+	cut -d ' ' -f "$K"
+#	awk -F '\s+' '{ print $'"$K"' }'
+	cp dat/statistic_time_runtime.full.$STATISTIC.$NETWORK \
+		dat/statistic_time_runtime.full.${STATISTIC}+${K}.$NETWORK  
+}
+
 plot/statistic_time.full.a.$STATISTIC.$NETWORK.eps:   
 	m/statistic_time_plot.m 
 	$[&MATLABPATH]
@@ -959,11 +1015,12 @@ plot/scatter.$TYPE.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 
 >dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS:
 	dat/NETWORKS_CLASS_$CLASS
-	sh/attribute
+	dat/statistic-attribute.$STATISTIC_X
+	dat/statistic-attribute.$STATISTIC_Y
 {
 	NETWORKS="$(cat dat/NETWORKS_CLASS_$CLASS)"
 
-	attribute_x="$(sh/attribute "$STATISTIC_X")" 
+	attribute_x="$(cat dat/statistic-attribute.$STATISTIC_X)"
 	if [ "$attribute_x" ] 
 	then
 		NETWORKS_OLD="$NETWORKS"
@@ -977,7 +1034,7 @@ plot/scatter.$TYPE.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 		done
 	fi
 
-	attribute_y="$(sh/attribute "$STATISTIC_Y")" 
+	attribute_y="$(cat dat/statistic-attribute.$STATISTIC_Y)"
 	if [ "$attribute_y" ] 
 	then
 		NETWORKS_OLD="$NETWORKS"

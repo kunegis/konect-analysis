@@ -53,12 +53,12 @@ for i = 1 : length(methods_compound)
         parts = regexp(method_compound, '[^.]+', 'match');
         method_ = parts{1}
         submethod = parts{2}
-        if ~isfield(submethods_method, tofieldname(method_))
-            submethods_method.(tofieldname(method_)) = struct();
+        if ~isfield(submethods_method, konect_tofieldname(method_))
+            submethods_method.(konect_tofieldname(method_)) = struct();
         end
-        submethods_method.(tofieldname(method_)).(submethod) = 1; 
+        submethods_method.(konect_tofieldname(method_)).(submethod) = 1; 
     else
-        submethods_method.(tofieldname(method_compound)) = struct(); 
+        submethods_method.(konect_tofieldname(method_compound)) = struct(); 
     end
 end
 
@@ -91,7 +91,7 @@ for i = 1 : length(fn)
     for j = 1 : length(networks)
         network = networks{j};
 
-        precision_data = load(sprintf('dat/precision.%s.%s.mat', fromfieldname(fieldname_method), network)); 
+        precision_data = load(sprintf('dat/precision.%s.%s.mat', konect_fromfieldname(fieldname_method), network)); 
 
         submethods = fieldnames(precision_data.precisions); 
 
@@ -108,12 +108,12 @@ for i = 1 : length(fn)
                     if (0 == length(fieldnames(submethods_method.(fieldname_method)))) || ...
                            (isfield(submethods_method.(fieldname_method), submethod))
 
-                        precision_submethod = precision_data.precisions.(submethod).(tofieldname(measure))(1); 
+                        precision_submethod = precision_data.precisions.(submethod).(konect_tofieldname(measure))(1); 
                         if precision_submethod > precision_best
                             precision_best = precision_submethod; 
                         end
                         submethod_id_global = (i-1) * ids_submethod_count + ids_submethod.(submethod); 
-                        data_measure.(tofieldname(measure)).datax_global(submethod_id_global, j) = precision_submethod; 
+                        data_measure.(konect_tofieldname(measure)).datax_global(submethod_id_global, j) = precision_submethod; 
 
                         if length(labels_submethod_id_global) < submethod_id_global | isempty(labels_submethod_id_global{submethod_id_global}) == 0
 
@@ -133,7 +133,7 @@ for i = 1 : length(fn)
                 value = NaN; 
             end
     
-            data_measure.(tofieldname(measure)).data(i, j) = value; 
+            data_measure.(konect_tofieldname(measure)).data(i, j) = value; 
 
         end
     end
@@ -150,7 +150,7 @@ data_measure
 
 for k = 1 : length(measures)
     measure = measures{k}; 
-    data_measure.(tofieldname(measure)).datax = data_measure.(tofieldname(measure)).datax_global(ids, :); 
+    data_measure.(konect_tofieldname(measure)).datax = data_measure.(konect_tofieldname(measure)).datax_global(ids, :); 
 end
 
 %
@@ -185,7 +185,7 @@ for i = 1 : length(measures)
     label_measure = labels_short_measure.(measure); 
 
     % (ax), (bx) - By submethod
-    datax = data_measure.(tofieldname(measure)).datax; 
+    datax = data_measure.(konect_tofieldname(measure)).datax; 
 
     comparison_cross(datax, ...
                      sprintf('plot/comparison.ax.%s.%s.eps', measure, name), ...
@@ -197,7 +197,7 @@ for i = 1 : length(measures)
                      colormap_b, colormap_b_bw, labels_submethod_id, labels_network, label_measure); 
 
     % (a), (b) - By method
-    data = data_measure.(tofieldname(measure)).data; 
+    data = data_measure.(konect_tofieldname(measure)).data; 
     
     comparison_cross(data, ...
                      sprintf('plot/comparison.a.%s.%s.eps', measure, name), ...

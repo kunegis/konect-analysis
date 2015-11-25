@@ -3,35 +3,40 @@
 # Get the attribute of a statistic, i.e., the string describing the set
 # of networks that apply to it.
 #
-# If statistic is of the form [a-z]+_[0-9]+, only the part left of the
+# If statistic is of the form [a-z]+\+[0-9]+, only the part left of the
 # underscore is used. 
 #
 # INVOCATION 
 #	$0 $STATISTIC
 #
-# OUTPUT 
+# INPUT FILES
+#	konect-toolbox/m/konect_statistic_$statistic_base.m 
+#
+# STDOUT
 #	The attribute is output.  Nothing is output when no attribute is
 #	known. 
 #
 
 if [ -z "$1" ] ; then
-    echo >&2 "*** $0:  first argument missing"
-    exit 1
+	echo >&2 "*** $0:  first argument missing"
+	exit 1
 fi
 
-statistic="$(echo $1 | sed -re 's,_[0-9]+$,,')"
+statistic="$1"
 
-file="konect-toolbox/m/konect_statistic_$statistic.m"
+statistic_base="$(echo "$statistic" | sed -re 's,\+[0-9]+$,,')"
+suffix="$(echo "$statistic" | sed -re 's,^.*\+,+,')"
+
+file="konect-toolbox/m/konect_statistic_$statistic_base.m"
 
 if [ ! -e "$file" ] ; then
-    echo >&2 "*** $0:  file '$file' not found"
-    exit 1
+	echo >&2 "*** $0:  file '$file' not found"
+	exit 1
 fi
 
-if grep -Eq 'ATTRIBUTE\s*:' "$file"
-then
-    attribute="$(sed -re 's,^.*ATTRIBUTE\s*:\s*([^ 	]+)\s*$,\1,;t;d' "$file" | tr a-z A-Z)" 
-    echo "$attribute"
-fi
+suffix_regexp="$(echo "$suffix" | sed -re 's,\+,\\+,')"
+
+sed -re 's,^.*ATTRIBUTE'"$suffix_regexp"'\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
+tr a-z A-Z
 
 exit 0

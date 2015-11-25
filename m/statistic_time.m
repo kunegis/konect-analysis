@@ -16,11 +16,11 @@
 %	dat/means.$NETWORK.mat (only split) 
 %
 % OUTPUT 
-%	dat/statistic_time.{,split.}.$STATISTIC.$NETWORK	
+%	dat/statistic_time.$TYPE.$STATISTIC.$NETWORK	
 %		All statistics as text.  One timepoint per line.  Each
 %		line contains the statistics, with the first number
 %		being the main statistic. 
-%	dat/statistic_time_runtime.{,split.}$STATISTIC.$NETWORK
+%	dat/statistic_time_runtime.$TYPE.$STATISTIC.$NETWORK
 %		Column vector of runtimes in seconds (as floating point numbers) 
 %
 
