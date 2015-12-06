@@ -1774,11 +1774,11 @@ plot/syngraphy.a.$NETWORK.eps:
 @outin.$NETWORK:  plot/outin.a.$NETWORK.eps;
 
 plot/outin.a.$NETWORK.eps:  
-	$[&MATLABPATH] m/outin.m 
+	m/outin.m 
 	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK
+	dat/info.$NETWORK  $[&MATLABPATH]
 {
-	 ./matlab m/outin.m 
+	./matlab m/outin.m 
 }
 
 >dat/dep.outin:
@@ -1811,14 +1811,14 @@ dat/runtime:  tmp.runtime m/runtime.m
 
 >dat/dep.zipf:  <dat/NETWORKS
 {
-	sed -re 's,^,zipf.,'
+	sed -re 's,^,@zipf.,'
 }
 
 @zipf.$NETWORK:  plot/zipf.a.$NETWORK.eps;
 
 plot/zipf.a.$NETWORK.eps:  
-	dat/data.$NETWORK.mat m/zipf.m m/zipf_one.m dat/info.$NETWORK
-	$[&MATLABPATH]
+	m/zipf.m m/zipf_one.m $[&MATLABPATH]
+	dat/data.$NETWORK.mat dat/info.$NETWORK
 {
 	./matlab m/zipf.m 
 }
