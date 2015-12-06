@@ -27,3 +27,11 @@ Gplot2
 Get the file gplot2.m from the following URL and put in into lib/
 
 http://www.mathworks.com/matlabcentral/fileexchange/10342-gplot-enhanced/content/gplot2.m
+
+PLfit
+=====
+
+We need the files plfit.m, zeta.m from
+
+http://tuvalu.santafe.edu/~aaronc/powerlaws/
+

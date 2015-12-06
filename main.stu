@@ -576,8 +576,6 @@ plot/assortativity.a.$NETWORK.eps:
 # The dat/NETWORKS{,_$NAME} file to read
 >dat/dep.dep.statistic.$STATISTIC:
 	dat/statistic-attribute.$STATISTIC
-#	konect-toolbox/m/konect_statistic_$STATISTIC.m
-#	sh/attribute
 {
 	attribute="$(cat dat/statistic-attribute.$STATISTIC)"
 	if [ -z "$attribute" ] ; then
@@ -585,27 +583,7 @@ plot/assortativity.a.$NETWORK.eps:
 	else
 		echo "dat/NETWORKS_$attribute"
 	fi
-
-	# attribute="$(sh/attribute "$STATISTIC")" 
-	# if [ -z "$attribute" ] ; then
-	# 	echo dat/NETWORKS
-	# else
-	# 	echo dat/NETWORKS_$attribute
-	# fi
 }
-
-# # The dat/NETWORKS{,_$NAME} file to read
-# >dat/dep.dep.statistic.${STATISTIC}+${K}:
-# 	konect-toolbox/m/konect_statistic_$STATISTIC.m
-# 	sh/attribute
-# {
-# 	attribute="$(sh/attribute "$STATISTIC")" 
-# 	if [ -z "$attribute" ] ; then
-# 		echo dat/NETWORKS
-# 	else
-# 		echo dat/NETWORKS_$attribute
-# 	fi
-# }
 
 # The group used for the given statistic, or empty when all networks
 # should be used
@@ -1598,9 +1576,9 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 	bzip2 -c dat/download.rdf.$NETWORK.n3 
 }
 
-dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
+>dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
 {
-	sh/mkrdf $NETWORK >dat/download.rdf.$NETWORK.n3
+	sh/mkrdf "$NETWORK" 
 	head dat/download.rdf.$NETWORK.n3 -n 10000 | 
 	rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
 }

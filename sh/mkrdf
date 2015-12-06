@@ -13,19 +13,20 @@
 use strict;
 use warnings;
 
-my $network=shift();
+my $network= shift();
 
-my $t_undirected=1;
-my $w_simple=1;
+my $t_undirected= 1;
+my $w_simple= 1;
 
-my $metafile=readMeta($network);
-my %mfd=%$metafile;
+my $metafile= readMeta($network);
+my %mfd= %$metafile;
 
 print "# this file is part of the KONECT project: http://konect.uni-koblenz.de\n";
+
 my $i=1;
 while($mfd{"n3-comment-$i"}){
-	print $mfd{"n3-comment-$i"}."\n";
-	$i++;
+    print $mfd{"n3-comment-$i"}."\n";
+    $i++;
 }
 
 print "\@prefix void: <http://rdfs.org/ns/void#> .\n";
@@ -43,7 +44,7 @@ sub parseMetaLc {
 sub parseMeta {
     my $meta   = shift;
     my %result = ();
-    foreach $line (@$meta) {
+    foreach my $line (@$meta) {
         if ( $line =~ /^\s*([^\s:]+)\s*:\s*(.+?[^\s]+) *$/ ) {
             $result{ lc($1) } = $2;
         }
@@ -69,8 +70,8 @@ sub readMeta {
 
 
 sub print_network_info{
-    my ($metadata)=@_;
-	%metadata=%$metadata;
+    my ($metadata)= @_;
+	my %metadata =%$metadata;
 	print "konect_networks:$network a void:Dataset .\n";
 	print "konect_networks:$network dcterms:title \"".$metadata{"name"}."\" .\n";
 	if($metadata{"long-description"}){
@@ -96,17 +97,17 @@ sub convert_timestamp{
 
 
 sub printData {
-	my ($ref)=@_;
-	%data=%$ref;
-	my $m=$data{"m"};
-	my $n=$data{"n"};
-	my $last_l=$data{"last_l"};
-	my $timestamp=$data{"timestamp"};
-	my $prefix_l=$data{"prefix_l"};
-	my $item=$data{"item"};
-	my $prefix_m=$data{"prefix_m"};
-	my $prefix_n=$data{"prefix_n"};
-	my %mfd=%{$data{"mfd"}};
+	my ($ref)= @_;
+	my %data= %$ref;
+	my $m= $data{"m"};
+	my $n= $data{"n"};
+	my $last_l= $data{"last_l"};
+	my $timestamp= $data{"timestamp"};
+	my $prefix_l= $data{"prefix_l"};
+	my $item= $data{"item"};
+	my $prefix_m= $data{"prefix_m"};
+	my $prefix_n= $data{"prefix_n"};
+	my %mfd= %{$data{"mfd"}};
 	
 	my $data_prefix="";
 	if($item eq "l") {
@@ -116,13 +117,14 @@ sub printData {
 	}
 	my $i=1;
 	while($mfd{$data_prefix.$i}){
-		$outdata=$mfd{$data_prefix.$i};
-		$outdata=~s/\$m/$prefix_m$m/g;
-		$outdata=~s/\$n/$prefix_n$n/g;
-		$outdata=~s/\$j/$m/g;
-		$outdata=~s/\$k/$n/g;
-		$outdata=~s/\$timestamp/"$timestamp"/g;
-		if($prefix_l){
+		my $outdata= $mfd{$data_prefix.$i};
+		$outdata =~ s/\$m/$prefix_m$m/g;
+		$outdata =~ s/\$n/$prefix_n$n/g;
+		$outdata =~ s/\$j/$m/g;
+		$outdata =~ s/\$k/$n/g;
+		$outdata =~ s/\$timestamp/"$timestamp"/g;
+
+		if ($prefix_l) {
 			$outdata=~s/\$l/$prefix_l$last_l/g;
 		}
 		print $outdata."\n";
@@ -234,7 +236,6 @@ if ($mfd{"n3-prefix-m"}) {
 					print "$prefix_m$n a ".$mfd{"n3-type-m"}." .\n";
 				}
 				unless($typed_n[$n]){
-					#print STDERR "typing $n\n";
 					$typed_n[$n]=1;
 					$printing_data{"item"}="n";
 					printData(\%printing_data);
