@@ -77,4 +77,3 @@ unsigned char *lcc_find(struct sgraph1_reader_$ *r)
 }
 
 #endif /* ! LCC_H */
-

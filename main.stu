@@ -63,7 +63,7 @@
 
 >PERL5LIB
 {
-	printf 'pl' 
+	printf pl:lib
 }
 
 #
@@ -176,12 +176,17 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 
 
 >CFLAGS:  {
+	# echo \
+	# 	'-std=c99' -pedantic -Wall -Wextra -Werror \
+	# 	-Wundef -D_GNU_SOURCE \
+	# 	-lm \
+	# 	-O3 -DNDEBUG -s 
+
 	echo \
 		'-std=c99' -pedantic -Wall -Wextra -Werror \
 		-Wundef -D_GNU_SOURCE \
 		-lm \
-		-O3 -DNDEBUG -s 
-#       -g 
+		-g 
 
 	# -D_GNU_SOURCE:  for posix_madvise() 
 	# -lm:  used only in hyperanf.c / hyperloglog.h
@@ -1599,10 +1604,67 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 @tsv.$NETWORK:  dat/download.tsv.$NETWORK.tar.bz2;
 
 >dat/README.$NETWORK:  
-	sh/mkreadme sh/mkcite 
+	sh/mkreadme sh/mkcite $[&PERL5LIB]
+	lib/BibTeX/Parser.pm
+	lib/LaTeX/ToUnicode.pm
+	lib/HTML/Entities.pm
 {
 	sh/mkreadme "$NETWORK" matrices 
 }
+
+lib/HTML/Entities.pm: lib/HTML-Parser-3.72.tar.gz
+{
+	cd lib
+		tar -xf HTML-Parser-3.72.tar.gz
+		mv HTML-Parser-3.72/lib/HTML ./
+		rm -rf HTML-Parser-3.72
+		touch HTML/Entities.pm
+}
+
+lib/HTML-Parser-3.72.tar.gz: !lib
+{
+	cd lib
+		wget https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTML-Parser-3.72.tar.gz
+		touch HTML-Parser-3.72.tar.gz
+}
+
+
+lib/BibTeX-Parser-0.67.tar.gz: !lib
+{
+	cd lib
+		wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/BibTeX-Parser-0.67.tar.gz
+		touch BibTeX-Parser-0.67.tar.gz
+}
+
+
+lib/BibTeX/Parser.pm: lib/BibTeX-Parser-0.67.tar.gz
+{
+	cd lib
+		tar -xf BibTeX-Parser-0.67.tar.gz
+		mv BibTeX-Parser-0.67/lib/BibTeX ./
+		rm -rf BibTeX-Parser-0.67
+		touch BibTeX/Parser.pm
+}
+
+lib/LaTeX/ToUnicode.pm: lib/LaTeX-ToUnicode-0.04.tar.gz
+{
+	cd lib
+		tar -xf LaTeX-ToUnicode-0.04.tar.gz
+		mv LaTeX-ToUnicode-0.04/lib/LaTeX ./
+		rm -rf LaTeX-ToUnicode-0.04
+		touch LaTeX/ToUnicode.pm
+}
+
+lib/LaTeX-ToUnicode-0.04.tar.gz: !lib
+{
+	cd lib
+		wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/LaTeX-ToUnicode-0.04.tar.gz
+		touch LaTeX-ToUnicode-0.04.tar.gz
+}
+
+
+
+
 
 >dat/dep.download.tsv.$NETWORK: 
 {
@@ -1625,6 +1687,7 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 
 dat/download.tsv.$NETWORK.tar.bz2:
 	[dat/dep.download.tsv.$NETWORK] 
+	!dat-tmp
 {
 	DIR="dat-tmp/$NETWORK"
 
@@ -1647,16 +1710,18 @@ dat/download.tsv.$NETWORK.tar.bz2:
 	rm -rf "dat-tmp/$NETWORK"
 }  
 
+dat-tmp;
+
 @tsv: [dat/dep.tsv];
 
 >dat/dep.tsv:  
 	dat/NETWORKS
-	../web/allowed_src.txt
+	dat/allowed_src.txt
 {
 	cat dat/NETWORKS |
 	while read network 
 	do
-		if <../web/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
+		if <dat/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
 		then
 			echo "@tsv.$network"
 		fi

@@ -9,3 +9,10 @@ octave-workspace
 konect-toolbox
 error.log
 tmp.runtime
+lib/BibTeX
+lib/LaTeX
+lib/HTML
+dat-tmp
+lib/BibTeX-Parser-0.67.tar.gz
+lib/HTML-Parser-3.72.tar.gz
+lib/LaTeX-ToUnicode-0.04.tar.gz

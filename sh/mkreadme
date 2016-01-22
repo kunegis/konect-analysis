@@ -11,9 +11,10 @@
 use strict;
 use warnings;
 
-push( @INC, "../web/lib" );
-require("HTML-Parser/Entities.pm");
-$network = $ARGV[0];
+use HTML::Entities;
+
+
+my $network = $ARGV[0];
 
 sub has_timestamps {
     open my $F_DATASETS, "<dat/networks.list";
@@ -30,23 +31,26 @@ sub has_timestamps {
 
 
 
-open my $F_IN,"<uni/meta.$network";
+open (my $F_IN,"<uni/meta.$network") or die "could not open uni/meta.$network\n";
 
-while($line=<$F_IN>){
-	if ($line=~/\s*name\s*:\s*(.*)\s*$/){
-		unless (defined($name)){
-			$name=$1;
-		}
+my $name= "";
+my $description= ""; 
+
+while (my $line= <$F_IN>) {
+    if ($line =~ /\s*name\s*:\s*(.*)\s*$/) {
+	unless ($name ne "") {
+	    $name= $1;
 	}
-	if ($line=~/\s*fullname\s*:\s*(.*)\s*$/){
-		$name=$1;
-	}
-	if ($line=~/\s*long-description\s*:\s*(.*)\s*$/){
-		$description=$1;
-	}
+    }
+    if ($line =~ /\s*fullname\s*:\s*(.*)\s*$/) {
+	$name= $1;
+    }
+    if ($line=~/\s*long-description\s*:\s*(.*)\s*$/) {
+	$description= $1;
+    }
 }
-close $F_IN;
 
+close $F_IN or die "$!";
 
 if ( $ARGV[1] eq "code" ) {
     print ""
@@ -98,11 +102,11 @@ Files:
 
 ########################### entity files
     opendir( DIR, "uni" );
-    @FILES = readdir(DIR);
-    foreach $file (@FILES) {
-        if ( $file =~ /^ent\.$network\.([^\.]*)\.([^\.]*)$/ ) {
+    my @FILES= readdir(DIR);
+    foreach my $file (@FILES) {
+        if ($file =~ /^ent\.$network\.([^\.]*)\.([^\.]*)$/) {
             print
-"    $file -- Contains the attribute `$2` of entity `$1` of the network\n";
+		"    $file -- Contains the attribute `$2` of entity `$1` of the network\n";
         }
     }
 #########################
@@ -125,13 +129,12 @@ For more information concerning license visit http://konect.uni-koblenz.de/licen
 Use the following References for citation:
 
 ";
-    system("sh/mkcite $network");
+	
+    system("PERL5LIB=".$ENV{"PERL5LIB"}." sh/mkcite $network") == 0  or die "mkcite: $!";
     print "\n";
-    system("sh/mkcite konect");
+    system("PERL5LIB=".$ENV{"PERL5LIB"}." sh/mkcite konect") == 0  or die "mkcite: $!";
     print "\n";
-
-}
-elsif ( $ARGV[1] eq "full" ) {
+} elsif ( $ARGV[1] eq "full" ) {
     print ""
       . "This folder contains the full datasets from which the TSV files of "
       . $ARGV[0]
@@ -144,3 +147,4 @@ For more information concerning license visit http://konect.uni-koblenz.de/licen
 "
 
 }
+

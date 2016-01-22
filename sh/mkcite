@@ -12,31 +12,40 @@ use warnings;
 
 use Switch;
 
-push( @INC, "../web/lib" );
-require "BibTeX/Parser.pm";
-require "TexToHtml/Converter.pm";
+use lib "./lib";
+
+
 use IO::File;
+use BibTeX::Parser;
+
+
+#use TexToHtml::Converter;
+
 my $networkname = $ARGV[0];
-
 my $name;
-my $ID;
-open my $F_IN,"<uni/meta.$networkname" or die "$!";
+my $ID="";
 
-while($line=<$F_IN>){
-    if ($line=~/\s*name\s*:\s*(.*)\s*$/){
-        unless (defined($name)){
-            $name=$1;
-        }
-    }
-    if ($line=~/\s*fullname\s*:\s*(.*)\s*$/){
-        $name=$1;
-    }
-	if ($line=~/\s*cite\s*:\s(.*)\s*$/){
-		$ID=$1;
+my $konectproject="../kunegis/projects/konect";
+
+
+unless ($networkname eq "konect"){
+	open my $F_IN,"<uni/meta.$networkname" or die "$!";
+
+	while (my $line = <$F_IN>) {
+		if ($line=~/\s*name\s*:\s*(.*)\s*$/){
+			unless (defined($name)){
+				$name=$1;
+			}
+		}
+		if ($line=~/\s*fullname\s*:\s*(.*)\s*$/){
+			$name=$1;
+		}
+		if ($line=~/\s*cite\s*:\s(.*)\s*$/){
+			$ID=$1;
+		}
 	}
+	close $F_IN or die "$!";
 }
-close $F_IN or die "$!";
-
 
 
 
@@ -60,19 +69,19 @@ sub getkonectcite {
 }
 
 my $bibstring = "";
-my $bibssrc   = "";
+my $bibsrc   = "";
 
-my $refdir = "../handbook/";
-opendir( in, $refdir );
-my @ref_files = readdir(in);
-close in or die "$!";
+my $refdir = "$konectproject/handbook/";
+opendir(IN, $refdir ) or die "$! :$refdir";
+my @ref_files = readdir(IN);
+closedir IN or die "$! :$refdir";
 
-foreach $ref_file (@ref_files) {
+foreach my $ref_file (@ref_files) {
     $ref_file = $refdir . "/" . $ref_file;
 }
 
-if ( -e "../extr/konect.bib" ) {
-    push( @ref_files, "../extr/konect.bib" )
+if ( -e "$konectproject/extr/konect.bib" ) {
+    push( @ref_files, "$konectproject/extr/konect.bib" )
 	;    #for the future existence of that file 
 }
 
@@ -82,12 +91,13 @@ if ( length($ID) == 0 ) { $ID = $networkname; }
 $ID = "($ID)";
 
 unless ( $networkname eq "konect" ) {
+    # TODO where is this read?
     $bibsrc = getkonectcite($networkname) . "\n";
 }
 
-$foundbibtex = 0;
 
-foreach $ref_file (@ref_files) {
+foreach my $ref_file (@ref_files) {
+
     if ( $ref_file =~ /\.bib$/ ) {
 
         my $fh     = IO::File->new($ref_file);
@@ -97,16 +107,19 @@ foreach $ref_file (@ref_files) {
                 && ( $entry->parse_ok )
                 && ( $entry->key =~ /^$ID$/i ) )
             {
-                @fields = $entry->fieldlist();
 
                 $bibsrc .= $entry->raw_bibtex() . "\n\n";
 
-                $foundbibtex = 1;
-            }elsif(!($entry->parse_ok)){
+            } elsif (!($entry->parse_ok)){
 	           warn "Error parsing file: " . $entry->error;
-			}									             
+	    }									             
         }
     }
 }
 
-exit();
+
+print $bibsrc;
+
+
+
+# exit();
