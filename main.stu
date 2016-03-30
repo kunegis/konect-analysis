@@ -1,5 +1,7 @@
 #
-# This is the big stufile with all targets for KONECT analysis.  
+# This is the Stu file with all targets for KONECT analysis.  
+#
+# KONECT uses Stu instead of Make.  Get Stu at  https://github.com/kunegis/stu
 #
 # Important targets:
 #
@@ -16,7 +18,7 @@
 % version 1.7
 
 #
-# @all:  everything that is shown on the website 
+# General targets
 #
 
 @all:   @all.everything;
@@ -36,8 +38,7 @@
 
 @network.$NETWORK:  
 	@check.$NETWORK 
-	[dat/dep.network.$NETWORK]
-	;
+	[dat/dep.network.$NETWORK];
 
 >dat/dep.network.$NETWORK:
 	sh/dep-network 
@@ -1615,56 +1616,52 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 lib/HTML/Entities.pm: lib/HTML-Parser-3.72.tar.gz
 {
 	cd lib
-		tar -xf HTML-Parser-3.72.tar.gz
-		mv HTML-Parser-3.72/lib/HTML ./
-		rm -rf HTML-Parser-3.72
-		touch HTML/Entities.pm
+	tar -xf HTML-Parser-3.72.tar.gz
+	mv HTML-Parser-3.72/lib/HTML ./
+	rm -rf HTML-Parser-3.72
+	touch HTML/Entities.pm
 }
 
 lib/HTML-Parser-3.72.tar.gz: !lib
 {
 	cd lib
-		wget https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTML-Parser-3.72.tar.gz
-		touch HTML-Parser-3.72.tar.gz
+	wget https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTML-Parser-3.72.tar.gz
+	touch HTML-Parser-3.72.tar.gz
 }
 
 
 lib/BibTeX-Parser-0.67.tar.gz: !lib
 {
 	cd lib
-		wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/BibTeX-Parser-0.67.tar.gz
-		touch BibTeX-Parser-0.67.tar.gz
+	wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/BibTeX-Parser-0.67.tar.gz
+	touch BibTeX-Parser-0.67.tar.gz
 }
 
 
 lib/BibTeX/Parser.pm: lib/BibTeX-Parser-0.67.tar.gz
 {
 	cd lib
-		tar -xf BibTeX-Parser-0.67.tar.gz
-		mv BibTeX-Parser-0.67/lib/BibTeX ./
-		rm -rf BibTeX-Parser-0.67
-		touch BibTeX/Parser.pm
+	tar -xf BibTeX-Parser-0.67.tar.gz
+	mv BibTeX-Parser-0.67/lib/BibTeX ./
+	rm -rf BibTeX-Parser-0.67
+	touch BibTeX/Parser.pm
 }
 
 lib/LaTeX/ToUnicode.pm: lib/LaTeX-ToUnicode-0.04.tar.gz
 {
 	cd lib
-		tar -xf LaTeX-ToUnicode-0.04.tar.gz
-		mv LaTeX-ToUnicode-0.04/lib/LaTeX ./
-		rm -rf LaTeX-ToUnicode-0.04
-		touch LaTeX/ToUnicode.pm
+	tar -xf LaTeX-ToUnicode-0.04.tar.gz
+	mv LaTeX-ToUnicode-0.04/lib/LaTeX ./
+	rm -rf LaTeX-ToUnicode-0.04
+	touch LaTeX/ToUnicode.pm
 }
 
 lib/LaTeX-ToUnicode-0.04.tar.gz: !lib
 {
 	cd lib
-		wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/LaTeX-ToUnicode-0.04.tar.gz
-		touch LaTeX-ToUnicode-0.04.tar.gz
+	wget https://cpan.metacpan.org/authors/id/B/BO/BORISV/LaTeX-ToUnicode-0.04.tar.gz
+	touch LaTeX-ToUnicode-0.04.tar.gz
 }
-
-
-
-
 
 >dat/dep.download.tsv.$NETWORK: 
 {
@@ -1795,7 +1792,7 @@ plot/syngraphy.a.$NETWORK.eps:
 	dat/statistic.triangles.$NETWORK
 	dat/statistic.squares.$NETWORK
 {
-	 ./matlab m/syngraphy_plot.m 
+	./matlab m/syngraphy_plot.m 
 }
 
 @syngraphy:  [dat/dep.syngraphy];
@@ -1809,7 +1806,7 @@ plot/syngraphy.a.$NETWORK.eps:
 }
 
 #
-# outin - Out- vs indegree plot for directed networks
+# Out- vs indegree plot for directed networks
 #
 
 @outin:  [dat/dep.outin];
@@ -1865,5 +1862,3 @@ plot/zipf.a.$NETWORK.eps:
 {
 	./matlab m/zipf.m 
 }
-
-

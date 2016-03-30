@@ -15,7 +15,6 @@
 #			run in parallel. 
 # 
 # FILES
-#
 #	error.log	Errors from all runs of this script are logged
 #			in this file  
 #
@@ -24,7 +23,7 @@
 #	to run m/map.m, use ./matlab m/map.m 
 #
 # Matlab scripts run using this method usually don't use command line
-# arguments. Instead, environment variables are passed.  
+# arguments.  Instead, environment variables are passed.  
 #
 
 #
@@ -47,7 +46,7 @@ MATLAB=matlab
 # The options to use for Matlab 
 MATLAB_OPTIONS="-nodesktop -nosplash"
 if [ -z "$jvm_enable" ] ; then
-  MATLAB_OPTIONS="$MATLAB_OPTIONS -nojvm"
+	MATLAB_OPTIONS="$MATLAB_OPTIONS -nojvm"
 fi
 
 # Prefix
@@ -62,11 +61,11 @@ echo >&4 "MATLAB_NAME=«$MATLAB_NAME»"
 # Check that the file exists
 FILENAME="$SCRIPT"
 if echo "$FILENAME" | grep -qvE '\.m$' ; then
-    FILENAME="$FILENAME.m"
-    if ! [ -r "$FILENAME" ] ; then
-	echo >&2 "*** No such file:  $FILENAME"
-	exit 1
-    fi
+	FILENAME="$FILENAME.m"
+	if ! [ -r "$FILENAME" ] ; then
+		echo >&2 "*** No such file:  $FILENAME"
+		exit 1
+	fi
 fi
 
 #
@@ -89,7 +88,7 @@ LOGNAME=$USER.$MATLAB_NAME
 
 for PARAM in $MATLAB_PARAMS
 do
-    eval [ "\$$PARAM"   ]   	&& eval LOGNAME=\$LOGNAME.\$$PARAM
+	eval [ "\$$PARAM"   ]   	&& eval LOGNAME=\$LOGNAME.\$$PARAM
 done
 
 echo >&4 "LOGNAME=«$LOGNAME»"
@@ -114,14 +113,14 @@ export LIBC_FATAL_STDERR_=1
 
 DIR_SCRIPT="$(dirname $SCRIPT)"
 if echo "$DIR_SCRIPT" | grep -vq '^/' ; then
-    DIR_SCRIPT="$PWD/$DIR_SCRIPT"
+	DIR_SCRIPT="$PWD/$DIR_SCRIPT"
 fi
 export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
 
 # We have to use <<EOF or else Matlab will read its standard input and hang.
 $MATLAB -logfile $LOGFILE -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
-     >$TMP_BASE.out 2>&1 <<EOF  ||
+	>$TMP_BASE.out 2>&1 <<EOF  ||
 EOF
 { 
 	# Note: Matlab normally always exists with exit code 0, so if we
@@ -135,18 +134,18 @@ EOF
 # Matlab does not exit(!=0) on error but prints ???. 
 grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log && 
 {
-    echo "*** error in $TMP_BASE.log"
-    echo >&6 "*** error in $TMP_BASE.log"
-    <$TMP_BASE.log >&2 sed -re '
-	# Matlab output actually contains { and } sequences. 
-	s,.,,g
-	/\?\?\?|\*\*\*|[Ee]rror/!d
-	s,^(|\?\?\? )Error (in|using) ==> ([^ ]+) at ([0-9]+)$,\3.m:\4: ,
-	T
-	N
-	s,\n,,
-    '
-    exit 1
+	echo "*** error in $TMP_BASE.log"
+	echo >&6 "*** error in $TMP_BASE.log"
+	<$TMP_BASE.log >&2 sed -re '
+		# Matlab output actually contains { and } sequences. 
+		s,.,,g
+		/\?\?\?|\*\*\*|[Ee]rror/!d
+		s,^(|\?\?\? )Error (in|using) ==> ([^ ]+) at ([0-9]+)$,\3.m:\4: ,
+		T
+		N
+		s,\n,,
+	'
+	exit 1
 }
 
 echo >>$TMP_BASE.log '=== FINISHED ==='

@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # Execute Stu parallely, dividing used memory by K, and limiting
-# runtime of precosses.  Also, be NICE. 
+# runtime of processes.  Also, be NICE. 
 #
 # INVOCATION 
 #	$0 [K] args...
@@ -16,15 +16,15 @@
 K=1
 
 [ "$1" ] && echo "$1" | grep '^[0-9]*$' >/dev/null && {
-    K="$1"
-    shift 
+	K="$1"
+	shift 
 }
 
 rm -f error.log 
 
 if [ "$MN_RUNTIME" ] ; then 
-    RUNTIME_S="`expr $MN_RUNTIME '*' 3600`"
-    ulimit -t "$RUNTIME_S"
+	RUNTIME_S="`expr $MN_RUNTIME '*' 3600`"
+	ulimit -t "$RUNTIME_S"
 fi 
 
 exec nice sh/mem "$K" stu -j "$K" "$@"
