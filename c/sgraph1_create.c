@@ -1,4 +1,3 @@
-
 /*
  * Create an Sgraph1 file from an Sgraph0 file.
  */

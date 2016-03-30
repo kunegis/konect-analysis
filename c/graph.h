@@ -166,10 +166,18 @@ void graph_insert_bip_asym_$(struct graph_$ *restrict g,
 static v$_at *compar_idx_p_v$;
 static u$_at *compar_idx_p_u$;
 
+#ifndef NDEBUG
+static v$_at compar_idx_p_size_v$;
+static u$_at compar_idx_p_size_u$;
+#endif /* ! NDEBUG */ 
+
 int compar_idx_v$(const void *x, const void *y) 
 {
 	m$_lt x_id= *(const m$_lt *)x;
 	m$_lt y_id= *(const m$_lt *)y;
+	assert(x_id < compar_idx_p_size_v$);
+	assert(y_id < compar_idx_p_size_v$);
+
 	v$_ft xx= read_v$(compar_idx_p_v$, x_id); 
 	v$_ft yy= read_v$(compar_idx_p_v$, y_id); 
 
@@ -182,6 +190,9 @@ int compar_idx_u$(const void *x, const void *y)
 {
 	m$_lt x_id= *(const m$_lt *)x;
 	m$_lt y_id= *(const m$_lt *)y;
+	assert(x_id < compar_idx_p_size_u$);
+	assert(y_id < compar_idx_p_size_u$);
+
 	u$_ft xx= read_u$(compar_idx_p_u$, x_id); 
 	u$_ft yy= read_u$(compar_idx_p_u$, y_id); 
 
@@ -235,6 +246,9 @@ void graph_sort_$(struct graph_$ *restrict g)
 			}
 
    			compar_idx_p_v$= d > dmax_v ? g->to[i] : (v$_at *) (g->to + i);
+#ifndef NDEBUG
+			compar_idx_p_size_v$= d;
+#endif
 			qsort(idx, d, sizeof(m$_lt), compar_idx_v$);
 
 			v$_at *to_i_old= g->to[i];
@@ -289,22 +303,22 @@ void graph_sort_$(struct graph_$ *restrict g)
 	}
 
 	/* Same for FROM.
-	   Replace TO by FROM, V by U and N1 with N2. */
+	   Replace TO by FROM, V <-> U and N1 with N2. */
 	if (g->from) {
-		if (TYPE_w$ == '-' && TYPE_t$ == '-' && BITS_u$ >= CHAR_BIT) {
-			for (u$_ft i= 0;  i < g->n2;  ++i) {
-				const m$_at d= g->deg_from[i];
-				if (d <= dmax_u) {
-					qsort(g->from + i, d, sizeof(u$_at), compar_u$); 
-				} else {
-					qsort(g->from[i], d, sizeof(u$_at), compar_u$);
-				}
-			} 
+	if (TYPE_w$ == '-' && TYPE_t$ == '-' && BITS_u$ >= CHAR_BIT) {
+		for (v$_ft i= 0;  i < g->n2;  ++i) {
+			const m$_at d= g->deg_from[i];
+			if (d <= dmax_u) {
+				qsort(g->from + i, d, sizeof(u$_at), compar_u$); 
+			} else {
+				qsort(g->from[i], d, sizeof(u$_at), compar_u$);
+			}
+		} 
 	} else {
 		m$_lt *idx= NULL;
 		m$_ft size= 0;
 
-		for (u$_ft i= 0;  i < g->n2;  ++i) {
+		for (v$_ft i= 0;  i < g->n2;  ++i) {
 			
 			const m$_ft d= read_m$(g->deg_from, i); 
 
@@ -322,6 +336,9 @@ void graph_sort_$(struct graph_$ *restrict g)
 			}
 
    			compar_idx_p_u$= d > dmax_u ? g->from[i] : (u$_at *) (g->from + i);
+#ifndef NDEBUG
+			compar_idx_p_size_u$= d;
+#endif
 			qsort(idx, d, sizeof(m$_lt), compar_idx_u$);
 
 			u$_at *from_i_old= g->from[i];

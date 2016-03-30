@@ -175,16 +175,15 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 # C programs
 #
 
-
 >CFLAGS:  {
 	# echo \
-	# 	'-std=c99' -pedantic -Wall -Wextra -Werror \
+	# 	-std=c99 -pedantic -Wall -Wextra -Werror \
 	# 	-Wundef -D_GNU_SOURCE \
 	# 	-lm \
 	# 	-O3 -DNDEBUG -s 
 
 	echo \
-		'-std=c99' -pedantic -Wall -Wextra -Werror \
+		-std=c99 -pedantic -Wall -Wextra -Werror \
 		-Wundef -D_GNU_SOURCE \
 		-lm \
 		-g 
