@@ -1499,7 +1499,7 @@ dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
 >dat/dep.pa:  dat/NETWORKS_TIME
 {
 	cat dat/NETWORKS_TIME |
-	while read network ; do
+	while read -r network ; do
 		echo @pa."$network"
 	done
 }
@@ -1716,7 +1716,7 @@ dat-tmp;
 	dat/allowed_src.txt
 {
 	cat dat/NETWORKS |
-	while read network 
+	while read -r network 
 	do
 		if <dat/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
 		then

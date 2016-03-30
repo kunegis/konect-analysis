@@ -69,12 +69,16 @@ for STATISTIC in $(cat STATISTICS) ; do
 	fi
 done
 
-# RDF
+#
+# Data files 
+#
+
 if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$NETWORK ; then
 	echo @rdf.$NETWORK
 fi
 
-#TSV
-if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../web/allowed_src.txt; then
-	echo @tsv.$NETWORK
-fi
+# It does not matter that we don't use the file for the website, this is
+# just the declaration.  
+##if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../kunegis/projects/konect/web/allowed_src.txt; then
+echo @tsv.$NETWORK
+##fi
