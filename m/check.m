@@ -60,7 +60,7 @@ if weights == consts.UNWEIGHTED
     if size(T, 2) ~= 2
         i = find(T(:,3) ~= 1);
         if length(i) ~= 0
-            error(sprintf('*** UNWEIGHTED network cannot have edge weight:  w(%u, %u) = %g', ...
+            error(sprintf('*** UNWEIGHTED network must not have edge weight:  w(%u, %u) = %g', ...
                           T(i(1),1), T(i(1), 2), T(i(1), 3))); 
         end
     end
@@ -71,12 +71,12 @@ elseif weights == consts.POSITIVE
     if size(T, 2) ~= 2
         i = find(T(:,3) <= 0);
         if length(i) ~= 0
-            error(sprintf('*** POSITIVE network cannot have negative edge weights: w(%u, %u) = %g', ...
+            error(sprintf('*** POSITIVE network must not have negative edge weights: w(%u, %u) = %g', ...
                           T(i(1),1), T(i(1), 2), T(i(1), 3)));
         end
         i = find(T(:,3) ~= floor(T(:,3)));
         if length(i) ~= 0
-            error(sprintf('*** POSITIVE network cannot have fractional edge weights: w(%u, %u) = %g', ...
+            error(sprintf('*** POSITIVE network must not have fractional edge weights: w(%u, %u) = %g', ...
                           T(i(1),1), T(i(1), 2), T(i(1), 3))); 
         end
     end
@@ -89,7 +89,7 @@ elseif weights == consts.POSWEIGHTED
     end
     i = find(T(:,3) < 0);
     if length(i) ~= 0
-        error(sprintf('*** POSWEIGHTED network cannot have negative edge weights: w(%u, %u) = %g', ...
+        error(sprintf('*** POSWEIGHTED network must not have negative edge weights: w(%u, %u) = %g', ...
                       T(i(1),1), T(i(1), 2), T(i(1), 3))); 
     end
 
@@ -106,13 +106,13 @@ elseif weights == consts.SIGNED
 
 elseif weights == consts.WEIGHTED | weights == consts.MULTIWEIGHTED
 
-    % Third column must be present, and cannot consist of all-equal values
+    % Third column must be present, and must not consist of all-equal values
     if size(T, 2) <= 2
         error('*** WEIGHTED/MULTIWEIGHTED network must have edge weights'); 
     end
     i = find(T(:,3) ~= mean(T(:,3)));
     if length(i) <= 0
-        error('*** WEIGHTED/MULTIWEIGHTED network cannot have all-equal edge weights'); 
+        error('*** WEIGHTED/MULTIWEIGHTED network must not have all-equal edge weights'); 
     end
 
 elseif weights == consts.DYNAMIC
@@ -143,7 +143,7 @@ if weights == consts.POSWEIGHTED | weights == consts.SIGNED
         if size(T,2) >= 3
             i = find(T(:,3) == 0);
             if length(i) ~= 0
-                error(sprintf('*** network cannot have zero edge weights when #zeroweight is not set: w(%u, %u) = %g', T(i(1),1), T(i(1),2), T(i(1),3))); 
+                error(sprintf('*** network must not have zero edge weights when #zeroweight is not set: w(%u, %u) = %g', T(i(1),1), T(i(1),2), T(i(1),3))); 
             end
         end
     end
@@ -247,31 +247,45 @@ else
 end
 
 %
-% If a network is ASYM, is must contain at least one pair of
-% reciprocal edges, except when #acyclic or #reciprocal is defined.
+% #acyclic and #loop must not be used together
+%
+
+if tag_acyclic & tag_loop
+    error('*** #acyclic and #loop must not be used together'); 
+end
+
+%
+% If a network is ASYM, it must contain at least one pair of
+% reciprocal edges, except when #acyclic or #nonreciprocal is
+% defined. 
 %
 
 if format == consts.ASYM 
     
-    %    n = info.n; 
     n = n_values(1); 
 
     A = sparse(T(:,1), T(:,2), 1, n, n); 
+
+    A_reciprocal= A .* A';
+
+    count_reciprocal= nnz(A_reciprocal)
     
     if tag_acyclic | tag_nonreciprocal
 
-        assert(sum(sum(A .* A')) == 0, '*** acyclic or network cannot contain reciprocal edges'); 
+        if count_reciprocal ~= 0
+            
+            [x y z] = find(A_reciprocal); 
+            error(sprintf('*** acyclic or network must not contain reciprocal edges, found %u <-> %u', ...
+                          x(1), y(1))); 
+        end
 
     else
 
-        assert(sum(sum(A .* A')) > 0, '*** non-acyclic and non-nonreciprocal networks must contain reciprocal edges'); 
+        assert(count_reciprocal > 0, '*** non-acyclic and non-nonreciprocal network must contain at least one reciprocal edges, but does not'); 
 
     end
-
 else
-
     assert(~tag_acyclic, '*** tag #acyclic must not be set for non-directed networks'); 
-
 end
 
 %
