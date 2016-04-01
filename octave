@@ -42,4 +42,6 @@ ISPLAY= GNUTERM=dumb octave -qf "$SCRIPT" >&3 2>&1  ||
     exit 1
 }
 
+echo >&3 '=== FINISHED ==='
+
 exit 0
