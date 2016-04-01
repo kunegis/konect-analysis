@@ -1,9 +1,5 @@
 == Bugs & urgent stuff == 
 
-* make sure that @statistic.cocos only runs for ASYM networks.  
-** Also that cocos is not built in @network.$NETWORK for non-asym networks. 
-** make sure that cocos is also run for moreno_innovation 
-
 * graph layout:
 ** stoch
 ** delaunay
@@ -29,7 +25,6 @@
 * sg1:  for SYM, have an additional variant where each edge is only
   saved once (will make programs such as hyperanf and matrix
   decompositions use half of memory).   
-* @check (once more new datasets have been added)
 
 == Research ideas == 
 * draw the power law exponent in function of the degree
@@ -55,13 +50,6 @@ that they take filenames as arguments
 * statistic:  number of loops
 * statistic:  median path length:  compute is properly (as the rounded-up 50-percentile effective diameter) 
 * statistic:  relative strongly connected component
-* version of the algebraic conflict that works for disconnected graphs (Re: Manuel Mittler):
-
-\xi' = (1/8m) \sum_c n_c \xi_c
-
-where the sum is over all connected components c, and n_c and \xi_c are
-computed for each connected component separately. 
-
 * normalized version of the algebraic conflict:  derive as a problem of
 assigning a number to each node such that the number is equal/opposite
 when two nodes are connected, and the algebraic conflict equals the sum
