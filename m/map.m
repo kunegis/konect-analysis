@@ -96,11 +96,15 @@ end
 
 [min_u1 max_u1] = map_minmax(u1);  mid_u1 = 0.5 * (min_u1 + max_u1); rad_u1 = 0.5 * (max_u1 - min_u1); 
 [min_u2 max_u2] = map_minmax(u2);  mid_u2 = 0.5 * (min_u2 + max_u2); rad_u2 = 0.5 * (max_u2 - min_u2); 
+if rad_u1 ==  0, rad_u1= 1; end;
+if rad_u2 ==  0, rad_u2= 1; end;
 rad_u12 = max(rad_u1, rad_u2);
 
 if enable_v
     [min_v1 max_v1] = map_minmax(v1);  mid_v1 = 0.5 * (min_v1 + max_v1); rad_v1 = 0.5 * (max_v1 - min_v1); 
     [min_v2 max_v2] = map_minmax(v2);  mid_v2 = 0.5 * (min_v2 + max_v2); rad_v2 = 0.5 * (max_v2 - min_v2); 
+    if rad_v1 ==  0, rad_v1= 1; end;
+    if rad_v2 ==  0, rad_v2= 1; end;
     rad_v12 = max(rad_v1, rad_v2);
 
     if info.format == consts.ASYM

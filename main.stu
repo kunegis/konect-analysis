@@ -1554,19 +1554,19 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 
 @map.$DECOMPOSITION: [dat/dep.map.$DECOMPOSITION];
 
->dat/dep.map.$DECOMPOSITION:  
+>dat/dep.map.$decomposition:  
 	dat/NETWORKS 
 	dat/NETWORKS_ASYM
 	DECOMPOSITIONS_ASYM
 {
-	if grep -qE '^\s*'"$DECOMPOSITION"'\s*$' DECOMPOSITIONS_ASYM ; then
+	if grep -qE '^\s*'"$decomposition"'\s*$' DECOMPOSITIONS_ASYM ; then
 		NETWORKS="$(cat dat/NETWORKS_ASYM)"
 	else
 		NETWORKS="$(cat dat/NETWORKS)"
 	fi
 
-	for NETWORK in $NETWORKS ; do
-		echo @map.$DECOMPOSITION.$NETWORK
+	for network in $NETWORKS ; do
+		echo @map.$decomposition.$network
 	done
 }
 
