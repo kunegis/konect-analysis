@@ -15,7 +15,7 @@
 # from Matlab to Octave, and one by one scripts are switched to octave. 
 #
 
-% version 1.7
+% version 1.11
 
 #
 # General targets
@@ -36,17 +36,25 @@
 	done
 }
 
-@network.$NETWORK:  
-	@check.$NETWORK 
-	[dat/dep.network.$NETWORK];
+@network.$network:  @check.$network [dat/dep.network.$network]; 
 
->dat/dep.network.$NETWORK:
+>dat/dep.network.$network:	
 	sh/dep-network 
 	STATISTICS
 	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
 {
 	sh/dep-network 
+}
+
+@plot.$network: [dat/dep.plot.$network]; 
+
+>dat/dep.plot.$network:	
+	sh/dep-network 
+	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
+	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
+{
+	plots_only=1 sh/dep-network 
 }
 
 #
@@ -175,22 +183,23 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 # C programs
 #
 
->CFLAGS:  {
-	# echo \
-	# 	-std=c99 -pedantic -Wall -Wextra -Werror \
-	# 	-Wundef -D_GNU_SOURCE \
-	# 	-lm \
-	# 	-O3 -DNDEBUG -s 
-
-	echo \
-		-std=c99 -pedantic -Wall -Wextra -Werror \
-		-Wundef -D_GNU_SOURCE \
-		-lm \
-		-g 
-
+CFLAGS=
 	# -D_GNU_SOURCE:  for posix_madvise() 
 	# -lm:  used only in hyperanf.c / hyperloglog.h
+
+{
+	-std=c99 -pedantic -Wall -Wextra -Werror 
+	-Wundef -D_GNU_SOURCE 
+	-lm 
+	-O3 -DNDEBUG -s
 }
+# {
+# 	-std=c99 -pedantic -Wall -Wextra -Werror 
+# 	-Wundef -D_GNU_SOURCE 
+# 	-lm 
+# 	-g 
+# }
+
 
 bin/$NAME:
 	[dat/depc.$NAME.c] $[&CFLAGS] !bin
@@ -1195,7 +1204,7 @@ plot/weights.a.$NETWORK.eps:
 	<uni/out.$NETWORK
 	dat/NETWORKS_TIME
 {
-	if ! grep '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+	if ! grep -qE '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
 		exit 1
 	fi
 	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
@@ -1743,8 +1752,8 @@ plot/delaunay.a.$NETWORK.png:
 
 >dat/dep.delaunay:  dat/NETWORKS
 {
-	for NETWORK in $(cat dat/NETWORKS) ; do
-		echo @delaunay.$NETWORK
+	for network in $(cat dat/NETWORKS) ; do
+		echo @delaunay.$network
 	done
 }
 
@@ -1752,7 +1761,7 @@ plot/delaunay.a.$NETWORK.png:
 # Lybl
 #
 
-@lybl.$NETWORK:  plot/lybl.a.$NETWORK.png;
+@lybl.$network:  plot/lybl.a.$network.png; 
 
 plot/lybl.a.$NETWORK.png:
 	m/lybl.m

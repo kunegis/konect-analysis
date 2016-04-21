@@ -1,4 +1,3 @@
-
 /*
  * Count the triangles in a network.  The input file must be an SG1 file
  * representing a simple graph (SYM, UNWEIGHTED, no loops). 

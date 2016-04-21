@@ -3,7 +3,8 @@
 # Generate the dependencies of a network.
 #
 # PARAMETERS
-#	$NETWORK
+#	$network
+#	$plots_only
 #
 # STDOUT
 #	The list of dependencies in Stu format
@@ -21,25 +22,29 @@
 #
 
 for PLOT in $(cat PLOTS) ; do
-	echo @$PLOT.$NETWORK
+	echo @$PLOT.$network
 done
 
-if grep -q '^'"$NETWORK"'$' dat/NETWORKS_SQUARE ; then
+if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
 	for PLOT in $(cat PLOTS_SQUARE) ; do 
-		echo @$PLOT.$NETWORK
+		echo @$PLOT.$network
 	done
 fi
 
-if grep -q '^'"$NETWORK"'$' dat/NETWORKS_ASYM ; then
+if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
 	for PLOT in $(cat PLOTS_ASYM) ; do 
-		echo @$PLOT.$NETWORK
+		echo @$PLOT.$network
 	done
 fi
 
-if grep -q '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
 	for PLOT in $(cat PLOTS_TIME) ; do 
-		echo @$PLOT.$NETWORK
+		echo @$PLOT.$network
 	done
+fi
+
+if [ "$plots_only" ] ; then
+	exit 0
 fi
 
 #
@@ -56,7 +61,7 @@ for STATISTIC in $(cat STATISTICS) ; do
 				echo >&2 "$file:  unknown attribute '$ATTRIBUTE'"
 				exit 1
 			fi
-			if ! grep -Eq '^'"$NETWORK"'$' "dat/NETWORKS_$ATTRIBUTE" ; then
+			if ! grep -Eq '^'"$network"'$' "dat/NETWORKS_$ATTRIBUTE" ; then
 				compute=0
 			fi
 		done
@@ -65,7 +70,7 @@ for STATISTIC in $(cat STATISTICS) ; do
 	fi
 		
 	if [ "$compute" != 0 ] ; then
-		echo @statistic.$STATISTIC.$NETWORK
+		echo @statistic.$STATISTIC.$network
 	fi
 done
 
@@ -73,12 +78,8 @@ done
 # Data files 
 #
 
-if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$NETWORK ; then
-	echo @rdf.$NETWORK
+if grep -qE '^\s*n3-prefix-m\s*:' uni/meta.$network ; then
+	echo @rdf.$network
 fi
 
-# It does not matter that we don't use the file for the website, this is
-# just the declaration.  
-##if grep -qE "^\s*$NETWORK\s*,\s*matrix$" ../kunegis/projects/konect/web/allowed_src.txt; then
 echo @tsv.$NETWORK
-##fi

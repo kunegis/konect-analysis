@@ -7,6 +7,7 @@ analyses of KONECT networks in parallel.
 * Stu:  install from https://github.com/kunegis/stu
 * g++
 * python-rdflib (for RDF generation only)
+* sed -r (this is non-POSIX)
 
 == Prepare ==
 
