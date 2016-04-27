@@ -15,7 +15,7 @@
 # from Matlab to Octave, and one by one scripts are switched to octave. 
 #
 
-% version 1.11
+% version 1.12
 
 #
 # General targets
@@ -327,7 +327,7 @@ bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
 # Location of compiled files
 bin
 {
-	mkdir bin
+	mkdir -p bin
 }
 
 #
@@ -502,11 +502,7 @@ dat/sg1.lcc~$NETWORK:
 	sh/widths-simple 
 }
 
-dat/widths.lcc~$NETWORK:
-	dat/widths.$NETWORK
-{
-	cp dat/widths.$NETWORK dat/widths.lcc~$NETWORK
-}
+dat/widths.lcc~$NETWORK = dat/widths.$NETWORK;
 
 #
 # Split
@@ -720,11 +716,7 @@ dat/statistic.volume.$NETWORK:
 	$(cat dat/dep.c.volume.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
 }
 
-dat/statistic.volume.simple~$NETWORK:
-	dat/statistic.volume.$NETWORK
-{
-	cp dat/statistic.volume.$NETWORK dat/statistic.volume.simple~$NETWORK
-}
+dat/statistic.volume.simple~$NETWORK = dat/statistic.volume.$NETWORK;
 
 #
 # Statistics with special code (simple expressions or C programs) 
@@ -737,11 +729,7 @@ dat/statistic.volume.simple~$NETWORK:
 	$(cat dat/dep.c.maxdegree.$NETWORK) dat/sg1.$NETWORK 
 }
 
-dat/statistic.triangles.$NETWORK:
-	dat/statistic.triangles.simple~$NETWORK
-{
-	cp dat/statistic.triangles.simple~$NETWORK dat/statistic.triangles.$NETWORK
-}
+dat/statistic.triangles.$NETWORK = dat/statistic.triangles.simple~$NETWORK;
 
 >dat/statistic.triangles.simple~$NETWORK:
 	dat/sg1.simple~$NETWORK
@@ -757,11 +745,7 @@ dat/statistic.triangles.$NETWORK:
 	$(cat dat/dep.c2.statistic_twostars.simple~$NETWORK) dat/ft.degree.simple~$NETWORK 
 }
 
-dat/statistic.twostars.$NETWORK:
-	dat/statistic.twostars.simple~$NETWORK
-{
-	cp dat/statistic.twostars.simple~$NETWORK dat/statistic.twostars.$NETWORK
-}
+dat/statistic.twostars.$NETWORK = dat/statistic.twostars.simple~$NETWORK;
 
 >dat/statistic.twostars_norm_d.$NETWORK:
 	dat/statistic.twostars.$NETWORK
@@ -800,23 +784,11 @@ dat/statistic.avgdegree.$NETWORK:
 	$(cat dat/dep.c.ifub.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK $K ${TMP:-/tmp}/ifub.$NETWORK 
 }
 
-dat/statistic.ifub$K.simple~$NETWORK:
-	dat/statistic.ifub$K.lcc~simple~$NETWORK
-{
-	cp dat/statistic.ifub$K.lcc~simple~$NETWORK dat/statistic.ifub$K.simple~$NETWORK
-}
+dat/statistic.ifub$K.simple~$NETWORK = dat/statistic.ifub$K.lcc~simple~$NETWORK;
 
-dat/statistic.ifub$K.$NETWORK:
-	dat/statistic.ifub$K.simple~$NETWORK
-{
-	cp dat/statistic.ifub$K.simple~$NETWORK dat/statistic.ifub$K.$NETWORK
-}
+dat/statistic.ifub$K.$NETWORK = dat/statistic.ifub$K.simple~$NETWORK;
 
-dat/statistic.diam.$NETWORK:
-	dat/statistic.ifub0.$NETWORK
-{
-	cp dat/statistic.ifub0.$NETWORK dat/statistic.diam.$NETWORK
-}
+dat/statistic.diam.$NETWORK = dat/statistic.ifub0.$NETWORK;
 
 >dat/statistic.relmaxdegree.$NETWORK:
 	dat/statistic.maxdegree.$NETWORK
@@ -938,7 +910,6 @@ dat/statistic_time.full.$STATISTIC.$NETWORK:
 	}
 	sed -re 's,\s+, ,g' |
 	cut -d ' ' -f "$K"
-#	awk -F '\s+' '{ print $'"$K"' }'
 	cp dat/statistic_time_runtime.full.$STATISTIC.$NETWORK \
 		dat/statistic_time_runtime.full.${STATISTIC}+${K}.$NETWORK  
 }
@@ -1333,15 +1304,9 @@ plot/cluscod.a.$NETWORK.eps:
 
 @hopdistr_time.full.$NETWORK:  plot/hopdistr_time.full.a.$NETWORK.eps; 
 
-dat/hopdistr2.$NETWORK:  dat/hopdistr2.simple~$NETWORK
-{
-	cp dat/hopdistr2.simple~$NETWORK dat/hopdistr2.$NETWORK
-}
+dat/hopdistr2.$NETWORK = dat/hopdistr2.simple~$NETWORK;
 
-dat/hopdistr2.simple~$NETWORK:  dat/hopdistr2.lcc~simple~$NETWORK
-{
-	cp dat/hopdistr2.lcc~simple~$NETWORK dat/hopdistr2.simple~$NETWORK
-}
+dat/hopdistr2.simple~$NETWORK = dat/hopdistr2.lcc~simple~$NETWORK;
 
 >dat/hopdistr2.lcc~simple~$NETWORK:  
 	dat/sg1.lcc~simple~$NETWORK
@@ -1696,7 +1661,7 @@ dat/download.tsv.$NETWORK.tar.bz2:
 {
 	DIR="dat-tmp/$NETWORK"
 
-	rm -rf "$DIR"
+	rm -Rf "$DIR"
 	mkdir "$DIR"
 
 	for file in $(cat dat/dep.download.tsv.$NETWORK) 
@@ -1819,7 +1784,7 @@ plot/syngraphy.a.$NETWORK.eps:
 
 @outin:  [dat/dep.outin];
 
-@outin.$NETWORK:  plot/outin.a.$NETWORK.eps;
+@outin.$network:  plot/outin.a.$network.eps;
 
 plot/outin.a.$NETWORK.eps:  
 	m/outin.m 
@@ -1862,11 +1827,20 @@ dat/runtime:  tmp.runtime m/runtime.m
 	sed -re 's,^,@zipf.,'
 }
 
-@zipf.$NETWORK:  plot/zipf.a.$NETWORK.eps;
+@zipf.$network:  plot/zipf.a.$network.eps;
 
 plot/zipf.a.$NETWORK.eps:  
 	m/zipf.m m/zipf_one.m $[&MATLABPATH]
 	dat/data.$NETWORK.mat dat/info.$NETWORK
 {
 	./matlab m/zipf.m 
+}
+
+#
+# Bipartivity -- opposite of nonbipartivity. 
+#
+
+>dat/statistic.bip.$network:  dat/statistic.nonbip.$network
+{
+	head -1 dat/statistic.nonbip."$network" | awk '{printf "%.12f\n", 1.0 - $1}'
 }
