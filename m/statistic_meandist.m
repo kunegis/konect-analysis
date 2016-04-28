@@ -2,16 +2,16 @@
 % Computer average distance
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/hopdistr2.$NETWORK
+%	dat/hopdistr2.$network
 %
 % OUTPUT 
-%	dat/statistic.meandist.$NETWORK
+%	dat/statistic.meandist.$network
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 data = load(sprintf('dat/hopdistr2.%s', network));
 

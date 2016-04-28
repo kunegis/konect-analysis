@@ -2,18 +2,18 @@
 % Compute the average degree statistic of a network. 
 %
 % PARAMETERS 
-%	$NETWORK 
+%	$network 
 %
 % INPUT 
-%	dat/statistic.volume.$NETWORK
-%	dat/statistic.size.$NETWORK 
-%	dat/statistic.format.$NETWORK 
+%	dat/statistic.volume.$network
+%	dat/statistic.size.$network 
+%	dat/statistic.format.$network 
 %
 % OUTPUT 
-%	dat/statistic.avgdegree.$NETWORK
+%	dat/statistic.avgdegree.$network
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 consts = konect_consts(); 
 

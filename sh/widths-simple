@@ -14,12 +14,12 @@
 #    be stored twice and thus the bitwidth for M may be increased 
 #
 # PARAMETERS
-#	$NETWORK
+#	$network
 #
 # INPUT
-#	dat/widths.$NETWORK
-#	dat/statistic.size.$NETWORK
-#	dat/statistic.volume.$NETWORK
+#	dat/widths.$network
+#	dat/statistic.size.$network
+#	dat/statistic.volume.$network
 #
 # OUTPUT
 #	The transformed bitwidth
@@ -30,7 +30,7 @@ use warnings;
 
 require Konect; 
 
-my $network = $ENV{"NETWORK"};
+my $network = $ENV{"network"};
 
 open(WIDTHS, "<", "dat/widths.$network") or die $!; 
 

@@ -5,16 +5,16 @@
 % these networks aggregate multiple edges into one line. 
 %
 % PARAMETERS 
-%	$NETWORK 
+%	$network 
 %
 % INPUT 
-%	dat/info.$NETWORK
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/statistic.lines.$NETWORK
+%	dat/statistic.lines.$network
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 info = read_info(network); 
 

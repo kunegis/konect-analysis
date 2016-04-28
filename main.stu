@@ -24,15 +24,15 @@
 @all:   @all.everything;
 @test:   dat/check-meta @all.test;
 
-@all.$CLASS:  [dat/dep.all.$CLASS];
+@all.$class:  [dat/dep.all.$class];
 
->dat/dep.all.$CLASS:  dat/NETWORKS_CLASS_$CLASS $[SCATTERS]
+>dat/dep.all.$class:  $[networks = dat/NETWORKS_CLASS_$class] $[SCATTERS]
 {
-	for NETWORK in $(cat dat/NETWORKS_CLASS_$CLASS) ; do
-		echo @network."$NETWORK"
+	for network in $networks ; do
+		echo @network."$network"
 	done
-	for SCATTER in $SCATTERS ; do
-		echo @scatter."$SCATTER".$CLASS
+	for scatter in $SCATTERS ; do
+		echo @scatter."$scatter".$class
 	done
 }
 
@@ -394,11 +394,11 @@ dat/check.$NETWORK:
 	./octave m/check.m && echo OK >dat/check.$NETWORK
 }
 
->dat/dep.check:  dat/NETWORKS
+>dat/dep.check:  $[networks = dat/NETWORKS]
 {
-	for NETWORK in $(cat dat/NETWORKS)
+	for network in $networks 
 	do
-		echo @check.$NETWORK
+		echo @check."$network"
 	done 
 }
 
@@ -426,7 +426,9 @@ dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m
 # OUT files for derived networks
 #
 
-dat/out.$TRANSFORM~$NETWORK:  [dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK] dat/sg1.$TRANSFORM~$NETWORK
+dat/out.$TRANSFORM~$NETWORK:  
+	[dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK] 
+	dat/sg1.$TRANSFORM~$NETWORK
 {
 	$(cat dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK dat/out.$TRANSFORM~$NETWORK
 }
@@ -437,20 +439,18 @@ dat/out.$TRANSFORM~$NETWORK:  [dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK] dat/s
 
 @sg0: [dat/dep.sg0];
 
->dat/dep.sg0:  dat/NETWORKS
+>dat/dep.sg0:  $[networks = dat/NETWORKS]
 {
-	for network in $(cat dat/NETWORKS) ; do echo $network ; done | sed -re 's,^,@sg0.,' 
+	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg0.,' 
 }
 
 @sg0.$NETWORK:  dat/sg0.$NETWORK;
 
 dat/sg0.$NETWORK:
 	dat/widths.$NETWORK uni/out.$NETWORK dat/info.$NETWORK 
-	[dat/dep.c.sgraph0_create.$NETWORK]
+	$[command = dat/dep.c.sgraph0_create.$NETWORK]
 {
-	$(cat dat/dep.c.sgraph0_create.$NETWORK) \
-		uni/out.$NETWORK dat/sg0.$NETWORK \
-		$(head -3 dat/info.$NETWORK)
+	$command uni/out.$NETWORK dat/sg0.$NETWORK $(head -3 dat/info.$NETWORK)
 }
 
 #
@@ -459,45 +459,44 @@ dat/sg0.$NETWORK:
 
 @sg1:  [dat/dep.sg1];
 
->dat/dep.sg1: dat/NETWORKS
+>dat/dep.sg1: $[networks = dat/NETWORKS]
 {
-	for network in $(cat dat/NETWORKS) ; do echo $network ; done | sed -re 's,^,@sg1.,' 
+	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg1.,' 
 }
 
 @sg1.$NETWORK:  dat/sg1.$NETWORK;
 
 dat/sg1.$NETWORK:  
-	[dat/dep.c.sgraph1_create.$NETWORK]
+	$[command = dat/dep.c.sgraph1_create.$NETWORK]
 	dat/sg0.$NETWORK
 {
-	$(cat dat/dep.c.sgraph1_create.$NETWORK) \
-		dat/sg0.$NETWORK dat/sg1.$NETWORK
+	$command dat/sg0.$NETWORK dat/sg1.$NETWORK
 }
 
 # 
 # Derived graphs
 #
 
-dat/sg1.simple~$NETWORK:
-	[dat/dep.cx.sgraph1_create_simple.$NETWORK.simple]
-	dat/sg0.$NETWORK
+dat/sg1.simple~$network:
+	$[command = dat/dep.cx.sgraph1_create_simple.$network.simple]
+	dat/sg0.$network	
 {
-	$(cat dat/dep.cx.sgraph1_create_simple.$NETWORK.simple) dat/sg0.$NETWORK dat/sg1.simple~$NETWORK
+	$command dat/sg0.$network dat/sg1.simple~$network
 }
 
-dat/sg1.lcc~$NETWORK:
-	[dat/dep.c.sgraph1_create_lcc.$NETWORK]
-	dat/sg1.$NETWORK
+dat/sg1.lcc~$network:
+	$[command = dat/dep.c.sgraph1_create_lcc.$network]
+	dat/sg1.$network
 {
-	$(cat dat/dep.c.sgraph1_create_lcc.$NETWORK) dat/sg1.$NETWORK dat/sg1.lcc~$NETWORK
+	$command dat/sg1.$network dat/sg1.lcc~$network
 }
 
->dat/widths.simple~$NETWORK:
+>dat/widths.simple~$network:
 	sh/widths-simple
 	$[&PERL5LIB]
-	dat/widths.$NETWORK
-	dat/statistic.size.$NETWORK
-	dat/statistic.volume.$NETWORK
+	dat/widths.$network
+	dat/statistic.size.$network
+	dat/statistic.volume.$network
 {
 	sh/widths-simple 
 }
@@ -544,10 +543,10 @@ dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
 
 @assortativity: [dat/dep.assortativity];
 
->dat/dep.assortativity:  dat/NETWORKS
+>dat/dep.assortativity:  $[networks = dat/NETWORKS]
 { 
-	for network in $(cat dat/NETWORKS); do 
-		echo @assortativity.$network ; 
+	for network in $networks ; do 
+		echo @assortativity.$network 
 	done 
 }
 
@@ -566,28 +565,28 @@ plot/assortativity.a.$NETWORK.eps:
 # Statistics
 #
 
-@statistic.$STATISTIC:  [dat/dep.statistic.$STATISTIC];
+@statistic.$statistic:  [dat/dep.statistic.$statistic];
 
->dat/dep.statistic.$STATISTIC:  
-	[dat/dep.dep.statistic.$STATISTIC] dat/dep.dep.statistic.$STATISTIC
+>dat/dep.statistic.$statistic:  
+	[dat/dep.dep.statistic.$statistic] dat/dep.dep.statistic.$statistic
 {
-	if [ ! -r "$(cat dat/dep.dep.statistic.$STATISTIC)" ] ; then
+	if [ ! -r "$(cat dat/dep.dep.statistic.$statistic)" ] ; then
 		exit 1
 	fi
 
-	NETWORKS="$(cat "$(cat dat/dep.dep.statistic.$STATISTIC)")"
+	networks="$(cat "$(cat dat/dep.dep.statistic.$statistic)")"
 
-	for network in $NETWORKS
+	for network in $networks
 	do
-		echo @statistic.$STATISTIC.$network
+		echo @statistic.$statistic.$network
 	done 
 }
 
 # The dat/NETWORKS{,_$NAME} file to read
->dat/dep.dep.statistic.$STATISTIC:
-	dat/statistic-attribute.$STATISTIC
+>dat/dep.dep.statistic.$statistic:
+	dat/statistic-attribute.$statistic
 {
-	attribute="$(cat dat/statistic-attribute.$STATISTIC)"
+	attribute="$(cat dat/statistic-attribute.$statistic)"
 	if [ -z "$attribute" ] ; then
 		echo dat/NETWORKS
 	else
@@ -597,20 +596,19 @@ plot/assortativity.a.$NETWORK.eps:
 
 # The group used for the given statistic, or empty when all networks
 # should be used
->dat/statistic-attribute.$STATISTIC:
-	sh/attribute [dat/dep.statistic-attribute.$STATISTIC]
+>dat/statistic-attribute.$statistic:
+	sh/attribute [dat/dep.statistic-attribute.$statistic]
 {
-	sh/attribute "$STATISTIC"
+	sh/attribute "$statistic"
 }
 
->dat/dep.statistic-attribute.$STATISTIC:
+>dat/dep.statistic-attribute.$statistic:
 {
-	statistic_base="$(echo "$STATISTIC" | sed -re 's,\+.+$,,')"
+	statistic_base="$(echo "$statistic" | sed -re 's,\+.+$,,')"
 	echo konect-toolbox/m/konect_statistic_"$statistic_base".m 
 }
 
-@statistic.$STATISTIC.$NETWORK:
-	dat/statistic.$STATISTIC.$NETWORK;
+@statistic.$statistic.$network:  dat/statistic.$statistic.$network;
 
 #
 # Statistics implemented in Matlab (the default) 
@@ -678,170 +676,165 @@ dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
 	./octave m/statistic_size.m
 }
 
->dat/statistic.size.$TRANSFORM~$NETWORK:
-	[dat/dep.c.size.$TRANSFORM~$NETWORK]
-	dat/sg1.$TRANSFORM~$NETWORK 
+>dat/statistic.size.$transform~$network:
+	$[command = dat/dep.c.size.$transform~$network]
+	dat/sg1.$transform~$network 
 {
-	$(cat dat/dep.c.size.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+	$command dat/sg1.$transform~$network 
 }
 
-dat/statistic.lines.$NETWORK:  
-	m/statistic_lines.m 
-	dat/info.$NETWORK
-	$[&MATLABPATH]
+dat/statistic.lines.$network:  
+	m/statistic_lines.m $[&MATLABPATH]
+	dat/info.$network
 {
 	./octave m/statistic_lines.m
 }
 
->dat/statistic.lines.$TRANSFORM~$NETWORK:
-	[dat/dep.c.lines.$TRANSFORM~$NETWORK]
-	dat/sg1.$TRANSFORM~$NETWORK 
+>dat/statistic.lines.$transform~$network:
+	$[command = dat/dep.c.lines.$transform~$network]
+	dat/sg1.$transform~$network 
 {
-	$(cat dat/dep.c.lines.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+	$command dat/sg1.$transform~$network 
 }
 
 dat/statistic.volume.$NETWORK:  
 	dat/info.$NETWORK 
 	bin/statistic_volume 
 	uni/out.$NETWORK
-	$[&MATLABPATH]
+##	$[&MATLABPATH]
 {
 	 bin/statistic_volume 
 }
 
->dat/statistic.volume.$TRANSFORM~$NETWORK:
-	[dat/dep.c.volume.$TRANSFORM~$NETWORK]
-	dat/sg1.$TRANSFORM~$NETWORK 
+>dat/statistic.volume.$transform~$network:
+	$[command = dat/dep.c.volume.$transform~$network]
+	dat/sg1.$transform~$network 
 {
-	$(cat dat/dep.c.volume.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK 
+	$command dat/sg1.$transform~$network 
 }
 
-dat/statistic.volume.simple~$NETWORK = dat/statistic.volume.$NETWORK;
+dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 
 #
 # Statistics with special code (simple expressions or C programs) 
 #
 
->dat/statistic.maxdegree.$NETWORK:
-	dat/sg1.$NETWORK
-	[dat/dep.c.maxdegree.$NETWORK]
+>dat/statistic.maxdegree.$network:
+	dat/sg1.$network
+	$[command = dat/dep.c.maxdegree.$network]
 {
-	$(cat dat/dep.c.maxdegree.$NETWORK) dat/sg1.$NETWORK 
+	$command dat/sg1.$network 
 }
 
-dat/statistic.triangles.$NETWORK = dat/statistic.triangles.simple~$NETWORK;
+dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 
->dat/statistic.triangles.simple~$NETWORK:
-	dat/sg1.simple~$NETWORK
-	[dat/dep.c.triangles.simple~$NETWORK]
+>dat/statistic.triangles.simple~$network:
+	dat/sg1.simple~$network
+	$[command = dat/dep.c.triangles.simple~$network]
 {
-	$(cat dat/dep.c.triangles.simple~$NETWORK) dat/sg1.simple~$NETWORK 
+	$command dat/sg1.simple~$network 
 }
 
->dat/statistic.twostars.simple~$NETWORK:
-	[dat/dep.c2.statistic_twostars.simple~$NETWORK]
-	dat/ft.degree.simple~$NETWORK
+>dat/statistic.twostars.simple~$network:
+	$[command = dat/dep.c2.statistic_twostars.simple~$network]
+	dat/ft.degree.simple~$network
 {
-	$(cat dat/dep.c2.statistic_twostars.simple~$NETWORK) dat/ft.degree.simple~$NETWORK 
+	$command dat/ft.degree.simple~$network 
 }
 
-dat/statistic.twostars.$NETWORK = dat/statistic.twostars.simple~$NETWORK;
+dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
 
->dat/statistic.twostars_norm_d.$NETWORK:
-	dat/statistic.twostars.$NETWORK
-	dat/statistic.size.$NETWORK
-	dat/statistic.avgdegree.$NETWORK
+>dat/statistic.twostars_norm_d.$network:
+	dat/statistic.twostars.$network
+	dat/statistic.size.$network
+	dat/statistic.avgdegree.$network
 {
-	s="$(head -1 dat/statistic.twostars.$NETWORK)"
-	n="$(head -1 dat/statistic.size.$NETWORK)"
-	d="$(head -1 dat/statistic.avgdegree.$NETWORK)"
+	s="$(head -1 dat/statistic.twostars.$network)"
+	n="$(head -1 dat/statistic.size.$network)"
+	d="$(head -1 dat/statistic.avgdegree.$network)"
 	echo $s $n $d | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1)  }' 
 }
 
->dat/statistic.clusco.$NETWORK:
-	dat/statistic.triangles.$NETWORK
-	dat/statistic.twostars.$NETWORK
+>dat/statistic.clusco.$network:
+	dat/statistic.triangles.$network
+	dat/statistic.twostars.$network
 {
-	t="$(head -1 dat/statistic.triangles.$NETWORK)"
-	s="$(head -1 dat/statistic.twostars.$NETWORK)"
+	t="$(head -1 dat/statistic.triangles.$network)"
+	s="$(head -1 dat/statistic.twostars.$network)"
 	echo $t $s | awk '{ printf "%.12f\n", 3 * $1 / $2 }' 
 }
 
-dat/statistic.avgdegree.$NETWORK:
-	m/statistic_avgdegree.m 
-	dat/statistic.volume.$NETWORK
-	dat/statistic.size.$NETWORK
-	dat/statistic.format.$NETWORK
-	$[&MATLABPATH]
+dat/statistic.avgdegree.$network:
+	m/statistic_avgdegree.m	$[&MATLABPATH]
+	dat/statistic.volume.$network
+	dat/statistic.size.$network
+	dat/statistic.format.$network
 {
 	 ./matlab m/statistic_avgdegree.m
 }
 
->dat/statistic.ifub$K.lcc~simple~$NETWORK:
-	[dat/dep.c.ifub.lcc~simple~$NETWORK]
-	dat/sg1.lcc~simple~$NETWORK
+>dat/statistic.ifub$K.lcc~simple~$network:
+	$[command = dat/dep.c.ifub.lcc~simple~$network]
+	dat/sg1.lcc~simple~$network
 {
-	$(cat dat/dep.c.ifub.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK $K ${TMP:-/tmp}/ifub.$NETWORK 
+	$command dat/sg1.lcc~simple~$network $K ${TMP:-/tmp}/ifub.$network 
 }
 
-dat/statistic.ifub$K.simple~$NETWORK = dat/statistic.ifub$K.lcc~simple~$NETWORK;
+dat/statistic.ifub$K.simple~$network = dat/statistic.ifub$K.lcc~simple~$network;
 
-dat/statistic.ifub$K.$NETWORK = dat/statistic.ifub$K.simple~$NETWORK;
+dat/statistic.ifub$K.$network = dat/statistic.ifub$K.simple~$network;
 
-dat/statistic.diam.$NETWORK = dat/statistic.ifub0.$NETWORK;
+dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 
->dat/statistic.relmaxdegree.$NETWORK:
-	dat/statistic.maxdegree.$NETWORK
-	dat/statistic.avgdegree.$NETWORK
+>dat/statistic.relmaxdegree.$network:
+	dat/statistic.maxdegree.$network
+	dat/statistic.avgdegree.$network
 {
-	d_max="$(head -1 dat/statistic.maxdegree.$NETWORK)"
-	d="$(head -1 dat/statistic.avgdegree.$NETWORK)"
+	d_max="$(head -1 dat/statistic.maxdegree.$network)"
+	d="$(head -1 dat/statistic.avgdegree.$network)"
 	echo $d_max $d | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
->dat/statistic.coco.$NETWORK:
-	dat/statistic.coco.simple~$NETWORK
+>dat/statistic.coco.$network:
+	dat/statistic.coco.simple~$network
 {
-	coco="$(head -1 dat/statistic.coco.simple~$NETWORK)"
+	coco="$(head -1 dat/statistic.coco.simple~$network)"
 	echo $coco 
 }
 
->dat/statistic.coco.simple~$NETWORK:
-	dat/statistic.size.lcc~simple~$NETWORK
+>dat/statistic.coco.simple~$network:
+	dat/statistic.size.lcc~simple~$network
 {
-	coco="$(head -1 dat/statistic.size.lcc~simple~$NETWORK)"
-	echo $coco 
+	head -1 dat/statistic.size.lcc~simple~$network
 }
 
->dat/statistic.cocorel.$NETWORK:
-	dat/statistic.coco.$NETWORK
-	dat/statistic.size.$NETWORK
+>dat/statistic.cocorel.$network:
+	dat/statistic.coco.$network
+	dat/statistic.size.$network
 {
-	coco="$(head -1 dat/statistic.coco.$NETWORK)"
-	n="$(head -1 dat/statistic.size.$NETWORK)"
+	coco="$(head -1 dat/statistic.coco.$network)"
+	n="$(head -1 dat/statistic.size.$network)"
 	echo $coco $n | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
->dat/statistic.cocorelinv.$NETWORK:
-	dat/statistic.coco.$NETWORK
-	dat/statistic.size.$NETWORK
+>dat/statistic.cocorelinv.$network:
+	dat/statistic.coco.$network
+	dat/statistic.size.$network
 {
-	coco="$(head -1 dat/statistic.coco.$NETWORK)"
-	n="$(head -1 dat/statistic.size.$NETWORK)"
+	coco="$(head -1 dat/statistic.coco.$network)"
+	n="$(head -1 dat/statistic.size.$network)"
 	echo $coco $n | awk '{ printf "%.12f\n", 1.0 - ($1) / ($2 + 1) }' 
 }
 
-dat/statistic.meandist.$NETWORK:
-	m/statistic_meandist.m 
-	$[&MATLABPATH]
-     	dat/hopdistr2.$NETWORK
+dat/statistic.meandist.$network:
+	m/statistic_meandist.m $[&MATLABPATH]
+     	dat/hopdistr2.$network
 {
 	 ./octave m/statistic_meandist.m 
 }
 
 dat/statistic.diameff$PERCENTILE.$NETWORK:
-	m/statistic_diameff.m
-	$[&MATLABPATH]
+	m/statistic_diameff.m $[&MATLABPATH]
 	dat/hopdistr2.$NETWORK
 {
 	 ./octave m/statistic_diameff.m 
