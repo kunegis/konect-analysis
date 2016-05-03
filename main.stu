@@ -423,6 +423,16 @@ dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m
 }
 
 #
+# Out2 files, struct text files with exactly one tab as separator, and
+# without comment lines.  (Needed for Julia)
+#
+
+>dat/out2.$network:  <uni/out.$network sh/out2
+{
+	sh/out2
+}
+
+#
 # OUT files for derived networks
 #
 
@@ -1836,4 +1846,19 @@ plot/zipf.a.$NETWORK.eps:
 >dat/statistic.bip.$network:  dat/statistic.nonbip.$network
 {
 	head -1 dat/statistic.nonbip."$network" | awk '{printf "%.12f\n", 1.0 - $1}'
+}
+
+#
+# Inter-event distribution
+#
+
+@inter:  [dat/dep.inter];
+
+>dat/dep.inter:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter.,' }
+
+@inter.$network:  plot/inter.a.$network.eps;
+
+plot/inter.a.$network.eps:  dat/out2.$network jl/inter
+{
+	jl/inter
 }

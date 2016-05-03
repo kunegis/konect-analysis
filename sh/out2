@@ -1,0 +1,13 @@
+#! /bin/sed -f
+
+# Remove comment lines
+/^[[:space:]]*%/d
+
+# Remove space at beginning of line
+s,^[[:space:]]*,,
+
+# Remove space at end of line
+s,[[:space:]]*$,,
+
+# Collapse internal space to individual tabs
+s/[[:space:]]\{1,\}/	/g

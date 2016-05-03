@@ -1,0 +1,31 @@
+#! /usr/bin/env julia
+#
+# Plot inter-event distributions.
+#
+# PARAMETERS 
+#	$network	Network name
+#
+# INPUT FILES
+#	dat/out2.$network
+#
+# OUTPUT FILES
+# 	plot/inter.{a}.$network.eps
+#
+
+using PyPlot;
+
+network = ENV["network"]; 
+
+T = readdlm("dat/out2.$network", '\t'); 
+
+t = T[:,4];
+sort!(t);
+
+d = t[2:end] - t[1:end-1];
+d = d[d .!= 0]; 
+n = length(d);
+sort!(d);
+
+loglog(d, ((n:-1:1) - 1/2) / n);
+
+savefig("plot/inter.a.$network.eps");

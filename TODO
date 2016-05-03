@@ -1,3 +1,6 @@
+* plot distribution of interevent time
+* plot distribution of single-node interevent time
+
 * mediandist:  actually compute it from hyperanf. 
 
 * wikiconflict:  change to MULTISIGNED and recompute everything with it. (need to adjust  quite a few code parts)

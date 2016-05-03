@@ -1,0 +1,16 @@
+We're experimenting with replacing Matlab by Julia.
+
+See jl/inter for an example script, and the @inter target in the Stu
+file. 
+
+We use PyPlot for plotting, which is based on Matplotlib. 
+
+
+How to set up Julia
+===================
+
+* apt-get install julia
+* apt-get install python-matplotlib
+
+From within Julia:
+* Pkg.add("PyPlot")

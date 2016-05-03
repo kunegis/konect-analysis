@@ -1,19 +1,24 @@
+This is the KONECT analysis component (KONECT-Analysis), part of the
+KONECT project: 
 
-This is the KONECT analysis component (KONECT-Analysis).  It allows to run
-analyses of KONECT networks in parallel. 
+http://konect.uni-koblenz.de/
+
+It allows to run analyses of KONECT networks in parallel. 
 
 == Requirements ==
 
 * Stu:  install from https://github.com/kunegis/stu
-* g++
+* g++ (only for triangle count and diameter) 
+* sed -r (this is non-POSIX, but most sed's have it)
 * python-rdflib (for RDF generation only)
-* sed -r (this is non-POSIX)
+* Julia (experimental, see lib/JULIA)
 
 == Prepare ==
 
 * Mount, link, symlink or copy uni/ into this directory.  The uni/
   directory must be present and contain all out.* and meta.* files.   
-* Mount, link, symlink or copy the dat/ and plot/ directories/ here.
+* Mount, link, symlink or copy the dat/ and plot/ directories/ here.  If
+  you start a new analysis, these can be empty. 
 * (optional) Install libraries as described in lib/README.  Not all
   targets need extra libraries.  You may as well don't do it and wait
   until you get a corresponding error message. 
