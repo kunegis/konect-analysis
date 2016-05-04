@@ -2,6 +2,9 @@
 #
 # Plot inter-event distributions.
 #
+# This is the first Julia code in KONECT, and therefore can serve as an
+# example of how to do it. 
+#
 # PARAMETERS 
 #	$network	Network name
 #
@@ -26,6 +29,18 @@ d = d[d .!= 0];
 n = length(d);
 sort!(d);
 
-loglog(d, ((n:-1:1) - 1/2) / n);
+fig = figure("Title", figsize=(5,3.7)); 
+
+plot(d, ((n:-1:1) - 1/2) / n);
+
+xlabel("Inter-event time (t) [s]");
+ylabel("P(x ≤ t)");
+
+xscale("log");
+yscale("log");
+
+tight_layout();
+
+## fig[:canvas][:draw]() # Update the figure
 
 savefig("plot/inter.a.$network.eps");

@@ -1,4 +1,4 @@
-* plot distribution of interevent time
+* plot distribution of interevent time... (@inter)
 * plot distribution of single-node interevent time
 
 * mediandist:  actually compute it from hyperanf. 
