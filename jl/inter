@@ -17,6 +17,8 @@
 
 using PyPlot;
 
+include("step_full.jl");
+
 network = ENV["network"]; 
 
 T = readdlm("dat/out2.$network", '\t'); 
@@ -26,21 +28,17 @@ sort!(t);
 
 d = t[2:end] - t[1:end-1];
 d = d[d .!= 0]; 
-n = length(d);
-sort!(d);
 
 fig = figure("Title", figsize=(5,3.7)); 
 
-plot(d, ((n:-1:1) - 1/2) / n);
+step_full(d);
 
 xlabel("Inter-event time (t) [s]");
 ylabel("P(x ≤ t)");
-
-xscale("log");
-yscale("log");
 
 tight_layout();
 
 ## fig[:canvas][:draw]() # Update the figure
 
 savefig("plot/inter.a.$network.eps");
+
