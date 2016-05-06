@@ -34,7 +34,7 @@ fig = figure("Title", figsize=(5,3.7));
 step_full(d);
 
 xlabel("Inter-event time (t) [s]");
-ylabel("P(x ≤ t)");
+ylabel("P(x ≥ t)");
 
 tight_layout();
 
