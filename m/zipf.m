@@ -3,18 +3,18 @@
 % the cumulative degree distribution.  
 % 
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
+%	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/zipf.[auv].$NETWORK.dat
+%	plot/zipf.[auv].$network.dat
 %		a - total
 %		u,v - Row/column based (only BIP and ASYM)
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 
