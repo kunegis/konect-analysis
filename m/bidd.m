@@ -2,18 +2,18 @@
 % Draw the binormalized degree distributions. 
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
+%	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/bidd.[auv]{,x}.$NETWORK.dat
+%	plot/bidd.[auv]{,x}.$network.dat
 %		a/u/v - All / left / right
 %		"" / "x" - Normalized / non-normalized
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 

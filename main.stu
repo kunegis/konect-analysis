@@ -11,11 +11,11 @@
 # 				smallest networks  
 #	@network.$NETWORK	Build everything for one network
 #
-# Some commands use Matlab; others Octave.  In general, we are migrating
-# from Matlab to Octave, and one by one scripts are switched to octave. 
+# Some commands use Matlab, others Octave, and yet other Julia.  In general, we are migrating
+# everything to Julia, but the bulk is still in Matlab. 
 #
 
-% version 1.12
+% version 1.14
 
 #
 # General targets
@@ -1046,8 +1046,8 @@ tex/category-tabular.tex:
 >tex/dep.category-tabular.tex:
 	dat/NETWORKS
 {
-	for NETWORK in $(cat dat/NETWORKS) ; do
-		echo uni/meta.$NETWORK dat/statistic.format.$NETWORK dat/statistic.weights.$NETWORK
+	for network in $(cat dat/NETWORKS) ; do
+		echo uni/meta.$network dat/statistic.format.$network dat/statistic.weights.$network
 	done
 }
 
@@ -1055,13 +1055,23 @@ tex/category-tabular.tex:
 # Bidd (cumulated degree distribution)
 #
 
-@bidd.$NETWORK:  plot/bidd.a.$NETWORK.eps;
+## @bidd.$NETWORK:  plot/bidd.a.$NETWORK.eps;
 
-plot/bidd.a.$NETWORK.eps:  
+@bidd: [dat/dep.bidd];
+
+>dat/dep.bidd:  dat/NETWORKS
+{
+	for network in $(cat dat/NETWORKS) ; do
+		echo @bidd."$network"
+	done
+}
+
+@bidd.$network 
+plot/bidd.a.$network.eps:  
 	m/bidd.m m/bidd_one.m 
 	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
+	dat/info.$network
+	dat/data.$network.mat 
 {
 	 ./matlab m/bidd.m
 }
