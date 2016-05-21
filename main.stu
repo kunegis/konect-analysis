@@ -15,7 +15,7 @@
 # everything to Julia, but the bulk is still in Matlab. 
 #
 
-% version 1.14
+% version 1.15
 
 #
 # General targets
@@ -711,7 +711,6 @@ dat/statistic.volume.$NETWORK:
 	dat/info.$NETWORK 
 	bin/statistic_volume 
 	uni/out.$NETWORK
-##	$[&MATLABPATH]
 {
 	 bin/statistic_volume 
 }
@@ -1055,8 +1054,6 @@ tex/category-tabular.tex:
 # Bidd (cumulated degree distribution)
 #
 
-## @bidd.$NETWORK:  plot/bidd.a.$NETWORK.eps;
-
 @bidd: [dat/dep.bidd];
 
 >dat/dep.bidd:  dat/NETWORKS
@@ -1084,7 +1081,6 @@ plot/bidd.a.$network.eps:
 @layout.class.$CLASS:  [dat/dep.layout.class.$CLASS];
 
 @layout.$NETWORK
-## :  plot/layout.a.$NETWORK.eps;
 plot/layout.a.$NETWORK.eps:  
 	m/layout.m
 	dat/data.$NETWORK.mat  
@@ -1154,7 +1150,6 @@ plot/degree.a3.$NETWORK.eps:
 #
 
 @lorenz.$NETWORK
-## :  plot/lorenz.a.$NETWORK.eps; 
 plot/lorenz.a.$NETWORK.eps:  
 	m/lorenz.m m/lorenz_one.m 
 	dat/info.$NETWORK
@@ -1169,7 +1164,6 @@ plot/lorenz.a.$NETWORK.eps:
 #
 
 @weights.$NETWORK
-## :  plot/weights.a.$NETWORK.eps;
 plot/weights.a.$NETWORK.eps:  
 	m/weights_plot.m
 	$[&MATLABPATH]
@@ -1193,7 +1187,6 @@ plot/weights.a.$NETWORK.eps:
 }
 
 @time_histogram.$NETWORK
-## :  plot/time_histogram.$NETWORK.eps; 
 plot/time_histogram.$NETWORK.eps:   
 	m/time_histogram.m 
 	$[&MATLABPATH]
@@ -1218,7 +1211,6 @@ plot/time_histogram.$NETWORK.eps:
 #
 
 @time_histogram_signed.$NETWORK
-## :  plot/time_histogram_signed.a.$NETWORK.eps;
 plot/time_histogram_signed.a.$NETWORK.eps:
 	m/time_histogram_signed.m
 	$[&MATLABPATH]
@@ -1247,7 +1239,6 @@ plot/time_histogram_signed.a.$NETWORK.eps:
 #
 
 @diadens.$NETWORK
-## :  plot/diadens.$NETWORK.eps;
 plot/diadens.$NETWORK.eps:  
 	m/diadens.m 
 	$[&MATLABPATH]
@@ -1274,7 +1265,6 @@ dat/cluscod.$NETWORK.mat:
 }
 
 @cluscod.$NETWORK
-## :  plot/cluscod.a.$NETWORK.eps;
 plot/cluscod.a.$NETWORK.eps:  
 	m/cluscod_plot.m
 	$[&MATLABPATH]
@@ -1325,7 +1315,6 @@ dat/hopdistr2.simple~$NETWORK = dat/hopdistr2.lcc~simple~$NETWORK;
 }
 
 @hopdistr.$NETWORK
-## :  plot/hopdistr.a.$NETWORK.eps; 
 plot/hopdistr.a.$NETWORK.eps:  
 	m/hopdistr_plot.m
 	$[&MATLABPATH]
@@ -1355,7 +1344,6 @@ dat/hopdistr_time.full.$NETWORK:
 }
 
 @hopdistr_time.full.$NETWORK
-## :  plot/hopdistr_time.full.a.$NETWORK.eps; 
 plot/hopdistr_time.full.a.$NETWORK.eps:  
 	m/hopdistr_time_plot.m
 	$[&MATLABPATH]
@@ -1491,7 +1479,6 @@ dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
 }
 
 @pa.$NETWORK
-## :  plot/pa.aa.$NETWORK.eps;
 plot/pa.aa.$NETWORK.eps:  
 	m/pa_plot.m m/pa_plot_one.m dat/pa.$NETWORK.mat 
 	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
@@ -1505,7 +1492,6 @@ plot/pa.aa.$NETWORK.eps:
 #
 
 @distr.$DECOMPOSITION.$NETWORK
-## :  plot/distr.a.$DECOMPOSITION.$NETWORK.eps;
 plot/distr.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/distr_plot.m 
 	$[&MATLABPATH]
@@ -1529,7 +1515,6 @@ dat/distr.$DECOMPOSITION.$NETWORK:
 #
 
 @map.$DECOMPOSITION.$NETWORK
-## :  plot/map.a.$DECOMPOSITION.$NETWORK.eps; 
 plot/map.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/map.m 
 	m/map_one.m 
@@ -1716,7 +1701,6 @@ dat-tmp;
 #
 
 @delaunay.$NETWORK
-## :  plot/delaunay.a.$NETWORK.png;
 plot/delaunay.a.$NETWORK.png:
 	m/delaunay_plot.m 
 	$[&MATLABPATH]
@@ -1766,7 +1750,6 @@ plot/lybl.a.$NETWORK.png:
 #
 
 @syngraphy.$NETWORK
-## :  plot/syngraphy.a.$NETWORK.eps;
 plot/syngraphy.a.$NETWORK.eps:
 	m/syngraphy_plot.m 
 	$[&MATLABPATH]
@@ -1841,7 +1824,6 @@ dat/runtime:  tmp.runtime m/runtime.m
 }
 
 @zipf.$network
-## :  plot/zipf.a.$network.eps;
 plot/zipf.a.$network.eps:  
 	m/zipf.m m/zipf_one.m $[&MATLABPATH]
 	dat/data.$network.mat dat/info.$network
@@ -1867,8 +1849,24 @@ plot/zipf.a.$network.eps:
 >dat/dep.inter:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter.,' }
 
 @inter.$network
-## :  plot/inter.a.$network.eps;
 plot/inter.a.$network.eps:  dat/out2.$network jl/inter
 {
 	jl/inter
 }
+
+#
+# Per-node inter-event distribution
+#
+
+@inter2:  [dat/dep.inter2];
+
+>dat/dep.inter2:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter2.,' }
+
+@inter2.$network 
+plot/inter2.a.$network.eps:  
+	dat/out2.$network jl/inter2
+	dat/statistic.format.$network
+{
+	jl/inter2
+}
+
