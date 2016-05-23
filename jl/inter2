@@ -10,7 +10,7 @@
 #	dat/statistic.format.$network
 #
 # OUTPUT FILES
-#	plot/inter2.{auv}.$network.eps
+#	plot/inter2.{auv}{,l}.$network.png
 #
 
 using PyPlot;
@@ -25,6 +25,11 @@ format = read_statistic("format", network)[1];
 
 T = readdlm("dat/out2.$network", '\t'); 
 
+#
+# c	Character
+# x	Values
+# t	Timestamps
+#
 function inter2_one(c, network, x, t)
 
     d = [];
@@ -36,13 +41,25 @@ function inter2_one(c, network, x, t)
         d = [d ; d_i]; 
     end
     d = d[d .!= 0 ]; 
+    
+    close(); 
 
     fig = figure("Title", figsize=(5,3.7)); 
 
     step_full(d);
 
+    xlabel("Inter-event time (t) [s]");
+    ylabel("P(x ≥ t)");
+
     tight_layout();
-    savefig("plot/inter2.$c.$network.eps");
+
+    # Day line
+    axvline(60 * 60 * 24, linestyle = "--", linewidth = 0.5, color = "k"); 
+
+    savefig("plot/inter2.$c.$network.png");
+    xscale("linear");
+    c2= string(c, "l");
+    savefig("plot/inter2.$c2.$network.png");
 end
 
 if format == KONECT_BIP
@@ -58,4 +75,3 @@ elseif format == KONECT_ASYM
 else
     @assert false
 end
-

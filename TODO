@@ -1,5 +1,4 @@
-* inter
-** plot distribution of single-node interevent time
+* @inter, @inter2
 ** find a model for the power-law behaviour (should be
    exponential as per Poisson process) 
 

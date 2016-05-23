@@ -12,8 +12,10 @@
 #	dat/out2.$network
 #
 # OUTPUT FILES
-# 	plot/inter.{a}.$network.eps
-#		a	Overall distribution
+# 	plot/inter.$type.$network.png
+#		$type:
+#		a	Overall distribution, log-log
+#		al	Overall distribution, lin-log
 #
 
 using PyPlot;
@@ -36,6 +38,13 @@ step_full(d);
 
 xlabel("Inter-event time (t) [s]");
 ylabel("P(x ≥ t)");
-
 tight_layout();
-savefig("plot/inter.a.$network.eps");
+
+# Day line
+axvline(60 * 60 * 24, linestyle = "--", linewidth = 0.5, color = "k"); 
+
+savefig("plot/inter.a.$network.png");
+
+xscale("linear");
+
+savefig("plot/inter.al.$network.png");
