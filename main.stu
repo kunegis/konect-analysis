@@ -11,11 +11,11 @@
 # 				smallest networks  
 #	@network.$NETWORK	Build everything for one network
 #
-# Some commands use Matlab; others Octave.  In general, we are migrating
-# from Matlab to Octave, and one by one scripts are switched to octave. 
+# Some commands use Matlab, others Octave, and yet other Julia.  In general, we are migrating
+# everything to Julia, but the bulk is still in Matlab. 
 #
 
-% version 1.12
+% version 1.15
 
 #
 # General targets
@@ -711,7 +711,6 @@ dat/statistic.volume.$NETWORK:
 	dat/info.$NETWORK 
 	bin/statistic_volume 
 	uni/out.$NETWORK
-##	$[&MATLABPATH]
 {
 	 bin/statistic_volume 
 }
@@ -1046,8 +1045,8 @@ tex/category-tabular.tex:
 >tex/dep.category-tabular.tex:
 	dat/NETWORKS
 {
-	for NETWORK in $(cat dat/NETWORKS) ; do
-		echo uni/meta.$NETWORK dat/statistic.format.$NETWORK dat/statistic.weights.$NETWORK
+	for network in $(cat dat/NETWORKS) ; do
+		echo uni/meta.$network dat/statistic.format.$network dat/statistic.weights.$network
 	done
 }
 
@@ -1055,13 +1054,21 @@ tex/category-tabular.tex:
 # Bidd (cumulated degree distribution)
 #
 
-@bidd.$NETWORK:  plot/bidd.a.$NETWORK.eps;
+@bidd: [dat/dep.bidd];
 
-plot/bidd.a.$NETWORK.eps:  
+>dat/dep.bidd:  dat/NETWORKS
+{
+	for network in $(cat dat/NETWORKS) ; do
+		echo @bidd."$network"
+	done
+}
+
+@bidd.$network 
+plot/bidd.a.$network.eps:  
 	m/bidd.m m/bidd_one.m 
 	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
+	dat/info.$network
+	dat/data.$network.mat 
 {
 	 ./matlab m/bidd.m
 }
@@ -1073,8 +1080,7 @@ plot/bidd.a.$NETWORK.eps:
 @layout:  @layout.class.everything; 
 @layout.class.$CLASS:  [dat/dep.layout.class.$CLASS];
 
-@layout.$NETWORK:  plot/layout.a.$NETWORK.eps;
-
+@layout.$NETWORK
 plot/layout.a.$NETWORK.eps:  
 	m/layout.m
 	dat/data.$NETWORK.mat  
@@ -1143,8 +1149,7 @@ plot/degree.a3.$NETWORK.eps:
 # Lorenz plot
 #
 
-@lorenz.$NETWORK:  plot/lorenz.a.$NETWORK.eps; 
-
+@lorenz.$NETWORK
 plot/lorenz.a.$NETWORK.eps:  
 	m/lorenz.m m/lorenz_one.m 
 	dat/info.$NETWORK
@@ -1158,8 +1163,7 @@ plot/lorenz.a.$NETWORK.eps:
 # Weight distribution 
 #
 
-@weights.$NETWORK:  plot/weights.a.$NETWORK.eps;
-
+@weights.$NETWORK
 plot/weights.a.$NETWORK.eps:  
 	m/weights_plot.m
 	$[&MATLABPATH]
@@ -1172,8 +1176,6 @@ plot/weights.a.$NETWORK.eps:
 # Time histogram
 #
 
-@time_histogram.$NETWORK:  plot/time_histogram.$NETWORK.eps; 
-
 >dat/time.$NETWORK:  
 	<uni/out.$NETWORK
 	dat/NETWORKS_TIME
@@ -1184,6 +1186,7 @@ plot/weights.a.$NETWORK.eps:
 	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
 }
 
+@time_histogram.$NETWORK
 plot/time_histogram.$NETWORK.eps:   
 	m/time_histogram.m 
 	$[&MATLABPATH]
@@ -1207,8 +1210,7 @@ plot/time_histogram.$NETWORK.eps:
 # Signed time histogram
 #
 
-@time_histogram_signed.$NETWORK:  plot/time_histogram_signed.a.$NETWORK.eps;
-
+@time_histogram_signed.$NETWORK
 plot/time_histogram_signed.a.$NETWORK.eps:
 	m/time_histogram_signed.m
 	$[&MATLABPATH]
@@ -1236,8 +1238,7 @@ plot/time_histogram_signed.a.$NETWORK.eps:
 # Diadens
 #
 
-@diadens.$NETWORK:  plot/diadens.$NETWORK.eps;
-
+@diadens.$NETWORK
 plot/diadens.$NETWORK.eps:  
 	m/diadens.m 
 	$[&MATLABPATH]
@@ -1254,8 +1255,6 @@ plot/diadens.$NETWORK.eps:
 
 @cluscod:  [dat/dep.cluscod];
 
-@cluscod.$NETWORK:  plot/cluscod.a.$NETWORK.eps;
-
 dat/cluscod.$NETWORK.mat:  
 	m/cluscod.m 
 	$[&MATLABPATH]
@@ -1265,6 +1264,7 @@ dat/cluscod.$NETWORK.mat:
 	 ./matlab m/cluscod.m 
 }
 
+@cluscod.$NETWORK
 plot/cluscod.a.$NETWORK.eps:  
 	m/cluscod_plot.m
 	$[&MATLABPATH]
@@ -1303,10 +1303,6 @@ plot/cluscod.a.$NETWORK.eps:
 	done
 }
 
-@hopdistr.$NETWORK:  plot/hopdistr.a.$NETWORK.eps; 
-
-@hopdistr_time.full.$NETWORK:  plot/hopdistr_time.full.a.$NETWORK.eps; 
-
 dat/hopdistr2.$NETWORK = dat/hopdistr2.simple~$NETWORK;
 
 dat/hopdistr2.simple~$NETWORK = dat/hopdistr2.lcc~simple~$NETWORK;
@@ -1318,6 +1314,7 @@ dat/hopdistr2.simple~$NETWORK = dat/hopdistr2.lcc~simple~$NETWORK;
 	$(cat dat/dep.c.hyperanf.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK
 }
 
+@hopdistr.$NETWORK
 plot/hopdistr.a.$NETWORK.eps:  
 	m/hopdistr_plot.m
 	$[&MATLABPATH]
@@ -1346,6 +1343,7 @@ dat/hopdistr_time.full.$NETWORK:
 	 TYPE=full ./matlab m/hopdistr_time_comp.m 
 }
 
+@hopdistr_time.full.$NETWORK
 plot/hopdistr_time.full.a.$NETWORK.eps:  
 	m/hopdistr_time_plot.m
 	$[&MATLABPATH]
@@ -1480,8 +1478,7 @@ dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
 	done
 }
 
-@pa.$NETWORK:  plot/pa.aa.$NETWORK.eps;
-
+@pa.$NETWORK
 plot/pa.aa.$NETWORK.eps:  
 	m/pa_plot.m m/pa_plot_one.m dat/pa.$NETWORK.mat 
 	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
@@ -1494,8 +1491,7 @@ plot/pa.aa.$NETWORK.eps:
 # Spectral distribution
 #
 
-@distr.$DECOMPOSITION.$NETWORK:  plot/distr.a.$DECOMPOSITION.$NETWORK.eps;
-
+@distr.$DECOMPOSITION.$NETWORK
 plot/distr.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/distr_plot.m 
 	$[&MATLABPATH]
@@ -1518,8 +1514,7 @@ dat/distr.$DECOMPOSITION.$NETWORK:
 # Maps (graph drawings based on matrix decompositions)
 #
 
-@map.$DECOMPOSITION.$NETWORK:  plot/map.a.$DECOMPOSITION.$NETWORK.eps; 
-
+@map.$DECOMPOSITION.$NETWORK
 plot/map.a.$DECOMPOSITION.$NETWORK.eps:  
 	m/map.m 
 	m/map_one.m 
@@ -1705,8 +1700,7 @@ dat-tmp;
 # Delaunay
 #
 
-@delaunay.$NETWORK:  plot/delaunay.a.$NETWORK.png;
-
+@delaunay.$NETWORK
 plot/delaunay.a.$NETWORK.png:
 	m/delaunay_plot.m 
 	$[&MATLABPATH]
@@ -1755,8 +1749,7 @@ plot/lybl.a.$NETWORK.png:
 # characteristics as the actual networks. 
 #
 
-@syngraphy.$NETWORK:  plot/syngraphy.a.$NETWORK.eps;
-
+@syngraphy.$NETWORK
 plot/syngraphy.a.$NETWORK.eps:
 	m/syngraphy_plot.m 
 	$[&MATLABPATH]
@@ -1830,11 +1823,10 @@ dat/runtime:  tmp.runtime m/runtime.m
 	sed -re 's,^,@zipf.,'
 }
 
-@zipf.$network:  plot/zipf.a.$network.eps;
-
-plot/zipf.a.$NETWORK.eps:  
+@zipf.$network
+plot/zipf.a.$network.eps:  
 	m/zipf.m m/zipf_one.m $[&MATLABPATH]
-	dat/data.$NETWORK.mat dat/info.$NETWORK
+	dat/data.$network.mat dat/info.$network
 {
 	./matlab m/zipf.m 
 }
@@ -1849,16 +1841,40 @@ plot/zipf.a.$NETWORK.eps:
 }
 
 #
-# Inter-event distribution
+# Global inter-event distribution
 #
 
 @inter:  [dat/dep.inter];
 
 >dat/dep.inter:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter.,' }
 
-@inter.$network:  plot/inter.a.$network.eps;
-
-plot/inter.a.$network.eps:  dat/out2.$network jl/inter
+@inter.$network
+plot/inter.a.$network.png:  dat/out2.$network jl/inter
 {
 	jl/inter
+}
+
+#
+# Per-node inter-event distribution
+#
+
+@inter2:  [dat/dep.inter2];
+
+>dat/dep.inter2:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter2.,' }
+
+@inter2.$network
+plot/inter2.a.$network.png:
+	dat/out2.$network jl/inter2
+	dat/statistic.format.$network
+{
+	jl/inter2
+}
+
+#
+# PNG - PNG versions of EPS files
+#
+
+plot/$name.png:  plot/$name.eps sh/eps2png
+{
+	sh/eps2png plot/$name.eps plot/$name.png
 }

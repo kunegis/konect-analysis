@@ -10,9 +10,9 @@ function step_full(x)
     
     n = length(x);
     
-    x_sorted = sort(x);
+    sort!(x);
 
-    step(x_sorted,
+    step(x,
          (n:-1:1) / n,
          linestyle="-");
 
