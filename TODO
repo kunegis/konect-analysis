@@ -1,6 +1,9 @@
 * plot distribution of interevent time... (@inter)
 * plot distribution of single-node interevent time
 
+* moreno_sampson should be signed instead of weighted
+* moreno_hens is a complete graph
+
 * mediandist:  actually compute it from hyperanf. 
 
 * wikiconflict:  change to MULTISIGNED and recompute everything with it. (need to adjust  quite a few code parts)
