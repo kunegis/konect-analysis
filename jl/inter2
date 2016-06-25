@@ -34,13 +34,15 @@ function inter2_one(c, network, x, t)
 
     d = [];
     for i in unique(x) 
-        x_i = x[x .== i];
+##        x_i = x[x .== i];
         t_i = t[x .== i];
         sort!(t_i);
-        d_i = t[2:end] - t[1:end-1];
+        d_i = t_i[2:end] - t_i[1:end-1];
         d = [d ; d_i]; 
     end
     d = d[d .!= 0 ]; 
+
+    println("inter2: $network $c length(d) = $(length(d))"); 
     
     close(); 
 
