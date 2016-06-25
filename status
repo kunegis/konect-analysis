@@ -1,6 +1,17 @@
 #! /bin/sh
 #
-# Show the currently running MATLAB processes.  This calls ps and presents the results in some nice way.
+# Show the currently MATLAB processes started with ./matlab.  This calls
+# ps(1) and presents the results in a nice way.  
+#
+# MECHANISM 
+#
+# To show the time left for a task, a program outputs, at regular
+# intervals, strings of the form
+#
+#     [TIMESPEC left]
+#
+# where TIMESPEC is the time left in free form.  The string does not
+# need to be alone on a line. 
 #
 
 format='%4b %10b %11b %21b %b\n'
@@ -16,7 +27,7 @@ do
      vsize="`echo $line | cut -f 3 -d ' '`"
      logfile="`echo \"$line\" | sed -re 's,^.*\s(.\S+\.log)\s.*$,\1,'`"
      if expr "$logfile" : '.*\.log' >/dev/null ; then
-	 left="`tail -1000 \"$logfile\" | grep -F 'left]'  | tail -1 | sed -re 's,^.*(\[.*\]).*$,\1,'`"
+	 left="`tac \"$logfile\" | grep -F 'left]'  | head -1 | sed -re 's,^.*(\[.*\]).*$,\1,'`"
      else
 	 left=
 	 logfile="user=`echo $line | cut -f 4 -d ' '`"
