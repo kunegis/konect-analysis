@@ -1,9 +1,3 @@
-* @inter, @inter2
-** find a model for the power-law behaviour (should be
-   exponential as per Poisson process) 
-
-* moreno_sampson should be signed instead of weighted
-* moreno_hens is a complete graph
 
 * mediandist:  actually compute it from hyperanf. 
 
@@ -23,6 +17,10 @@
   decompositions use half of memory).   
 
 == Research ideas == 
+* @inter, @inter2
+** find a model for the power-law behaviour (should be
+   exponential as per Poisson process) 
+
 * draw the power law exponent in function of the degree
 * apply distrtest to the degree distribution 
 * delaunay

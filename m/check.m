@@ -22,6 +22,7 @@ tag_nonreciprocal = isfield(tags, 'nonreciprocal')
 tag_zeroweight = isfield(tags, 'zeroweight')
 tag_lcc = isfield(tags, 'lcc')
 tag_incomplete= isfield(tags, 'incomplete')
+tag_tournament= isfield(tags, 'tournament') 
 
 format = load(sprintf('dat/statistic.format.%s', network));
 weights = load(sprintf('dat/statistic.weights.%s', network));
@@ -363,4 +364,22 @@ if tag_lcc
                '*** Network is not connected although #lcc is set');
     end
     assert(values(2) == 1.0); 
+end
+
+%
+% If #tournament is defined, then the graph is directed
+% #nonreciprocal is defined, #loop is not defined, and the graph is a tournament. 
+%
+
+if tag_tournament
+    assert(format == consts.ASYM); 
+    assert(tag_nonreciprocal);
+    assert(! tag_loop); 
+
+    % Ignore edge weights 
+    n = max(max(T(:,1:2))); 
+    A = sparse(T(:,1), T(:,2), 1, n, n); 
+    assert(nnz(A) * 2 == n * (n - 1));
+    A_sym = A | A';
+    assert(nnz(A_sym) == n * (n - 1)); 
 end
