@@ -3,7 +3,7 @@
 # Filter networks by their category.
 #
 # PARAMETERS 
-#	$CATEGORY	Name of the category
+#	$category	Name of the category
 #
 # STDIN 
 #	One network name per line
@@ -13,10 +13,10 @@
 #	are in the given category 
 #
 
-while read NETWORK
+while read network
 do
-    if grep -qE '^\s*category\s*:\s*'"$CATEGORY"'\s*$' uni/meta."$NETWORK"
+    if grep -qE '^\s*category\s*:\s*'"$category"'\s*$' uni/meta."$network"
     then
-	echo "$NETWORK"
+	echo "$network"
     fi
 done

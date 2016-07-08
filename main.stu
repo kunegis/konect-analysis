@@ -132,13 +132,13 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 	grep ' t ' dat/networks.asc | cut -d ' ' -f 1
 }
 
->dat/NETWORKS_CATEGORY_$CATEGORY:  
+>dat/NETWORKS_CATEGORY_$category:  
 	sh/category <dat/NETWORKS
 {
 	sh/category
 }
 
-# For on weights class.  $WEIGHTS is the weights (in all-lowercase). 
+# List of networks in each weight class.  $WEIGHTS is the weights (in all-lowercase). 
 >dat/NETWORKS_WEIGHTS_$WEIGHTS:  
 	dat/networks.asc
 {
@@ -295,33 +295,33 @@ bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
 }
 
 # List of files included by c/$FILE, directly or indirectly
->dat/depc.$FILE:  
-	c/$FILE sh/depc
+>dat/depc.$file:  
+	c/$file sh/depc
 {
-	sh/depc c/$FILE 
+	sh/depc c/$file 
 }
 
 # The program to use for each application
->dat/dep.c.$NAME.$NETWORK:
-	dat/widths.$NETWORK
+>dat/dep.c.$name.$network:
+	dat/widths.$network
 {
-	echo "bin/$NAME.$(cat dat/widths.$NETWORK)" 
+	echo "bin/$name.$(cat dat/widths.$network)" 
 }
 
 # Programs that need the additional degree width
->dat/dep.c2.$NAME.$NETWORK:
-	dat/widths.$NETWORK
-	dat/widths.ft.degree.$NETWORK
+>dat/dep.c2.$name.$network:
+	dat/widths.$network
+	dat/widths.ft.degree.$network
 {
-	echo "bin/$NAME.$(cat dat/widths.$NETWORK).$(cat dat/widths.ft.degree.$NETWORK)"
+	echo "bin/$name.$(cat dat/widths.$network).$(cat dat/widths.ft.degree.$network)"
 }
 
 # Transformers:  Programs that have a second set of widths (B) 
->dat/dep.cx.$NAME.$NETWORK.$TRANSFORM:
-	dat/widths.$NETWORK 
-	dat/widths.$TRANSFORM~$NETWORK
+>dat/dep.cx.$name.$network.$transform:
+	dat/widths.$network 
+	dat/widths.$transform~$network
 {
-	echo "bin/$NAME.x.$(cat dat/widths.$NETWORK).$(cat dat/widths.$TRANSFORM~$NETWORK)" 
+	echo "bin/$name.x.$(cat dat/widths.$network).$(cat dat/widths.$transform~$network)" 
 }
 
 # Location of compiled files
@@ -334,22 +334,22 @@ bin
 # Bit widths
 #
 
->dat/widths.$NETWORK:  
+>dat/widths.$network:  
 	sh/widths 
 	$[&PERL5LIB]
-	uni/out.$NETWORK 
-	dat/info.$NETWORK 
+	uni/out.$network 
+	dat/info.$network 
 {
-	sh/widths $NETWORK
+	sh/widths $network
 }
 
 #
 # Info files
 #
 
->dat/info.$NETWORK:  
+>dat/info.$network:  
 	sh/network-info 
-	<uni/out.$NETWORK 
+	<uni/out.$network 
 {
 	sh/network-info 
 }

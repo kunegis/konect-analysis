@@ -3,10 +3,10 @@
 # Extract numerical info from an unirelational dataset:  Number of
 # subject and object entities, number of edges, format and weights. 
 # 
-# INPUT 
+# STDIN
 #	Dataset file, typically named out.* or rel.*
 #
-# OUTPUT 
+# STDOUT
 #	Six lines with the following info:
 #		n1	Number of subjects
 #		n2	Number of objects
