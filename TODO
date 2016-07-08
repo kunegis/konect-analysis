@@ -1,5 +1,3 @@
-* error with @network.brunson_revolution
-
 * mediandist:  actually compute it from hyperanf. 
 
 * wikiconflict:  change to MULTISIGNED and recompute everything with it. (need to adjust  quite a few code parts)
