@@ -7,14 +7,14 @@
  * weights in POSITIVE networks.    
  *
  * PARAMETERS 
- *	$NETWORK 	Name of the network
+ *	$network 	Name of the network
  * 
  * INPUT
- *  	dat/info.$NETWORK
- *	uni/out.$NETWORK (only when the network is POSITIVE)
+ *  	dat/info.$network
+ *	uni/out.$network (only when the network is POSITIVE)
  * 
  * OUTPUT
- *	dat/statistic.volume.$NETWORK
+ *	dat/statistic.volume.$network
  */
 
 #include <stdio.h>
@@ -31,7 +31,7 @@
 char line[LEN];
 
 int main() {
-	const char *network = getenv("NETWORK"); 
+	const char *network = getenv("network"); 
 
 	char *const filename_info= asxprintf("dat/info.%s", network);
 	

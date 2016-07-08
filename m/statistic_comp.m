@@ -2,8 +2,8 @@
 % Compute a network statistic using Matlab. 
 %
 % PARAMETERS 
-%	$NETWORK 
-%	$STATISTIC
+%	$network 
+%	$statistic
 %
 % INPUT 
 %	dat/data.$NETWORK.mat
@@ -17,8 +17,8 @@
 %		on the value.  As a last value, the runtime is added. 
 %
 
-network = getenv('NETWORK');
-statistic = getenv('STATISTIC'); 
+network = getenv('network');
+statistic = getenv('statistic'); 
 
 format long; 
 

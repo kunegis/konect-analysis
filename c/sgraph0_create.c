@@ -1,8 +1,8 @@
 /* 
- * Create an Sgraph0 file from an out.* file. 
+ * Create an SG0 file from an out.* file. 
  *
  * PARAMETERS 
- * 		$1	Input filename (out.*, rel.*)
+ *	$1	Input filename (out.*, rel.*)
  *      $2	Output filename (sg[0..].*)
  *      $3	n1
  *      $4	n2
@@ -371,5 +371,3 @@ error_unlink:
 
 	exit(1); 
 }
-
-

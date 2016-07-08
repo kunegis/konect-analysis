@@ -2,31 +2,32 @@
 % Compute a network statistic over time on the full data (i.e. not split). 
 %
 % PARAMETERS 
-%	$NETWORK	The network; must have timestamps
-%	$STATISTIC	The statistic
-%	$TYPE		The data to use, "full" or "split"
+%	$network	The network; must have timestamps
+%	$statistic	The statistic
+%	$type		The data to use, "full" or "split"
 %
 % INPUT 
-%	dat/info.$NETWORK
-%	dat/data.$NETWORK.mat (only full)
-%	dat/split.$NETWORK.mat (only split)
-%	dat/stepsi.$NETWORK (only full)
-%	dat/steps.$NETWORK.mat (only split) 
-%	dat/meansi.$NETWORK.mat (only full) 
-%	dat/means.$NETWORK.mat (only split) 
+%	dat/info.$network
+%	dat/data.$network.mat (only full)
+%	dat/split.$network.mat (only split)
+%	dat/stepsi.$network (only full)
+%	dat/steps.$network.mat (only split) 
+%	dat/meansi.$network.mat (only full) 
+%	dat/means.$network.mat (only split) 
 %
 % OUTPUT 
-%	dat/statistic_time.$TYPE.$STATISTIC.$NETWORK	
+%	dat/statistic_time.$type.$statistic.$network	
 %		All statistics as text.  One timepoint per line.  Each
 %		line contains the statistics, with the first number
 %		being the main statistic. 
-%	dat/statistic_time_runtime.$TYPE.$STATISTIC.$NETWORK
+%	dat/statistic_time_runtime.$type.$statistic.$network
 %		Column vector of runtimes in seconds (as floating point numbers) 
 %
 
-network = getenv('NETWORK'); 
-statistic = getenv('STATISTIC'); 
-type = getenv('TYPE');
+network = getenv('network'); 
+statistic = getenv('statistic'); 
+type = getenv('type');
+
 is_split = strcmp(type, 'split'); 
 
 consts = konect_consts(); 

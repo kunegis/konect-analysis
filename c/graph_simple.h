@@ -5,9 +5,6 @@
  * $1 is the source graph.  $2 is the target graph. 
  */
 
-//void graph_simple_insert_$2(struct graph_$2 *g, 
-//			    u$2_ft u, v$2_ft v);
-
 /* Read an SG0 graph into a struct graph_$2. 
  * The given graph must be uninitialized. 
  * The resulting graph is simple (SYM-POSITIVE). 
@@ -17,15 +14,11 @@ void graph_read_sg0_simple_$1_$2(struct graph_$2 *restrict g,
 {
 	struct header *s= (struct header *)r->out;
 
-	//	assert(s->format == FORMAT_SYM || s->format == FORMAT_ASYM);
-
 	g->format  = FORMAT_SYM; 
 	g->weights = WEIGHTS_POSITIVE;
 
 	g->cols    = 2; 
 	g->m       = 0;
-
-	//	assert(s->n1 == s->n2); 
 
 #if FORMAT_$1 == FORMAT_SYM || FORMAT_$1 == FORMAT_ASYM	
 	assert(s->n1 == s->n2); 
@@ -63,7 +56,6 @@ void graph_read_sg0_simple_$1_$2(struct graph_$2 *restrict g,
 
 		if (u == v) 
 			continue;
-		//		graph_insert_simple_$(g, u, v);
 
 #if FORMAT_$1 == FORMAT_SYM || FORMAT_$1 == FORMAT_ASYM		
 
@@ -98,23 +90,5 @@ void graph_read_sg0_simple_$1_$2(struct graph_$2 *restrict g,
 		++ g->m;
 	}
 }
-
-// void graph_simple_insert_$(struct graph_$2 *g, 
-// 			   u$2_ft u, v$2_ft v)
-// {
-// 	assert(u != v); 
-
-// 	const m$2_ft degree_u= g->deg_to[u];
-// 	const m$2_ft degree_v= g->deg_to[v]; 
-
-// 	assert(degree_u < m$2_max); 
-// 	assert(degree_v < m$2_max); 
-
-// 	graph_append_v$2(g->to + u, degree_u, v);
-// 	graph_append_v$2(g->to + v, degree_v, u); 
-
-// 	++ g->deg_to[u];
-// 	++ g->deg_to[v]; 
-// }
 
 #endif /* ! GRAPH_SIMPLE_$1$2_H */ 

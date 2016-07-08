@@ -2,19 +2,19 @@
 % Computer effective diameter. 
 %
 % PARAMETERS 
-%	$NETWORK
-%	$PERCENTILE   (between 1 and 99)
+%	$network
+%	$percentile   (between 1 and 99)
 %
 % INPUT 
-%	dat/hopdistr2.$NETWORK
+%	dat/hopdistr2.$network
 %
 % OUTPUT 
-%	dat/statistic.diameff$PERCENTILE.$NETWORK
+%	dat/statistic.diameff$percentile.$network
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
-percentile_text = getenv('PERCENTILE'); 
+percentile_text = getenv('percentile'); 
 percentile = str2double(percentile_text);
 if isnan(percentile)
     fprintf(2, '*** Invalid percentile\n');

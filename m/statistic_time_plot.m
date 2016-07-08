@@ -2,21 +2,21 @@
 % Plot the evolution of a network statistic over time. 
 %
 % PARAMETERS 
-%	$TYPE			"full" or "split"
-%	$NETWORK
-%	$STATISTIC
-%	$DISABLE_RUNTIME	"1" to not generate the runtime plots
+%	$type			"full" or "split"
+%	$network
+%	$statistic
+%	$disable_runtime	"1" to not generate the runtime plots
 %				(runtime data is not generated for
 %				spectral statistics)    
 %
 % INPUT 
-%	dat/statistic_time.$TYPE.$STATISTIC.$NETWORK
-%	dat/statistic_time_runtime.$TYPE.$STATISTIC.$NETWORK
-%	dat/stepsi.$NETWORK (full only)
-%	dat/steps.$NETWORK.mat (split only) 
+%	dat/statistic_time.$type.$statistic.$network
+%	dat/statistic_time_runtime.$type.$statistic.$network
+%	dat/stepsi.$network (full only)
+%	dat/steps.$network.mat (split only) 
 %
 % OUTPUT 
-%	plot/statistic_time.$TYPE.[abt].$STATISTIC.$NETWORK.eps
+%	plot/statistic_time.$type.[abt].$statistic.$network.eps
 %		a - main plot
 %		b - bare plot
 %		c - main plot restricted to the test set (only for $TYPE = split)
@@ -24,11 +24,11 @@
 %		t - runtime plot
 %
 
-network = getenv('NETWORK'); 
-statistic = getenv('STATISTIC'); 
-type = getenv('TYPE'); 
+network = getenv('network'); 
+statistic = getenv('statistic'); 
+type = getenv('type'); 
 is_split = strcmp(type, 'split'); 
-disable_runtime = getenv('DISABLE_RUNTIME'); 
+disable_runtime = getenv('disable_RUNTIME'); 
 disable_runtime = strcmp(disable_runtime, '1'); 
 
 font_size = 22; 

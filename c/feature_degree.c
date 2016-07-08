@@ -1,5 +1,5 @@
-
-/* Generate the degree vector of a network.
+/*
+ * Generate the degree vector of a network.
  *
  * INVOCATION
  *     $0 SG1-FILE DEGREE-FILE
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 		const ma_ft beg= read_ma(r.adj_to, u);
 		const ma_ft end= u == r.h->n1 - 1 ? r.len_m : read_ma(r.adj_to, u + 1);
 		assert(beg <= end); 
-		assert(end - beg < fa_max); 
+		assert((ma_ft)(end - beg) < fa_max); 
 		writeonzero_fa(f.f1, u, end - beg); 
 	}
 

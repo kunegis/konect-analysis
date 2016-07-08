@@ -2,20 +2,20 @@
 % Plot average degree and diameter by time. 
 %
 % ENVIRONMENT 
-%	$NETWORK		Network name 
+%	$network		Network name 
 %
 % INPUT 
-%	dat/stepsi.$NETWORK
-%	dat/statistic_time.full.diameter.$NETWORK
-%	dat/statistic_time.full.avgdegree.$NETWORK
+%	dat/stepsi.$network
+%	dat/statistic_time.full.diameter.$network
+%	dat/statistic_time.full.avgdegree.$network
 %
 % OUTPUT 
-%	plot/diadens.$NETWORK.eps
+%	plot/diadens.$network.eps
 %
 
 font_size_label = 18; 
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 steps = load(sprintf('dat/stepsi.%s', network));
 statistic_diameter = load(sprintf('dat/statistic_time.full.diameter.%s', network)); 

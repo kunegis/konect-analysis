@@ -6,10 +6,10 @@
 # Important targets:
 #
 #	@all			Build everything
-#	@all.$CLASS		Build everything for one class; e.g.,
+#	@all.$class		Build everything for one class; e.g.,
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
-#	@network.$NETWORK	Build everything for one network
+#	@network.$network	Build everything for one network
 #
 # Some commands use Matlab, others Octave, and yet other Julia.  In general, we are migrating
 # everything to Julia, but the bulk is still in Matlab. 
@@ -193,22 +193,15 @@ CFLAGS=
 	-lm 
 	-O3 -DNDEBUG -s
 }
-# {
-# 	-std=c99 -pedantic -Wall -Wextra -Werror 
-# 	-Wundef -D_GNU_SOURCE 
-# 	-lm 
-# 	-g 
-# }
 
-
-bin/$NAME:
-	[dat/depc.$NAME.c] $[&CFLAGS] !bin
+bin/$name:
+	[dat/depc.$name.c] $[&CFLAGS] !bin
 {
-	gcc $CFLAGS c/$NAME.c -o bin/$NAME
+	gcc $CFLAGS c/$name.c -o bin/$name
 }
 
-bin/$NAME.$PARAMETERS:
-	[dat/depc.$NAME.c] $[&CFLAGS] !bin
+bin/$name.$PARAMETERS:
+	[dat/depc.$name.c] $[&CFLAGS] !bin
 {
 	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
 	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
@@ -219,15 +212,15 @@ bin/$NAME.$PARAMETERS:
 	W="$(echo "$PARAMETERS" | sed -re 's,^......(.).$,\1,')"
 	L="$(echo "$PARAMETERS" | sed -re 's,^.......(.)$,\1,')"
 
-	gcc c/$NAME.c $CFLAGS -o bin/$NAME.$PARAMETERS \
+	gcc c/$name.c $CFLAGS -o bin/$name.$PARAMETERS \
 		-DTYPE_ma="'$m'" \
 		-DTYPE_ua="'$u'" -DTYPE_va="'$v'" \
 		-DTYPE_wa="'$w'" -DTYPE_ta="'$t'" \
 		-DFORMAT_a="$F" -DWEIGHTS_a="$W" -DLOOPS_a="$L"
 }
 
-bin/$NAME.$PARAMETERS.$PARAMETERS_2:
-	[dat/depc.$NAME.c] $[&CFLAGS] !bin
+bin/$name.$PARAMETERS.$PARAMETERS_2:
+	[dat/depc.$name.c] $[&CFLAGS] !bin
 {
 	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
 	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
@@ -240,7 +233,7 @@ bin/$NAME.$PARAMETERS.$PARAMETERS_2:
 
 	f="$PARAMETERS_2"
 
-	gcc $CFLAGS c/$NAME.c -o bin/$NAME.$PARAMETERS.$PARAMETERS_2 \
+	gcc $CFLAGS c/$name.c -o bin/$name.$PARAMETERS.$PARAMETERS_2 \
 		-DTYPE_ma="'$m'" \
 		-DTYPE_ua="'$u'" -DTYPE_va="'$v'" \
 		-DTYPE_wa="'$w'" -DTYPE_ta="'$t'" \
@@ -248,8 +241,8 @@ bin/$NAME.$PARAMETERS.$PARAMETERS_2:
 		-DTYPE_fa="'$f'"
 }
 
-bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
-	[dat/depc.$NAME.c] $[&CFLAGS] !bin
+bin/$name.x.$PARAMETERS_A.$PARAMETERS_B:
+	[dat/depc.$name.c] $[&CFLAGS] !bin
 {
 	ma="$(echo "$PARAMETERS_A" | sed -re 's,^(.).......$,\1,')"
 	ua="$(echo "$PARAMETERS_A" | sed -re 's,^.(.)......$,\1,')"
@@ -269,7 +262,7 @@ bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
 	Wb="$(echo "$PARAMETERS_B" | sed -re 's,^......(.).$,\1,')"
 	Lb="$(echo "$PARAMETERS_B" | sed -re 's,^.......(.)$,\1,')"
 
-	gcc c/$NAME.c $CFLAGS -o bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B \
+	gcc c/$name.c $CFLAGS -o bin/$name.x.$PARAMETERS_A.$PARAMETERS_B \
 		-DTYPE_ma="'$ma'" \
 		-DTYPE_ua="'$ua'" -DTYPE_va="'$va'" \
 		-DTYPE_wa="'$wa'" -DTYPE_ta="'$ta'" \
@@ -280,17 +273,17 @@ bin/$NAME.x.$PARAMETERS_A.$PARAMETERS_B:
 		-DFORMAT_b="$Fb" -DWEIGHTS_b="$Wb" -DLOOPS_b="$Lb"
 }
 
->c/$NAME.$X.h:  <c/$NAME.h
+>c/$name.$X.h:  <c/$name.h
 {
 	echo "/* Automatically generated on $(date) */"
-	echo "#line 1 \"c/$NAME.h\""
+	echo "#line 1 \"c/$name.h\""
 	sed -re 's,\$,'"$X"',g' 
 }
 
->c/$NAME.$X.$Y.h:  <c/$NAME.h
+>c/$name.$X.$Y.h:  <c/$name.h
 {
 	echo "/* Automatically generated on $(date) */"
-	echo "#line 1 \"c/$NAME.h\""
+	echo "#line 1 \"c/$name.h\""
 	sed -re 's,\$1,'"$X"',g;s,\$2,'"$Y"',g' 
 }
 
@@ -454,13 +447,13 @@ dat/out.$TRANSFORM~$NETWORK:
 	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg0.,' 
 }
 
-@sg0.$NETWORK:  dat/sg0.$NETWORK;
+@sg0.$network:  dat/sg0.$network;
 
-dat/sg0.$NETWORK:
-	dat/widths.$NETWORK uni/out.$NETWORK dat/info.$NETWORK 
-	$[command = dat/dep.c.sgraph0_create.$NETWORK]
+dat/sg0.$network:
+	dat/widths.$network uni/out.$network dat/info.$network 
+	$[command = dat/dep.c.sgraph0_create.$network] [dat/dep.c.sgraph0_create.$network]
 {
-	$command uni/out.$NETWORK dat/sg0.$NETWORK $(head -3 dat/info.$NETWORK)
+	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network)
 }
 
 #
@@ -474,13 +467,13 @@ dat/sg0.$NETWORK:
 	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg1.,' 
 }
 
-@sg1.$NETWORK:  dat/sg1.$NETWORK;
+@sg1.$network:  dat/sg1.$network;
 
-dat/sg1.$NETWORK:  
-	$[command = dat/dep.c.sgraph1_create.$NETWORK]
-	dat/sg0.$NETWORK
+dat/sg1.$network:  
+	$[command = dat/dep.c.sgraph1_create.$network] [dat/dep.c.sgraph1_create.$network]
+	dat/sg0.$network
 {
-	$command dat/sg0.$NETWORK dat/sg1.$NETWORK
+	$command dat/sg0.$network dat/sg1.$network
 }
 
 # 
@@ -592,7 +585,7 @@ plot/assortativity.a.$NETWORK.eps:
 	done 
 }
 
-# The dat/NETWORKS{,_$NAME} file to read
+# The dat/NETWORKS{,_*} file to read
 >dat/dep.dep.statistic.$statistic:
 	dat/statistic-attribute.$statistic
 {
@@ -624,11 +617,11 @@ plot/assortativity.a.$NETWORK.eps:
 # Statistics implemented in Matlab (the default) 
 #
 
-dat/statistic.$STATISTIC.$NETWORK:
+dat/statistic.$statistic.$network:
 	m/statistic_comp.m 
 	$[&MATLABPATH]
-	dat/data.$NETWORK.mat dat/info.$NETWORK dat/meansi.$NETWORK.mat
-	konect-toolbox/m/konect_statistic_$STATISTIC.m
+	dat/data.$network.mat dat/info.$network dat/meansi.$network.mat
+	konect-toolbox/m/konect_statistic_$statistic.m
 {
 	./matlab m/statistic_comp.m
 }
@@ -639,14 +632,14 @@ dat/statistic.$STATISTIC.$NETWORK:
 # 2. 
 # 
 
->dat/statistic.${STATISTIC}+${K}.$NETWORK:
-	<dat/statistic.$STATISTIC.$NETWORK
+>dat/statistic.${STATISTIC}+${K}.$network:
+	<dat/statistic.$STATISTIC.$network
 {
 	if [ "$K" -lt 2 ] ; then 
 		echo >&2 'K must be at least 2'
 		exit 1
 	fi
-	if [ "$K" -gt "$(wc -l dat/statistic.$STATISTIC.$NETWORK | cut -d' ' -f1)" ] ; then
+	if [ "$K" -gt "$(wc -l dat/statistic.$STATISTIC.$network | cut -d' ' -f1)" ] ; then
 		echo >&2 'K cannot be larger than size of statistic file'
 		exit 1
 	fi
@@ -658,29 +651,29 @@ dat/statistic.$STATISTIC.$NETWORK:
 # networks.   
 #
 
->dat/statistic.format.$NETWORK: sh/network-format <uni/out.$NETWORK
+>dat/statistic.format.$network: sh/network-format <uni/out.$network
 {
 	sh/network-format
 }
 
->dat/statistic.format.$TRANSFORM~$NETWORK:  
-	<dat/widths.$TRANSFORM~$NETWORK
+>dat/statistic.format.$transform~$network:  
+	<dat/widths.$transform~$network
 {
 	sed -re 's,^.....(.)..$,\1,' 
 }
 
->dat/statistic.weights.$NETWORK: sh/network-weights <uni/out.$NETWORK
+>dat/statistic.weights.$network: sh/network-weights <uni/out.$network
 {
 	sh/network-weights
 }
 
->dat/statistic.weights.$TRANSFORM~$NETWORK:  
-	<dat/widths.$TRANSFORM~$NETWORK
+>dat/statistic.weights.$transform~$network:  
+	<dat/widths.$transform~$network
 {
 	sed -re 's,^......(.).$,\1,' 
 }
 
-dat/statistic.size.$NETWORK:  m/statistic_size.m dat/info.$NETWORK
+dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
 	$[&MATLABPATH]
 {
 	./octave m/statistic_size.m
@@ -707,10 +700,10 @@ dat/statistic.lines.$network:
 	$command dat/sg1.$transform~$network 
 }
 
-dat/statistic.volume.$NETWORK:  
-	dat/info.$NETWORK 
+dat/statistic.volume.$network:  
+	dat/info.$network 
 	bin/statistic_volume 
-	uni/out.$NETWORK
+	uni/out.$network
 {
 	 bin/statistic_volume 
 }
@@ -842,9 +835,9 @@ dat/statistic.meandist.$network:
 	 ./octave m/statistic_meandist.m 
 }
 
-dat/statistic.diameff$PERCENTILE.$NETWORK:
+dat/statistic.diameff$percentile.$network:
 	m/statistic_diameff.m $[&MATLABPATH]
-	dat/hopdistr2.$NETWORK
+	dat/hopdistr2.$network
 {
 	 ./octave m/statistic_diameff.m 
 }
@@ -870,13 +863,13 @@ dat/statistic.oddcycles.$NETWORK:
 # from the Makefile.)  
 #
 
-@statistic_time.$TYPE.$STATISTIC.$NETWORK:  
-	plot/statistic_time.$TYPE.a.$STATISTIC.$NETWORK.eps;
+@statistic_time.$type.$statistic.$network:  
+	plot/statistic_time.$type.a.$statistic.$network.eps;
 
-@statistic_time.$TYPE.$STATISTIC:  [dat/dep.statistic_time.$TYPE.$STATISTIC];
+@statistic_time.$type.$statistic:  [dat/dep.statistic_time.$type.$statistic];
 
->dat/dep.statistic_time.$TYPE.$STATISTIC:  
-	[dat/dep.dep.statistic.$STATISTIC]
+>dat/dep.statistic_time.$type.$statistic:  
+	[dat/dep.dep.statistic.$statistic]
 	sh/intersect
 	dat/NETWORKS_TIME
 {
@@ -884,45 +877,45 @@ dat/statistic.oddcycles.$NETWORK:
 		exit 1
 	fi
 
-	NETWORKS="$(sh/intersect dat/NETWORKS_TIME "$(cat dat/dep.dep.statistic.$STATISTIC)")"
+	networks="$(sh/intersect dat/NETWORKS_TIME "$(cat dat/dep.dep.statistic.$statistic)")"
 
-	for network in $NETWORKS
+	for network in $networks
 	do
-		echo @statistic_time.$TYPE.$STATISTIC.$network
+		echo @statistic_time.$type.$statistic.$network
 	done 
 }
 
-dat/statistic_time.full.$STATISTIC.$NETWORK:  
+dat/statistic_time.full.$statistic.$network:  
 	m/statistic_time.m 
 	$[&MATLABPATH]
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK 
-	dat/stepsi.$NETWORK 
-	dat/meansi.$NETWORK.mat 
+	dat/data.$network.mat 
+	dat/info.$network 
+	dat/stepsi.$network 
+	dat/meansi.$network.mat 
 {
-	TYPE=full ./matlab m/statistic_time.m 
+	type=full ./matlab m/statistic_time.m 
 }
 
->dat/statistic_time.full.${STATISTIC}+${K}.$NETWORK:
-	<dat/statistic_time.full.$STATISTIC.$NETWORK
+>dat/statistic_time.full.${statistic}+${k}.$network:
+	<dat/statistic_time.full.$statistic.$network
 {
-	expr "$K" : '[0-9][0-9]*' >/dev/null || {
-		echo >&2 "*** Invalid K='$K'"
+	expr "$k" : '[0-9][0-9]*' >/dev/null || {
+		echo >&2 "*** Invalid K='$k'"
 		exit 1
 	}
 	sed -re 's,\s+, ,g' |
-	cut -d ' ' -f "$K"
-	cp dat/statistic_time_runtime.full.$STATISTIC.$NETWORK \
-		dat/statistic_time_runtime.full.${STATISTIC}+${K}.$NETWORK  
+	cut -d ' ' -f "$k"
+	cp dat/statistic_time_runtime.full.$statistic.$network \
+		dat/statistic_time_runtime.full.${statistic}+${k}.$network  
 }
 
-plot/statistic_time.full.a.$STATISTIC.$NETWORK.eps:   
+plot/statistic_time.full.a.$statistic.$network.eps:   
 	m/statistic_time_plot.m 
 	$[&MATLABPATH]
-	dat/statistic_time.full.$STATISTIC.$NETWORK 
-	dat/stepsi.$NETWORK
+	dat/statistic_time.full.$statistic.$network 
+	dat/stepsi.$network
 {
-	TYPE=full ./matlab m/statistic_time_plot.m 
+	type=full ./matlab m/statistic_time_plot.m 
 }
 
 #
@@ -1019,13 +1012,13 @@ plot/scatter.$TYPE.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
 	done
 }
 
->dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS:  
-	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
+>dat/dep.scatter.$statistic_x.$statistic_y.$class:  
+	dat/NETWORKS.$statistic_x.$statistic_y.$class
 {
-	for NETWORK in $(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)
+	for network in $(cat dat/NETWORKS.$statistic_x.$statistic_y.$class)
 	do
-		echo dat/statistic.$STATISTIC_X.$NETWORK
-		echo dat/statistic.$STATISTIC_Y.$NETWORK
+		echo dat/statistic.$statistic_x.$network
+		echo dat/statistic.$statistic_y.$network
 	done
 }
 
@@ -1186,12 +1179,11 @@ plot/weights.a.$NETWORK.eps:
 	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
 }
 
-@time_histogram.$NETWORK
-plot/time_histogram.$NETWORK.eps:   
-	m/time_histogram.m 
-	$[&MATLABPATH]
-	dat/time.$NETWORK 
-	uni/meta.$NETWORK 
+@time_histogram.$network
+plot/time_histogram.$network.eps:   
+	m/time_histogram.m $[&MATLABPATH]
+	dat/time.$network 
+	uni/meta.$network 
 {
 	 ./matlab m/time_histogram.m
 }
@@ -1238,13 +1230,13 @@ plot/time_histogram_signed.a.$NETWORK.eps:
 # Diadens
 #
 
-@diadens.$NETWORK
-plot/diadens.$NETWORK.eps:  
+@diadens.$network
+plot/diadens.$network.eps:  
 	m/diadens.m 
 	$[&MATLABPATH]
-	dat/stepsi.$NETWORK 
-	dat/statistic_time.full.diameter.$NETWORK
-	dat/statistic_time.full.avgdegree.$NETWORK
+	dat/stepsi.$network 
+	dat/statistic_time.full.diameter.$network
+	dat/statistic_time.full.avgdegree.$network
 {
 	 ./matlab m/diadens.m 
 }
@@ -1288,8 +1280,8 @@ plot/cluscod.a.$NETWORK.eps:
 
 >dat/dep.hopdistr:  dat/NETWORKS
 {
-	for NETWORK in $(cat dat/NETWORKS) ; do
-		echo @hopdistr.$NETWORK
+	for network in $(cat dat/NETWORKS) ; do
+		echo @hopdistr.$network
 	done
 }
 
@@ -1303,15 +1295,15 @@ plot/cluscod.a.$NETWORK.eps:
 	done
 }
 
-dat/hopdistr2.$NETWORK = dat/hopdistr2.simple~$NETWORK;
+dat/hopdistr2.$network = dat/hopdistr2.simple~$network;
 
-dat/hopdistr2.simple~$NETWORK = dat/hopdistr2.lcc~simple~$NETWORK;
+dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 
->dat/hopdistr2.lcc~simple~$NETWORK:  
-	dat/sg1.lcc~simple~$NETWORK
-	[dat/dep.c.hyperanf.lcc~simple~$NETWORK]
+>dat/hopdistr2.lcc~simple~$network:  
+	dat/sg1.lcc~simple~$network
+	[dat/dep.c.hyperanf.lcc~simple~$network]
 {
-	$(cat dat/dep.c.hyperanf.lcc~simple~$NETWORK) dat/sg1.lcc~simple~$NETWORK
+	$(cat dat/dep.c.hyperanf.lcc~simple~$network) dat/sg1.lcc~simple~$network
 }
 
 @hopdistr.$NETWORK

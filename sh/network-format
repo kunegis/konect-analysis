@@ -2,10 +2,10 @@
 #
 # Extract format from an unirelational dataset. 
 # 
-# INPUT 
+# STDIN 
 #	Dataset file, typically named out.* or rel.*
 #
-# OUTPUT 
+# STDOUT 
 #	One line with the numerical format
 #
 

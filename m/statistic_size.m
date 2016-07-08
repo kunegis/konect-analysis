@@ -2,16 +2,16 @@
 % Compute the size statistic of a network. 
 %
 % PARAMETERS 
-%	$NETWORK 
+%	$network 
 %
 % INPUT 
-%	dat/info.$NETWORK
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/statistic.size.$NETWORK
+%	dat/statistic.size.$network
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 info = read_info(network); 
 

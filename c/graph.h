@@ -91,8 +91,8 @@ void graph_insert_sym_$(struct graph_$ *restrict g,
 {
 	if(u != v) {
 
-		m$_ft degree_u= g->deg_to[u];
-		m$_ft degree_v= g->deg_to[v]; 
+		m$_ft degree_u= read_m$(g->deg_to, u);
+		m$_ft degree_v= read_m$(g->deg_to, v); 
 
 		assert(degree_u < m$_max); 
 		assert(degree_v < m$_max); 
@@ -110,11 +110,11 @@ void graph_insert_sym_$(struct graph_$ *restrict g,
 		graph_append_t$(g->timestamp_to + v, degree_v, t); 
 #endif
 
-		++ g->deg_to[u];
-		++ g->deg_to[v]; 
+		write_m$(g->deg_to, u, 1 + degree_u); 
+		write_m$(g->deg_to, v, 1 + degree_v); 
 	} else {
 
-		m$_ft degree= g->deg_to[u];
+		m$_ft degree= read_m$(g->deg_to, u);
 
 		assert(degree < m$_max); 
 
@@ -125,7 +125,8 @@ void graph_insert_sym_$(struct graph_$ *restrict g,
 #if TYPE_t$ != '-'
 		graph_append_t$(g->timestamp_to + u, degree, t);
 #endif
-		++ g->deg_to[u]; 
+
+		write_m$(g->deg_to, u, 1 + degree); 
 	}
 }
 
@@ -139,8 +140,9 @@ void graph_insert_bip_asym_$(struct graph_$ *restrict g,
 #endif 
 		      )
 {
-	m$_ft degree_u= g->deg_to[u];
-	m$_ft degree_v= g->deg_from[v];
+
+	m$_ft degree_u= read_m$(g->deg_to, u);
+	m$_ft degree_v= read_m$(g->deg_from, v); 
 
 	assert(degree_u < m$_max); 
 	assert(degree_v < m$_max); 
@@ -158,9 +160,8 @@ void graph_insert_bip_asym_$(struct graph_$ *restrict g,
 	graph_append_t$(g->timestamp_from + v, degree_v, t); 
 #endif
 
-	++ (g->deg_to[u]);
-	++ (g->deg_from[v]); 
-
+	write_m$(g->deg_to,   u, 1 + degree_u);
+	write_m$(g->deg_from, v, 1 + degree_v); 
 }
 
 static v$_at *compar_idx_p_v$;
@@ -217,7 +218,7 @@ void graph_sort_$(struct graph_$ *restrict g)
 
 	if (TYPE_w$ == '-' && TYPE_t$ == '-' && BITS_v$ >= CHAR_BIT) {
 		for (u$_ft i= 0;  i < g->n1;  ++i) {
-			const m$_at d= g->deg_to[i];
+			const m$_at d= read_m$(g->deg_to, i);
 			if (d <= dmax_v) {
 				qsort(g->to + i, d, sizeof(v$_at), compar_v$); 
 			} else {
@@ -307,7 +308,7 @@ void graph_sort_$(struct graph_$ *restrict g)
 	if (g->from) {
 	if (TYPE_w$ == '-' && TYPE_t$ == '-' && BITS_u$ >= CHAR_BIT) {
 		for (v$_ft i= 0;  i < g->n2;  ++i) {
-			const m$_at d= g->deg_from[i];
+			const m$_at d= read_m$(g->deg_from, i);
 			if (d <= dmax_u) {
 				qsort(g->from + i, d, sizeof(u$_at), compar_u$); 
 			} else {

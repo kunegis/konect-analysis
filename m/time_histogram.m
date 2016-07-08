@@ -2,22 +2,22 @@
 % Plot a time histogram.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/time.$NETWORK
-%	uni/meta.[NETWORK]
+%	dat/time.$network
+%	uni/meta.$network
 % 
 % OUTPUT 
-%	plot/time_histogram.$NETWORK.eps
-%	plot/time_histogram.[b].$NETWORK.eps
+%	plot/time_histogram.$network.eps
+%	plot/time_histogram.[b].$network.eps
 %
 
 bins = 90; 
 font_size = 22; 
 color_1 = [0 0 1]; 
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 timestamps = load(sprintf('dat/time.%s', network)); 
 

@@ -1,5 +1,5 @@
 /*
- * Create an Sgraph1 file from an Sgraph0 file.
+ * Create an SG1 file from an SG0 file.
  */
 
 #include <stdio.h>
@@ -30,7 +30,7 @@
  *
  *	$0 INPUT-FILENAME OUTPUT-FILENAME
  * 
- * The input file must be in sg0 format; the output file is in sg1 format. 
+ * The input file must be in SG0 format; the output file is in SG1 format. 
  */
 int main(int argc, char **argv)
 {
