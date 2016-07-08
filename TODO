@@ -10,6 +10,12 @@
 * matlab/konect_statistic_twostars.m:  Also output the left/right out/in
   twostars for BIP and ASYM networks.
 
+* handbook writing: layout plot
+* ca-cit-HepTh:  Invalid multiple edge (2, 3); multiplicity = 4, although network should be without multiple edges
+* new petster datasets
+* @network.dbtropes-features should not have multiple edges
+
+
 == Later == 
 * all standard statistics in function of time
 * sg1:  make the *_adj arrays have length n+1, where the last entry
