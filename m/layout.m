@@ -2,16 +2,16 @@
 % Draw a graph layout of one network.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
+%	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/layout.{a}.$NETWORK.eps
+%	plot/layout.{a}.$network.eps
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 consts = konect_consts(); 
 

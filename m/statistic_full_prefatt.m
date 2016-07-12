@@ -6,20 +6,20 @@
 % non-temporal networks also have a SPLIT. 
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/pa.$NETWORK.mat
+%	dat/pa.$network.mat
 %
 % OUTPUT 
-% 	dat/statistic.prefatt.$NETWORK
+% 	dat/statistic.prefatt.$network
 %		[1] normal \beta
 %		[2] normal mse
 %		[3] long-tail \beta
 %		[4] long-tail mse
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 if has_timestamps(network)
 

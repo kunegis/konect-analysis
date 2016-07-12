@@ -6,20 +6,20 @@
 % splits happen. 
 %
 % PARAMETERS 
-%	$NETWORK		Network
+%	$network		Network
 %
 % INPUT 
-%	dat/split.$NETWORK.mat	
+%	dat/split.$network.mat	
 %
 % OUTPUT 
-%	dat/steps.$NETWORK.mat 		Steps
+%	dat/steps.$network.mat 		Steps
 %		steps_all		Total number of steps ( = size(e_steps, 1))
 %		steps_source		Number of source steps
 %		steps_target 		Number of target steps
 %		e_steps			(count×1) Edge count at each step
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 count = 100; 
 

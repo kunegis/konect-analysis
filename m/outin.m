@@ -3,21 +3,21 @@
 % networks. 
 %
 % PARAMETERS 
-%	$NETWORK	Network name
+%	$network	Network name
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/info.$NETWORK
+%	dat/data.$network.mat
+%	dat/info.$network
 %
 % OUTPUT 
-%	plot/outin.[a].$NETWORK.eps	Plots
+%	plot/outin.[a].$network.eps	Plots
 %
 
 font_size = 22; 
 
 consts = konect_consts(); 
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 info = read_info(network); 
 

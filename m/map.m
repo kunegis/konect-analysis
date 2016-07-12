@@ -3,14 +3,14 @@
 % plane using the two eigenvectors of a given decomposition. 
 %
 % PARAMETERS 
-%	$NETWORK 	
-%	$DECOMPOSITION
+%	$network 	
+%	$decomposition
 %
 % INPUT 
-%	dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat
+%	dat/decomposition_map.$decomposition.$network.mat
 %
 % OUTPUT 
-%	plot/map.[auv].$DECOMPOSITION.$NETWORK.eps 
+%	plot/map.[auv].$decomposition.$network.eps 
 %
 
 size_plot = 30000;  % max number of points shown
@@ -18,8 +18,8 @@ size_x    = 2000;   % max number of points for drawing the line plots
 marker_size = 3;
 
 
-network = getenv('NETWORK'); 
-decomposition = getenv('DECOMPOSITION'); 
+network = getenv('network'); 
+decomposition = getenv('decomposition'); 
 
 consts = konect_consts(); 
 colors_letter = konect_colors_letter(); 

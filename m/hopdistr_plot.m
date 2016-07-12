@@ -2,13 +2,13 @@
 % Plot a hop plot.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/hopdistr2.$NETWORK
+%	dat/hopdistr2.$network
 %
 % OUTPUT 
-%	plot/hopdistr.[abc...].$NETWORK.eps
+%	plot/hopdistr.[abc...].$network.eps
 %		a - Normal plot
 %		b - logistic axis
 %		c - tangent
@@ -18,7 +18,7 @@
 %		g - exponential distribution 
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 font_size = 20;
 line_width = 3; 

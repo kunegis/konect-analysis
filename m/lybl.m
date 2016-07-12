@@ -2,15 +2,15 @@
 % Double layout
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/info.$NETWORK
-%	dat/data.$NETWORK.mat
-%	dat/decomposition_map.stoch.$NETWORK.mat
+%	dat/info.$network
+%	dat/data.$network.mat
+%	dat/decomposition_map.stoch.$network.mat
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 consts = konect_consts(); 
 

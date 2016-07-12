@@ -2,23 +2,25 @@
 % Compute a spectral distribution.
 %
 % PARAMETERS 
-%	$NETWORK		Network
-%	$DECOMPOSITION		Decomposition type
+%	$network		Network
+%	$decomposition		Decomposition type
 %
 % INPUT 
-% 	dat/data.$NETWORK.mat
-%	dat/meansi.$NETWORK.mat
+% 	dat/data.$network.mat
+%	dat/meansi.$network.mat
 %
 % OUTPUT 
-%	dat/distr.$DECOMPOSITION.$NETWORK
-%		One line per bin.  Three columns:  count, begin end.  For time networks, all columns are doubled for the halftime graph. 
+%	dat/distr.$decomposition.$network
+%		One line per bin.  Three columns:  count, begin end.
+%		For time networks, all columns are doubled for the
+%		halftime graph.   
 %
 
 % Odd to avoid splitting on zero
 bin_count = 49; 
 
-network = getenv('NETWORK'); 
-decomposition = getenv('DECOMPOSITION'); 
+network = getenv('network'); 
+decomposition = getenv('decomposition'); 
 
 info = read_info(network)
 

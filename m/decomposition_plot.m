@@ -2,14 +2,14 @@
 % Plot spectrum.  
 % 
 % PARAMETERS 
-%	$NETWORK
-%	$DECOMPOSITION
+%	$network
+%	$decomposition
 %
 % INPUT 
-%	dat/decomposition.$DECOMPOSITION.$NETWORK.mat
+%	dat/decomposition.$decomposition.$network.mat
 %
 % OUTPUT 
-%	plot/decomposition.{...}.$DECOMPOSITION.$NETWORK.eps 
+%	plot/decomposition.{...}.$decomposition.$network.eps 
 %
 
 color_neutral =  [0 0 1];
@@ -21,8 +21,8 @@ linestyle = '-*';
 font_size = 22; 
 line_width = 3;
 
-network = getenv('NETWORK');
-decomposition = getenv('DECOMPOSITION'); 
+network = getenv('network');
+decomposition = getenv('decomposition'); 
 
 data_decomposition = konect_data_decomposition(decomposition); 
 

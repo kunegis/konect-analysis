@@ -2,7 +2,7 @@
 % Preferential attachment tests.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
 %	dat/pa.$NETWORK.mat
@@ -13,7 +13,7 @@
 %	plot/pa.[a][auv].$NETWORK.eps
 %
 
-network = getenv('NETWORK') 
+network = getenv('network') 
 
 consts = konect_consts(); 
 

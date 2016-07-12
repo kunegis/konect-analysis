@@ -1,18 +1,16 @@
-* mediandist:  actually compute it from hyperanf. 
-
-* wikiconflict:  change to MULTISIGNED and recompute everything with it. (need to adjust  quite a few code parts)
-
 * re-insert prefatt, which doesn't work at the moment 
 
 * matlab/konect_statistic_twostars.m:  Also output the left/right out/in
   twostars for BIP and ASYM networks.
 
 * handbook writing: layout plot
-* ca-cit-HepTh:  Invalid multiple edge (2, 3); multiplicity = 4, although network should be without multiple edges
+* ca-cit-HepTh:  Invalid multiple edge (2, 3); multiplicity = 4,
+  although network should be without multiple edges 
 * new petster datasets
 * @network.dbtropes-features should not have multiple edges
 * error in @network.dbpedia-similar
 * error in @network.advogato 
+* error in @check.moreno_sampson
 
 == Later == 
 * all standard statistics in function of time
@@ -21,6 +19,7 @@
 * sg1:  for SYM, have an additional variant where each edge is only
   saved once (will make programs such as hyperanf and matrix
   decompositions use half of memory).   
+* mediandist:  actually compute it from hyperanf.  (and add to website) 
 
 == Research ideas == 
 * @inter, @inter2

@@ -2,19 +2,19 @@
 % Draw the Lorenz curve for a network's degree distribution.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
+%	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/lorenz.[uva]{,b}.$NETWORK.dat
+%	plot/lorenz.[uva]{,b}.$network.dat
 %		a - total 
 %		u,v - Row/column-based (only BIP and ASYM)
 %		b - Bare, i.e. without the P value
 %
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 

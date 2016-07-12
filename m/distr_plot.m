@@ -2,14 +2,14 @@
 % Plot the eigenvalue distribution.
 %
 % PARAMETERS 
-%	$NETWORK
-%	$DECOMPOSITION
+%	$network
+%	$decomposition
 %
 % INPUT 
-%	dat/distr.$DECOMPOSITION.$NETWORK
+%	dat/distr.$decomposition.$network
 %
 % OUTPUT 
-%	plot/distr.[abcde].$DECOMPOSITION.$NETWORK.eps
+%	plot/distr.[abcde].$decomposition.$network.eps
 %		(a) Plain distribution
 %		(b) Stairs, i.e. transposed cumulative distribution
 %		(f) Cumulative distribution
@@ -28,8 +28,8 @@ color_full = [136   0 255] / 255;
 value_name = 'Eigenvalue';
 value_symbol = '\lambda';
 
-network = getenv('NETWORK');
-decomposition = getenv('DECOMPOSITION'); 
+network = getenv('network');
+decomposition = getenv('decomposition'); 
 
 data = load(sprintf('dat/distr.%s.%s', decomposition, network)); 
 

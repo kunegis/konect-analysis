@@ -2,13 +2,13 @@
 % Perform sanity checks on a network.
 %
 % PARAMETERS 
-%	$NETWORK	The network to check
+%	$network	The network to check
 %
 % INPUT 
-%	uni/out.$NETWORK
+%	uni/out.$network
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 consts = konect_consts(); 
 
@@ -94,15 +94,15 @@ elseif weights == consts.POSWEIGHTED
                       T(i(1),1), T(i(1), 2), T(i(1), 3))); 
     end
 
-elseif weights == consts.SIGNED
+elseif weights == consts.SIGNED | weights == consts.MULTISIGNED
 
     % Third column must be present, and at least one edge must have a negative weight
     if size(T, 2) <= 2
-        error('*** SIGNED network must have edge weights'); 
+        error('*** SIGNED or MULTISIGNED network must have edge weights'); 
     end
     i = find(T(:,3) < 0);
     if length(i) <= 0
-        error('*** SIGNED network must have at least one negative edge'); 
+        error('*** SIGNED or MULTISIGNED network must have at least one negative edge'); 
     end
 
 elseif weights == consts.WEIGHTED | weights == consts.MULTIWEIGHTED
@@ -136,7 +136,8 @@ end
 % Zero edge weights
 %
 
-if weights == consts.POSWEIGHTED | weights == consts.SIGNED 
+if weights == consts.POSWEIGHTED | weights == consts.SIGNED | ...
+            weights == consts.MULTISIGNED
     if tag_zeroweight
         assert(size(T,2) >= 3, '*** Missing edge weights for POSWEIGHTED/SIGNED network'); 
         assert(sum(T(:,3) == 0) > 0, '*** #zeroweight network does not contain zero-weighted edge');
@@ -149,7 +150,7 @@ if weights == consts.POSWEIGHTED | weights == consts.SIGNED
         end
     end
 else
-    assert(~tag_zeroweight, '*** #zeroweight used although network is not POSWEIGHTED/SIGNED'); 
+    assert(~tag_zeroweight, '*** #zeroweight used although network is not POSWEIGHTED/SIGNED/MULTISIGNED'); 
 end
 
 %

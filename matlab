@@ -75,16 +75,16 @@ fi
 LOGNAME=$USER.$MATLAB_NAME
 # This is a list of variable we want to be used in the log filename to
 # make it unique.
-[ "$TYPE"    ]     	&& LOGNAME=$LOGNAME.$TYPE
-[ "$NAME"   ]      	&& LOGNAME=$LOGNAME.$NAME
-[ "$DECOMPOSITION" ]	&& LOGNAME=$LOGNAME.$DECOMPOSITION
-[ "$STATISTIC" ]	&& LOGNAME=$LOGNAME.$STATISTIC
-[ "$METHOD" ]		&& LOGNAME=$LOGNAME.$METHOD 
-[ "$KIND"   ]      	&& LOGNAME=$LOGNAME.$KIND
-[ "$CLASS"   ]      	&& LOGNAME=$LOGNAME.$CLASS
-[ "$GROUP"   ]      	&& LOGNAME=$LOGNAME.$GROUP
-[ "$YEAR"   ]      	&& LOGNAME=$LOGNAME.$YEAR
-[ "$NETWORK" ]		&& LOGNAME=$LOGNAME."`basename "$NETWORK"`"
+[ "$type"    ]     	&& LOGNAME=$LOGNAME.$type
+[ "$name"   ]      	&& LOGNAME=$LOGNAME.$name
+[ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
+[ "$statistic" ]	&& LOGNAME=$LOGNAME.$statistic
+[ "$method" ]		&& LOGNAME=$LOGNAME.$method 
+[ "$kind"   ]      	&& LOGNAME=$LOGNAME.$kind
+[ "$class"   ]      	&& LOGNAME=$LOGNAME.$class
+[ "$group"   ]      	&& LOGNAME=$LOGNAME.$group
+[ "$year"   ]      	&& LOGNAME=$LOGNAME.$year
+[ "$network" ]		&& LOGNAME=$LOGNAME."`basename "$network"`"
 
 for PARAM in $MATLAB_PARAMS
 do

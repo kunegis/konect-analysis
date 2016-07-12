@@ -2,16 +2,16 @@
 % Plot the edge weight and multiplicity distributions.  
 %
 % PARAMETERS 
-%	$NETWORK	Network name, must not have format UNWEIGHTED
+%	$network	Network name, must not have format UNWEIGHTED
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
+%	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/weights.{a}.$NETWORK.eps 
+%	plot/weights.{a}.$network.eps 
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 font_size = 22; 
 

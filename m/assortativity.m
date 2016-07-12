@@ -2,19 +2,19 @@
 % Generate assortativity plots. 
 %
 % PARAMETERS 
-%	$NETWORK	Name of the network
+%	$network	Name of the network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/info.$NETWORK
+%	dat/data.$network.mat
+%	dat/info.$network
 %
 % OUTPUT 
-%	plot/assortativity.[auv].$NETWORK.eps
+%	plot/assortativity.[auv].$network.eps
 %
 
 consts = konect_consts(); 
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 info = read_info(network); 

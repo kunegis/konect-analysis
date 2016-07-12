@@ -1,11 +1,10 @@
-
 /*
  * Declares symbols and functions related to one variable-width data
  * type (decided at compile time).
  *
  * In this file, '$' is replaced by the name character. 
  *
- * MACRO PARAMETERS (before inclusion)
+ * MACRO PARAMETERS (defined by the file including this file)
  *
  *    TYPE_$ The character constant representing this type
  * 

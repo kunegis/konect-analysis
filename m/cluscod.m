@@ -4,14 +4,14 @@
 % network. 
 %
 % PARAMETERS 
-%	$NETWORK	Network name
+%	$network	Network name
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/info.$NETWORK
+%	dat/data.$network.mat
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/cluscod.$NETWORK.mat
+%	dat/cluscod.$network.mat
 %		c_local		Vector of node degree distributions
 %		c
 %		c2
@@ -19,7 +19,7 @@
 
 consts = konect_consts(); 
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 
@@ -38,7 +38,7 @@ A = A | A';
 
 [c_local c c2] = konect_clusco(A); 
 
-c
-c2
+%% c
+%% c2
 
 save(sprintf('dat/cluscod.%s.mat', network), 'c_local', 'c', 'c2', '-v7.3');

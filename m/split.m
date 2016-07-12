@@ -14,14 +14,14 @@
 % The test and zero test sets do not contain duplicates. 
 %
 % PARAMETERS 
-% 	$NETWORK		Name of dataset, e.g. "advogato"
+% 	$network		Name of dataset, e.g. "advogato"
 %
 % INPUT 
-%	uni/out.$NETWORK
-%	dat/info.$NETWORK
+%	uni/out.$network
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/split.$NETWORK.mat		Split matrices
+%	dat/split.$network.mat		Split matrices
 %		n1,n2			Size of dataset 
 %		T_source		(X*3) Source set
 %		T_target		(X*3) Target set
@@ -31,7 +31,7 @@
 %		u_ids,v_ids		IDs of entities in the reduced dataset 
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 consts = konect_consts(); 
 

@@ -105,7 +105,7 @@ dat/CLASSES:  sh/classes dat/networks.asc
 	sh/classes
 }
 
-dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
+dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 
 >dat/NETWORKS_BIP:  dat/networks.asc
 {
@@ -139,14 +139,14 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 }
 
 # List of networks in each weight class.  $WEIGHTS is the weights (in all-lowercase). 
->dat/NETWORKS_WEIGHTS_$WEIGHTS:  
+>dat/NETWORKS_WEIGHTS_$weights:  
 	dat/networks.asc
 {
-	expr "$WEIGHTS" : '[a-z]*' >/dev/null || {
-		echo >&2 "*** Weights '$WEIGHTS' must be all lowercase"
+	expr "$weights" : '[a-z]*' >/dev/null || {
+		echo >&2 "*** Weights '$weights' must be all lowercase"
 		exit 1
 	}
-	grep -F " $WEIGHTS " dat/networks.asc | cut -d ' ' -f 1 
+	grep -F " $weights " dat/networks.asc | cut -d ' ' -f 1 
 }
 
 # Networks that allow negative edges 
@@ -186,7 +186,6 @@ dat/NETWORKS_CLASS_$CLASS:  dat/CLASSES;
 CFLAGS=
 	# -D_GNU_SOURCE:  for posix_madvise() 
 	# -lm:  used only in hyperanf.c / hyperloglog.h
-
 {
 	-std=c99 -pedantic -Wall -Wextra -Werror 
 	-Wundef -D_GNU_SOURCE 
@@ -200,19 +199,19 @@ bin/$name:
 	gcc $CFLAGS c/$name.c -o bin/$name
 }
 
-bin/$name.$PARAMETERS:
+bin/$name.$parameters:
 	[dat/depc.$name.c] $[&CFLAGS] !bin
 {
-	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
-	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
-	v="$(echo "$PARAMETERS" | sed -re 's,^..(.).....$,\1,')"
-	w="$(echo "$PARAMETERS" | sed -re 's,^...(.)....$,\1,')"
-	t="$(echo "$PARAMETERS" | sed -re 's,^....(.)...$,\1,')"
-	F="$(echo "$PARAMETERS" | sed -re 's,^.....(.)..$,\1,')"
-	W="$(echo "$PARAMETERS" | sed -re 's,^......(.).$,\1,')"
-	L="$(echo "$PARAMETERS" | sed -re 's,^.......(.)$,\1,')"
+	m="$(echo "$parameters" | sed -re 's,^(.).......$,\1,')"
+	u="$(echo "$parameters" | sed -re 's,^.(.)......$,\1,')"
+	v="$(echo "$parameters" | sed -re 's,^..(.).....$,\1,')"
+	w="$(echo "$parameters" | sed -re 's,^...(.)....$,\1,')"
+	t="$(echo "$parameters" | sed -re 's,^....(.)...$,\1,')"
+	F="$(echo "$parameters" | sed -re 's,^.....(.)..$,\1,')"
+	W="$(echo "$parameters" | sed -re 's,^......(.).$,\1,')"
+	L="$(echo "$parameters" | sed -re 's,^.......(.)$,\1,')"
 
-	gcc c/$name.c $CFLAGS -o bin/$name.$PARAMETERS \
+	gcc c/$name.c $CFLAGS -o bin/$name.$parameters \
 		-DTYPE_ma="'$m'" \
 		-DTYPE_ua="'$u'" -DTYPE_va="'$v'" \
 		-DTYPE_wa="'$w'" -DTYPE_ta="'$t'" \
@@ -347,24 +346,24 @@ bin
 	sh/network-info 
 }
 
->dat/info.$TRANSFORM~$NETWORK:
-	dat/statistic.format.$TRANSFORM~$NETWORK
-	dat/statistic.lines.$TRANSFORM~$NETWORK
-	dat/statistic.format.$TRANSFORM~$NETWORK
-	dat/statistic.weights.$TRANSFORM~$NETWORK
-	dat/statistic.size.$TRANSFORM~$NETWORK
+>dat/info.$TRANSFORM~$network:
+	dat/statistic.format.$TRANSFORM~$network
+	dat/statistic.lines.$TRANSFORM~$network
+	dat/statistic.format.$TRANSFORM~$network
+	dat/statistic.weights.$TRANSFORM~$network
+	dat/statistic.size.$TRANSFORM~$network
 {
-	FORMAT="$(cat dat/statistic.format.$TRANSFORM~$NETWORK)"
+	FORMAT="$(cat dat/statistic.format.$TRANSFORM~$network)"
 	if [ "$FORMAT" = 3 ]; then # BIP
-		sed -re '1d;4~1d' <dat/statistic.size.$TRANSFORM~$NETWORK
+		sed -re '1d;4~1d' <dat/statistic.size.$TRANSFORM~$network
 	else # SQUARE
-		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$NETWORK
-		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$NETWORK
+		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$network
+		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$network
 	fi
-	cat dat/statistic.lines.$TRANSFORM~$NETWORK
+	cat dat/statistic.lines.$TRANSFORM~$network
 	echo NaN
-	cat dat/statistic.format.$TRANSFORM~$NETWORK
-	cat dat/statistic.weights.$TRANSFORM~$NETWORK
+	cat dat/statistic.format.$TRANSFORM~$network
+	cat dat/statistic.weights.$TRANSFORM~$network
 }
 
 #
@@ -373,18 +372,17 @@ bin
 
 @check: [dat/dep.check];
 
-@check.$NETWORK:  dat/check.$NETWORK;
+@check.$network:  dat/check.$network;
 
-dat/check.$NETWORK:  
-	m/check.m
-	uni/out.$NETWORK uni/meta.$NETWORK
-	dat/statistic.format.$NETWORK
-	dat/statistic.weights.$NETWORK
-	dat/statistic.size.$NETWORK
-	dat/statistic.lines.$NETWORK
-	$[&MATLABPATH]
+dat/check.$network:  
+	m/check.m $[&MATLABPATH]
+	uni/out.$network uni/meta.$network 
+	dat/statistic.format.$network
+	dat/statistic.weights.$network
+	dat/statistic.size.$network
+	dat/statistic.lines.$network
 {
-	./octave m/check.m && echo OK >dat/check.$NETWORK
+	./octave m/check.m && echo OK >dat/check.$network
 }
 
 >dat/dep.check:  $[networks = dat/NETWORKS]
@@ -429,11 +427,11 @@ dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m
 # OUT files for derived networks
 #
 
-dat/out.$TRANSFORM~$NETWORK:  
-	[dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK] 
-	dat/sg1.$TRANSFORM~$NETWORK
+dat/out.$TRANSFORM~$network:  
+	[dat/dep.c.sgraph1_dump.$TRANSFORM~$network] 
+	dat/sg1.$TRANSFORM~$network
 {
-	$(cat dat/dep.c.sgraph1_dump.$TRANSFORM~$NETWORK) dat/sg1.$TRANSFORM~$NETWORK dat/out.$TRANSFORM~$NETWORK
+	$(cat dat/dep.c.sgraph1_dump.$TRANSFORM~$network) dat/sg1.$TRANSFORM~$network dat/out.$TRANSFORM~$network
 }
 
 #
@@ -473,6 +471,7 @@ dat/sg1.$network:
 	$[command = dat/dep.c.sgraph1_create.$network] [dat/dep.c.sgraph1_create.$network]
 	dat/sg0.$network
 {
+	echo $command dat/sg0.$network dat/sg1.$network ## rm 
 	$command dat/sg0.$network dat/sg1.$network
 }
 
@@ -481,14 +480,15 @@ dat/sg1.$network:
 #
 
 dat/sg1.simple~$network:
-	$[command = dat/dep.cx.sgraph1_create_simple.$network.simple]
+	$[command = dat/dep.cx.sgraph1_create_simple.$network.simple] 
+	[dat/dep.cx.sgraph1_create_simple.$network.simple]
 	dat/sg0.$network	
 {
 	$command dat/sg0.$network dat/sg1.simple~$network
 }
 
 dat/sg1.lcc~$network:
-	$[command = dat/dep.c.sgraph1_create_lcc.$network]
+	$[command = dat/dep.c.sgraph1_create_lcc.$network] [dat/dep.c.sgraph1_create_lcc.$network]
 	dat/sg1.$network
 {
 	$command dat/sg1.$network dat/sg1.lcc~$network
@@ -504,14 +504,14 @@ dat/sg1.lcc~$network:
 	sh/widths-simple 
 }
 
-dat/widths.lcc~$NETWORK = dat/widths.$NETWORK;
+dat/widths.lcc~$network = dat/widths.$network;
 
 #
 # Split
 #
 
-dat/split.$NETWORK.mat: 
-	uni/out.$NETWORK m/split.m dat/info.$NETWORK
+dat/split.$network.mat: 
+	uni/out.$network m/split.m dat/info.$network
 	$[&MATLABPATH]
 {
 	./matlab m/split.m 
@@ -553,13 +553,12 @@ dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
 	done 
 }
 
-@assortativity.$NETWORK:  plot/assortativity.a.$NETWORK.eps;
+@assortativity.$network:  plot/assortativity.a.$network.eps;
 
-plot/assortativity.a.$NETWORK.eps:
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK
-	m/assortativity.m m/assortativity_one.m 
-	$[&MATLABPATH]
+plot/assortativity.a.$network.eps:
+	m/assortativity.m m/assortativity_one.m $[&MATLABPATH]
+	dat/data.$network.mat 
+	dat/info.$network
 {
 	 ./matlab m/assortativity.m
 }
@@ -680,7 +679,7 @@ dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
 }
 
 >dat/statistic.size.$transform~$network:
-	$[command = dat/dep.c.size.$transform~$network]
+	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
 	$command dat/sg1.$transform~$network 
@@ -694,7 +693,7 @@ dat/statistic.lines.$network:
 }
 
 >dat/statistic.lines.$transform~$network:
-	$[command = dat/dep.c.lines.$transform~$network]
+	$[command = dat/dep.c.lines.$transform~$network] [dat/dep.c.lines.$transform~$network]
 	dat/sg1.$transform~$network 
 {
 	$command dat/sg1.$transform~$network 
@@ -709,7 +708,7 @@ dat/statistic.volume.$network:
 }
 
 >dat/statistic.volume.$transform~$network:
-	$[command = dat/dep.c.volume.$transform~$network]
+	$[command = dat/dep.c.volume.$transform~$network] [dat/dep.c.volume.$transform~$network]
 	dat/sg1.$transform~$network 
 {
 	$command dat/sg1.$transform~$network 
@@ -723,7 +722,7 @@ dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 
 >dat/statistic.maxdegree.$network:
 	dat/sg1.$network
-	$[command = dat/dep.c.maxdegree.$network]
+	$[command = dat/dep.c.maxdegree.$network] [dat/dep.c.maxdegree.$network]
 {
 	$command dat/sg1.$network 
 }
@@ -732,13 +731,14 @@ dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 
 >dat/statistic.triangles.simple~$network:
 	dat/sg1.simple~$network
-	$[command = dat/dep.c.triangles.simple~$network]
+	$[command = dat/dep.c.triangles.simple~$network] [dat/dep.c.triangles.simple~$network]
 {
 	$command dat/sg1.simple~$network 
 }
 
 >dat/statistic.twostars.simple~$network:
 	$[command = dat/dep.c2.statistic_twostars.simple~$network]
+	[dat/dep.c2.statistic_twostars.simple~$network]
 	dat/ft.degree.simple~$network
 {
 	$command dat/ft.degree.simple~$network 
@@ -776,7 +776,8 @@ dat/statistic.avgdegree.$network:
 }
 
 >dat/statistic.ifub$K.lcc~simple~$network:
-	$[command = dat/dep.c.ifub.lcc~simple~$network]
+	$[command = dat/dep.c.ifub.lcc~simple~$network] 
+	[dat/dep.c.ifub.lcc~simple~$network]
 	dat/sg1.lcc~simple~$network
 {
 	$command dat/sg1.lcc~simple~$network $K ${TMP:-/tmp}/ifub.$network 
@@ -1071,22 +1072,22 @@ plot/bidd.a.$network.eps:
 #
 
 @layout:  @layout.class.everything; 
-@layout.class.$CLASS:  [dat/dep.layout.class.$CLASS];
+@layout.class.$class:  [dat/dep.layout.class.$class];
 
-@layout.$NETWORK
-plot/layout.a.$NETWORK.eps:  
+@layout.$network
+plot/layout.a.$network.eps:  
 	m/layout.m
-	dat/data.$NETWORK.mat  
-	dat/info.$NETWORK
+	dat/data.$network.mat  
+	dat/info.$network
 	$[&MATLABPATH]
 {
 	 ./matlab m/layout.m
 }
 
->dat/dep.layout.class.$CLASS:  dat/NETWORKS_CLASS_$CLASS
+>dat/dep.layout.class.$class:  dat/NETWORKS_CLASS_$class 
 {
-	for NETWORK in $(cat dat/NETWORKS_CLASS_$CLASS) ; do
-		echo @layout."$NETWORK"
+	for network in $(cat dat/NETWORKS_CLASS_$class) ; do
+		echo @layout."$network"
 	done
 }
 
@@ -1094,46 +1095,41 @@ plot/layout.a.$NETWORK.eps:
 # Degree
 #
 
-@degree.$NETWORK:  plot/degree.a.$NETWORK.eps;
+@degree.$network:  plot/degree.a.$network.eps;
 
-plot/degree.a.$NETWORK.eps:  
-	m/degree.m m/degree_print.m 
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
-	$[&MATLABPATH]
+plot/degree.a.$network.eps:  
+	m/degree.m m/degree_print.m $[&MATLABPATH]
+	dat/info.$network dat/data.$network.mat 
 {
 	 ./matlab m/degree.m
 }
 
 @degreex.$NETWORK:  plot/degree.ax.$NETWORK.eps;
 
-plot/degree.ax.$NETWORK.eps:  
-	m/degree.m m/degree_print.m 
-	dat/data.$NETWORK.mat 
-	dat/statistic.power.$NETWORK
-	$[&MATLABPATH]
+plot/degree.ax.$network.eps:  
+	m/degree.m m/degree_print.m $[&MATLABPATH]
+	dat/data.$network.mat dat/info.$network
+	dat/statistic.power.$network
 {
 	 ENABLE_POWER_LAW=1 ./matlab m/degree.m
 }
 
-@degreey.$NETWORK:  plot/degree.ay.$NETWORK.eps;
+@degreey.$network:  plot/degree.ay.$network.eps;
 
-plot/degree.ay.$NETWORK.eps:  
-	m/degree.m m/degree_print.m
-	dat/data.$NETWORK.mat 
-	dat/statistic.power2.$NETWORK
-	$[&MATLABPATH]
+plot/degree.ay.$network.eps:  
+	m/degree.m m/degree_print.m $[&MATLABPATH]
+	dat/data.$network.mat dat/info.$network
+	dat/statistic.power2.$network
 {
 	 ENABLE_POWER_LAW_2=1 ./matlab m/degree.m
 }
 
-@degree3.$NETWORK:  plot/degree.a3.$NETWORK.eps;
+@degree3.$network:  plot/degree.a3.$network.eps;
 
-plot/degree.a3.$NETWORK.eps:  
-	m/degree.m m/degree_print.m 
-	dat/data.$NETWORK.mat 
-	dat/statistic.power3.$NETWORK
-	$[&MATLABPATH]
+plot/degree.a3.$network.eps:  
+	m/degree.m m/degree_print.m $[&MATLABPATH]
+	dat/data.$network.mat dat/info.$network
+	dat/statistic.power3.$network
 {
 	 ENABLE_POWER_LAW_3=1 ./matlab m/degree.m
 }
@@ -1142,11 +1138,11 @@ plot/degree.a3.$NETWORK.eps:
 # Lorenz plot
 #
 
-@lorenz.$NETWORK
-plot/lorenz.a.$NETWORK.eps:  
+@lorenz.$network
+plot/lorenz.a.$network.eps:  
 	m/lorenz.m m/lorenz_one.m 
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
+	dat/info.$network
+	dat/data.$network.mat 
 	$[&MATLABPATH]
 {
 	 ./matlab m/lorenz.m 
@@ -1156,11 +1152,10 @@ plot/lorenz.a.$NETWORK.eps:
 # Weight distribution 
 #
 
-@weights.$NETWORK
-plot/weights.a.$NETWORK.eps:  
-	m/weights_plot.m
-	$[&MATLABPATH]
-	dat/data.$NETWORK.mat 
+@weights.$network
+plot/weights.a.$network.eps:  
+	m/weights_plot.m $[&MATLABPATH]
+	dat/data.$network.mat 
 {
 	 ./matlab m/weights_plot.m 
 }
@@ -1169,11 +1164,11 @@ plot/weights.a.$NETWORK.eps:
 # Time histogram
 #
 
->dat/time.$NETWORK:  
-	<uni/out.$NETWORK
+>dat/time.$network:  
+	<uni/out.$network
 	dat/NETWORKS_TIME
 {
-	if ! grep -qE '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+	if ! grep -qE '^'"$network"'$' dat/NETWORKS_TIME ; then
 		exit 1
 	fi
 	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
@@ -1193,8 +1188,8 @@ plot/time_histogram.$network.eps:
 >dat/dep.time_histogram:
 	dat/NETWORKS_TIME
 {
-	for NETWORK in $(cat dat/NETWORKS_TIME) ; do
-		echo @time_histogram."$NETWORK"
+	for network in $(cat dat/NETWORKS_TIME) ; do
+		echo @time_histogram."$network"
 	done
 }
 
@@ -1247,28 +1242,26 @@ plot/diadens.$network.eps:
 
 @cluscod:  [dat/dep.cluscod];
 
-dat/cluscod.$NETWORK.mat:  
-	m/cluscod.m 
-	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
+dat/cluscod.$network.mat:  
+	m/cluscod.m $[&MATLABPATH]
+	dat/info.$network
+	dat/data.$network.mat 
 {
 	 ./matlab m/cluscod.m 
 }
 
-@cluscod.$NETWORK
-plot/cluscod.a.$NETWORK.eps:  
-	m/cluscod_plot.m
-	$[&MATLABPATH]
-	dat/cluscod.$NETWORK.mat 
+@cluscod.$network
+plot/cluscod.a.$network.eps:  
+	m/cluscod_plot.m $[&MATLABPATH]
+	dat/cluscod.$network.mat 
 {
 	 ./matlab m/cluscod_plot.m 
 }
 
 >dat/dep.cluscod:  dat/NETWORKS_SQUARE
 {
-	for NETWORK in $(cat dat/NETWORKS_SQUARE) ; do
-		echo @cluscod.$NETWORK
+	for network in $(cat dat/NETWORKS_SQUARE) ; do
+		echo @cluscod."$network"
 	done
 }
 
@@ -1281,7 +1274,7 @@ plot/cluscod.a.$NETWORK.eps:
 >dat/dep.hopdistr:  dat/NETWORKS
 {
 	for network in $(cat dat/NETWORKS) ; do
-		echo @hopdistr.$network
+		echo @hopdistr."$network"
 	done
 }
 
@@ -1290,8 +1283,8 @@ plot/cluscod.a.$NETWORK.eps:
 
 >dat/dep.hopdistr.square:  dat/NETWORKS_SQUARE
 {
-	for NETWORK in $(cat dat/NETWORKS_SQUARE) ; do
-		echo @hopdistr.$NETWORK
+	for network in $(cat dat/NETWORKS_SQUARE) ; do
+		echo @hopdistr.$network
 	done
 }
 
@@ -1306,21 +1299,18 @@ dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 	$(cat dat/dep.c.hyperanf.lcc~simple~$network) dat/sg1.lcc~simple~$network
 }
 
-@hopdistr.$NETWORK
-plot/hopdistr.a.$NETWORK.eps:  
-	m/hopdistr_plot.m
-	$[&MATLABPATH]
-	dat/hopdistr2.$NETWORK 
+@hopdistr.$network
+plot/hopdistr.a.$network.eps:  
+	m/hopdistr_plot.m $[&MATLABPATH]
+	dat/hopdistr2.$network 
 {
 	 ./matlab m/hopdistr_plot.m 
 }
 
-dat/hopdistr_distrtest.$NETWORK.mat:  
-	m/hopdistr_distrtest.m 
-	m/distrtest_multi.m
-	$[&MATLABPATH]
-	dat/hopdistr2.$NETWORK 
-	dat/info.$NETWORK 
+dat/hopdistr_distrtest.$network.mat:  
+	m/hopdistr_distrtest.m m/distrtest_multi.m $[&MATLABPATH]
+	dat/hopdistr2.$network 
+	dat/info.$network 
 {
 	 ./matlab m/hopdistr_distrtest.m 
 }
@@ -1349,21 +1339,19 @@ plot/hopdistr_time.full.a.$NETWORK.eps:
 #
 
 # Full
-dat/stepsi.$NETWORK:  
-	m/stepsi.m 
-	$[&MATLABPATH]
-	dat/info.$NETWORK 
-	dat/outs.$NETWORK
+dat/stepsi.$network:  
+	m/stepsi.m $[&MATLABPATH]
+	dat/info.$network 
+	dat/outs.$network
 {
 	 ./matlab m/stepsi.m 
 }
 
 # Split
-dat/steps.$NETWORK.mat:  
-	m/steps.m
-	$[&MATLABPATH]
-	dat/split.$NETWORK.mat 
-	dat/means.$NETWORK.mat 
+dat/steps.$network.mat:  
+	m/steps.m $[&MATLABPATH]
+	dat/split.$network.mat 
+	dat/means.$network.mat 
 {
 	 ./matlab m/steps.m 
 }
@@ -1372,65 +1360,65 @@ dat/steps.$NETWORK.mat:
 # Sorted out file
 #
 
-dat/outs.$NETWORK:  
-	uni/out.$NETWORK  
+dat/outs.$network:  
+	uni/out.$network  
 	bin/outs 
 	dat/NETWORKS_TIME
 {
-	if ! grep '^'"$NETWORK"'$' dat/NETWORKS_TIME ; then
+	if ! grep '^'"$network"'$' dat/NETWORKS_TIME ; then
 		exit 1
 	fi
-	bin/outs $NETWORK
+	bin/outs "$network"
 }
 
 #
 # Decompositions
 #
 
-@decomposition.$DECOMPOSITION.$NETWORK:   plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps;
+@decomposition.$decomposition.$network:   plot/decomposition.a.$decomposition.$network.eps;
 
-dat/decomposition.$DECOMPOSITION.$NETWORK.mat:  
+dat/decomposition.$decomposition.$network.mat:  
 	m/decomposition_comp.m $[&MATLABPATH]
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK 
-	dat/meansi.$NETWORK.mat 
+	dat/data.$network.mat 
+	dat/info.$network 
+	dat/meansi.$network.mat 
 	dat/runtime
 {
 	./matlab m/decomposition_comp.m 
 }
 
-dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat:  
+dat/decomposition_map.$decomposition.$network.mat:   
 	m/decomposition_comp.m $[&MATLABPATH]
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK 
-	dat/meansi.$NETWORK.mat 
+	dat/data.$network.mat 
+	dat/info.$network 
+	dat/meansi.$network.mat 
 	dat/runtime
 {
 	./matlab m/decomposition_map.m 
 }
 
-plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps:  
+plot/decomposition.a.$decomposition.$network.eps:  
 	m/decomposition_plot.m $[&MATLABPATH]
-	dat/decomposition.$DECOMPOSITION.$NETWORK.mat 
+	dat/decomposition.$decomposition.$network.mat 
 {
 	./matlab m/decomposition_plot.m
 }
 
-@decomposition.$DECOMPOSITION: [dat/dep.decomposition.$DECOMPOSITION];
+@decomposition.$decomposition: [dat/dep.decomposition.$decomposition];
 
->dat/dep.decomposition.$DECOMPOSITION:  
+>dat/dep.decomposition.$decomposition:  
 	dat/NETWORKS 
 	dat/NETWORKS_ASYM
 	DECOMPOSITIONS_ASYM
 {
-	if grep -qE '^\s*'"$DECOMPOSITION"'\s*$' DECOMPOSITIONS_ASYM ; then
-		NETWORKS="$(cat dat/NETWORKS_ASYM)"
+	if grep -qE '^\s*'"$decomposition"'\s*$' DECOMPOSITIONS_ASYM ; then
+		networks="$(cat dat/NETWORKS_ASYM)"
 	else
-		NETWORKS="$(cat dat/NETWORKS)"
+		networks="$(cat dat/NETWORKS)"
 	fi
 
-	for NETWORK in $NETWORKS ; do
-		echo @decomposition.$DECOMPOSITION.$NETWORK
+	for network in $networks ; do
+		echo @decomposition."$decomposition"."$network"
 	done
 }
 
@@ -1439,22 +1427,21 @@ plot/decomposition.a.$DECOMPOSITION.$NETWORK.eps:
 # (only for networks with TIME)
 #
 
-dat/statistic.prefatt.$NETWORK:  
-	m/statistic_full_prefatt.m
-	$[&MATLABPATH]
-	dat/pa.$NETWORK.mat 
+dat/statistic.prefatt.$network:  
+	m/statistic_full_prefatt.m $[&MATLABPATH]
+	dat/pa.$network.mat 
 {
 	 ./matlab m/statistic_full_prefatt.m 
 }
 
-dat/pa.$NETWORK.mat:  
-	m/pa_compute.m m/pa_compute_one.m dat/split.$NETWORK.mat dat/info.$NETWORK
+dat/pa.$network.mat:  
+	m/pa_compute.m m/pa_compute_one.m dat/split.$network.mat dat/info.$network
 	$[&MATLABPATH]
 {
 	./matlab m/pa_compute.m 
 }
 
-dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
+dat/pa_data.$network.mat: dat/pa.$network.mat;
 
 #
 # Preferential attachment plots
@@ -1470,10 +1457,10 @@ dat/pa_data.$NETWORK.mat: dat/pa.$NETWORK.mat;
 	done
 }
 
-@pa.$NETWORK
-plot/pa.aa.$NETWORK.eps:  
-	m/pa_plot.m m/pa_plot_one.m dat/pa.$NETWORK.mat 
-	dat/pa_data.$NETWORK.mat dat/split.$NETWORK.mat dat/info.$NETWORK
+@pa.$network
+plot/pa.aa.$network.eps:  
+	m/pa_plot.m m/pa_plot_one.m dat/pa.$network.mat 
+	dat/pa_data.$network.mat dat/split.$network.mat dat/info.$network
 	$[&MATLABPATH]
 {
 	./matlab m/pa_plot.m
@@ -1483,21 +1470,20 @@ plot/pa.aa.$NETWORK.eps:
 # Spectral distribution
 #
 
-@distr.$DECOMPOSITION.$NETWORK
-plot/distr.a.$DECOMPOSITION.$NETWORK.eps:  
-	m/distr_plot.m 
-	$[&MATLABPATH]
-	dat/distr.$DECOMPOSITION.$NETWORK
+@distr.$decomposition.$network
+plot/distr.a.$decomposition.$network.eps:  
+	m/distr_plot.m $[&MATLABPATH]
+	dat/distr.$decomposition.$network
 {
 	./matlab m/distr_plot.m 
 }
 
-dat/distr.$DECOMPOSITION.$NETWORK:  
+dat/distr.$decomposition.$network:  
 	m/distr.m 
 	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat 
-	dat/meansi.$NETWORK.mat 
+	dat/info.$network
+	dat/data.$network.mat 
+	dat/meansi.$network.mat 
 {
 	./matlab m/distr.m 
 }
@@ -1506,17 +1492,17 @@ dat/distr.$DECOMPOSITION.$NETWORK:
 # Maps (graph drawings based on matrix decompositions)
 #
 
-@map.$DECOMPOSITION.$NETWORK
-plot/map.a.$DECOMPOSITION.$NETWORK.eps:  
+@map.$decomposition.$network
+plot/map.a.$decomposition.$network.eps:  
 	m/map.m 
 	m/map_one.m 
 	$[&MATLABPATH]
-	dat/decomposition_map.$DECOMPOSITION.$NETWORK.mat
+	dat/decomposition_map.$decomposition.$network.mat
 {
 	./matlab m/map.m 
 }
 
-@map.$DECOMPOSITION: [dat/dep.map.$DECOMPOSITION];
+@map.$decomposition: [dat/dep.map.$decomposition];
 
 >dat/dep.map.$decomposition:  
 	dat/NETWORKS 
@@ -1524,12 +1510,12 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 	DECOMPOSITIONS_ASYM
 {
 	if grep -qE '^\s*'"$decomposition"'\s*$' DECOMPOSITIONS_ASYM ; then
-		NETWORKS="$(cat dat/NETWORKS_ASYM)"
+		networks="$(cat dat/NETWORKS_ASYM)"
 	else
-		NETWORKS="$(cat dat/NETWORKS)"
+		networks="$(cat dat/NETWORKS)"
 	fi
 
-	for network in $NETWORKS ; do
+	for network in $networks ; do
 		echo @map.$decomposition.$network
 	done
 }
@@ -1538,17 +1524,17 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 # RDF files
 #
 
-@rdf.$NETWORK: dat/download.rdf.$NETWORK.n3.bz2;
+@rdf.$network: dat/download.rdf.$network.n3.bz2;
 
->dat/download.rdf.$NETWORK.n3.bz2: dat/download.rdf.$NETWORK.n3
+>dat/download.rdf.$network.n3.bz2: dat/download.rdf.$network.n3
 {
-	bzip2 -c dat/download.rdf.$NETWORK.n3 
+	bzip2 -c dat/download.rdf.$network.n3 
 }
 
->dat/download.rdf.$NETWORK.n3: uni/out.$NETWORK uni/meta.$NETWORK sh/mkrdf
+>dat/download.rdf.$network.n3: uni/out.$network uni/meta.$network sh/mkrdf
 {
-	sh/mkrdf "$NETWORK" 
-	head dat/download.rdf.$NETWORK.n3 -n 10000 | 
+	sh/mkrdf "$network" 
+	head dat/download.rdf."$network".n3 -n 10000 | 
 	rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
 }
 
@@ -1565,15 +1551,13 @@ plot/map.a.$DECOMPOSITION.$NETWORK.eps:
 # TSV files
 #
 
-@tsv.$NETWORK:  dat/download.tsv.$NETWORK.tar.bz2;
+@tsv.$network:  dat/download.tsv.$network.tar.bz2;
 
->dat/README.$NETWORK:  
+>dat/README.$network:  
 	sh/mkreadme sh/mkcite $[&PERL5LIB]
-	lib/BibTeX/Parser.pm
-	lib/LaTeX/ToUnicode.pm
-	lib/HTML/Entities.pm
+	lib/BibTeX/Parser.pm lib/LaTeX/ToUnicode.pm lib/HTML/Entities.pm
 {
-	sh/mkreadme "$NETWORK" matrices 
+	sh/mkreadme "$network" matrices 
 }
 
 lib/HTML/Entities.pm: lib/HTML-Parser-3.72.tar.gz
@@ -1626,35 +1610,35 @@ lib/LaTeX-ToUnicode-0.04.tar.gz: !lib
 	touch LaTeX-ToUnicode-0.04.tar.gz
 }
 
->dat/dep.download.tsv.$NETWORK: 
+>dat/dep.download.tsv.$network: 
 {
-	echo dat/README.$NETWORK
-	echo uni/out.$NETWORK
-	echo uni/meta.$NETWORK
-	if [ -e uni/ent.$NETWORK ]
+	echo dat/README.$network
+	echo uni/out.$network
+	echo uni/meta.$network
+	if [ -e uni/ent.$network ]
 	then
-		echo uni/ent.$NETWORK
+		echo uni/ent.$network
 	fi
-	if ls uni/ent.$NETWORK.* >/dev/null 2>/dev/null
+	if ls uni/ent.$network.* >/dev/null 2>/dev/null
 	then
-		echo uni/ent.$NETWORK.*
+		echo uni/ent.$network.*
 	fi
-	if ls uni/rel.$NETWORK.* >/dev/null 2>/dev/null
+	if ls uni/rel.$network.* >/dev/null 2>/dev/null
 	then
-		echo uni/rel.$NETWORK.*
+		echo uni/rel.$network.*
 	fi
 }
 
-dat/download.tsv.$NETWORK.tar.bz2:
-	[dat/dep.download.tsv.$NETWORK] 
+dat/download.tsv.$network.tar.bz2:
+	[dat/dep.download.tsv.$network] 
 	!dat-tmp
 {
-	DIR="dat-tmp/$NETWORK"
+	DIR="dat-tmp/$network"
 
 	rm -Rf "$DIR"
 	mkdir "$DIR"
 
-	for file in $(cat dat/dep.download.tsv.$NETWORK) 
+	for file in $(cat dat/dep.download.tsv.$network) 
 	do
 		file_canon="$(readlink -e "$file")"
 		if [ "$(basename "$file_canon")" = README ]
@@ -1666,8 +1650,8 @@ dat/download.tsv.$NETWORK.tar.bz2:
 	done
 
 	cd dat-tmp
-	tar -hcvj -f ../dat/download.tsv.$NETWORK.tar.bz2 "$NETWORK"
-	rm -rf "dat-tmp/$NETWORK"
+	tar -hcvj -f ../dat/download.tsv.$network.tar.bz2 "$network"
+	rm -rf "dat-tmp/$network"
 }  
 
 dat-tmp;
@@ -1681,7 +1665,8 @@ dat-tmp;
 	cat dat/NETWORKS |
 	while read -r network 
 	do
-		if <dat/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
+		if <dat/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | 
+			grep -qE '^'"$network"'$'
 		then
 			echo "@tsv.$network"
 		fi
@@ -1692,12 +1677,12 @@ dat-tmp;
 # Delaunay
 #
 
-@delaunay.$NETWORK
-plot/delaunay.a.$NETWORK.png:
+@delaunay.$network
+plot/delaunay.a.$network.png:
 	m/delaunay_plot.m 
 	$[&MATLABPATH]
-	dat/data.$NETWORK.mat
-	dat/info.$NETWORK
+	dat/data.$network.mat
+	dat/info.$network
 {
 	 jvm_enable=1 ./matlab m/delaunay_plot.m 
 }
@@ -1717,12 +1702,12 @@ plot/delaunay.a.$NETWORK.png:
 
 @lybl.$network:  plot/lybl.a.$network.png; 
 
-plot/lybl.a.$NETWORK.png:
+plot/lybl.a.$network.png:
 	m/lybl.m
 	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/data.$NETWORK.mat
-	dat/decomposition_map.stoch.$NETWORK.mat
+	dat/info.$network
+	dat/data.$network.mat
+	dat/decomposition_map.stoch.$network.mat
 {
 	 ./matlab m/lybl.m 
 }
@@ -1731,8 +1716,8 @@ plot/lybl.a.$NETWORK.png:
 
 >dat/dep.lybl:  dat/NETWORKS
 {
-	for NETWORK in $(cat dat/NETWORKS) ; do
-		echo @lybl.$NETWORK
+	for network in $(cat dat/NETWORKS) ; do
+		echo @lybl."$network"
 	done
 }
 
@@ -1741,17 +1726,17 @@ plot/lybl.a.$NETWORK.png:
 # characteristics as the actual networks. 
 #
 
-@syngraphy.$NETWORK
-plot/syngraphy.a.$NETWORK.eps:
+@syngraphy.$network
+plot/syngraphy.a.$network.eps:
 	m/syngraphy_plot.m 
 	$[&MATLABPATH]
-	dat/statistic.size.$NETWORK
-	dat/statistic.uniquevolume.$NETWORK
-	dat/statistic.twostars.$NETWORK
-	dat/statistic.threestars.$NETWORK
-	dat/statistic.fourstars.$NETWORK
-	dat/statistic.triangles.$NETWORK
-	dat/statistic.squares.$NETWORK
+	dat/statistic.size.$network
+	dat/statistic.uniquevolume.$network
+	dat/statistic.twostars.$network
+	dat/statistic.threestars.$network
+	dat/statistic.fourstars.$network
+	dat/statistic.triangles.$network
+	dat/statistic.squares.$network
 {
 	./matlab m/syngraphy_plot.m 
 }
@@ -1761,8 +1746,8 @@ plot/syngraphy.a.$NETWORK.eps:
 >dat/dep.syngraphy:
 	dat/NETWORKS_ASYM
 {
-	for NETWORK in $(cat dat/NETWORKS_ASYM) ; do
-		echo @syngraphy.$NETWORK
+	for network in $(cat dat/NETWORKS_ASYM) ; do
+		echo @syngraphy.$network
 	done
 }
 
@@ -1774,10 +1759,10 @@ plot/syngraphy.a.$NETWORK.eps:
 
 @outin.$network:  plot/outin.a.$network.eps;
 
-plot/outin.a.$NETWORK.eps:  
-	m/outin.m 
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK  $[&MATLABPATH]
+plot/outin.a.$network.eps:  
+	m/outin.m $[&MATLABPATH]
+	dat/data.$network.mat 
+	dat/info.$network 
 {
 	./matlab m/outin.m 
 }

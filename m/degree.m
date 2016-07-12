@@ -2,20 +2,21 @@
 % Draw degree and edge weight distributions.
 %
 % ENVIRONMENT 
-% 	$NETWORK		Name of dataset, e.g. "advogato"
+% 	$network		Name of dataset, e.g. "advogato"
 %	$ENABLE_POWER_LAW	"1" to draw the variants with power-law gamma estimation (flat)
 %	$ENABLE_POWER_LAW_2	"1" to draw the variants with power-law gamma estimation (complex)
 %	$ENABLE_POWER_LAW_3	"1" to draw the variants with power-law gamma estimation (p-values)
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/statistic.power.$NETWORK	(only when $ENABLE_POWER_LAW is set)
-%	dat/statistic.power2.$NETWORK	(only when $ENABLE_POWER_LAW_2 is set)
-%	dat/statistic.power3.$NETWORK	(only when $ENABLE_POWER_LAW_3 is set)
+%	dat/data.$network.mat
+%	dat/info.$network
+%	dat/statistic.power.$network	(only when $ENABLE_POWER_LAW is set)
+%	dat/statistic.power2.$network	(only when $ENABLE_POWER_LAW_2 is set)
+%	dat/statistic.power3.$network	(only when $ENABLE_POWER_LAW_3 is set)
 %
 % OUTPUT 
 %
-%	plot/degree.[auv]{,x,y,3}.$NETWORK.eps	Degree distributions
+%	plot/degree.[auv]{,x,y,3}.$network.eps	Degree distributions
 %		a - Degree of all nodes
 %		u - Row-based (only BIP and ASYM)
 %		v - Column-based (only BIP and ASYM)
@@ -23,10 +24,10 @@
 %		y - Show the gamma estimation (complex)
 %		3 - Show gamma and p-values (level 3) 
 %
-%	plot/degree.ms.[uv].$NETWORK.eps 	Mean vs. stddev
+%	plot/degree.ms.[uv].$network.eps 	Mean vs. stddev
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 enable_power_law = prod(size(getenv('ENABLE_POWER_LAW'))); 
 enable_power_law_2 = prod(size(getenv('ENABLE_POWER_LAW_2'))); 
 enable_power_law_3 = prod(size(getenv('ENABLE_POWER_LAW_3'))); 

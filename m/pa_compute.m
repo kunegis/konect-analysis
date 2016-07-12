@@ -2,23 +2,23 @@
 % Compute the preferential attachment tests. 
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-% 	dat/split.$NETWORK.mat
-%	dat/info.$NETWORK
+% 	dat/split.$network.mat
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/pa.$NETWORK.mat
+%	dat/pa.$network.mat
 %		Parameters of the fits
 %		.pa
-%			.a, .u, .v
-%				.$METHOD (see pa_compute_one.m)
-%	dat/pa_data.$NETWORK.mat
+%		.a, .u, .v
+%		.$METHOD (see pa_compute_one.m)
+%	dat/pa_data.$network.mat
 %		Additional data used to plot the fits 
 %
 
-network = getenv('NETWORK') 
+network = getenv('network') 
 
 consts = konect_consts(); 
 

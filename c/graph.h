@@ -168,8 +168,8 @@ static v$_at *compar_idx_p_v$;
 static u$_at *compar_idx_p_u$;
 
 #ifndef NDEBUG
-static v$_at compar_idx_p_size_v$;
-static u$_at compar_idx_p_size_u$;
+static m$_at compar_idx_p_size_v$;
+static m$_at compar_idx_p_size_u$;
 #endif /* ! NDEBUG */ 
 
 int compar_idx_v$(const void *x, const void *y) 

@@ -2,16 +2,16 @@
 % Plot the clustering coefficient degree distribution.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/cluscod.$NETWORK.mat
+%	dat/cluscod.$network.mat
 %
 % OUTPUT 
-%	plot/cluscod.[a].$NETWORK.eps
+%	plot/cluscod.[a].$network.eps
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 font_size = 22; 
 line_width = 3; 

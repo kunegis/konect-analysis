@@ -1,18 +1,18 @@
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/info.$NETWORK
+%	dat/data.$network.mat
+%	dat/info.$network
 %
 % OUTPUT 
-%	plot/delaunay.a.$NETWORK.eps
+%	plot/delaunay.a.$network.eps
 %
 
 consts = konect_consts(); 
 
-network = getenv('NETWORK')
+network = getenv('network')
 
 info = read_info(network); 
 n = info.n;

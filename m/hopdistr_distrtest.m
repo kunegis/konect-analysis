@@ -2,20 +2,20 @@
 % Test which distributions fit the hop distribution.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/info.$NETWORK
-%	dat/hopdistr2.$NETWORK
+%	dat/info.$network
+%	dat/hopdistr2.$network
 %
 % OUTPUT 
-%	dat/hopdistr_distrtest.$NETWORK.mat
+%	dat/hopdistr_distrtest.$network.mat
 %		.data.[distr-name]
 %		the data of the fit as returned by
 %		distrtest_plot()
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 consts = konect_consts();  
 

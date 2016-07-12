@@ -2,19 +2,19 @@
 % Compute the steps
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/info.$NETWORK
+%	dat/info.$network
 %
 % OUTPUT 
-%	dat/stepsi.$NETWORK
+%	dat/stepsi.$network
 %		The list of step values as text, with one number per line
 %
 
 count = 100; 
 
-network = getenv('NETWORK'); 
+network = getenv('network'); 
 
 info = read_info(network); 
 

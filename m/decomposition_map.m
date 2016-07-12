@@ -2,16 +2,16 @@
 % Compute a network decomposition on the full network.
 %
 % PARAMETERS 
-%	$NETWORK
-%	$DECOMPOSITION
+%	$network
+%	$decomposition
 %
 % INPUT 
-%	dat/data.$NETWORK.mat
-%	dat/info.$NETWORK
-%	dat/meansi.$NETWORK.mat
+%	dat/data.$network.mat
+%	dat/info.$network
+%	dat/meansi.$network.mat
 %
 % OUTPUT 
-%	dat/decomposition{,_map}.$DECOMPOSITION.$NETWORK.mat
+%	dat/decomposition{,_map}.$decomposition.$network.mat
 %		.D	Eigenvalues / Singular value / Middle matrix
 %		.U	Eigenvectors or equivalent
 %		.V	Eigenvectors; may be []
@@ -19,8 +19,8 @@
 %		.n	Used number of nodes (may be less than input)
 %
 
-network = getenv('NETWORK');
-decomposition = getenv('DECOMPOSITION');
+network = getenv('network');
+decomposition = getenv('decomposition');
 
 info = read_info(network); 
 

@@ -2,19 +2,19 @@
 % Generate and plot a SynGraphy graph.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
 % INPUT 
-%	dat/statistic.size.$NETWORK
-%	dat/statistic.uniquevolume.$NETWORK
-%	dat/statistic.twostars.$NETWORK
-%	dat/statistic.threestars.$NETWORK
-%	dat/statistic.fourstars.$NETWORK
-%	dat/statistic.triangles.$NETWORK
-%	dat/statistic.squares.$NETWORK
+%	dat/statistic.size.$network
+%	dat/statistic.uniquevolume.$network
+%	dat/statistic.twostars.$network
+%	dat/statistic.threestars.$network
+%	dat/statistic.fourstars.$network
+%	dat/statistic.triangles.$network
+%	dat/statistic.squares.$network
 %	
 % OUTPUT 
-%	plot/syngraphy.[a].$NETWORK.eps
+%	plot/syngraphy.[a].$network.eps
 %
 
 % Fixed parameters of the output
@@ -23,7 +23,7 @@ d2 = 5;
 
 consts = konect_consts(); 
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 statistics = {'size', 'uniquevolume', 'twostars', 'threestars', 'fourstars', ...
               'triangles', 'squares'};

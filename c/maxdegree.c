@@ -1,14 +1,14 @@
 /*
- * Compute the maximum degree of a network. 
+ * Determine the maximum degree of a network. 
  *
  * INVOCATION 
- *    	$0 SG1-FILENAME
+ *    	$0 $SG1_FILENAME
  *
- * INPUT
- *    	SG1-FILENAME
+ * INPUT FILES
+ *    	$SG1_FILENAME
  *
- * OUTPUT
- *	stdout:  the maximum degree is printed on stdout
+ * STDOUT
+ *	The maximum degree is printed on stdout
  */
 
 #include <stddef.h>
@@ -27,7 +27,7 @@
 int main(int argc, char **argv)
 {
 	if (argc != 2) {
-		fprintf(stderr, "*** Invalid number of arguments\n");
+		fprintf(stderr, "*** Expected exactly two arguments\n");
 		exit(1);
 	}
 

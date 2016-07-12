@@ -9,5 +9,6 @@ The compiled files are in bin/.
 
 We use the C99 standard.
 
-Programs use custom bit widths per dataset.
+Programs use custom bit widths per dataset; see width.h for an overview. 
+
 
