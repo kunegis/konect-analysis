@@ -11,7 +11,8 @@
 * ca-cit-HepTh:  Invalid multiple edge (2, 3); multiplicity = 4, although network should be without multiple edges
 * new petster datasets
 * @network.dbtropes-features should not have multiple edges
-
+* error in @network.dbpedia-similar
+* error in @network.advogato 
 
 == Later == 
 * all standard statistics in function of time
