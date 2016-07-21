@@ -3,23 +3,23 @@
 % normalization. 
 %
 % PARAMETERS 
-%	$NETWORK
-%	$TYPE		
+%	$network		Network name
+%	$type			String
 %		full		On the full dataset
 %		split		On the source set of the split
 %		training	One the training set of the split
 %
 % INPUT 
-%	dat/data.$NETWORK.mat (only FULL) 
-%	dat/split.$NETWORK.mat (only SPLIT)
+%	dat/data.$network.mat (only FULL) 
+%	dat/split.$network.mat (only SPLIT)
 %
 % OUTPUT 
-%	dat/means{,i,t}.$NETWORK.mat	The means
+%	dat/means{,i,t}.$network.mat	The means
 %		U,V	The weights or []
 % 
 
-network = getenv('NETWORK'); 
-type = getenv('TYPE'); 
+network = getenv('network'); 
+type = getenv('type'); 
 
 info = read_info(network); 
 

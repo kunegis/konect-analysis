@@ -2,14 +2,14 @@
 % Plot a signed time histogram. 
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
-% INPUT 
-%	uni/out.[NETWORK] 
-%	uni/meta.[NETWORK]
+% INPUT FILES 
+%	uni/out.$network
+%	uni/meta.$network 
 % 
-% OUTPUT 
-%	plot/time_histogram_signed.[a].$NETWORK.eps
+% OUTPUT FILES
+%	plot/time_histogram_signed.[a].$network.eps
 % 
 
 bins = 90; 
@@ -17,7 +17,7 @@ font_size = 22;
 color_pos = [0 1 0];
 color_neg = [1 0 0];
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 T = load(sprintf('uni/out.%s', network));
 

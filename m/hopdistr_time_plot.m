@@ -2,24 +2,24 @@
 % Draw hop plot in function of time.
 %
 % PARAMETERS 
-%	$NETWORK
-%	$TYPE		"full" or "split"
+%	$network
+%	$type		"full" or "split"
 %
-% INPUT 
-%	dat/hopdistr_time.$TYPE.$STATISTIC.$NETWORK
-%	dat/hopdistr_time_runtime.$TYPE.$STATISTIC.$NETWORK
-%	dat/stepsi.$NETWORK (full only)
-%	dat/steps.$NETWORK.mat (split only) 
+% INPUT FILES 
+%	dat/hopdistr_time.$type.$statistic.$network
+%	dat/hopdistr_time_runtime.$type.$statistic.$network
+%	dat/stepsi.$network (full only)
+%	dat/steps.$network.mat (split only) 
 %
-% OUTPUT 
-%	plot/hopdistr_time.$TYPE.[a].$NETWORK.eps
+% OUTPUT FILES 
+%	plot/hopdistr_time.$type.[a].$network.eps
 %		a - Number of vertex pairs on Y axis
 %		b - Average number of vertices on Y axis
 %		c - Mean reachable part on Y axis
 % 
 
-network = getenv('NETWORK'); 
-type = getenv('TYPE'); 
+network = getenv('network'); 
+type = getenv('type'); 
 is_split = strcmp(type, 'split'); 
 
 font_size = 18; 

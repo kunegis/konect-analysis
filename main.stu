@@ -402,15 +402,16 @@ dat/check-meta:   dat/NETWORKS  sh/checkmeta
 # Data files
 #
 
-dat/data.$NETWORK.mat:  uni/out.$NETWORK m/data.m 
+dat/data.$network.mat:  uni/out.$network m/data.m 
 {
-	INPUT="uni/out.$NETWORK" OUTPUT="dat/data.$NETWORK.mat" ./matlab m/data.m
+	input="uni/out.$network" output="dat/data.$network.mat" ./matlab m/data.m
 }
 
 
-dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m 
+dat/data.$transform~$network.mat:  dat/out.$transform~$network m/data.m 
 {
-	NETWORK="$TRANSFORM~$NETWORK" INPUT=dat/out.$TRANSFORM~$NETWORK OUTPUT=dat/data.$TRANSFORM~$NETWORK.mat ./matlab m/data.m
+	input="dat/out.$transform~$network" output="dat/data.$transform~$network.mat" \
+		./matlab m/data.m
 }
 
 #
@@ -427,11 +428,12 @@ dat/data.$TRANSFORM~$NETWORK.mat:  dat/out.$TRANSFORM~$NETWORK m/data.m
 # OUT files for derived networks
 #
 
-dat/out.$TRANSFORM~$network:  
-	[dat/dep.c.sgraph1_dump.$TRANSFORM~$network] 
-	dat/sg1.$TRANSFORM~$network
+dat/out.$transform~$network:  
+	[dat/dep.c.sgraph1_dump.$transform~$network] 
+	dat/sg1.$transform~$network
 {
-	$(cat dat/dep.c.sgraph1_dump.$TRANSFORM~$network) dat/sg1.$TRANSFORM~$network dat/out.$TRANSFORM~$network
+	$(cat dat/dep.c.sgraph1_dump.$transform~$network) \
+		dat/sg1.$transform~$network dat/out.$transform~$network
 }
 
 #
@@ -522,22 +524,22 @@ dat/split.$network.mat:
 # Means
 #
 
-dat/meansi.$NETWORK.mat:  dat/data.$NETWORK.mat m/means.m dat/info.$NETWORK
+dat/meansi.$network.mat:  dat/data.$network.mat m/means.m dat/info.$network
 	$[&MATLABPATH]
 {
-	TYPE=full ./matlab m/means.m
+	type=full ./matlab m/means.m
 }
 
-dat/means.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
+dat/means.$network.mat:  dat/split.$network.mat m/means.m dat/info.$network
 	$[&MATLABPATH]
 {
-	 TYPE=split ./matlab m/means.m
+	 type=split ./matlab m/means.m
 }
 
-dat/meanst.$NETWORK.mat:  dat/split.$NETWORK.mat m/means.m dat/info.$NETWORK
+dat/meanst.$network.mat:  dat/split.$network.mat m/means.m dat/info.$network
 	$[&MATLABPATH]
 {
-	 TYPE=training ./matlab m/means.m
+	 type=training ./matlab m/means.m
 }
 
 #
@@ -631,14 +633,14 @@ dat/statistic.$statistic.$network:
 # 2. 
 # 
 
->dat/statistic.${STATISTIC}+${K}.$network:
-	<dat/statistic.$STATISTIC.$network
+>dat/statistic.${statistic}+${K}.$network:
+	<dat/statistic.$statistic.$network
 {
 	if [ "$K" -lt 2 ] ; then 
 		echo >&2 'K must be at least 2'
 		exit 1
 	fi
-	if [ "$K" -gt "$(wc -l dat/statistic.$STATISTIC.$network | cut -d' ' -f1)" ] ; then
+	if [ "$K" -gt "$(wc -l dat/statistic.$statistic.$network | cut -d' ' -f1)" ] ; then
 		echo >&2 'K cannot be larger than size of statistic file'
 		exit 1
 	fi
@@ -847,13 +849,12 @@ dat/statistic.diameff$percentile.$network:
 # Statistics derived from decompositions
 #
 
-dat/statistic.oddcycles.$NETWORK:
-	m/statistic_comp_spectral.m 
-	$[&MATLABPATH]
-	dat/info.$NETWORK
-	dat/decomposition.symabs.$NETWORK.mat
+dat/statistic.oddcycles.$network:
+	m/statistic_comp_spectral.m $[&MATLABPATH]
+	dat/info.$network
+	dat/decomposition.symabs.$network.mat
 {
-	 STATISTIC=oddcycles DECOMPOSITION=symabs \
+	statistic=oddcycles decomposition=symabs \
 		./matlab m/statistic_comp_spectral.m 
 }
 
@@ -874,7 +875,7 @@ dat/statistic.oddcycles.$NETWORK:
 	sh/intersect
 	dat/NETWORKS_TIME
 {
-	if [ ! -r "$(cat dat/dep.dep.statistic.$STATISTIC)" ] ; then
+	if [ ! -r "$(cat dat/dep.dep.statistic.$statistic)" ] ; then
 		exit 1
 	fi
 
@@ -925,91 +926,90 @@ plot/statistic_time.full.a.$statistic.$network.eps:
 
 # An array of items 
 
-dat/ft.degree.$NETWORK:
-	[dat/dep.c2.feature_degree.$NETWORK]
-	dat/sg1.$NETWORK
+dat/ft.degree.$network:
+	[dat/dep.c2.feature_degree.$network]
+	dat/sg1.$network
 {
-	$(cat dat/dep.c2.feature_degree.$NETWORK) dat/sg1.$NETWORK dat/ft.degree.$NETWORK
+	$(cat dat/dep.c2.feature_degree.$network) dat/sg1.$network dat/ft.degree.$network
 }
 
->dat/widths.ft.degree.$NETWORK:
-	sh/widths-one
-	$[&PERL5LIB]
-	dat/statistic.volume.$NETWORK
+>dat/widths.ft.degree.$network:
+	sh/widths-one $[&PERL5LIB]
+	dat/statistic.volume.$network
 {
-	sh/widths-one $(cat dat/statistic.volume.$NETWORK) 
+	sh/widths-one $(cat dat/statistic.volume.$network) 
 }
 
 #
 # Scatter 
 #
 
-@scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS:  
-	plot/scatter.a.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps;
+@scatter.$statistic_x.$statistic_y.$class:  
+	plot/scatter.a.$statistic_x.$statistic_y.$class.eps;
 
-@scatter.$STATISTIC_X.$STATISTIC_Y: 
-	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y];
+@scatter.$statistic_x.$statistic_y: 
+	[dat/dep.scatter.$statistic_x.$statistic_y];
 
-plot/scatter.$TYPE.$STATISTIC_X.$STATISTIC_Y.$CLASS.eps:
+plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 	$[&MATLABPATH]
 	m/scatter_comp.m m/scatter_plot.m m/scatter_single.m 
 	konect-toolbox/m/konect_data_statistic.m
 	konect-toolbox/m/konect_label_statistic.m
-	[dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS]
-	dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS
+	[dat/dep.scatter.$statistic_x.$statistic_y.$class]
+	dat/NETWORKS.$statistic_x.$statistic_y.$class
 {
-	NETWORKS="$(cat dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS)" \
-		KIND="$STATISTIC_X.$STATISTIC_Y" \
+	networks="$(cat dat/NETWORKS.$statistic_x.$statistic_y.$class)" \
+		kind="$statistic_x.$statistic_y" \
 		./matlab m/scatter_comp.m
 }
 
->dat/dep.scatter.$STATISTIC_X.$STATISTIC_Y:
+>dat/dep.scatter.$statistic_x.$statistic_y:
 	dat/CLASSES
 { 
 	for CLASS in $(cat dat/CLASSES) 
 	do
-		echo @scatter.$STATISTIC_X.$STATISTIC_Y.$CLASS 
+		echo "@scatter.$statistic_x.$statistic_y.$class"
 	done
 }
 
->dat/NETWORKS.$STATISTIC_X.$STATISTIC_Y.$CLASS:
-	dat/NETWORKS_CLASS_$CLASS
-	dat/statistic-attribute.$STATISTIC_X
-	dat/statistic-attribute.$STATISTIC_Y
+>dat/NETWORKS.$statistic_x.$statistic_y.$class:
+	dat/NETWORKS_CLASS_$class
+	dat/statistic-attribute.$statistic_x
+	dat/statistic-attribute.$statistic_y
 {
-	NETWORKS="$(cat dat/NETWORKS_CLASS_$CLASS)"
+	networks="$(cat dat/NETWORKS_CLASS_$class)"
 
-	attribute_x="$(cat dat/statistic-attribute.$STATISTIC_X)"
+	attribute_x="$(cat dat/statistic-attribute.$statistic_x)"
 	if [ "$attribute_x" ] 
 	then
-		NETWORKS_OLD="$NETWORKS"
-		NETWORKS=
-		for network in $NETWORKS_OLD 
+		networks_old="$networks"
+		networks=
+		for network in $networks_old 
 		do
 			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_x" 
 			then
-				NETWORKS="$NETWORKS $network"
+				networks="$networks $network"
 			fi
 		done
 	fi
 
-	attribute_y="$(cat dat/statistic-attribute.$STATISTIC_Y)"
+	attribute_y="$(cat dat/statistic-attribute.$statistic_y)"
 	if [ "$attribute_y" ] 
 	then
-		NETWORKS_OLD="$NETWORKS"
-		NETWORKS=
-		for network in $NETWORKS_OLD 
+		networks_old="$networks"
+		networks=
+		for network in $networks_old 
 		do
 			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_y" 
 			then
-				NETWORKS="$NETWORKS $network"
+				networks="$networks $network"
 			fi
 		done
 	fi
 
-	for NETWORK in $NETWORKS 
+	for network in $networks 
 	do
-		echo "$NETWORK" 
+		echo "$network" 
 	done
 }
 
@@ -1104,7 +1104,7 @@ plot/degree.a.$network.eps:
 	 ./matlab m/degree.m
 }
 
-@degreex.$NETWORK:  plot/degree.ax.$NETWORK.eps;
+@degreex.$network:  plot/degree.ax.$network.eps;
 
 plot/degree.ax.$network.eps:  
 	m/degree.m m/degree_print.m $[&MATLABPATH]
@@ -1197,12 +1197,11 @@ plot/time_histogram.$network.eps:
 # Signed time histogram
 #
 
-@time_histogram_signed.$NETWORK
-plot/time_histogram_signed.a.$NETWORK.eps:
-	m/time_histogram_signed.m
-	$[&MATLABPATH]
-	uni/out.$NETWORK 
-	uni/meta.$NETWORK 
+@time_histogram_signed.$network
+plot/time_histogram_signed.a.$network.eps:
+	m/time_histogram_signed.m $[&MATLABPATH]
+	uni/out.$network 
+	uni/meta.$network 
 {
 	 ./matlab m/time_histogram_signed.m
 }
@@ -1213,10 +1212,10 @@ plot/time_histogram_signed.a.$NETWORK.eps:
 	dat/NETWORKS_TIME
 	dat/NETWORKS_WEIGHTS_signed dat/NETWORKS_WEIGHTS_dynamic
 {
-	for NETWORK in $(cat dat/NETWORKS_TIME) ; do
-		if grep -qE '^\s*'"$NETWORK"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
-			grep -qE '^\s*'"$NETWORK"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ; then 
-			echo @time_histogram_signed."$NETWORK"
+	for network in $(cat dat/NETWORKS_TIME) ; do
+		if grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
+			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ; then 
+			echo @time_histogram_signed."$network"
 		fi
 	done
 }
@@ -1315,23 +1314,21 @@ dat/hopdistr_distrtest.$network.mat:
 	 ./matlab m/hopdistr_distrtest.m 
 }
 
-dat/hopdistr_time.full.$NETWORK:  
-	m/hopdistr_time_comp.m
-	$[&MATLABPATH]
-	dat/data.$NETWORK.mat 
-	dat/info.$NETWORK 
-	dat/stepsi.$NETWORK 
+dat/hopdistr_time.full.$network:  
+	m/hopdistr_time_comp.m $[&MATLABPATH]
+	dat/data.$network.mat 
+	dat/info.$network 
+	dat/stepsi.$network 
 {
-	 TYPE=full ./matlab m/hopdistr_time_comp.m 
+	 type=full ./matlab m/hopdistr_time_comp.m 
 }
 
-@hopdistr_time.full.$NETWORK
-plot/hopdistr_time.full.a.$NETWORK.eps:  
-	m/hopdistr_time_plot.m
-	$[&MATLABPATH]
-	dat/hopdistr_time.full.$NETWORK 
+@hopdistr_time.full.$network
+plot/hopdistr_time.full.a.$network.eps:  
+	m/hopdistr_time_plot.m $[&MATLABPATH]
+	dat/hopdistr_time.full.$network 
 {
-	 TYPE=full ./matlab m/hopdistr_time_plot.m
+	 type=full ./matlab m/hopdistr_time_plot.m
 }
 
 #
@@ -1423,8 +1420,7 @@ plot/decomposition.a.$decomposition.$network.eps:
 }
 
 #
-# Prefatt statistics 
-# (only for networks with TIME)
+# Preferential attachment exponent statistics 
 #
 
 dat/statistic.prefatt.$network:  
@@ -1435,8 +1431,8 @@ dat/statistic.prefatt.$network:
 }
 
 dat/pa.$network.mat:  
-	m/pa_compute.m m/pa_compute_one.m dat/split.$network.mat dat/info.$network
-	$[&MATLABPATH]
+	m/pa_compute.m m/pa_compute_one.m $[&MATLABPATH]
+	dat/split.$network.mat dat/info.$network
 {
 	./matlab m/pa_compute.m 
 }

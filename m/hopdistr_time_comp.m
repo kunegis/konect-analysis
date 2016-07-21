@@ -2,25 +2,25 @@
 % Compute the hop distribution over time.
 %
 % PARAMETERS 
-%	$NETWORK
-%	$TYPE		The data to use, "full" or "split"
+%	$network
+%	$type		The data to use, "full" or "split"
 %
-% INPUT 
-%	dat/info.$NETWORK
-%	dat/data.$NETWORK.mat (only full)
-%	dat/split.$NETWORK.mat (only split)
-%	dat/stepsi.$NETWORK (only full)
-%	dat/steps.$NETWORK.mat (only split) 
+% INPUT FILES 
+%	dat/info.$network
+%	dat/data.$network.mat (only full)
+%	dat/split.$network.mat (only split)
+%	dat/stepsi.$network (only full)
+%	dat/steps.$network.mat (only split) 
 %	
-% OUTPUT 
-%	dat/hopdistr_time.$TYPE.$NETWORK
+% OUTPUT FILES 
+%	dat/hopdistr_time.$type.$network
 %		(T*D) One timepoint per line; extra numbers at the end of each line filled with zeroes 
-%	dat/hopdistr_time_runtime.$TYPE.$NETWORK 
+%	dat/hopdistr_time_runtime.$type.$network 
 %		Column vector of runtimes in seconds (as floating point numbers) 
 %
 
-network = getenv('NETWORK'); 
-type = getenv('TYPE');
+network = getenv('network'); 
+type = getenv('type');
 is_split = strcmp(type, 'split'); 
 
 consts = konect_consts(); 

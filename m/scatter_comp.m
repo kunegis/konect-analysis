@@ -2,22 +2,22 @@
 % Draw scatter plots.
 %
 % PARAMETERS 
-%	$NETWORKS	Space-separated list of networks
-%	$KIND		Kind of plot:  Names of two statistics separated by a dot '.'
-%	$CLASS		Name of class used (corresponds to choice of networks)
+%	$networks	Space-separated list of networks
+%	$kind		Kind of plot:  Names of two statistics separated by a dot '.'
+%	$class		Name of class used (corresponds to choice of networks)
 %
-% INPUT 
+% INPUT FILES
 %	Depending on the kind
 %
-% OUTPUT 
-%	plot/scatter.[a...].$KIND.$CLASS.eps
-%	plot/scatter_single.[a...].$STATISTIC_Y.$CLASS.eps (when $STATISTIC_X == volume)
-%	dat/scattercorr.$KIND.$CLASS
+% OUTPUT FILES
+%	plot/scatter.[a...].$kind.$class.eps
+%	plot/scatter_single.[a...].$statistic_y.$class.eps (when $statistic_x == volume)
+%	dat/scattercorr.$kind.$class
 %
 
-networks = getenv('NETWORKS');
-kind = getenv('KIND');
-class = getenv('CLASS'); 
+networks = getenv('networks');
+kind = getenv('kind');
+class = getenv('class'); 
 
 networks = regexp(networks, '[a-zA-Z0-9_-]+', 'match')
 
