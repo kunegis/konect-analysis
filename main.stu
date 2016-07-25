@@ -1849,5 +1849,5 @@ plot/inter2.a.$network.png:
 
 plot/$name.png:  plot/$name.eps sh/eps2png
 {
-	sh/eps2png plot/$name.eps plot/$name.png
+	sh/eps2png plot/"$name".eps plot/"$name".png
 }
