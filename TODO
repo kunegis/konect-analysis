@@ -1,3 +1,12 @@
+* check error in moreno_sampson
+* error in /tmp/matlab.kunegis.statistic_comp.assortativity.moreno_hens.log
+* command for dat/check.moreno_vdb failed with exit code 1
+* dat/check.lasagne-frenchbook failed
+* check reports an error in moreno_blogs
+* check reports an error in moreno_hens "non-acyclic networks must contain reciprocal edges"
+* check reports an error in moreno_propro "loop (83,83) detected although #loop is not set"
+* moreno_names:  should be multi-graph, not weighted graph
+
 * re-insert prefatt, which doesn't work at the moment 
 
 * matlab/konect_statistic_twostars.m:  Also output the left/right out/in

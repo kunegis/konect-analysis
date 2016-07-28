@@ -926,6 +926,8 @@ plot/statistic_time.full.a.$statistic.$network.eps:
 
 # An array of items 
 
+@ft.$feature.$network:  dat/ft.$feature.$network; 
+
 dat/ft.degree.$network:
 	[dat/dep.c2.feature_degree.$network]
 	dat/sg1.$network

@@ -12,10 +12,10 @@ LOGNAME=$USER."$(basename $SCRIPT .m)"
 
 # This is a list of variable we want to be used in the log filename to
 # make it unique.
-[ "$TYPE"    ]     	&& LOGNAME=$LOGNAME.$TYPE
-[ "$NAME"   ]      	&& LOGNAME=$LOGNAME.$NAME
-[ "$NETWORK" ]		&& LOGNAME=$LOGNAME.$NETWORK
-[ "$DECOMPOSITION" ]	&& LOGNAME=$LOGNAME.$DECOMPOSITION
+[ "$type"    ]     	&& LOGNAME=$LOGNAME.$type
+[ "$name"   ]      	&& LOGNAME=$LOGNAME.$name
+[ "$network" ]		&& LOGNAME=$LOGNAME.$network
+[ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
 
 export LOG="${TMP-/tmp}/$(basename $0).$LOGNAME$PREFIX.log"
 echo >&2 "   $LOG"
