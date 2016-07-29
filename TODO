@@ -1,4 +1,3 @@
-* check error in moreno_sampson
 * error in /tmp/matlab.kunegis.statistic_comp.assortativity.moreno_hens.log
 * command for dat/check.moreno_vdb failed with exit code 1
 * dat/check.lasagne-frenchbook failed
@@ -19,7 +18,6 @@
 * @network.dbtropes-features should not have multiple edges
 * error in @network.dbpedia-similar
 * error in @network.advogato 
-* error in @check.moreno_sampson
 
 == Later == 
 * all standard statistics in function of time

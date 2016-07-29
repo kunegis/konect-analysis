@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Generate the dependencies of a network.
+# Generate the dependencies of a network, excluding the @check computation. 
 #
 # PARAMETERS
 #	$network
