@@ -1,5 +1,5 @@
 /* 
- * Computer the diameter of a graph using the iFub algorithm [1].  The
+ * Compute the diameter of a graph using the iFub algorithm [1].  The
  * algorithm has a parameter K which determines whether the computation
  * is exact (when k == 0) or an approximation (when k > 0). 
  * 
@@ -7,9 +7,9 @@
  * 	Written by Jesús Cabello González.  Adapted by Jérôme Kunegis. 
  *
  * REFERENCES
- *  [1] Pierluigi Crescenzi, Roberto grossi, Claudio Imbrenda, Leonardo
+ *  [1] Pierluigi Crescenzi, Roberto Grossi, Claudio Imbrenda, Leonardo
  * 	Lanzi, Andrea Marino, Finding the diameter in real-world graphs:
- * 	experimentally turning a lower bound into an upper bound. In
+ * 	Experimentally turning a lower bound into an upper bound. In
  * 	Proc. Annual European Symposium on Algorithms, pages 302--313,
  * 	2010.  
  */
@@ -190,7 +190,7 @@ ua_ft ifub(struct sgraph1_reader_a *r, ua_ft u, ua_ft l, unsigned k)
 	fprintf(log_, "done\n");
 	fflush(log_); 
 
-	assert(lb == ub); 
+	assert(lb + k >= ub); 
 	return lb;
 }
 
