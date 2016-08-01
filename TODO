@@ -1,5 +1,3 @@
-* error in /tmp/matlab.kunegis.statistic_comp.assortativity.moreno_hens.log
-* command for dat/check.moreno_vdb failed with exit code 1
 * dat/check.lasagne-frenchbook failed
 * check reports an error in moreno_blogs
 * check reports an error in moreno_hens "non-acyclic networks must contain reciprocal edges"
