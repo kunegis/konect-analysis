@@ -1,3 +1,5 @@
+* error in @network.dbpedia-similar and subsequent @check errors 
+
 * re-insert prefatt, which doesn't work at the moment 
 
 * matlab/konect_statistic_twostars.m:  Also output the left/right out/in
@@ -8,7 +10,6 @@
   although network should be without multiple edges 
 * new petster datasets
 * @network.dbtropes-features should not have multiple edges
-* error in @network.dbpedia-similar
 * error in @network.advogato 
 
 == Later == 
