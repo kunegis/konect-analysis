@@ -145,7 +145,7 @@ if weights == consts.POSWEIGHTED | weights == consts.SIGNED | ...
         if size(T,2) >= 3
             i = find(T(:,3) == 0);
             if length(i) ~= 0
-                error(sprintf('*** network must not have zero edge weights when #zeroweight is not set: w(%u, %u) = %g', T(i(1),1), T(i(1),2), T(i(1),3))); 
+                error(sprintf('*** Network must not have zero edge weights when #zeroweight is not set: w(%u, %u) = %g', T(i(1),1), T(i(1),2), T(i(1),3))); 
             end
         end
     end
@@ -173,7 +173,7 @@ if format == consts.SYM & (weights == consts.UNWEIGHTED | ...
 
     if nnz(A_sym_noloop) ~= 0
         [x y z] = find(A_sym_noloop, 1);
-        error(sprintf('*** duplicate entry (%d, %d) and (%d, %d) although network is SYM and should have no multiple edges', x(1), y(1), y(1), x(1))); 
+        error(sprintf('*** Duplicate entry (%d, %d) and (%d, %d) although network is SYM and should have no multiple edges', x(1), y(1), y(1), x(1))); 
     end
 
 end
@@ -231,7 +231,7 @@ end
 %
 
 if format == consts.BIP
-    assert(~tag_loop, '*** bipartite network must not be declared as #loop'); 
+    assert(~tag_loop, '*** Bipartite network must not be declared as #loop'); 
 else
 
     % Find loops
@@ -243,7 +243,7 @@ else
     else
         if count_loops ~= 0
             i = find(loops); i = i(1); 
-            error('*** loop (%d,%d) detected although #loop is not set', i, i); 
+            error('*** Loop (%d,%d) detected although #loop is not set', i, i); 
         end
     end
 end
@@ -277,17 +277,18 @@ if format == consts.ASYM
         if count_reciprocal ~= 0
             
             [x y z] = find(A_reciprocal); 
-            error(sprintf('*** acyclic or network must not contain reciprocal edges, found %u <-> %u', ...
+            error(sprintf('*** Acyclic or network must not contain reciprocal edges, found %u <-> %u', ...
                           x(1), y(1))); 
         end
 
     else
 
-        assert(count_reciprocal > 0, '*** non-acyclic and non-nonreciprocal network must contain at least one reciprocal edges, but does not'); 
+        assert(count_reciprocal > 0, ...
+               '*** Non-acyclic and non-nonreciprocal directed network must contain at least one reciprocal edge, but does not'); 
 
     end
 else
-    assert(~tag_acyclic, '*** tag #acyclic must not be set for non-directed networks'); 
+    assert(~tag_acyclic, '*** Tag #acyclic must not be set for non-directed networks'); 
 end
 
 %
@@ -314,7 +315,7 @@ if format == consts.ASYM
 
 else
     
-    assert(~tag_acyclic, '*** #acyclic can only be used for directed networks'); 
+    assert(~tag_acyclic, '*** Tag #acyclic can only be used for directed networks'); 
 
 end
 
