@@ -1,5 +1,3 @@
-* run @check and fix errors 
-
 * re-insert prefatt, which doesn't work at the moment 
 
 * matlab/konect_statistic_twostars.m:  Also output the left/right out/in
