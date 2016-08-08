@@ -23,6 +23,7 @@ tag_zeroweight = isfield(tags, 'zeroweight')
 tag_lcc = isfield(tags, 'lcc')
 tag_incomplete= isfield(tags, 'incomplete')
 tag_tournament= isfield(tags, 'tournament') 
+tag_lowmultiplicity= isfield(tags, 'lowmultiplicity')
 
 format = load(sprintf('dat/statistic.format.%s', network));
 weights = load(sprintf('dat/statistic.weights.%s', network));
@@ -196,7 +197,7 @@ if weights == consts.UNWEIGHTED | ...
     [x y z] = find(A);
     i = find(z ~= 1);
     if length(i > 0)
-        error(sprintf('*** Invalid multiple edge (%u, %u); multiplicity = %u, although network should be without multiple edges', x(i(1)), y(i(1)), z(i(1)))); 
+        error(sprintf('*** Invalid multiple edge (%u, %u); multiplicity = %u, number of multiply-connected node pairs = %u, although network should be without multiple edges', x(i(1)), y(i(1)), z(i(1)), nnz(i > 0))); 
     end
 
 end
@@ -345,8 +346,16 @@ if weights == consts.POSITIVE | weights == consts.MULTIWEIGHTED ...
 
     w = full(max(max(A)))
 
-    assert(w >= 3, ['*** Network with multiple edges must have maximal ' ...
-                    'multiplicity at least 3 (w = %u)'], w); 
+    if w < 3 & tag_lowmultiplicity == 0
+        if w == 2
+            % Number of times the maximum of 2 appears
+            c = sum(sum(A == 2));
+            fprintf(2, '\tMaximum of 2 appears %u times\n', c); 
+        end
+        fprintf(2, '*** Network with multiple edges must have maximal multiplicity at least 3 (w = %u)\n', w); 
+        exit(1); 
+        assert(false); 
+    end
 end
 
 %
