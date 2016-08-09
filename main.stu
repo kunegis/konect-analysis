@@ -968,7 +968,7 @@ plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 >dat/dep.scatter.$statistic_x.$statistic_y:
 	dat/CLASSES
 { 
-	for CLASS in $(cat dat/CLASSES) 
+	for class in $(cat dat/CLASSES) 
 	do
 		echo "@scatter.$statistic_x.$statistic_y.$class"
 	done

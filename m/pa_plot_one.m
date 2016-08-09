@@ -7,8 +7,8 @@
 %	pa_x		Curve fitting values (see pa_compute_one)
 %	pa_data_x	Plotting data (see pa_compute_one) 
 %
-% OUTPUT 
-%	plot/pa.[a...][letter].[network].eps	
+% OUTPUT FILES 
+%	plot/pa.[a...]$letter.$network.eps	
 %
 
 function pa_plot_one(network, letter, pa_x, pa_data_x)
@@ -52,8 +52,8 @@ konect_print(sprintf('plot/pa.i%s.%s.eps', letter, network));
 yy_l = (pa_data_x.yy_geo_orig) .* (1 - pa_data_x.yy_dev_geo .^ -1);
 yy_u = (pa_data_x.yy_geo_orig) .* (pa_data_x.yy_dev_geo - 1);
 
-yy_l_begin = yy_l(1:10)
-yy_u_begin = yy_u(1:10)
+yy_l_begin = yy_l(1:5)
+yy_u_begin = yy_u(1:5)
 
 hold on; 
 errorbar(pa_data_x.xx, pa_data_x.yy_geo_orig, yy_l, yy_u, '+');
@@ -74,21 +74,11 @@ line([x_begin, x_end], [y_begin, y_end], 'Color', [0 1 0], 'Linewidth', 3);
 % Invisible line to add the "RMSE" text to the legend 
 line([ax(3) ax(3)], [ax(4) ax(4)], 'Color', [1 1 1]); 
 
-% y_begin = exp(pa_x.f(2) + pa_x.f(1) * log(x_begin))
-% y_end   = exp(pa_x.f(2) + pa_x.f(1) * log(x_end  ))
-% line([x_begin, x_end], [y_begin, y_end], 'Color', [0 0 1]); 
-
-% y_begin = exp(pa_x.g(2) + pa_x.g(1) * log(x_begin))
-% y_end   = exp(pa_x.g(2) + pa_x.g(1) * log(x_end  ))
-% line([x_begin, x_end], [y_begin, y_end], 'Color', [1 0 0]); 
-
 axis(ax); 
 
 legend({ 'Data', ...
          sprintf('%.4f * x^{%.4f}', exp(pa_x.e(2)), pa_x.e(1)), ...
          sprintf('\\epsilon = %.4f', exp(sqrt(pa_x.e(3)))), ...
-%          sprintf('%.4f * x^{%.4f} (first 10)', exp(pa_x.f(2)), pa_x.f(1)), ...
-%          sprintf('%.4f * x^{%.4f} (last 99%%)', exp(pa_x.g(2)), pa_x.g(1)), ...
        }, ...
        'Location', 'NorthWest'); 
 
@@ -112,5 +102,3 @@ loglog(pa_data_x.d_1(ii(1:N)) + pa_x.lambda_1, pa_data_x.d_2(ii(1:N)), '.');
 xlabel('Degree of node in old graph');
 ylabel('Degree of node in new graph');
 konect_print(sprintf('plot/pa.a%s.%s.eps', letter, network)); 
-
-

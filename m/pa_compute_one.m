@@ -8,12 +8,14 @@
 %	w_1	(e_1 * 1) Weights of all old vertices, or 1 for uniform weights
 %	w_2	(e_2 * 1) Weights of all new vertices, or 1 for uniform weights
 %
-% OUTPUT 
-%	ret	Values
-%		.$METHOD	For each method, see below (the
+% RETURN VALUE
+%	ret			Values
+%		.$method	For each method, see below (the
 %				letters in parentheses)
 %				A vector of parameter values
-%	ret_data	Related data
+%		.lambda
+%		.lambda_1
+%	ret_data		Related data
 %		.xx .yy .xxx
 %
 

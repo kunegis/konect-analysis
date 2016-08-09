@@ -1,19 +1,19 @@
 %
-% Compute the preferential attachment tests. 
+% Perform the preferential attachment tests. 
 %
 % PARAMETERS 
-%	$network
+%	$network	The network
 %
-% INPUT 
+% INPUT FILES
 % 	dat/split.$network.mat
 %	dat/info.$network
 %
-% OUTPUT 
+% OUTPUT FILES
 %	dat/pa.$network.mat
 %		Parameters of the fits
 %		.pa
-%		.a, .u, .v
-%		.$METHOD (see pa_compute_one.m)
+%			.a, .u, .v (existence depending on the format)
+%			.$method (see pa_compute_one.m)
 %	dat/pa_data.$network.mat
 %		Additional data used to plot the fits 
 %
