@@ -1,0 +1,142 @@
+Follow these steps to run the KONECT Analysis. 
+
+We'll assume you will put all code in the ~/work/ directory, and all
+data in the ~/data/ directory.  Change this paths accordingly in the
+following instructions.
+
+(1) Create directories 
+
+First, create the necessary directories:
+
+$ mkdir ~/work
+$ mkdir ~/data
+
+(2) Get konect-analysis/ and konect-toolbox/ from Github
+
+Get the newest version of the konect-analysis and konect-toolbox
+software package from Github.  Do this:
+
+$ cd ~/work/
+$ git clone https://github.com/kunegis/konect-analysis
+$ git clone https://github.com/kunegis/konect-toolbox
+
+(3) Create uni/
+
+Create a direct named uni/ somewhere on your system that contains the
+network datasets that you want to analyse:
+
+$ mkdir ~/data/uni
+
+For each network dataset, there must be two files in the uni/ directory: 
+
+        out.$network
+	meta.$network
+
+where $network is the name of the network.  For instance, if your
+network is named 'enron', you need the files 'out.enron' and
+'meta.enron'.  The out.* file contains the network itself (it's a big
+file), and the meta.* contains metadata (it's a small file).
+
+If you analyse datasets from KONECT, you can get the files on the KONECT
+website by following the "TSV" download link.  For instance, you can get
+the files for the 'enron' dataset at
+
+http://konect.uni-koblenz.de/networks/enron
+
+If you want to analysis your own dataset, you must create these two
+files for each of your dataset.  These exact format of these two files
+is described in the KONECT Handbook, in Section 9 (File Formats).  The
+KONECT Handbook is available here:
+
+http://konect.uni-koblenz.de/downloads/konect-handbook.pdf
+
+(4) Create plot/ and dat/
+
+Somewhere on your system, create empty directories named plot/ and
+dat/.  These directories will later contain the result of the analysis
+by KONECT.  Since the result of the analysis may be large, you should
+put them on a disk with enough free space.
+
+plot/ will contain all plots created by KONECT Analysis, and dat/ all
+data files created by KONECT Analysis.
+
+For instance, do:
+
+$ mkdir ~/data/plot
+$ mkdir ~/data/dat
+
+(4) Connect directories to KONECT Analysis
+
+Use 'ln -s' to link the three directories to konect-analysis/.  While in
+the directory konect-analysis/, do
+
+$ cd ~/work/konect-analysis/
+$ ln -s ~/work/konect-toolbox ./
+$ ln -s ~/data/plot ./
+$ ln -s ~/data/dat ./
+$ ln -s ~/data/uni ./
+
+(5) [OPTIONAL] Install Matlab-BGL
+
+See lib/README for full instructions.  Short version:  Download
+Matlab-BGL version 4.x from
+
+http://www.stanford.edu/~dgleich/programs/matlab_bgl/
+
+and unpack it in the ~/work/konect-analysis/lib/ directory.  There
+should now be a directory ~/work/konect-analysis/lib/matlab_bgl/
+containing Matlab-BGL.
+
+(6) Install Stu
+
+$ cd ~/work/
+$ git clone https://github.com/kunegis/stu/
+$ cd stu
+$ ./configure
+$ make
+$ sudo make install
+
+You need G++ to compile Stu, in a version that supports C++11. 
+
+(7) [OPTIONAL] Other libraries 
+
+Install libraries as described in lib/README.  Not all targets need
+extra libraries.  You may as well don't do it and wait until you get a
+corresponding error message.  
+
+(8) Run the analysis
+
+Execute:
+
+$ cd ~/work/konect-analysis/
+$ nice ./mns <TARGET>
+
+where <TARGET> is the target to run.  For a full list of possible
+targets, see the file 'main.stu'.  Examples for <TARGET> are:
+
+@network.$network
+
+	Compute everything for the given network
+
+@statistic.triangles.enron
+
+	Compute the number of triangles in the 'enron' dataset.  The
+	result will be written in the file
+	~/data/dat/statistic.triangles.enron (the first line in that
+	file is the number of triangles)
+
+@statistic.$statistic.$network
+
+	where $statistic is the name of statistic, and $network is the
+	name of a network.  This will compute the given statistic for
+	the given network.  The possible statistics are described in the
+	KONECT Handbook in Section 4 (Statistics).  The value of the
+	statistic will be written in the first line of the file
+	~/data/dat/statistic.$statistic.$network
+
+@statistic.$statistic
+
+	Compute the given statistic for all networks
+
+Many more targets are described in 'main.stu'.
+

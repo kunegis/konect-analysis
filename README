@@ -5,31 +5,15 @@ http://konect.uni-koblenz.de/
 
 It allows to run analyses of KONECT networks in parallel. 
 
+See the file INSTALL for installation instructions. 
+
 == Requirements ==
 
 * Stu:  install from https://github.com/kunegis/stu
-* g++ (only for triangle count and diameter) 
-* sed -r (this is non-POSIX, but most sed's have it)
+* g++ (for triangle count, diameter, and a few other statistics) 
+* sed -r (this is non-POSIX, but most GNU sed has it)
 * python-rdflib (for RDF generation only)
 * Julia (experimental, see lib/JULIA)
-
-== Prepare ==
-
-* Mount, link, symlink or copy uni/ into this directory.  The uni/
-  directory must be present and contain all out.* and meta.* files.   
-* Mount, link, symlink or copy the dat/ and plot/ directories/ here.  If
-  you start a new analysis, these can be empty. 
-* (optional) Install libraries as described in lib/README.  Not all
-  targets need extra libraries.  You may as well don't do it and wait
-  until you get a corresponding error message. 
-* Symlink (or copy) to ./konect-toolbox a version of the KONECT Toolbox
-  available at  https://github.com/kunegis/konect-toolbox
-
-== Run ==
-
-* Execute "./mns", which calls Stu; see main.stu for targets.
-
-Output is written to dat/ (data files) and plot/ (plots).  
 
 == License ==
 
