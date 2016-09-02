@@ -6,9 +6,9 @@ following instructions.
 
 (0) Install needed software
 
-You will need software such as g++, perl5, and others.  You can install
-them at this point, or later when you notice that you need them.  Not
-all are needed, so you may get away with not installing them. 
+You will need software such as a C99 compiler, perl5, and others.  You
+can install them at this point, or later when you notice that you need
+them.  Not all are needed, so you may get away with not installing them.  
 
 (1) Create directories 
 
