@@ -8,7 +8,7 @@ It allows to run analyses of KONECT networks in parallel.
 == Requirements ==
 
 * Stu:  install from https://github.com/kunegis/stu
-* g++ (only for triangle count and diameter) 
+* A C99 compiler (only for triangle count and diameter) 
 * sed -r (this is non-POSIX, but most sed's have it)
 * python-rdflib (for RDF generation only)
 * Julia (experimental, see lib/JULIA)
