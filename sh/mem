@@ -1,18 +1,25 @@
 #! /bin/sh
 #
-# Divide ulimit -v value by N and execute command.  ulimit -v must be
-# set to a finite value, and not equal "unlimited".   
+# Divide the 'ulimit -v' value by SIZE and execute COMMAND.  ulimit -v
+# must be set to a finite value, or be 'unlimited'.
+#
+# 'ulimit -v' is used to limit the amount of memory usable by each
+# process.  
 #
 # INVOCATION 
 #	$0 SIZE COMMAND
 #
 
-if [ $(ulimit -v) = unlimited ]
-then
-    echo >&2 "*** $0: ulimit -v must be set"
-    exit 1
-fi
-
-ulimit -v $(($(ulimit -v) / $1))
+size="$1"
 shift
-exec "$@"
+
+mem="$(echo $(ulimit -v))"
+
+if [ "$mem" = unlimited ]
+then
+	# There is no limit -- just execute the command
+	exec "$@"
+else
+	ulimit -v "$((mem / size))"
+	exec "$@"
+fi

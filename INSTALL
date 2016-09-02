@@ -4,6 +4,12 @@ We'll assume you will put all code in the ~/work/ directory, and all
 data in the ~/data/ directory.  Change these paths accordingly in the
 following instructions.
 
+(0) Install needed software
+
+You will need software such as g++, perl5, and others.  You can install
+them at this point, or later when you notice that you need them.  Not
+all are needed, so you may get away with not installing them. 
+
 (1) Create directories 
 
 First, create the necessary directories:
@@ -109,14 +115,40 @@ corresponding error message.
 Execute:
 
 $ cd ~/work/konect-analysis/
-$ nice ./mns <TARGET>
+
+Optionally, you can now setup the maximum amount of memory (i.e., RAM)
+that KONECT will use.  You should do this if you intend to use very
+large datasets.  Do this:
+
+$ ulimit -v 67108864
+
+You should replace the number '67108864' by the size of your memory in
+kilobyte.  The given example is thus correct if you have 64 GiB of
+memory. 
+
+Now, run KONECT Analysis:
+
+$ nice ./mns [K] <TARGET>
 
 where <TARGET> is the target to run.  For a full list of possible
-targets, see the file 'main.stu'.  Examples for <TARGET> are:
+targets, see the file 'main.stu'.
+
+[K] is optional and is the number of processes to run in parallel.
+Thus, if you want to run eight processes in parallel, use 'nice ./mns 8 ...'. 
+
+Examples for <TARGET> are:
+
+@network.enron
+
+	Compute everything for the network named 'enron'.  This will
+	read the files uni/out.enron and uni/meta.enron and write
+	analyses of that network into dat/ and plot/.  plot/ will
+	contain plots computed for the network, and dat/ numerical
+	analyses. 
 
 @network.$network
 
-	Compute everything for the given network
+	Compute everything for the given network named $network. 
 
 @statistic.triangles.enron
 
@@ -139,4 +171,3 @@ targets, see the file 'main.stu'.  Examples for <TARGET> are:
 	Compute the given statistic for all networks
 
 Many more targets are described in 'main.stu'.
-

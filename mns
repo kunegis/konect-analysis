@@ -1,7 +1,13 @@
 #! /bin/sh
 #
 # Execute Stu parallely, dividing used memory by K, and limiting
-# runtime of processes.  Also, be NICE. 
+# runtime of processes.  Also, be NICE.
+#
+# In order to limit the memory used by KONECT processes, use
+#
+#    ulimit -v SIZE
+#
+# where SIZE is the amount of memory that should be used, in kilobytes.  
 #
 # INVOCATION 
 #	$0 [K] args...
