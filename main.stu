@@ -785,7 +785,7 @@ dat/statistic.avgdegree.$network:
 	[dat/dep.c.ifub.lcc~simple~$network]
 	dat/sg1.lcc~simple~$network
 {
-	$command dat/sg1.lcc~simple~$network $K ${TMP:-/tmp}/ifub.$network 
+	"$command" dat/sg1.lcc~simple~$network $K ${TMPDIR:-/tmp}/ifub.$network 
 }
 
 dat/statistic.ifub$K.simple~$network = dat/statistic.ifub$K.lcc~simple~$network;

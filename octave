@@ -24,7 +24,7 @@ exec 6>>error.log
 [ "$network" ]		&& LOGNAME=$LOGNAME.$network
 [ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
 
-export LOG="${TMP-/tmp}/$(basename $0).$LOGNAME$PREFIX.log"
+export LOG="${TMPDIR-/tmp}/$(basename $0).$LOGNAME$PREFIX.log"
 echo >&2 "   $LOG"
 
 #

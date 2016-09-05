@@ -32,10 +32,8 @@ if has_timestamps(network)
     % Otherwise take A. 
     if isfield(pa.pa, 'v')
         values = get_values(pa.pa.v); 
-%%        values = [ pa.pa.v.e(1); exp(sqrt(pa.pa.v.e(3))); pa.pa.v.g(1); exp(sqrt(pa.pa.v.g(3))) ];
     else
         values = get_values(pa.pa.a); 
-%%        values = [ pa.pa.a.e(1); exp(sqrt(pa.pa.a.e(3))); pa.pa.a.g(1); exp(sqrt(pa.pa.a.g(3))) ]; 
     end
 
 else
@@ -44,11 +42,17 @@ else
 
 end
 
+% The values are a column vector 
+[m n] = size(values);
+assert(n == 1); 
+
 save(sprintf('dat/statistic.prefatt.%s', network), 'values', '-ascii'); 
 
 end
 
 function [ret] = get_values(vect)
+
+ret = [ NaN ; NaN ; NaN ; NaN ]; 
 
 ret(1) = vect.e(1);
 

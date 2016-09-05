@@ -197,7 +197,7 @@ if weights == consts.UNWEIGHTED | ...
     [x y z] = find(A);
     i = find(z ~= 1);
     if length(i > 0)
-        error(sprintf('*** Invalid multiple edge (%u, %u); multiplicity = %u, number of multiply-connected node pairs = %u, although network should be without multiple edges', x(i(1)), y(i(1)), z(i(1)), nnz(i > 0))); 
+        error(sprintf('*** Invalid multiple edge (%u, %u); multiplicity = %u, number of multiply-connected node pairs = %u, max multiplicity = %u, although network should be without multiple edges', x(i(1)), y(i(1)), z(i(1)), nnz(i > 0), max(z))); 
     end
 
 end
