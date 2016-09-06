@@ -1,6 +1,7 @@
 #! /bin/sh
 #
-# Generate the dependencies of a network, excluding the @check computation. 
+# Generate the dependencies of a network, excluding the @check
+# computation.  
 #
 # PARAMETERS
 #	$network
@@ -9,7 +10,7 @@
 # STDOUT
 #	The list of dependencies in Stu format
 #
-# INPUT 
+# INPUT FILES
 #	STATISTICS
 #	PLOTS
 #	PLOTS_SQUARE
@@ -22,24 +23,24 @@
 #
 
 for PLOT in $(cat PLOTS) ; do
-	echo @$PLOT.$network
+	echo @"$PLOT"."$network"
 done
 
 if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
 	for PLOT in $(cat PLOTS_SQUARE) ; do 
-		echo @$PLOT.$network
+		echo @"$PLOT"."$network"
 	done
 fi
 
 if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
 	for PLOT in $(cat PLOTS_ASYM) ; do 
-		echo @$PLOT.$network
+		echo @"$PLOT"."$network"
 	done
 fi
 
 if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
 	for PLOT in $(cat PLOTS_TIME) ; do 
-		echo @$PLOT.$network
+		echo @"$PLOT"."$network"
 	done
 fi
 
@@ -56,8 +57,8 @@ for STATISTIC in $(cat STATISTICS) ; do
 	compute=1
 	file="konect-toolbox/m/konect_statistic_$STATISTIC.m"
 	if [ -r "$file" ] ; then
-		for ATTRIBUTE in $(<$file sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
-			if [ ! -r "dat/NETWORKS_$ATTRIBUTE" ] ; then 
+		for ATTRIBUTE in $(<"$file" sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
+			if [ ! -r dat/NETWORKS_"$ATTRIBUTE" ] ; then 
 				echo >&2 "$file:  unknown attribute '$ATTRIBUTE'"
 				exit 1
 			fi
@@ -70,7 +71,7 @@ for STATISTIC in $(cat STATISTICS) ; do
 	fi
 		
 	if [ "$compute" != 0 ] ; then
-		echo @statistic.$STATISTIC.$network
+		echo @statistic."$STATISTIC"."$network"
 	fi
 done
 

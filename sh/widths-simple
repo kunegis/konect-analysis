@@ -48,31 +48,31 @@ my $v = $3;
 
 if ($format == 3) {
 
-    # Bipartite 
+	# Bipartite 
 
-    open(SIZE, "<", "dat/statistic.size.$network") or die $!;
-    my @values= <SIZE>;
-    die unless (scalar @values) == 3; 
-    my $n  = $values[0];  chomp $n;
-    my $n1 = $values[1];  chomp $n1;
-    my $n2 = $values[2];  chomp $n2; 
-    die unless $n == $n1 + $n2;
+	open(SIZE, "<", "dat/statistic.size.$network") or die "$!";
+	my @values= <SIZE>;
+	die unless (scalar @values) == 3; 
+	my $n  = $values[0];  chomp $n;
+	my $n1 = $values[1];  chomp $n1;
+	my $n2 = $values[2];  chomp $n2; 
+	die unless $n == $n1 + $n2;
 
-    open(VOLUME, "<", "dat/statistic.volume.$network") or die $!;
-    my $value_m= <VOLUME>;  chomp $value_m; 
-
-    $u = Konect::bitwidth($n);
-    $v = $u; 
+	open(VOLUME, "<", "dat/statistic.volume.$network") or die "$!";
+	my $value_m= <VOLUME>;  chomp $value_m; 
+	
+	$u = Konect::bitwidth($n);
+	$v = $u; 
     
-    # Recompute the M bitwidth
-    $m = Konect::bitwidth(2 * $value_m); 
+	# Recompute the M bitwidth
+	$m = Konect::bitwidth(2 * $value_m); 
 
 } elsif ($format == 1 || $format == 2) {
 
-    # Unipartite:  Keep bitwidths of underlying network 
+	# Unipartite:  Keep bitwidths of underlying network 
 
 } else {
-    die "Invalid format $format";
+	die "Invalid format $format";
 }
 
 print "${m}${u}${v}--110\n";

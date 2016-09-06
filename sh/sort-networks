@@ -18,28 +18,28 @@ use warnings;
 my %networks;
 
 while (<>) {
-    chomp;
-    $networks{$_}= 1;
+	chomp;
+	$networks{$_}= 1;
 }
 
 open(IN, "<", "dat/networks.asc") or die "$!";
 
 while (<IN>) {
-    /^\s*(\S+)\s/ or die;
-    my $network = $1;
-    if (exists $networks{$network}) {
-	print "$network\n"; 
-	delete $networks{$network}; 
-    }
+	/^\s*(\S+)\s/ or die;
+	my $network = $1;
+	if (exists $networks{$network}) {
+		print "$network\n"; 
+		delete $networks{$network}; 
+	}
 }
 
 # All networks that remain in $networks were not found in the full
 # network list--an error. 
 my $count = keys %networks; 
 if ($count != 0) {
-    print STDERR "*** Unmatched networks:\n";
-    print STDERR "$_\n" for keys %networks;
-    exit 1
+	print STDERR "*** Unmatched networks:\n";
+	print STDERR "$_\n" for keys %networks;
+	exit 1
 }
 
 close(IN) or die "$!";

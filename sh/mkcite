@@ -14,21 +14,17 @@ use Switch;
 
 use lib "./lib";
 
-
 use IO::File;
 use BibTeX::Parser;
 
-
-#use TexToHtml::Converter;
-
 my $networkname = $ARGV[0];
 my $name;
-my $ID="";
 
-my $konectproject="../kunegis/projects/konect";
+my $ID = "";
 
+my $konectproject = "../kunegis/projects/konect";
 
-unless ($networkname eq "konect"){
+unless ($networkname eq "konect") {
 	open my $F_IN,"<uni/meta.$networkname" or die "$!";
 
 	while (my $line = <$F_IN>) {
@@ -77,12 +73,12 @@ my @ref_files = readdir(IN);
 closedir IN or die "$! :$refdir";
 
 foreach my $ref_file (@ref_files) {
-    $ref_file = $refdir . "/" . $ref_file;
+	$ref_file = $refdir . "/" . $ref_file;
 }
 
 if ( -e "$konectproject/extr/konect.bib" ) {
-    push( @ref_files, "$konectproject/extr/konect.bib" )
-	;    #for the future existence of that file 
+	push( @ref_files, "$konectproject/extr/konect.bib" )
+	    ;    #for the future existence of that file 
 }
 
 $ID =~ s/ //g;
@@ -91,8 +87,8 @@ if ( length($ID) == 0 ) { $ID = $networkname; }
 $ID = "($ID)";
 
 unless ( $networkname eq "konect" ) {
-    # TODO where is this read?
-    $bibsrc = getkonectcite($networkname) . "\n";
+	# TODO where is this read?
+	$bibsrc = getkonectcite($networkname) . "\n";
 }
 
 
@@ -117,9 +113,4 @@ foreach my $ref_file (@ref_files) {
     }
 }
 
-
 print $bibsrc;
-
-
-
-# exit();

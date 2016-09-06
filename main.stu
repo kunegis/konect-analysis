@@ -1517,7 +1517,7 @@ plot/map.a.$decomposition.$network.eps:
 	fi
 
 	for network in $networks ; do
-		echo @map.$decomposition.$network
+		echo @map."$decomposition"."$network"
 	done
 }
 
@@ -1529,7 +1529,7 @@ plot/map.a.$decomposition.$network.eps:
 
 >dat/download.rdf.$network.n3.bz2: dat/download.rdf.$network.n3
 {
-	bzip2 -c dat/download.rdf.$network.n3 
+	bzip2 -c dat/download.rdf."$network".n3 
 }
 
 >dat/download.rdf.$network.n3: uni/out.$network uni/meta.$network sh/mkrdf
@@ -1613,20 +1613,20 @@ lib/LaTeX-ToUnicode-0.04.tar.gz:  -p lib
 
 >dat/dep.download.tsv.$network: 
 {
-	echo dat/README.$network
-	echo uni/out.$network
-	echo uni/meta.$network
-	if [ -e uni/ent.$network ]
+	echo dat/README."$network"
+	echo uni/out."$network"
+	echo uni/meta."$network"
+	if [ -e uni/ent."$network" ]
 	then
-		echo uni/ent.$network
+		echo uni/ent."$network"
 	fi
-	if ls uni/ent.$network.* >/dev/null 2>/dev/null
+	if ls uni/ent."$network".* >/dev/null 2>/dev/null
 	then
-		echo uni/ent.$network.*
+		echo uni/ent."$network".*
 	fi
-	if ls uni/rel.$network.* >/dev/null 2>/dev/null
+	if ls uni/rel."$network".* >/dev/null 2>/dev/null
 	then
-		echo uni/rel.$network.*
+		echo uni/rel."$network".*
 	fi
 }
 
@@ -1639,7 +1639,7 @@ dat/download.tsv.$network.tar.bz2:
 	rm -Rf "$DIR"
 	mkdir "$DIR"
 
-	for file in $(cat dat/dep.download.tsv.$network) 
+	for file in $(cat dat/dep.download.tsv."$network") 
 	do
 		file_canon="$(readlink -e "$file")"
 		if [ "$(basename "$file_canon")" = README ]
@@ -1651,7 +1651,7 @@ dat/download.tsv.$network.tar.bz2:
 	done
 
 	cd dat-tmp
-	tar -hcvj -f ../dat/download.tsv.$network.tar.bz2 "$network"
+	tar -hcvj -f ../dat/download.tsv."$network".tar.bz2 "$network"
 	rm -rf "dat-tmp/$network"
 }  
 
@@ -1748,7 +1748,7 @@ plot/syngraphy.a.$network.eps:
 	dat/NETWORKS_ASYM
 {
 	for network in $(cat dat/NETWORKS_ASYM) ; do
-		echo @syngraphy.$network
+		echo @syngraphy."$network"
 	done
 }
 

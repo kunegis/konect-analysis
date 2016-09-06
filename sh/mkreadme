@@ -17,48 +17,48 @@ use HTML::Entities;
 my $network = $ARGV[0];
 
 sub has_timestamps {
-    open my $F_DATASETS, "<dat/networks.list";
-    my @lines = <$F_DATASETS>;
-	close $F_DATASETS;
-    foreach my $line (@lines) {
-        my @info = split(/ /, $line );
-        if ( uc( $info[0] ) eq uc($network) ) {
-            chomp $info[3];
-            return $info[3];
-        }
-    }
+	open my $F_DATASETS, "<dat/networks.list" or die "$!";
+	my @lines = <$F_DATASETS>;
+	close $F_DATASETS or die "$!";
+	foreach my $line (@lines) {
+		my @info = split(/ /, $line );
+		if ( uc( $info[0] ) eq uc($network) ) {
+			chomp $info[3];
+			return $info[3];
+		}
+	}
 }
 
 
 
-open (my $F_IN,"<uni/meta.$network") or die "could not open uni/meta.$network\n";
+open (my $F_IN,"<uni/meta.$network") or die "could not open uni/meta.$network: $!\n";
 
 my $name= "";
 my $description= ""; 
 
 while (my $line= <$F_IN>) {
-    if ($line =~ /\s*name\s*:\s*(.*)\s*$/) {
-	unless ($name ne "") {
-	    $name= $1;
+	if ($line =~ /\s*name\s*:\s*(.*)\s*$/) {
+		unless ($name ne "") {
+			$name= $1;
+		}
 	}
-    }
-    if ($line =~ /\s*fullname\s*:\s*(.*)\s*$/) {
-	$name= $1;
-    }
-    if ($line=~/\s*long-description\s*:\s*(.*)\s*$/) {
-	$description= $1;
-    }
+	if ($line =~ /\s*fullname\s*:\s*(.*)\s*$/) {
+		$name= $1;
+	}
+	if ($line=~/\s*long-description\s*:\s*(.*)\s*$/) {
+		$description= $1;
+	}
 }
 
 close $F_IN or die "$!";
 
 if ( $ARGV[1] eq "code" ) {
-    print ""
-      . "The files in this folder are used to generate the TSV files of the "
-      . $ARGV[0]
-      . " network,
+	print ""
+	    . "The files in this folder are used to generate the TSV files of the "
+	    . $ARGV[0]
+	    . " network,
 about which more information is provided there: http://konect.uni-koblenz.de/networks/"
-      . $ARGV[0] . "
+. $ARGV[0] . "
 
 
 The extraction code is licensed under GPLv3.\nFor more information concerning license visit http://konect.uni-koblenz.de/license.";
@@ -66,7 +66,7 @@ The extraction code is licensed under GPLv3.\nFor more information concerning li
 }
 elsif ( $ARGV[1] eq "matrices" ) {
     HTML::Entities::decode($description);
-	print $name;
+    print $name;
     print " network, part of the Koblenz Network Collection
 ===========================================================================
 
@@ -101,7 +101,7 @@ Files:
     }
 
 ########################### entity files
-    opendir( DIR, "uni" );
+    opendir( DIR, "uni" ) or "$!";
     my @FILES= readdir(DIR);
     foreach my $file (@FILES) {
         if ($file =~ /^ent\.$network\.([^\.]*)\.([^\.]*)$/) {
@@ -147,4 +147,3 @@ For more information concerning license visit http://konect.uni-koblenz.de/licen
 "
 
 }
-

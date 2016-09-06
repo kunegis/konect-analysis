@@ -1,3 +1,10 @@
 #! /bin/sh
+#
+# Convert an EPS file to PNG
+#
+# INVOCATION
+#
+#	$0 $filename_eps $filename_png
+#
 
 inkscape -z "$1" -e "$2"

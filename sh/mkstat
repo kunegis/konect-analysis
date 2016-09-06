@@ -2,8 +2,12 @@
 #
 # Convert result of runtime evaluation to Matlab matrix file for analysis.
 #
-# STDIN		Text with data lines beginning with "%="
-# STDOUT	Matlab file with same data
+# STDIN		
+#
+# 	Text with data lines beginning with "%="
+# STDOUT	
+#
+# 	Matlab file with same data
 #
 
 ! /^%=/ { next } {print $3 " " $4 " " $5 " " $6}

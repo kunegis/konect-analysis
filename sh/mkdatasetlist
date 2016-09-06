@@ -2,7 +2,7 @@
 #
 # Generate list of networks.
 #
-# INPUT
+# INPUT FILES
 #	uni/*
 #
 # STDOUT
@@ -17,25 +17,24 @@
 [ "$verbose" ] && exec 4>&2 || exec 4>/dev/null 
 
 ls uni/out.* |
-sed -re 's,^uni/out\.,,' |
+sed -e 's,^uni/out\.,,' |
 while read name
 do
-    echo >&4 NAME=$name
-    file=uni/out.$name
-    
-    # Name, format and weight
-    echo -n "$name $(head -1 $file | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 $file | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
+	echo >&4 NAME="$name"
+	file=uni/out.$name
+	
+	# Name, format and weight
+	echo -n "$name $(head -1 $file | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 $file | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
 
-    # Timestamps
-    if [ $(head $file | tail -1 | wc -w) -gt 3 ]
-    then
-	echo -n t
-    else
-	echo -n 0
-    fi
-    echo -n ' ' 
+	# Timestamps
+	if [ $(head $file | tail -1 | wc -w) -gt 3 ]
+	then
+		echo -n t
+	else
+		echo -n 0
+	fi
+	echo -n ' ' 
 
-    # Bytes
-    ls -lH $file | cut -d ' ' -f 5 
-
+	# Bytes
+	ls -lH "$file" | cut -d ' ' -f 5 
 done

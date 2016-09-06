@@ -46,7 +46,6 @@ my $ret_m = Konect::bitwidth( $format == 3 ? $m : 2 * $m );
 open(OUT, "<", $filename_out)
     or die "$filename_out:  $!";
 
-#my $ret_w = '-';
 my $max_w = -1;    # Maximum encountered value.  Negative values X count as (-x-1)
 my $ret_t = '-'; 
 my $signed_w = 0; 
@@ -81,18 +80,10 @@ while (<OUT>) {
 				$weight_value = -$weight_value - 1; 
 			}
 
-#			print STDERR "weight_value = $weight_value\n"; 
-
 			if ($weight_value > $max_w) {
 				$max_w = $weight_value; 
-#				print STDERR "new max_w $max_w\n"; 
 			}
 
-#			my $ret_w_new = Konect::bitwidth($width);
-#			if ($ret_w_new gt $ret_w) {
-#				$ret_w = $ret_w_new; 
-#			}
-	    
 			if ($width eq "0") {
 				$zero_w = 1; 
 			}
@@ -124,14 +115,14 @@ while (<OUT>) {
 my $ret_w = '-'; 
 
 if ($float_w) {
-    $ret_w = '5'; 
+	$ret_w = '5'; 
 } elsif ($signed_w) {
 	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth(2 * $max_w); 
-    $ret_w = uc $ret_w; 
-    if ($ret_w eq "A" && $zero_w) {
+	$ret_w = uc $ret_w; 
+	if ($ret_w eq "A" && $zero_w) {
 		$ret_w= 'B';
-    }
+	}
 } else { # Unsigned 
 	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth($max_w);
@@ -141,9 +132,9 @@ if ($float_w) {
 } 
 
 if ($float_t) {
-    $ret_t = '5';
+	$ret_t = '5';
 } elsif ($signed_t) {
-    $ret_t = uc $ret_t; 
+	$ret_t = uc $ret_t; 
 } 
 
 # Whether the #loop tag is set
