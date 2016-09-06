@@ -11,8 +11,8 @@
 
 set -e
 
-TMP="${TMP:-/tmp}"
-TMPFILE="$TMP/depc.$$"
+TMPDIR="${TMPDIR:-/tmp}"
+TMPFILE="$TMPDIR/depc.$$"
 
 echo "$1" >$TMPFILE
 
