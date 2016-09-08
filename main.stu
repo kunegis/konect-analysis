@@ -1761,7 +1761,7 @@ plot/syngraphy.a.$network.eps:
 @outin.$network:  plot/outin.a.$network.eps;
 
 plot/outin.a.$network.eps:  
-	m/outin.m $[ -t MATLABPATH]
+	m/outin.m $[-t MATLABPATH]
 	dat/data.$network.mat 
 	dat/info.$network 
 {
@@ -1855,4 +1855,27 @@ plot/inter2.a.$network.png:
 plot/$name.png:  plot/$name.eps sh/eps2png
 {
 	sh/eps2png plot/"$name".eps plot/"$name".png
+}
+
+#
+# Degree vs local clustering coefficient
+#
+
+@degcc:   [dat/dep.degcc];
+
+>dat/dep.degcc:  dat/NETWORKS_SQUARE
+{
+	for network in $(cat dat/NETWORKS_SQUARE) ; do
+		echo @degcc."$network"
+	done
+}
+
+@degcc.$network:  plot/degcc.a.$network.eps; 
+
+plot/degcc.a.$network.eps:  
+	m/degcc.m $[-t MATLABPATH]
+	dat/cluscod.$network.mat
+	uni/out.$network
+{
+	./matlab m/degcc.m 
 }

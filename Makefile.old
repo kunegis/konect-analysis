@@ -282,19 +282,6 @@ endef
 $(foreach STATISTIC, $(STATISTICS), $(foreach TYPE, full split, $(eval $(call TEMPLATE_trend,$(STATISTIC),$(TYPE)))))
 
 #
-# Degree vs local clustering coefficient
-#
-
-degcc.all:  $(foreach NETWORK, $(NETWORKS_SQUARE), degcc.$(NETWORK))
-
-$(foreach NETWORK, $(NETWORKS_SQUARE), degcc.$(NETWORK)): \
-degcc.%:  plot/degcc.a.%.eps
-
-$(foreach NETWORK, $(NETWORKS_SQUARE), plot/degcc.a.$(NETWORK).eps): \
-plot/degcc.a.%.eps:  m/degcc.m dat/feature.degree.%.mat dat/cluscod.%.mat
-	NETWORK=$* $(OCTAVE) m/degcc
-
-#
 # Correlation analysis between statistics
 #
 

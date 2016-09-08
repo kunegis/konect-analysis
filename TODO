@@ -1,18 +1,16 @@
 * handbook writing: layout plot
-* ca-cit-HepTh:  Invalid multiple edge (2, 3); multiplicity = 4,
-  although network should be without multiple edges 
 * new petster datasets
 * @network.dbtropes-features should not have multiple edges
 * error in @network.advogato 
 
 == Later == 
 * all standard statistics in function of time
-* sg1:  make the *_adj arrays have length n+1, where the last entry
-  always equals m, to simplify iteration over all edges.  
-* sg1:  for SYM, have an additional variant where each edge is only
-  saved once (will make programs such as hyperanf and matrix
-  decompositions use half of memory).   
 * mediandist:  actually compute it from hyperanf.  (and add to website) 
+* the correlation between outdegree and indegree. 
+* for rating networks:  mean rating 
+* new statistic:  maximal egde multiplicity 
+* statistic:  average edge multiplicity
+* statistic:  median degree 
 
 == Research ideas == 
 * @inter, @inter2
@@ -51,10 +49,6 @@
 
 
 == Easy  ==
-* for rating networks:  mean rating 
-* new statistic:  maximal egde multiplicity 
-* statistic:  average edge multiplicity
-* statistic:  median degree 
 * temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * hopdistr.b:  Y axis labels:  write there the logit-transformed values.
 * laplacian of signed graph WITHOUT absolute value.  Models real
@@ -256,4 +250,9 @@ triangles closing (as opposed to preferential attachment)
 * julia-like map of generated synthetic graphs on the two-dimensional map 
 * for transparent plots:  http://www.mathworks.com/matlabcentral/fileexchange/23629-export-fig
 * The harmonic mean distance between nodes:
-ohttp://arxiv.org/abs/cond-mat/0008357
+ohttp://arxiv.org/abs/cond-mat/000835
+* sg1:  make the *_adj arrays have length n+1, where the last entry
+  always equals m, to simplify iteration over all edges.  
+* sg1:  for SYM, have an additional variant where each edge is only
+  saved once (will make programs such as hyperanf and matrix
+  decompositions use half of memory).   

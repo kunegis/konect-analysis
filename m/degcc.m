@@ -2,24 +2,44 @@
 % For one network, scatter plot of degree vs local clustering coefficient.
 % 
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
-% INPUT 
-%	dat/feature.degree.$NETWORK.mat
-%	dat/cluscod.$NETWORK.mat
+% INPUT FILES 
+%	dat/cluscod.$network.mat
+%	uni/out.$network
 %
-% OUTPUT 
-%	plot/degcc.{a}.$NETWORK.eps
+% OUTPUT FILES 
+%	plot/degcc.{a}.$network.eps
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
-feature = load(sprintf('dat/feature.degree.%s.mat', network));  feature = feature.feature; 
+consts = konect_consts(); 
+
+weights = read_statistic('weights', network);
+weights = weights(1)
+forma = read_statistic('format', network);
+forma = forma(1)
+n     = read_statistic('size', network); 
+n     = n(1); 
+
+T = load(sprintf('uni/out.%s', network)); 
+
+x = [T(:,1) ; T(:,2)];
+
+if weights == consts.POSITIVE
+    w = [ T(:,3) ; T(:,3) ]; 
+else
+    w = 1;
+end
+
+degrees = sparse(x, 1, w, n, 1); 
+
 cluscod = load(sprintf('dat/cluscod.%s.mat', network)); 
 
 hold on; 
 
-x = feature.a;
+x = degrees;
 y = cluscod.c_local; 
 
 i = find(x > 0);
@@ -42,8 +62,3 @@ plot(1:n, clusco_sum ./ clusco_count, '+-', 'Color', [1 0 0]);
 set(gca, 'XScale', 'log', 'YScale', 'log'); 
 
 konect_print(sprintf('plot/degcc.a.%s.eps', network));
-
-
-% df sfd
-% alkjdlajdlakjsd
-%ccc
