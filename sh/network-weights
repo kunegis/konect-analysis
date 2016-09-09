@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 #
 # Extract weights from an unirelational dataset. 
 # 
@@ -9,7 +9,9 @@
 #	Weights as a number 
 #
 
+use warnings; 
 use strict; 
+
 use Switch; 
 
 $_ = <>; 

@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 #
 # Print Bibtex for the given target. 
 #
@@ -10,10 +10,9 @@
 use strict;
 use warnings;
 
-use Switch;
-
 use lib "./lib";
 
+use Switch;
 use IO::File;
 use BibTeX::Parser;
 

@@ -1,2 +1,2 @@
 This directory contains scripts, i.e. files that begin with '#!'.  These
-are shell scripts, Perl scripts, awk scripts, sed scripts, etc. 
+are shell scripts, Perl 5 scripts, awk scripts, Sed scripts, etc. 

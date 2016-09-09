@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 # 
 # Determine the data types and format/weights/loops (u/v/w/t/m/F/W/L) of a
 # network.  Each is a character.  

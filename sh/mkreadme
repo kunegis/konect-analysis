@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 #
 # Prints a readme file for the website to stdoud, which should accompany
 # the tarballs.  
@@ -12,7 +12,6 @@ use strict;
 use warnings;
 
 use HTML::Entities;
-
 
 my $network = $ARGV[0];
 
@@ -101,7 +100,7 @@ Files:
     }
 
 ########################### entity files
-    opendir( DIR, "uni" ) or "$!";
+    opendir( DIR, "uni" ) or die "$!";
     my @FILES= readdir(DIR);
     foreach my $file (@FILES) {
         if ($file =~ /^ent\.$network\.([^\.]*)\.([^\.]*)$/) {

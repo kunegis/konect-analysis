@@ -1,7 +1,9 @@
-#! /usr/bin/perl -w
+#! /usr/bin/perl
 #
 # Extract numerical info from an unirelational dataset:  Number of
 # subject and object entities, number of edges, format and weights. 
+#
+# This data format is deprecated, but still used. 
 # 
 # STDIN
 #	Dataset file, typically named out.* or rel.*
