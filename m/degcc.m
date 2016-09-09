@@ -28,7 +28,11 @@ T = load(sprintf('uni/out.%s', network));
 x = [T(:,1) ; T(:,2)];
 
 if weights == consts.POSITIVE
-    w = [ T(:,3) ; T(:,3) ]; 
+    if size(T,2) >= 3
+        w = [ T(:,3) ; T(:,3) ]; 
+    else
+        w = 1;
+    end
 else
     w = 1;
 end
