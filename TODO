@@ -1,8 +1,3 @@
-* handbook writing: layout plot
-* new petster datasets
-* @network.dbtropes-features should not have multiple edges
-* error in @network.advogato 
-
 == Later == 
 * all standard statistics in function of time
 * mediandist:  actually compute it from hyperanf.  (and add to website) 
