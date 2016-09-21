@@ -1,11 +1,6 @@
-== Later == 
-* all standard statistics in function of time
-* mediandist:  actually compute it from hyperanf.  (and add to website) 
-* the correlation between outdegree and indegree. 
-* for rating networks:  mean rating 
-* new statistic:  maximal egde multiplicity 
-* statistic:  average edge multiplicity
-* statistic:  median degree 
+== Bugfixes ==
+
+<none>
 
 == Research ideas == 
 * @inter, @inter2
@@ -35,15 +30,19 @@
 
 * algebraic conflict
 
-* realistic temporal model
-** learn parameters directly (but: hidden nodes)
-
 * LYBL
 
 * compute the Voronoi issue over a 5-cycle graph (as an example)
 
 
 == Easy  ==
+* all standard statistics in function of time
+* mediandist:  actually compute it from hyperanf.  (and add to website) 
+* the correlation between outdegree and indegree. 
+* for rating networks:  mean rating 
+* new statistic:  maximal egde multiplicity 
+* statistic:  average edge multiplicity
+* statistic:  median degree 
 * temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * hopdistr.b:  Y axis labels:  write there the logit-transformed values.
 * laplacian of signed graph WITHOUT absolute value.  Models real
