@@ -11,8 +11,8 @@
 
 SCRIPT="$1"
 
-[ "$PREFIX" ] && PREFIX=.$PREFIX
-LOGNAME=$USER."$(basename $SCRIPT .m)"
+[ "$PREFIX" ] && PREFIX=."$PREFIX"
+LOGNAME="$USER"."$(basename $SCRIPT .m)"
 
 # Error log
 exec 6>>error.log
@@ -43,7 +43,7 @@ OCTAVE_PATH="$OCTAVE_PATH:$MATLABPATH"
 OCTAVE_PATH="$DIR_SCRIPT:$OCTAVE_PATH"
 export OCTAVE_PATH
 exec 3>$LOG 
-ISPLAY= GNUTERM=dumb octave -qf "$SCRIPT" >&3 2>&1  ||
+ISPLAY= GNUTERM=dumb octave -qf "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
 	echo >&2 "*** error in $LOG"
 	echo >&6 "*** error in $LOG"
