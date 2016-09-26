@@ -28,7 +28,7 @@ $ git clone https://github.com/kunegis/konect-toolbox
 
 (3) Create uni/
 
-Create a direct named uni/ somewhere on your system that contains the
+Create a directory named uni/ somewhere on your system that contains the
 network datasets that you want to analyse:
 
 $ mkdir ~/data/uni
