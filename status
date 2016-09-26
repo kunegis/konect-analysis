@@ -1,7 +1,7 @@
 #! /bin/sh
 #
-# Show the currently MATLAB processes started with ./matlab.  This calls
-# ps(1) and presents the results in a nice way.  
+# Show the currently running MATLAB processes started with ./matlab.
+# This calls ps(1) and presents the results in a nice way.   
 #
 # MECHANISM 
 #
