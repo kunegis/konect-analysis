@@ -1029,7 +1029,7 @@ plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 }
 
 #
-# category table
+# Category table
 #
 
 tex/category-tabular.tex:
@@ -1171,7 +1171,7 @@ plot/weights.a.$network.eps:
 
 >dat/time.$network:  
 	<uni/out.$network
-	dat/NETWORKS_TIME
+	-t dat/NETWORKS_TIME
 {
 	if ! grep -qE '^'"$network"'$' dat/NETWORKS_TIME ; then
 		exit 1
@@ -1365,7 +1365,7 @@ dat/steps.$network.mat:
 dat/outs.$network:  
 	uni/out.$network  
 	bin/outs 
-	dat/NETWORKS_TIME
+	-t dat/NETWORKS_TIME
 {
 	if ! grep '^'"$network"'$' dat/NETWORKS_TIME ; then
 		exit 1
