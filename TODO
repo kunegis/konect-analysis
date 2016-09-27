@@ -34,16 +34,17 @@
 
 * compute the Voronoi issue over a 5-cycle graph (as an example)
 
-
 == Easy  ==
+* pearson correlation between outdegree and indegree (logarithmic?) 
+* statistic:  average edge multiplicity 
+* statistic:  median degree 
+* new statistic:  maximal egde multiplicity 
+* statistic:  number of loops
+
+* temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * all standard statistics in function of time
 * mediandist:  actually compute it from hyperanf.  (and add to website) 
-* the correlation between outdegree and indegree. 
 * for rating networks:  mean rating 
-* new statistic:  maximal egde multiplicity 
-* statistic:  average edge multiplicity
-* statistic:  median degree 
-* temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * hopdistr.b:  Y axis labels:  write there the logit-transformed values.
 * laplacian of signed graph WITHOUT absolute value.  Models real
 repulsion, better than the absolute value, which models antipodal
@@ -55,7 +56,6 @@ sum-of-weights.
 ** This is NOT the same as LAPQ (there is no implementation yet) 
 * read_metadata() and get_tags():  factor them into matlab/ in the form
 that they take filenames as arguments 
-* statistic:  number of loops
 * statistic:  median path length:  compute is properly (as the rounded-up 50-percentile effective diameter) 
 * statistic:  relative strongly connected component
 * normalized version of the algebraic conflict:  derive as a problem of
