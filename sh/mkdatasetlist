@@ -12,22 +12,28 @@
 #
 #	TIMESTAMPS is t for timestamps and 0 for no timestamps 
 #	BYTES is the size in bytes.
+#	Entries are not sorted. 
+#
+# ENVIRONMENT 
+#
+#	$verbose	Set to non-empty for verbose mode
 #
 
 [ "$verbose" ] && exec 4>&2 || exec 4>/dev/null 
 
-ls uni/out.* |
-sed -e 's,^uni/out\.,,' |
-while read name
+echo uni/out.* | sed -e 's| \{1,\}|\
+|g' |
+while IFS= read -r file
 do
-	echo >&4 NAME="$name"
-	file=uni/out.$name
+	echo >&4 "file='$file'"
+	name="$(echo "$file" | sed -e 's,^uni/out\.,,')"
+	echo >&4 "name='$name'"
 	
 	# Name, format and weight
-	echo -n "$name $(head -1 $file | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 $file | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
+	echo -n "$name $(head -1 "$file" | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 "$file" | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
 
 	# Timestamps
-	if [ $(head $file | tail -1 | wc -w) -gt 3 ]
+	if [ $(head "$file" | tail -1 | wc -w) -gt 3 ]
 	then
 		echo -n t
 	else
@@ -36,5 +42,6 @@ do
 	echo -n ' ' 
 
 	# Bytes
-	ls -lH "$file" | cut -d ' ' -f 5 
+	ls -lH -- "$file" | cut -d ' ' -f 5 
 done
+
