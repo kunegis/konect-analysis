@@ -7,6 +7,8 @@ plot
 uni
 octave-workspace
 konect-toolbox
+konect-extr
+konect-handbook
 error.log
 tmp.runtime
 lib/BibTeX

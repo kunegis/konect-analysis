@@ -17,14 +17,16 @@ First, create the necessary directories:
 $ mkdir ~/work
 $ mkdir ~/data
 
-(2) Get konect-analysis/ and konect-toolbox/ from Github
+(2) Get konect-analysis/ and other KONECT packages from Github
 
-Get the newest version of the konect-analysis and konect-toolbox
-software package from Github.  Do this:
+Get the newest version of the KONECT software packages from Github.  Do
+this:  
 
 $ cd ~/work/
 $ git clone https://github.com/kunegis/konect-analysis
 $ git clone https://github.com/kunegis/konect-toolbox
+$ git clone https://github.com/kunegis/konect-handbook
+$ git clone https://github.com/kunegis/konect-extr
 
 (3) Create uni/
 
@@ -73,11 +75,13 @@ $ mkdir ~/data/dat
 
 (4) Connect directories to KONECT Analysis
 
-Use 'ln -s' to link the three directories to konect-analysis/.  While in
+Use 'ln -s' to link the certain directories to konect-analysis/.  While in
 the directory konect-analysis/, do
 
 $ cd ~/work/konect-analysis/
 $ ln -s ~/work/konect-toolbox ./
+$ ln -s ~/work/konect-handbook ./
+$ ln -s ~/work/konect-extr ./
 $ ln -s ~/data/plot ./
 $ ln -s ~/data/dat ./
 $ ln -s ~/data/uni ./

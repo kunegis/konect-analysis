@@ -14,26 +14,29 @@
 # need to be alone on a line. 
 #
 
-format='%4b %10b %11b %21b %b\n'
+# Format for the printf(1) command
+format='%4s %10s %11s %14s %s\n'
 
+# Header line
 printf "$format" "%CPU" "Mem [k]" "Runtime" "Time left" "Name"
+
+# Note:  'ps -C' is not POSIX-compliant.
 
 ps -C MATLAB -o %cpu,cputime,vsize,user,command | 
 grep -v '%CPU' |
 while read line
 do
-	cpu="`echo \"$line\" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,'`" 
-	time="$(echo $line | cut -f 2 -d ' ')"
-	vsize="`echo $line | cut -f 3 -d ' '`"
-	logfile="`echo \"$line\" | sed -E -e 's,^.*\s(.\S+\.log)\s.*$,\1,'`"
+	cpu="$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')" 
+	time="$(echo "$line" | cut -f 2 -d ' ')"
+	vsize="$(echo "$line" | cut -f 3 -d ' ')"
+	logfile="$(echo "$line" | sed -E -e 's,^.*\s(.\S+\.log)\s.*$,\1,')"
 	if expr "$logfile" : '.*\.log' >/dev/null ; then
-		left="`tac \"$logfile\" | grep -F 'left]'  | head -1 | sed -E -e 's,^.*(\[.*\]).*$,\1,'`"
+		left="$(tac "$logfile" | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
 	else
 		left=
-		logfile="user=`echo $line | cut -f 4 -d ' '`"
+		logfile="user=$(echo "$line" | cut -f 4 -d ' ')"
 	fi
 	[ -z "$left" ] && left=" "
-	name="`echo $logfile | sed -E -e 's,^.*matlab\.([^.]+\..*)\.log$,\1,'`"
 	
 	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile"
 done				

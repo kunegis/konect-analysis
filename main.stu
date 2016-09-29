@@ -1557,6 +1557,7 @@ plot/map.a.$decomposition.$network.eps:
 >dat/README.$network:  
 	sh/mkreadme sh/mkcite $[ -t PERL5LIB]
 	lib/BibTeX/Parser.pm lib/LaTeX/ToUnicode.pm lib/HTML/Entities.pm
+	-p ( konect-handbook konect-extr )
 {
 	sh/mkreadme "$network" matrices 
 }
