@@ -130,7 +130,7 @@ cp dat/NETWORKS_CLASS_$CLASS_LAST dat/NETWORKS_CLASS_everything
 echo everything >>dat/CLASSES
 
 echo >&3
-echo >&3 NETWORKS_INCOMPLETE := `grep -l '#incomplete' uni/meta.* | sed -re 's,^uni/meta\.,,'`
+echo >&3 NETWORKS_INCOMPLETE := `grep -l '#incomplete' uni/meta.* | sed -E -e 's,^uni/meta\.,,'`
 
 echo >&3
 echo >&3 'NETWORKS_NOPREDICTION := genre-example opsahl-southernwomen'

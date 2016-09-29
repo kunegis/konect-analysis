@@ -57,7 +57,7 @@ for STATISTIC in $(cat STATISTICS) ; do
 	compute=1
 	file="konect-toolbox/m/konect_statistic_$STATISTIC.m"
 	if [ -r "$file" ] ; then
-		for ATTRIBUTE in $(<"$file" sed -re 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
+		for ATTRIBUTE in $(<"$file" sed -E -e 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
 			if [ ! -r dat/NETWORKS_"$ATTRIBUTE" ] ; then 
 				echo >&2 "$file:  unknown attribute '$ATTRIBUTE'"
 				exit 1

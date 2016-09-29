@@ -55,7 +55,7 @@ export PREFIX
 
 # The name of script within Matlab
 SCRIPT="$1"
-export MATLAB_NAME="$(basename $SCRIPT | sed -re 's,\.m$,,')"
+export MATLAB_NAME="$(basename $SCRIPT | sed -E -e 's,\.m$,,')"
 echo >&4 "MATLAB_NAME=«$MATLAB_NAME»"
 
 # Check that the file exists
@@ -136,7 +136,7 @@ grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log &&
 {
 	echo "*** error in $TMP_BASE.log"
 	echo >&6 "*** error in $TMP_BASE.log"
-	<$TMP_BASE.log >&2 sed -re '
+	<$TMP_BASE.log >&2 sed -E -e '
 		# Matlab output actually contains { and } sequences. 
 		s,.,,g
 		/\?\?\?|\*\*\*|[Ee]rror/!d

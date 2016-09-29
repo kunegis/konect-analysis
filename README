@@ -11,7 +11,7 @@ See the file INSTALL for installation and usage instructions.
 
 * Stu:  install from https://github.com/kunegis/stu
 * A C99 compiler (only for triangle count and diameter) 
-* sed -r (this is non-POSIX, but GNU sed has it)
+* sed -E (this is not (yet) POSIX, but GNU Sed and BSD Sed have it)
 * python-rdflib (for RDF generation only)
 * Julia (experimental, see lib/JULIA)
 

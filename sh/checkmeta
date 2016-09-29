@@ -20,7 +20,7 @@ error()
     echo "Error in file $f: $@" >&2
 }
 
-FILES="$(sed -re 's,^,uni/meta.,' dat/NETWORKS)"   
+FILES="$(sed -E -e 's,^,uni/meta.,' dat/NETWORKS)"   
 
 CODES=
 CODESANDFILES=

@@ -93,8 +93,8 @@
 # In ascending order of size
 >dat/networks.asc:  <dat/networks.list
 {
-	sed -re 's,^(.*) ([0-9]+)$$,\2 \1,' | sort -n | 
-	sed -re 's,^([0-9]+) (.*)$$,\2 \1,' 
+	sed -E -e 's,^(.*) ([0-9]+)$$,\2 \1,' | sort -n | 
+	sed -E -e 's,^([0-9]+) (.*)$$,\2 \1,' 
 }
 
 # In unspecified order
@@ -205,14 +205,14 @@ bin/$name:
 bin/$name.$parameters:
 	[dat/depc.$name.c] $[ -t CFLAGS]  -p bin
 {
-	m="$(echo "$parameters" | sed -re 's,^(.).......$,\1,')"
-	u="$(echo "$parameters" | sed -re 's,^.(.)......$,\1,')"
-	v="$(echo "$parameters" | sed -re 's,^..(.).....$,\1,')"
-	w="$(echo "$parameters" | sed -re 's,^...(.)....$,\1,')"
-	t="$(echo "$parameters" | sed -re 's,^....(.)...$,\1,')"
-	F="$(echo "$parameters" | sed -re 's,^.....(.)..$,\1,')"
-	W="$(echo "$parameters" | sed -re 's,^......(.).$,\1,')"
-	L="$(echo "$parameters" | sed -re 's,^.......(.)$,\1,')"
+	m="$(echo "$parameters" | sed -E -e 's,^(.).......$,\1,')"
+	u="$(echo "$parameters" | sed -E -e 's,^.(.)......$,\1,')"
+	v="$(echo "$parameters" | sed -E -e 's,^..(.).....$,\1,')"
+	w="$(echo "$parameters" | sed -E -e 's,^...(.)....$,\1,')"
+	t="$(echo "$parameters" | sed -E -e 's,^....(.)...$,\1,')"
+	F="$(echo "$parameters" | sed -E -e 's,^.....(.)..$,\1,')"
+	W="$(echo "$parameters" | sed -E -e 's,^......(.).$,\1,')"
+	L="$(echo "$parameters" | sed -E -e 's,^.......(.)$,\1,')"
 
 	gcc c/$name.c $CFLAGS -o bin/$name.$parameters \
 		-DTYPE_ma="'$m'" \
@@ -224,14 +224,14 @@ bin/$name.$parameters:
 bin/$name.$PARAMETERS.$PARAMETERS_2:
 	[dat/depc.$name.c] $[ -t CFLAGS]  -p bin
 {
-	m="$(echo "$PARAMETERS" | sed -re 's,^(.).......$,\1,')"
-	u="$(echo "$PARAMETERS" | sed -re 's,^.(.)......$,\1,')"
-	v="$(echo "$PARAMETERS" | sed -re 's,^..(.).....$,\1,')"
-	w="$(echo "$PARAMETERS" | sed -re 's,^...(.)....$,\1,')"
-	t="$(echo "$PARAMETERS" | sed -re 's,^....(.)...$,\1,')"
-	F="$(echo "$PARAMETERS" | sed -re 's,^.....(.)..$,\1,')"
-	W="$(echo "$PARAMETERS" | sed -re 's,^......(.).$,\1,')"
-	L="$(echo "$PARAMETERS" | sed -re 's,^.......(.)$,\1,')"
+	m="$(echo "$PARAMETERS" | sed -E -e 's,^(.).......$,\1,')"
+	u="$(echo "$PARAMETERS" | sed -E -e 's,^.(.)......$,\1,')"
+	v="$(echo "$PARAMETERS" | sed -E -e 's,^..(.).....$,\1,')"
+	w="$(echo "$PARAMETERS" | sed -E -e 's,^...(.)....$,\1,')"
+	t="$(echo "$PARAMETERS" | sed -E -e 's,^....(.)...$,\1,')"
+	F="$(echo "$PARAMETERS" | sed -E -e 's,^.....(.)..$,\1,')"
+	W="$(echo "$PARAMETERS" | sed -E -e 's,^......(.).$,\1,')"
+	L="$(echo "$PARAMETERS" | sed -E -e 's,^.......(.)$,\1,')"
 
 	f="$PARAMETERS_2"
 
@@ -246,23 +246,23 @@ bin/$name.$PARAMETERS.$PARAMETERS_2:
 bin/$name.x.$PARAMETERS_A.$PARAMETERS_B:
 	[dat/depc.$name.c] $[ -t CFLAGS]  -p bin
 {
-	ma="$(echo "$PARAMETERS_A" | sed -re 's,^(.).......$,\1,')"
-	ua="$(echo "$PARAMETERS_A" | sed -re 's,^.(.)......$,\1,')"
-	va="$(echo "$PARAMETERS_A" | sed -re 's,^..(.).....$,\1,')"
-	wa="$(echo "$PARAMETERS_A" | sed -re 's,^...(.)....$,\1,')"
-	ta="$(echo "$PARAMETERS_A" | sed -re 's,^....(.)...$,\1,')"
-	Fa="$(echo "$PARAMETERS_A" | sed -re 's,^.....(.)..$,\1,')"
-	Wa="$(echo "$PARAMETERS_A" | sed -re 's,^......(.).$,\1,')"
-	La="$(echo "$PARAMETERS_A" | sed -re 's,^.......(.)$,\1,')"
+	ma="$(echo "$PARAMETERS_A" | sed -E -e 's,^(.).......$,\1,')"
+	ua="$(echo "$PARAMETERS_A" | sed -E -e 's,^.(.)......$,\1,')"
+	va="$(echo "$PARAMETERS_A" | sed -E -e 's,^..(.).....$,\1,')"
+	wa="$(echo "$PARAMETERS_A" | sed -E -e 's,^...(.)....$,\1,')"
+	ta="$(echo "$PARAMETERS_A" | sed -E -e 's,^....(.)...$,\1,')"
+	Fa="$(echo "$PARAMETERS_A" | sed -E -e 's,^.....(.)..$,\1,')"
+	Wa="$(echo "$PARAMETERS_A" | sed -E -e 's,^......(.).$,\1,')"
+	La="$(echo "$PARAMETERS_A" | sed -E -e 's,^.......(.)$,\1,')"
 	
-	mb="$(echo "$PARAMETERS_B" | sed -re 's,^(.).......$,\1,')"
-	ub="$(echo "$PARAMETERS_B" | sed -re 's,^.(.)......$,\1,')"
-	vb="$(echo "$PARAMETERS_B" | sed -re 's,^..(.).....$,\1,')"
-	wb="$(echo "$PARAMETERS_B" | sed -re 's,^...(.)....$,\1,')"
-	tb="$(echo "$PARAMETERS_B" | sed -re 's,^....(.)...$,\1,')"
-	Fb="$(echo "$PARAMETERS_B" | sed -re 's,^.....(.)..$,\1,')"
-	Wb="$(echo "$PARAMETERS_B" | sed -re 's,^......(.).$,\1,')"
-	Lb="$(echo "$PARAMETERS_B" | sed -re 's,^.......(.)$,\1,')"
+	mb="$(echo "$PARAMETERS_B" | sed -E -e 's,^(.).......$,\1,')"
+	ub="$(echo "$PARAMETERS_B" | sed -E -e 's,^.(.)......$,\1,')"
+	vb="$(echo "$PARAMETERS_B" | sed -E -e 's,^..(.).....$,\1,')"
+	wb="$(echo "$PARAMETERS_B" | sed -E -e 's,^...(.)....$,\1,')"
+	tb="$(echo "$PARAMETERS_B" | sed -E -e 's,^....(.)...$,\1,')"
+	Fb="$(echo "$PARAMETERS_B" | sed -E -e 's,^.....(.)..$,\1,')"
+	Wb="$(echo "$PARAMETERS_B" | sed -E -e 's,^......(.).$,\1,')"
+	Lb="$(echo "$PARAMETERS_B" | sed -E -e 's,^.......(.)$,\1,')"
 
 	gcc c/$name.c $CFLAGS -o bin/$name.x.$PARAMETERS_A.$PARAMETERS_B \
 		-DTYPE_ma="'$ma'" \
@@ -279,14 +279,14 @@ bin/$name.x.$PARAMETERS_A.$PARAMETERS_B:
 {
 	echo "/* Automatically generated on $(date) */"
 	echo "#line 1 \"c/$name.h\""
-	sed -re 's,\$,'"$X"',g' 
+	sed -E -e 's,\$,'"$X"',g' 
 }
 
 >c/$name.$X.$Y.h:  <c/$name.h
 {
 	echo "/* Automatically generated on $(date) */"
 	echo "#line 1 \"c/$name.h\""
-	sed -re 's,\$1,'"$X"',g;s,\$2,'"$Y"',g' 
+	sed -E -e 's,\$1,'"$X"',g;s,\$2,'"$Y"',g' 
 }
 
 # List of files included by c/$FILE, directly or indirectly
@@ -358,10 +358,10 @@ bin
 {
 	FORMAT="$(cat dat/statistic.format.$TRANSFORM~$network)"
 	if [ "$FORMAT" = 3 ]; then # BIP
-		sed -re '1d;4~1d' <dat/statistic.size.$TRANSFORM~$network
+		sed -E -e '1d;4~1d' <dat/statistic.size.$TRANSFORM~$network
 	else # SQUARE
-		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$network
-		sed -re '1!d' <dat/statistic.size.$TRANSFORM~$network
+		sed -E -e '1!d' <dat/statistic.size.$TRANSFORM~$network
+		sed -E -e '1!d' <dat/statistic.size.$TRANSFORM~$network
 	fi
 	cat dat/statistic.lines.$TRANSFORM~$network
 	echo NaN
@@ -447,7 +447,7 @@ dat/out.$transform~$network:
 
 >dat/dep.sg0:  $[networks = dat/NETWORKS]
 {
-	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg0.,' 
+	for network in $networks ; do echo $network ; done | sed -E -e 's,^,@sg0.,' 
 }
 
 @sg0.$network:  dat/sg0.$network;
@@ -467,7 +467,7 @@ dat/sg0.$network:
 
 >dat/dep.sg1: $[networks = dat/NETWORKS]
 {
-	for network in $networks ; do echo $network ; done | sed -re 's,^,@sg1.,' 
+	for network in $networks ; do echo $network ; done | sed -E -e 's,^,@sg1.,' 
 }
 
 @sg1.$network:  dat/sg1.$network;
@@ -611,7 +611,7 @@ plot/assortativity.a.$network.eps:
 
 >dat/dep.statistic-attribute.$statistic:
 {
-	statistic_base="$(echo "$statistic" | sed -re 's,\+.+$,,')"
+	statistic_base="$(echo "$statistic" | sed -E -e 's,\+.+$,,')"
 	echo konect-toolbox/m/konect_statistic_"$statistic_base".m 
 }
 
@@ -647,7 +647,7 @@ dat/statistic.$statistic.$network:
 		echo >&2 'K cannot be larger than size of statistic file'
 		exit 1
 	fi
-	sed -re "$K"'!d'
+	sed -E -e "$K"'!d'
 }
 
 #
@@ -663,7 +663,7 @@ dat/statistic.$statistic.$network:
 >dat/statistic.format.$transform~$network:  
 	<dat/widths.$transform~$network
 {
-	sed -re 's,^.....(.)..$,\1,' 
+	sed -E -e 's,^.....(.)..$,\1,' 
 }
 
 >dat/statistic.weights.$network: sh/network-weights <uni/out.$network
@@ -674,7 +674,7 @@ dat/statistic.$statistic.$network:
 >dat/statistic.weights.$transform~$network:  
 	<dat/widths.$transform~$network
 {
-	sed -re 's,^......(.).$,\1,' 
+	sed -E -e 's,^......(.).$,\1,' 
 }
 
 dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
@@ -908,7 +908,7 @@ dat/statistic_time.full.$statistic.$network:
 		echo >&2 "*** Invalid K='$k'"
 		exit 1
 	}
-	sed -re 's,\s+, ,g' |
+	sed -E -e 's,\s+, ,g' |
 	cut -d ' ' -f "$k"
 	cp dat/statistic_time_runtime.full.$statistic.$network \
 		dat/statistic_time_runtime.full.${statistic}+${k}.$network  
@@ -1176,7 +1176,7 @@ plot/weights.a.$network.eps:
 	if ! grep -qE '^'"$network"'$' dat/NETWORKS_TIME ; then
 		exit 1
 	fi
-	sed -re 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
+	sed -E -e 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
 }
 
 @time_histogram.$network
@@ -1544,7 +1544,7 @@ plot/map.a.$decomposition.$network.eps:
 >dat/dep.rdf:  dat/NETWORKS
 {
 	grep -El '^\s*n3-prefix-m\s*:' uni/meta.* | 
-	sed -re 's,^uni/meta\.,@rdf.,' 
+	sed -E -e 's,^uni/meta\.,@rdf.,' 
 }
 
 
@@ -1666,7 +1666,7 @@ dat-tmp;
 	cat dat/NETWORKS |
 	while read -r network 
 	do
-		if <dat/allowed_src.txt sed -re '/,matrix/!d;s/^(.*),.*$/\1/' | 
+		if <dat/allowed_src.txt sed -E -e '/,matrix/!d;s/^(.*),.*$/\1/' | 
 			grep -qE '^'"$network"'$'
 		then
 			echo "@tsv.$network"
@@ -1798,7 +1798,7 @@ dat/runtime:  tmp.runtime m/runtime.m
 
 >dat/dep.zipf:  <dat/NETWORKS
 {
-	sed -re 's,^,@zipf.,'
+	sed -E -e 's,^,@zipf.,'
 }
 
 @zipf.$network

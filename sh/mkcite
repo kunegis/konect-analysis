@@ -45,16 +45,16 @@ unless ($networkname eq "konect") {
 
 
 sub getkonectcite {
-    my $networkname = shift;
-    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst ) =
-      localtime();
-    $year += 1900;
-    my @bibm  = qw(jan feb mar apr may jun jul aug sep oct nov dec);
-    my $month = $bibm[$mon];
-    return '@MISC{konect:' . $year . ':' . $networkname . ",
+	my $networkname = shift;
+	my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst ) =
+	    localtime();
+	$year += 1900;
+	my @bibm  = qw(jan feb mar apr may jun jul aug sep oct nov dec);
+	my $month = $bibm[$mon];
+	return '@MISC{konect:' . $year . ':' . $networkname . ",
     title = {"
-      . $name
-      . " network dataset -- {KONECT}},
+	. $name
+	. " network dataset -- {KONECT}},
     month = $month,
     year = {$year},
     url = {http://konect.uni-koblenz.de/networks/$networkname}
@@ -93,23 +93,21 @@ unless ( $networkname eq "konect" ) {
 
 foreach my $ref_file (@ref_files) {
 
-    if ( $ref_file =~ /\.bib$/ ) {
+	if ( $ref_file =~ /\.bib$/ ) {
 
-        my $fh     = IO::File->new($ref_file);
-        my $parser = BibTeX::Parser->new($fh);
-        while ( my $entry = $parser->next ) {
-            if (   ( length($ID) > 0 )
-                && ( $entry->parse_ok )
-                && ( $entry->key =~ /^$ID$/i ) )
-            {
-
-                $bibsrc .= $entry->raw_bibtex() . "\n\n";
-
-            } elsif (!($entry->parse_ok)){
-	           warn "Error parsing file: " . $entry->error;
-	    }									             
-        }
-    }
+		my $fh     = IO::File->new($ref_file);
+		my $parser = BibTeX::Parser->new($fh);
+		while ( my $entry = $parser->next ) {
+			if (   ( length($ID) > 0 )
+			       && ( $entry->parse_ok )
+			       && ( $entry->key =~ /^$ID$/i ) )
+			{
+				$bibsrc .= $entry->raw_bibtex() . "\n\n";
+			} elsif (!($entry->parse_ok)){
+				warn "Error parsing file: " . $entry->error;
+			}									             
+		}
+	}
 }
 
 print $bibsrc;

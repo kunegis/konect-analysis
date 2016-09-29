@@ -25,7 +25,7 @@ do
 		r=1
 		echo "$file"
 		if [ -e "$file" ]; then
-			<"$file" >>"$TMPFILE".new sed -re 's,^\s*#\s*include\s+"(.*)",c/\1,;t;d'
+			<"$file" >>"$TMPFILE".new sed -E -e 's,^\s*#\s*include\s+"(.*)",c/\1,;t;d'
 		fi
 	done
 	if [ "$r" = 0 ]; then  exit 0;  fi

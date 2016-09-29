@@ -24,8 +24,8 @@ fi
 
 statistic="$1"
 
-statistic_base="$(echo "$statistic" | sed -re 's,\+[0-9]+$,,')"
-suffix="$(echo "$statistic" | sed -re 's,^.*\+,+,;t;d')"
+statistic_base="$(echo "$statistic" | sed -E -e 's,\+[0-9]+$,,')"
+suffix="$(echo "$statistic" | sed -E -e 's,^.*\+,+,;t;d')"
 
 file="konect-toolbox/m/konect_statistic_$statistic_base.m"
 
@@ -34,19 +34,19 @@ if [ ! -e "$file" ] ; then
 	exit 1
 fi
 
-suffix_regexp="$(echo "$suffix" | sed -re 's,\+,\\+,')"
+suffix_regexp="$(echo "$suffix" | sed -E -e 's,\+,\\+,')"
 
 {
 	# Take the first non-empty of the following two:
 
 	# Substatistic-specific group
-	sed -re 's,^.*ATTRIBUTE'"$suffix_regexp"'\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
+	sed -E -e 's,^.*ATTRIBUTE'"$suffix_regexp"'\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
 	tr a-z A-Z
 
 	# Statistic-specific group
-	sed -re 's,^.*ATTRIBUTE\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
+	sed -E -e 's,^.*ATTRIBUTE\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
 	tr a-z A-Z
 } |
-sed -re '/^\s*$/d' | sed -re '1!d'
+sed -E -e '/^\s*$/d' | sed -E -e '1!d'
 
 exit 0

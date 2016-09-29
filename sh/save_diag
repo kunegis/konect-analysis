@@ -2,11 +2,11 @@
 #
 # Extract last eigenvalues calculated.
 #
-# PARAMETERS
+# INVOCATION
 #		$1	name of logfile
 #
 # STDIN		$1
 # STDOUT	The values 
 #
 
-tail -n900 $1 | tac | sed -e '/^Iteration/Q' | tac | sed -re '/^\s*[e+0-9.]+\s*$/!Q'
+tail -n900 $1 | tac | sed -e '/^Iteration/Q' | tac | sed -E -e '/^\s*[e+0-9.]+\s*$/!Q'

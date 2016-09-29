@@ -13,15 +13,15 @@
 #  * If the graph is BIP or ASYM take into account that each edge must
 #    be stored twice and thus the bitwidth for M may be increased 
 #
-# PARAMETERS
+# ENVIRONMENT 
 #	$network
 #
-# INPUT
+# INPUT FILES 
 #	dat/widths.$network
 #	dat/statistic.size.$network
 #	dat/statistic.volume.$network
 #
-# OUTPUT
+# OUTPUT FILES 
 #	The transformed bitwidth
 #
 

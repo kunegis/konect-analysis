@@ -30,18 +30,17 @@ do
 	echo >&4 "name='$name'"
 	
 	# Name, format and weight
-	echo -n "$name $(head -1 "$file" | sed -re 's,^.* ([^ ]+) .*$,\1,') $(head -1 "$file" | sed -re 's,^.*\s([^ ]+)\s*$,\1,') "
+	printf '%s' "$name $(head -1 "$file" | sed -E -e 's,^.* ([^ ]+) .*$,\1,') $(head -1 "$file" | sed -E -e 's,^.*\s([^ ]+)\s*$,\1,') "
 
 	# Timestamps
 	if [ $(head "$file" | tail -1 | wc -w) -gt 3 ]
 	then
-		echo -n t
+		printf t
 	else
-		echo -n 0
+		printf 0
 	fi
-	echo -n ' ' 
+	printf ' ' 
 
 	# Bytes
 	ls -lH -- "$file" | cut -d ' ' -f 5 
 done
-

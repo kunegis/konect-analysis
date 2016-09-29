@@ -22,18 +22,18 @@ ps -C MATLAB -o %cpu,cputime,vsize,user,command |
 grep -v '%CPU' |
 while read line
 do
-     cpu="`echo \"$line\" | sed -re 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,'`" 
-     time="`echo $line | cut -f 2 -d ' '`"
-     vsize="`echo $line | cut -f 3 -d ' '`"
-     logfile="`echo \"$line\" | sed -re 's,^.*\s(.\S+\.log)\s.*$,\1,'`"
-     if expr "$logfile" : '.*\.log' >/dev/null ; then
-	 left="`tac \"$logfile\" | grep -F 'left]'  | head -1 | sed -re 's,^.*(\[.*\]).*$,\1,'`"
-     else
-	 left=
-	 logfile="user=`echo $line | cut -f 4 -d ' '`"
-     fi
-     [ -z "$left" ] && left=" "
-     name="`echo $logfile | sed -re 's,^.*matlab\.([^.]+\..*)\.log$,\1,'`"
-
-     printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile"
+	cpu="`echo \"$line\" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,'`" 
+	time="$(echo $line | cut -f 2 -d ' ')"
+	vsize="`echo $line | cut -f 3 -d ' '`"
+	logfile="`echo \"$line\" | sed -E -e 's,^.*\s(.\S+\.log)\s.*$,\1,'`"
+	if expr "$logfile" : '.*\.log' >/dev/null ; then
+		left="`tac \"$logfile\" | grep -F 'left]'  | head -1 | sed -E -e 's,^.*(\[.*\]).*$,\1,'`"
+	else
+		left=
+		logfile="user=`echo $line | cut -f 4 -d ' '`"
+	fi
+	[ -z "$left" ] && left=" "
+	name="`echo $logfile | sed -E -e 's,^.*matlab\.([^.]+\..*)\.log$,\1,'`"
+	
+	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile"
 done				
