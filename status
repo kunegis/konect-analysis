@@ -18,7 +18,7 @@
 format='%4s %10s %11s %14s %s\n'
 
 # Header line
-printf "$format" "%CPU" "Mem [k]" "Runtime" "Time left" "Log"
+printf "$format" "%CPU" "Mem [k]" "Runtime" "Runtime left" "Log"
 
 TMPDIR="${TMPDIR-/tmp}"
 TMPDIR_esc="$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')"
