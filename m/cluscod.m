@@ -3,14 +3,14 @@
 % values are computed for the underlying undirected, unweighted
 % network. 
 %
-% PARAMETERS 
+% ENVIRONMENT 
 %	$network	Network name
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %	dat/info.$network
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	dat/cluscod.$network.mat
 %		c_local		Vector of node degree distributions
 %		c
@@ -37,8 +37,5 @@ A = (A ~= 0);
 A = A | A'; 
 
 [c_local c c2] = konect_clusco(A); 
-
-%% c
-%% c2
 
 save(sprintf('dat/cluscod.%s.mat', network), 'c_local', 'c', 'c2', '-v7.3');

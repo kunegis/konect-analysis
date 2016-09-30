@@ -3,4 +3,8 @@
 # Analogue to top(1) that shows KONECT processes.
 #
 
-while :; do clear ; ./status ; sleep 60 ; done
+while : ; do 
+	clear 
+	./status
+	sleep 90 || exit 1
+done

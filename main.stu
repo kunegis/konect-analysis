@@ -11,8 +11,9 @@
 # 				smallest networks  
 #	@network.$network	Build everything for one network
 #
-# Some commands use Matlab, others Octave, and yet other Julia.  In general, we are migrating
-# everything to Julia, but the bulk is still in Matlab. 
+# Some commands use Matlab, others Octave, and yet other Julia.  In
+# general, we are migrating everything to Julia, but the bulk is still
+# in Matlab.
 #
 
 % version 2.4
@@ -1828,9 +1829,9 @@ plot/zipf.a.$network.eps:
 >dat/dep.inter:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter.,' }
 
 @inter.$network
-plot/inter.a.$network.png:  dat/out2.$network jl/inter
+plot/inter.a.$network.png:  dat/out2.$network jl/inter.jl
 {
-	jl/inter
+	./julia jl/inter.jl
 }
 
 #
@@ -1843,10 +1844,10 @@ plot/inter.a.$network.png:  dat/out2.$network jl/inter
 
 @inter2.$network
 plot/inter2.a.$network.png:
-	dat/out2.$network jl/inter2
+	dat/out2.$network jl/inter2.jl
 	dat/statistic.format.$network
 {
-	jl/inter2
+	./julia jl/inter2.jl
 }
 
 #

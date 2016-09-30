@@ -1,4 +1,3 @@
-#! /usr/bin/env julia
 #
 # Plot inter-event distributions.
 #

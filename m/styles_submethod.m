@@ -1,7 +1,7 @@
 %
 % Colors used for drawing various graphs consistently. 
 %
-% RESULT
+% RESULT 
 %	colors			Struct by submethod
 %		.(submethod)	(1*3) Color
 %	line_styles		Struct by submethod
@@ -124,43 +124,4 @@ colors.ratno		= [.3 .7  1];	line_styles.ratno	= '-.';	markers.ratno		= '*';
 colors.ratl		= [.9  1 .3];	line_styles.ratl	= '-';	markers.ratl		= 's'; 
 colors.uni		= [.7 .7 0 ];	line_styles.uni		= '-';	markers.uni		= '+';
 colors.lap		= [0  .5 0 ];	line_styles.lap		= '-';	markers.lap		= 's'; 
-
-%
-% Available styles 
-%
-
-%% colors.sinh_sym       = [.7 0  1 ];  line_styles.sinh_sym	= '-';  markers.sinh_sym       = '+';
-%% colors.sinh_asym      = [1 .7  0 ];  line_styles.sinh_asym	= '-';  markers.sinh_asym      = 'o';
-%% colors.sinh_back      = [0  1 .7 ];  line_styles.sinh_back	= '-';  markers.sinh_back      = '*';
-%% colors.sinh_bip       = [1  0  0 ];  line_styles.sinh_bip	= '-';  markers.sinh_bip       = '+';
-%% colors.exp_sym        = [.9 .2  1 ];  line_styles.exp_sym	= '-';  markers.exp_sym        = '+';
-%% colors.exp_asym       = [.7 0  1 ];  line_styles.exp_asym	= '-';  markers.exp_asym       = 'o';
-%% colors.exp_back       = [.7 0  1 ];  line_styles.exp_back	= '-';  markers.exp_back       = '*';
-%% colors.exp_bip        = [.7 0  1 ];  line_styles.exp_bip	= '-';  markers.exp_bip        = '+';
-%% colors.neu_sym        = [0  1  0 ];  line_styles.neu_sym	= '-';  markers.neu_sym       = 'o';
-%% colors.neu_asym       = [0  1  0 ];  line_styles.neu_asym	= '-';  markers.neu_asym       = 'o';
-%% colors.neu_back       = [0  1  0 ];  line_styles.neu_back	= '-';  markers.neu_back       = 'o';
-%% colors.neu_bip        = [0  1  0 ];  line_styles.neu_bip	= '-';  markers.neu_bip       = 'o';
-%% colors.neuodd_sym     = [1 0 0];  line_styles.neuodd_sym	= '-.'; markers.neuodd_sym     = '+';
-%% colors.neuodd_asym    = [0  1  .3];  line_styles.neuodd_asym	= '-.'; markers.neuodd_asym    = 'o';
-%% colors.neuodd_back    = [0  1  .3];  line_styles.neuodd_back	= '-.'; markers.neuodd_back    = '*';
-%% colors.neuodd_bip     = [.9 1  .9];  line_styles.neuodd_bip	= '-.'; markers.neuodd_bip     = '+';
-%% colors.dim_lin_sym    = [0  1   1];  line_styles.dim_lin_sym	= '-';  markers.dim_lin_sym   = 'o'; 
-%% colors.dim_lin_asym   = [0  1   1];  line_styles.dim_lin_asym	= '-';  markers.dim_lin_asym   = 'o'; 
-%% colors.dim_lin_back   = [0  1   1];  line_styles.dim_lin_back	= '-';  markers.dim_lin_back   = 'o'; 
-%% colors.dim_lin_bip    = [0  1   1];  line_styles.dim_lin_bip	= '-';  markers.dim_lin_bip   = 'o'; 
-%% colors.rat_sym        = [.5 1  .5];  line_styles.rat_sym	= '-';  markers.rat_sym       = 'o';
-%% colors.rat_asym       = [0  1  0 ];  line_styles.rat_asym	= '-';  markers.rat_asym       = 'o';
-%% colors.rat_back       = [0  1  0 ];  line_styles.rat_back	= '-';  markers.rat_back       = 'o';
-%% colors.rat_bip        = [0  1  0 ];  line_styles.rat_bip	= '-';  markers.rat_bip       = 'o';
-%% colors.lap_sym        = [0  .6 0 ];  line_styles.lap_sym	= '-';  markers.lap_sym       = 's'; 
-
-%% colors.sne_abs_sym    = [.9 .9 .9];  line_styles.sne_abs_sym  = '';   markers.sne_abs_sym    = '+'; 
-%% colors.sne_abs_asym   = [.9 .9 .9];  line_styles.sne_abs_asym = '';   markers.sne_abs_asym   = 'o'; 
-%% colors.sne_abs_back   = [.9 .9 .9];  line_styles.sne_abs_back = '';   markers.sne_abs_back   = '*'; 
-%% colors.sne_abs_bip    = [.9 .9 .9];  line_styles.sne_abs_bip  = '';   markers.sne_abs_bip    = '+'; 
-%% colors.sne_squ_sym    = [.6 .6 .6];  line_styles.sne_squ_sym  = '';   markers.sne_squ_sym    = '+'; 
-%% colors.sne_squ_asym   = [.6 .6 .6];  line_styles.sne_squ_asym = '';   markers.sne_squ_asym   = 'o'; 
-%% colors.sne_squ_back   = [.6 .6 .6];  line_styles.sne_squ_back = '';   markers.sne_squ_back   = '*'; 
-%% colors.sne_squ_bip    = [.6 .6 .6];  line_styles.sne_squ_bip  = '';   markers.sne_squ_bip    = '+'; 
 

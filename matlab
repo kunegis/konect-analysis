@@ -95,8 +95,8 @@ echo >&4 "LOGNAME=«$LOGNAME»"
 
 export LOGNAME
 
-export TMP_BASE=${TMPDIR-/tmp}/`basename $0`.$LOGNAME$PREFIX
-echo >&2 "   $TMP_BASE.log"
+export TMP_BASE=${TMPDIR-/tmp}/m.$LOGNAME$PREFIX
+echo >&2 "   $TMP_BASE"
 echo >&4 "TMP_BASE=«$TMP_BASE»"
 
 export LOGFILE=$TMP_BASE.log

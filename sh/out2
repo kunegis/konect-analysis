@@ -1,4 +1,8 @@
 #! /bin/sed -f
+#
+# Generate simplified out-files:  All delimiters are tabs, and there are
+# no comment lines. 
+#
 
 # Remove comment lines
 /^[[:space:]]*%/d
@@ -11,3 +15,4 @@ s,[[:space:]]*$,,
 
 # Collapse internal space to individual tabs
 s/[[:space:]]\{1,\}/	/g
+

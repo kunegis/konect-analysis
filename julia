@@ -1,0 +1,13 @@
+#! /bin/sh
+#
+# Wrapper for running Julia scripts. 
+#
+
+TMPDIR="${TMPDIR-/tmp}"
+
+name="$(basename "$1" | sed -E -e 's,\.jl$,,')"
+log="$TMPDIR/julia.$USER.$name.log"
+
+[ "$network" ] && log="$log"."$network"
+
+julia "$1" "$log" >"$log" 2>&1 

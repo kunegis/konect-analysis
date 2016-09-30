@@ -13,14 +13,14 @@
 %
 % The test and zero test sets do not contain duplicates. 
 %
-% PARAMETERS 
+% ENVIRONMENT 
 % 	$network		Name of dataset, e.g. "advogato"
 %
-% INPUT 
+% INPUT FILES 
 %	uni/out.$network
 %	dat/info.$network
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	dat/split.$network.mat		Split matrices
 %		n1,n2			Size of dataset 
 %		T_source		(X*3) Source set

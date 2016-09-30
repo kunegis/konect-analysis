@@ -1,7 +1,7 @@
 %
 % Plot one Lorenz curve.
 %
-% PARAMETERS
+% PARAMETERS 
 %	p	(e*1) Node indexes
 %	q	(e*1) Multiplicities; [] to denote all ones
 %	b	1 for bare, else 0
@@ -51,4 +51,3 @@ xlabel('Share of nodes with smallest degrees');
 ylabel('Share of edges'); 
 
 text(0.25, 0.20, sprintf('G = %.1f%%', gini*100), 'FontSize', font_size); 
-

@@ -1,4 +1,3 @@
-#! /usr/bin/env julia
 #
 # Plot node-level interevent time distributions.
 #

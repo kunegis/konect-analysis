@@ -9,7 +9,7 @@
 % INPUT FILES
 %	$input
 % 
-% OUTPUT FILEs 
+% OUTPUT FILES 
 %	$output		Matlab file
 %		T	The data in triple/quadruple format as found in the out.* file 
 %
@@ -22,3 +22,4 @@ if size(T,2) >= 4
 end
 
 save(getenv('output'), '-v7.3', 'T'); 
+

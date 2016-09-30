@@ -18,25 +18,35 @@
 format='%4s %10s %11s %14s %s\n'
 
 # Header line
-printf "$format" "%CPU" "Mem [k]" "Runtime" "Time left" "Name"
+printf "$format" "%CPU" "Mem [k]" "Runtime" "Time left" "Log"
+
+TMPDIR="${TMPDIR-/tmp}"
+TMPDIR_esc="$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')"
+## echo "TMPDIR_esc='$TMPDIR_esc'"
 
 # Note:  'ps -C' is not POSIX-compliant.
 
-ps -C MATLAB -o %cpu,cputime,vsize,user,command | 
-grep -v '%CPU' |
-while read line
+ps k-cputime \
+  -o %cpu,cputime,vsize,user,command | 
+##  -C MATLAB,octave,julia  
+sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
+##grep -v '%CPU' |
+while IFS= read -r line
 do
 	cpu="$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')" 
-	time="$(echo "$line" | cut -f 2 -d ' ')"
-	vsize="$(echo "$line" | cut -f 3 -d ' ')"
-	logfile="$(echo "$line" | sed -E -e 's,^.*\s(.\S+\.log)\s.*$,\1,')"
+	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ')"
+	vsize="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 3 -d ' ')"
+##	echo >&2 "line='$line'"
+	logfile="$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')"
+##	logfile="$(echo "$line" | sed -E -e 's,^.*\s(\S+\.log)\s.*$,\1,;s,^.*\s(julia .*)$,\1,;s,^\S+\s+\S+\s+\S+\s+\S+\s+(.*)$,\1,')"
+##	echo >&2 "logfile='$logfile'"
 	if expr "$logfile" : '.*\.log' >/dev/null ; then
 		left="$(tac "$logfile" | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
 	else
 		left=
-		logfile="user=$(echo "$line" | cut -f 4 -d ' ')"
+##		logfile="user=$(echo "$line" | cut -f 4 -d ' ')"
 	fi
-	[ -z "$left" ] && left=" "
+##	[ -z "$left" ] && left=" "
 	
 	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile"
 done				
