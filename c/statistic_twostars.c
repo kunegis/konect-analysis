@@ -1,9 +1,9 @@
-
-/* Compute the number of wedges. 
+/* 
+ * Compute the number of wedges. 
  *
  * INVOCATION 
  *
- *      $0 FT-DEGREE-FILE
+ *      $0 FT-DEGREE-FILE LOGFILE
  *
  * The statistics are written to stdout.
  */ 
@@ -21,7 +21,7 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "*** Invalid number of arguments\n");
 		exit(1);
 	}

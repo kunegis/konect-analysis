@@ -2,7 +2,7 @@
  * Determine the maximum degree of a network. 
  *
  * INVOCATION 
- *    	$0 $SG1_FILENAME
+ *    	$0 $SG1_FILENAME LOGFILE
  *
  * INPUT FILES
  *    	$SG1_FILENAME
@@ -26,7 +26,7 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "*** Expected exactly two arguments\n");
 		exit(1);
 	}

@@ -7,6 +7,7 @@
  *      $3	n1
  *      $4	n2
  *  	$5	m
+ *      $6	LOGFILE (ignored)
  */
 
 #include <stdio.h>
@@ -34,8 +35,8 @@ int main(int argc, char **argv)
 	assert(sizeof(float) == 4); 
 	assert(sizeof(double) == 8); 
 
-	if (argc != 6) {
-		fprintf(stderr, "*** Invalid number of arguments\n"); 
+	if (argc != 7) {
+		fprintf(stderr, "*** Expected 6 arguments\n"); 
 		exit(1); 
 	}
 

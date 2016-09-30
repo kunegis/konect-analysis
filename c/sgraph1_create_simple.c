@@ -1,12 +1,13 @@
-
-/* Create an Sg1 file from an Sg0 file, transforming any network in a
- * simple SYM network.  
+/* 
+ * Create an Sg1 file from an Sg0 file, transforming any network in a
+ * simple SYM network.
  */
 
-/* The passes M/U/V/W/T are those of the original graph.  Additional
-   parameters for the generated graph: 
-   
-   MX, UX, VX, WX, TX, 
+/* 
+ * The passes M/U/V/W/T are those of the original graph.  Additional
+ * parameters for the generated graph: 
+ * 
+ * MX, UX, VX, WX, TX, 
  */
 
 #include <stdio.h>
@@ -35,13 +36,13 @@
 /*
  * INVOCATION
  *
- *	$0 INPUT-FILE OUTPUT-FILE
+ *	$0 INPUT-FILE OUTPUT-FILE LOGFILE
  * 
- * The input file must be in sg0 format; the output file is in sg1 format. 
+ * The input file must be in SG0 format; the output file is in sg1 format. 
  */
 int main(int argc, char **argv)
 {
-	if (argc != 3) {
+	if (argc != 4) {
 		fprintf(stderr, "*** Invalid number of arguments\n");
 		exit(1);
 	}

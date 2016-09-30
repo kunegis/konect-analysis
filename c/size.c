@@ -8,7 +8,8 @@
  * The size is printed to stdout.
  *
  * INVOCATION 
- *	$0 INPUT-FILE
+ *
+ *	$0 INPUT-FILE LOGFILE
  */ 
 
 #include "width.ma.h"
@@ -21,7 +22,7 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "*** Invalid number of parameters\n");
 		exit(1);
 	}
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
 	}
 
 	/* No need for file advisories since we're only reading the
-	   header */ 
+	 * header.  */ 
 
 	if (r.h->format == FORMAT_SYM || r.h->format == FORMAT_ASYM) {
 		assert(r.h->n1 == r.h->n2); 

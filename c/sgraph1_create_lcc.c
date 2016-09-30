@@ -1,6 +1,6 @@
-
-/* Extract the largest connected component of a graph. Input and output
- * files are both SG1 files.  
+/* 
+ * Extract the largest connected component of a graph.  Input and output
+ * files are both SG1 files.
  */
 
 #include "width.ma.h"
@@ -21,12 +21,14 @@
 #   error "*** Only implemented for simple networks"
 #endif
 
-/* Invocation:
- *  $0 INPUT-FILE OUTPUTFILE
+/* 
+ * INVOCATION 
+ * 
+ * 	$0 INPUT-FILE OUTPUTFILE LOGFILE
  */
 int main(int argc, char **argv)
 {
-	assert(argc == 3);
+	assert(argc == 4);
 	(void) argc;
 	const char *const filename_in= argv[1];
 	const char *const filename_out= argv[2];

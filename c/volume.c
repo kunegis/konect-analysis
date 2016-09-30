@@ -1,4 +1,3 @@
-
 /*
  * Determine the volume of a network from its SG1 file.  This is
  * trivial, and can be determined without the SG1 file in most cases.
@@ -11,7 +10,8 @@
  * The input file must not be a POSITIVE network with weight column. 
  *
  * INVOCATION 
- *	$0 INPUT-FILE
+ * 
+ *	$0 INPUT-FILE LOGFILE
  */ 
 
 #include "width__m__h"
@@ -28,7 +28,7 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "*** Invalid number of parameters\n");
 		exit(1);
 	}

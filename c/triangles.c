@@ -1,12 +1,13 @@
 /*
  * Count the triangles in a network.  The input file must be an SG1 file
- * representing a simple graph (SYM, UNWEIGHTED, no loops). 
+ * representing a simple graph (SYM, UNWEIGHTED, no loops).
  *
  * The result is written in stdout. 
  *
  * INVOCATION 
- *	$0 INPUT-FILE
- * 
+ *	$0 INPUT-FILE LOGILE
+ *
+ * The LOGFILE is ignored.  
  */
 
 #include "width.ma.h"
@@ -131,8 +132,8 @@ ma_ft common_elements(ma_ft beg1, ma_ft end1,
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
-		fprintf(stderr, "*** Invalid number of parameters\n");
+	if (argc != 3) {
+		fprintf(stderr, "*** Expected 2 parameters\n");
 		exit(1);
 	}
 

@@ -28,7 +28,7 @@
 /*
  * INVOCATION
  *
- *	$0 INPUT-FILENAME OUTPUT-FILENAME
+ *	$0 INPUT-FILENAME OUTPUT-FILENAME LOGFILE
  * 
  * The input file must be in SG0 format; the output file is in SG1 format. 
  */
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	if (mcheck(NULL))  exit(1); 
 #endif
 
-	if (argc != 3) {
+	if (argc != 4) {
 		fprintf(stderr, "*** Invalid number of arguments\n");
 		exit(1);
 	}
