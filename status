@@ -30,7 +30,7 @@ sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
 while IFS= read -r line
 do
 	cpu="$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')" 
-	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ')"
+	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')"
 	vsize="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')"
 	logfile="$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')"
 
