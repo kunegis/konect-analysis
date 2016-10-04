@@ -1299,9 +1299,9 @@ dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 
 >dat/hopdistr2.lcc~simple~$network:  
 	dat/sg1.lcc~simple~$network
-	[dat/dep.c.hyperanf.lcc~simple~$network]
+	[command = dat/dep.c.hyperanf.lcc~simple~$network]
 {
-	$(cat dat/dep.c.hyperanf.lcc~simple~$network) dat/sg1.lcc~simple~$network
+	"$command" dat/sg1.lcc~simple~$network "${TMPDIR-/tmp}"/c."$USER".hyperanf."$network"
 }
 
 @hopdistr.$network

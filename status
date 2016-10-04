@@ -15,7 +15,7 @@
 #
 
 # Format for the printf(1) command
-format='%4s %10s %11s %14s %s\n'
+format='%4s %10s %11s %13s %s\n'
 
 # Header line
 printf "$format" "%CPU" "Mem [k]" "Runtime" "Runtime left" "Log"
