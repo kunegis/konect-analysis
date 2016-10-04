@@ -3,6 +3,8 @@
 # Show the currently running MATLAB processes started with ./matlab.
 # This calls ps(1) and presents the results in a nice way.   
 #
+# All shown runtimes are CPU times, not wall clock times. 
+#
 # MECHANISM 
 #
 # To show the time left for a task, a program outputs, at regular
