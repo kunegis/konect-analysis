@@ -34,6 +34,15 @@ do
 	vsize="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')"
 	logfile="$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')"
 
+	command="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s.*$,\1,')"
+	command="$(basename "$command")"
+
+	# Don't show clearly non-computational processes.  For instance,
+	# 'less' is often used to look at logfiles. 
+	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] ; then
+		continue
+	fi
+
 	if expr "$logfile" : '.*\.log' >/dev/null ; then
 		# 'tac' may report an error if the logfile was not (yet)
 		# created.  Ignore this error.  
