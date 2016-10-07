@@ -51,7 +51,7 @@ void hyperanf(struct sgraph1_reader_a *r);
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
+	if (argc != 3) {
 		fprintf(stderr, "*** Invalid number of arguments\n");
 		exit(1); 
 	}

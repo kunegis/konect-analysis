@@ -1299,7 +1299,8 @@ dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 
 >dat/hopdistr2.lcc~simple~$network:  
 	dat/sg1.lcc~simple~$network
-	[command = dat/dep.c.hyperanf.lcc~simple~$network]
+	$[command = dat/dep.c.hyperanf.lcc~simple~$network] 
+	[dat/dep.c.hyperanf.lcc~simple~$network]
 {
 	"$command" dat/sg1.lcc~simple~$network "${TMPDIR-/tmp}"/c."$USER".hyperanf."$network"
 }
@@ -1860,7 +1861,7 @@ plot/$name.png:  plot/$name.eps sh/eps2png
 }
 
 #
-# Degree vs local clustering coefficient
+# Degree vs local clustering coefficient 
 #
 
 @degcc:   [dat/dep.degcc];
