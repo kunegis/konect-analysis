@@ -5,9 +5,14 @@
 
 TMPDIR="${TMPDIR-/tmp}"
 
+log="$TMPDIR/julia"
+
 name="$(basename "$1" | sed -E -e 's,\.jl$,,')"
-log="$TMPDIR/julia.$USER.$name.log"
+
+log="$log.$name"
 
 [ "$network" ] && log="$log"."$network"
+
+log="$log.log"
 
 julia "$1" "$log" >"$log" 2>&1 

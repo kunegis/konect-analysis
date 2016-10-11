@@ -457,7 +457,7 @@ dat/sg0.$network:
 	dat/widths.$network uni/out.$network dat/info.$network 
 	$[command = dat/dep.c.sgraph0_create.$network] [dat/dep.c.sgraph0_create.$network]
 {
-	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR-/tmp}"/c."$USER".sgraph0_create."$network"
+	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR-/tmp}"/c.sgraph0_create."$network"
 }
 
 #
@@ -478,7 +478,7 @@ dat/sg1.$network:
 	dat/sg0.$network
 {
 ##	echo $command dat/sg0.$network dat/sg1.$network ## rm 
-	$command dat/sg0.$network dat/sg1.$network "${TMPDIR-/tmp}"/c."$USER".sgraph1_create."$network"
+	$command dat/sg0.$network dat/sg1.$network "${TMPDIR-/tmp}"/c.sgraph1_create."$network"
 }
 
 # 
@@ -490,14 +490,14 @@ dat/sg1.simple~$network:
 	[dat/dep.cx.sgraph1_create_simple.$network.simple]
 	dat/sg0.$network	
 {
-	$command dat/sg0.$network dat/sg1.simple~$network "${TMPDIR-/tmp}"/c."$USER".sgraph1_create_simple."$network"
+	$command dat/sg0.$network dat/sg1.simple~$network "${TMPDIR-/tmp}"/c.sgraph1_create_simple."$network"
 }
 
 dat/sg1.lcc~$network:
 	$[command = dat/dep.c.sgraph1_create_lcc.$network] [dat/dep.c.sgraph1_create_lcc.$network]
 	dat/sg1.$network
 {
-	$command dat/sg1.$network dat/sg1.lcc~$network "${TMPDIR-/tmp}"/c."$USER".sgraph1_create_lcc."$network"
+	$command dat/sg1.$network dat/sg1.lcc~$network "${TMPDIR-/tmp}"/c.sgraph1_create_lcc."$network"
 }
 
 >dat/widths.simple~$network:
@@ -688,7 +688,7 @@ dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c."$USER".size."$network"
+	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c.size."$network"
 }
 
 dat/statistic.lines.$network:  
@@ -702,7 +702,7 @@ dat/statistic.lines.$network:
 	$[command = dat/dep.c.lines.$transform~$network] [dat/dep.c.lines.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c."$USER".lines."$network"
+	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c.lines."$network"
 }
 
 dat/statistic.volume.$network:  
@@ -717,7 +717,7 @@ dat/statistic.volume.$network:
 	$[command = dat/dep.c.volume.$transform~$network] [dat/dep.c.volume.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c."$USER".volume."$network"
+	$command dat/sg1.$transform~$network "${TMPDIR-/tmp}"/c.volume."$network"
 }
 
 dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
@@ -730,7 +730,7 @@ dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 	dat/sg1.$network
 	$[command = dat/dep.c.maxdegree.$network] [dat/dep.c.maxdegree.$network]
 {
-	$command dat/sg1.$network "${TMPDIR-/tmp}"/c."$USER".maxdegree."$network"
+	$command dat/sg1.$network "${TMPDIR-/tmp}"/c.maxdegree."$network"
 }
 
 dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
@@ -739,7 +739,7 @@ dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 	dat/sg1.simple~$network
 	$[command = dat/dep.c.triangles.simple~$network] [dat/dep.c.triangles.simple~$network]
 {
-	$command dat/sg1.simple~$network "${TMPDIR-/tmp}"/c."$USER".triangles."$network" 
+	$command dat/sg1.simple~$network "${TMPDIR-/tmp}"/c.triangles."$network" 
 }
 
 >dat/statistic.twostars.simple~$network:
@@ -747,7 +747,7 @@ dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 	[dat/dep.c2.statistic_twostars.simple~$network]
 	dat/ft.degree.simple~$network
 {
-	$command dat/ft.degree.simple~$network "${TMPDIR-/tmp}"/c."$USER".statistic_twostars."$network"
+	$command dat/ft.degree.simple~$network "${TMPDIR-/tmp}"/c.statistic_twostars."$network"
 }
 
 dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
@@ -786,7 +786,7 @@ dat/statistic.avgdegree.$network:
 	[dat/dep.c.ifub.lcc~simple~$network]
 	dat/sg1.lcc~simple~$network
 {
-	"$command" dat/sg1.lcc~simple~$network $K ${TMPDIR:-/tmp}/ifub.$network 
+	"$command" dat/sg1.lcc~simple~$network $K ${TMPDIR:-/tmp}/c.ifub.$network.log
 }
 
 dat/statistic.ifub$K.simple~$network = dat/statistic.ifub$K.lcc~simple~$network;
@@ -1302,7 +1302,7 @@ dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 	$[command = dat/dep.c.hyperanf.lcc~simple~$network] 
 	[dat/dep.c.hyperanf.lcc~simple~$network]
 {
-	"$command" dat/sg1.lcc~simple~$network "${TMPDIR-/tmp}"/c."$USER".hyperanf."$network"
+	"$command" dat/sg1.lcc~simple~$network "${TMPDIR-/tmp}"/c.hyperanf."$network"
 }
 
 @hopdistr.$network

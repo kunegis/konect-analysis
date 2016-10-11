@@ -25,6 +25,10 @@
 # Matlab scripts run using this method usually don't use command line
 # arguments.  Instead, environment variables are passed.  
 #
+# If multiple runs are done in parallel with the same network/type
+# arguments, their logfiles may overwrite each other.  In that case,
+# users must set a different $TMPDIR. 
+#
 
 #
 # Setup files 
@@ -72,32 +76,32 @@ fi
 # Logging
 #
 
-LOGNAME=$USER.$MATLAB_NAME
+LOGNAME="$MATLAB_NAME"
 # This is a list of variable we want to be used in the log filename to
 # make it unique.
-[ "$type"    ]     	&& LOGNAME=$LOGNAME.$type
-[ "$name"   ]      	&& LOGNAME=$LOGNAME.$name
-[ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
-[ "$statistic" ]	&& LOGNAME=$LOGNAME.$statistic
-[ "$method" ]		&& LOGNAME=$LOGNAME.$method 
-[ "$kind"   ]      	&& LOGNAME=$LOGNAME.$kind
-[ "$class"   ]      	&& LOGNAME=$LOGNAME.$class
-[ "$group"   ]      	&& LOGNAME=$LOGNAME.$group
-[ "$year"   ]      	&& LOGNAME=$LOGNAME.$year
-[ "$network" ]		&& LOGNAME=$LOGNAME."`basename "$network"`"
+[ "$type"    ]     	&& LOGNAME="$LOGNAME"."$type"
+[ "$name"   ]      	&& LOGNAME="$LOGNAME"."$name"
+[ "$decomposition" ]	&& LOGNAME="$LOGNAME"."$decomposition"
+[ "$statistic" ]	&& LOGNAME="$LOGNAME"."$statistic"
+[ "$method" ]		&& LOGNAME="$LOGNAME"."$method"
+[ "$kind"   ]      	&& LOGNAME="$LOGNAME"."$kind"
+[ "$class"   ]      	&& LOGNAME="$LOGNAME"."$class"
+[ "$group"   ]      	&& LOGNAME="$LOGNAME"."$group"
+[ "$year"   ]      	&& LOGNAME="$LOGNAME"."$year"
+[ "$network" ]		&& LOGNAME="$LOGNAME"."`basename "$network"`"
 
 for PARAM in $MATLAB_PARAMS
 do
 	eval [ "\$$PARAM"   ]   	&& eval LOGNAME=\$LOGNAME.\$$PARAM
 done
 
-echo >&4 "LOGNAME=«$LOGNAME»"
+echo >&4 "LOGNAME='$LOGNAME'"
 
 export LOGNAME
 
-export TMP_BASE=${TMPDIR-/tmp}/m.$LOGNAME$PREFIX
+export TMP_BASE="${TMPDIR-/tmp}"/m."$LOGNAME$PREFIX"
 echo >&2 "   $TMP_BASE"
-echo >&4 "TMP_BASE=«$TMP_BASE»"
+echo >&4 "TMP_BASE='$TMP_BASE'"
 
 export LOGFILE=$TMP_BASE.log
 
@@ -111,7 +115,7 @@ DISPLAY=
 # will send them to stderr.  (Matlab has been known to trigger such errors.)  
 export LIBC_FATAL_STDERR_=1
 
-DIR_SCRIPT="$(dirname $SCRIPT)"
+DIR_SCRIPT="$(dirname "$SCRIPT")"
 if echo "$DIR_SCRIPT" | grep -vq '^/' ; then
 	DIR_SCRIPT="$PWD/$DIR_SCRIPT"
 fi
@@ -119,8 +123,8 @@ export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
 
 # We have to use <<EOF or else Matlab will read its standard input and hang.
-$MATLAB -logfile $LOGFILE -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
-	>$TMP_BASE.out 2>&1 <<EOF  ||
+"$MATLAB" -logfile "$LOGFILE" -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
+	>"$TMP_BASE".out 2>&1 <<EOF  ||
 EOF
 { 
 	# Note: Matlab normally always exists with exit code 0, so if we
@@ -148,6 +152,6 @@ grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log &&
 	exit 1
 }
 
-echo >>$TMP_BASE.log '=== FINISHED ==='
+echo >>"$TMP_BASE".log '=== FINISHED ==='
 
 exit 0
