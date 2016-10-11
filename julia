@@ -5,7 +5,7 @@
 
 TMPDIR="${TMPDIR-/tmp}"
 
-log="$TMPDIR/julia"
+log="$TMPDIR/jl"
 
 name="$(basename "$1" | sed -E -e 's,\.jl$,,')"
 

@@ -50,6 +50,8 @@ do
 	else
 		left=
 	fi
+
+	logfile_color="$(echo "$logfile" | sed -E -e 's,^(.*)\.([^.]+)\.([^.]+)\.log$,\1.[1m\2.\3[m.log,')"
 	
-	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile"
+	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile_color"
 done				

@@ -1,33 +1,33 @@
 #! /bin/sh
 #
-# Execute an Octave script.  This is a thin wrapper arounf Octave that
+# Execute an Octave script.  This is a thin wrapper around Octave that
 # is used in KONECT Analysis, but is not necessarily specific to it. 
 #
 # 	$1	FILENAME
 #
-# The give file is usually a *.m script. 
+# The given file is usually a *.m script. 
 #
 # OUTPUT FILES 
-#	error.log	Errors from all runs of this script are logged
-#			in this file  
+#	error.log	Errors from all runs of this script are appended
+#	                to this file  
 #
 
 SCRIPT="$1"
 
 [ "$PREFIX" ] && PREFIX=."$PREFIX"
-LOGNAME="$USER"."$(basename $SCRIPT .m)"
+LOGNAME="$(basename "$SCRIPT" .m)"
 
 # Error log
 exec 6>>error.log
 
-# This is a list of variable we want to be used in the log filename to
+# This is a list of variables we want to be used in the log filename to
 # make it unique.
-[ "$type"    ]     	&& LOGNAME=$LOGNAME.$type
-[ "$name"   ]      	&& LOGNAME=$LOGNAME.$name
-[ "$network" ]		&& LOGNAME=$LOGNAME.$network
-[ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
+[ "$type"    ]     	&& LOGNAME="$LOGNAME"."$type"
+[ "$name"   ]      	&& LOGNAME="$LOGNAME"."$name"
+[ "$network" ]		&& LOGNAME="$LOGNAME"."$network"
+[ "$decomposition" ]	&& LOGNAME="$LOGNAME"."$decomposition"
 
-export LOG="${TMPDIR-/tmp}/$(basename $0).$LOGNAME$PREFIX.log"
+export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
 echo >&2 "   $LOG"
 
 #
@@ -37,7 +37,7 @@ echo >&2 "   $LOG"
 # We'd like to usee --no-window-system but it isn't supported by Octave 3.0 
 #
 
-DIR_SCRIPT="$(dirname $SCRIPT)"
+DIR_SCRIPT="$(dirname "$SCRIPT")"
 if echo "$DIR_SCRIPT" | grep -vq '^/' ; then
 	DIR_SCRIPT="$PWD/$DIR_SCRIPT"
 fi
