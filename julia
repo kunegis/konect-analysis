@@ -11,8 +11,8 @@ name="$(basename "$1" | sed -E -e 's,\.jl$,,')"
 
 log="$log.$name"
 
-[ "$network" ] && log="$log"."$network"
+[ "$network" ] && log="$log.$network"
 
 log="$log.log"
 
-julia "$1" "$log" >"$log" 2>&1 
+exec julia "$1" "$log" >"$log" 2>&1 
