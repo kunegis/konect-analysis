@@ -16,3 +16,5 @@ log="$log.$name"
 log="$log.log"
 
 exec julia "$1" "$log" >"$log" 2>&1 
+
+

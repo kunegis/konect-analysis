@@ -1,5 +1,8 @@
 #! /usr/bin/perl
 #
+# DEPRECATED -- this is deprecated because we now use Stu, which can do
+# this on its own. 
+# 
 # This script determines which files for a Makefile target are missing
 # and invokes make on each one of them.
 #

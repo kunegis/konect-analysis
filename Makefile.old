@@ -1,4 +1,7 @@
-# Old bits of the Makefile; to be converted to Stu code.
+#
+# Old bits of the Makefile that are not used at the moment; to be
+# converted to Stu code if needed. 
+#
 
 #
 # Steps 

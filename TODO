@@ -1,8 +1,11 @@
 == Bugfixes ==
 
-<none>
+* dat/dep.statistic-attribute.diameff90:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff90.m, needed by [dat/dep.statistic-attribute.diameff90]
+* dat/dep.statistic-attribute.diameff50:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff50.m, needed by [dat/dep.statistic-attribute.diameff50]
 
 == Research ideas == 
+* restore the link prediction stuff from Makefile.old
+
 * @inter, @inter2
 ** find a model for the power-law behaviour (should be
    exponential as per Poisson process) 
@@ -33,6 +36,8 @@
 * LYBL
 
 * compute the Voronoi issue over a 5-cycle graph (as an example)
+
+* Move the stuff from projects/network-category into this directory 
 
 == Easy  ==
 * pearson correlation between outdegree and indegree (logarithmic?) 

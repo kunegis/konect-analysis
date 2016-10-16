@@ -126,11 +126,18 @@ echo >&4 MATLABPATH=«$MATLABPATH»
 	>"$TMP_BASE".out 2>&1 <<EOF  ||
 EOF
 { 
-	# Note: Matlab normally always exists with exit code 0, so if we
-	# are here Matlab probably crashed. 
+	# Note: Matlab normally always exists with exit code 0 on a
+	# syntax or other "normal" error, so if we are here Matlab
+	# probably crashed or was killed by a signal. 
+
+	exitstatus="$?"
 	echo >&2 "*** error in $TMP_BASE.log"
 	echo >&6 "*** error in $TMP_BASE.log"
-	exit 1
+	if [ "$exitstatus" = 0 ] ; then
+		echo >&2 "*** error:  exit status of Matlab was 0"
+		exit 1
+	fi
+	exit "$exitstatus"
 }
 
 

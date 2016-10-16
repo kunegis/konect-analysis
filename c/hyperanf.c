@@ -4,6 +4,7 @@
  *
  * INVOCATION
  * 	$1	SG1 input file; must be simple and connected
+ *	$2	Logfile name (nothing is logged at the moment)
  *
  * STDOUT
  *	The cumulated distance distribution as one
@@ -42,7 +43,8 @@
 #   error "This implementation works only with unweighted undirected graphs"
 #endif
 
-/* The HyperANF algorithm.  Use the graph from R, and output the
+/* 
+ * The HyperANF algorithm.  Use the graph from R, and output the
  * cumulated distance distribution on stdout. 
  */
 void hyperanf(struct sgraph1_reader_a *r);
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
 		exit(1); 
 	}
 	const char *const filename_sg1= argv[1]; 
+	/* The logfile is not used in the current version */ 
 
 	struct sgraph1_reader_a r;
 	if (0 > sgraph1_open_read_a(filename_sg1, &r, 2)) {
@@ -91,8 +94,8 @@ void hyperanf(struct sgraph1_reader_a *r)
 	ua_2t last= n;  
 #endif
 
-
-	/*  Loop invariant:  M and C are identical. 
+	/*  
+	 * Loop invariant:  M and C are identical. 
 	 */
 	for (;;) {
 
@@ -149,4 +152,3 @@ void hyperanf(struct sgraph1_reader_a *r)
 	free(c);
 	free(m);
 }
-

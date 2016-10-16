@@ -3,7 +3,44 @@ KONECT project:
 
 http://konect.uni-koblenz.de/
 
-It allows to run analyses of KONECT networks in parallel. 
+This package allows to run analyses of KONECT networks in parallel,
+based on using the Stu tool (see 'INSTALL' for installation
+instructions).  The code here is executed at the University of
+Koblenz-Landau for the KONECT project, and will very probably not work
+out of the box.  If you want to run it, see the file 'INSTALL'.  The
+analysis code uses a mix of Matlab, Octave, Julia, C99, Perl 5, and the
+shell.  We use this also as a testing ground for using new programming
+languages, so consolidating everything on a single language is not the
+goal.
+
+* Matlab (*.m):  Most code is written in Matlan.  Matlab has excellent
+  plotting functionality.  The drawback is that it's proprietary
+  software, and as a result it is very unportable and unpredictable.
+  Some parts of Matlab just show its age, like the '...' line
+  continuations.  Matlab has a huge corpus of third party libraries.
+  The builtin functions such as matrix decompositions are also very
+  heavily optimized.  It's slow when code does not make use of
+  vectorization. 
+* GNU Octave (*.m):  A clone of Matlab.  It's source code compatible to
+  Matlab in theory, but in practice it has many problems:  It is slower,
+  it does not support very large matrices (only 32 bit indexes), and
+  plotting loses.  We use it in a few places, but don't write much new
+  code in it.
+* Julia (*.jl):  This is the new and shiny new programming language that
+  could in theory replace Matlab and Octave.  We have only used it for a
+  few analyses.  The main drawbacks that we stumbled upon are:  (1)
+  Plotting is based on Python, so slow and only documented for Python.
+  (2) Some functions are weird, like max()/maximum().  Otherwise it has
+  many improvements, in particular when compared to all the weird quirks
+  of Matlab. 
+* Perl 5 (executed directly):  This is the perfect language when
+  processing text.  No questions asked.  
+* C99 (*.c):  The most memory efficient of all.  It is also the fastest
+  when implementing simple algorithms.  The compilation process is
+  complex and code tends to be very long, so we only use it for a few
+  high-importance but algorithmically simple analyses:  triangle count,
+  diameter, etc.  We have a complex system of compile-time type
+  choosing, which would probably be much easier to realize in C++. 
 
 See the file INSTALL for installation and usage instructions. 
 
@@ -13,25 +50,28 @@ See the file INSTALL for installation and usage instructions.
 * A C99 compiler (only for triangle count and diameter) 
 * sed -E (this is not (yet) POSIX, but GNU Sed and BSD Sed have it)
 * python-rdflib (for RDF generation only)
+* Matlab:  This is proprietary, so may be hard to get
+* GNU Octave
+* Perl 5
 * Julia (experimental, see lib/JULIA)
 
 == License ==
 
 Written by Jérôme Kunegis, Daniel Dünker and Jesús Cabello González. 
 
-The KONECT Toolbox is free software: you can redistribute it and/or modify it under the
-terms of the GNU General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your
-option) any later version. 
+KONECT Analysis is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
 
-The KONECT Toolbox is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-for more details. 
+KONECT Analysis is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
 The full text of the GPLv3 is found in the file COPYING.
 
 == Third-party software ==
 
 This software contains third-party software included in the directory
-lib/.  See there for the respective licenses and copyright information. 
+lib/.  See there for the respective licenses and copyright information.

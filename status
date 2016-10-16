@@ -30,8 +30,8 @@ sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
 while IFS= read -r line
 do
 	cpu="$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')" 
-	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')"
 	vsize="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')"
+	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')"
 	logfile="$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')"
 
 	command="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s.*$,\1,')"
@@ -43,13 +43,18 @@ do
 		continue
 	fi
 
-	if expr "$logfile" : '.*\.log' >/dev/null ; then
+##	if expr "$logfile" : '.*\.log' >/dev/null ; then
 		# 'tac' may report an error if the logfile was not (yet)
 		# created.  Ignore this error.  
 		left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
-	else
-		left=
-	fi
+		if [ -z "$left" ] ; then
+			# If there is a time left informatioln available
+			# for a sub-task, show that prefixed with '+'. 
+			left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left}/!d;s,^.*\{(.*) left\}.*$,+\1,;q')"
+		fi
+##	else
+##		left='??'
+##	fi
 
 	logfile_color="$(echo "$logfile" | sed -E -e 's,^(.*)/([^.]+)\.(.+).log$,\1/\2.[1m\3[m.log,')"
 	

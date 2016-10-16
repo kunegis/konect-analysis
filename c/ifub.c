@@ -55,15 +55,18 @@
  */
 ua_ft ifub(struct sgraph1_reader_a *r, ua_ft u, ua_ft l, unsigned k);
 
-/* Compute the maximum eccentricity of the nodes given. 
+/* 
+ * Compute the maximum eccentricity of the nodes given. 
  */
 ua_ft max_ecc(struct sgraph1_reader_a *r, ua_ft *b, ua_ft b_size);
 
-/* Find a node "in the middle" between the nodes nodeID and fin. 
+/* 
+ * Find a node "in the middle" between the nodes nodeID and fin. 
  */
 ua_ft middle_node(struct sgraph1_reader_a *r, ua_ft nodeId, ua_ft fin, ua_ft *d);
 
-/* The "four-sweep" algorithm as described in the paper. 
+/* 
+ * The "four-sweep" algorithm as described in the paper. 
  * L is a lower bound for the diameter; U is a node with low
  * eccentricity.  (Note:  U is *not* an upper bound; it is a node ID.) 
  */
@@ -76,23 +79,25 @@ FILE *log_;
  * 
  * INVOCATION
  * 	$1	Input filename in SG1 format; network must be connected
- *      $2      (unsigned integer) k, parameter of the iFub algorithm;
+ *	$2	Output filename
+ *      $3      (unsigned integer) k, parameter of the iFub algorithm;
  * 		precision; zero means compute the exact diameter, larger
  * 		values means approximate the diameter with at most that
  * 		error. 
- * 	$3 	Log filename
+ * 	$4 	Log filename
  */
 int main(int argc, char **argv)
 {
-	if (argc != 4) {
+	if (argc != 5) {
 		fprintf(stderr, "*** Invalid number of arguments\n"); 
 		exit(1); 
 	}
 	
 	const char *const filename_sg1= argv[1];
-	const char *const filename_log= argv[3]; 
+	const char *const filename_output= argv[2]; 
+	const char *const filename_log= argv[4]; 
 
-	const char *text_k= argv[2]; 
+	const char *text_k= argv[3]; 
 	unsigned k= 0;
 	while (*text_k && isspace(*text_k)) 
 		++text_k;
@@ -103,7 +108,7 @@ int main(int argc, char **argv)
 	while (*text_k && isspace(*text_k)) 
 		++text_k;
 	if (*text_k) {
-		fprintf(stderr, "*** %s:  Invalid parameter K:  %s\n", argv[0], argv[2]);
+		fprintf(stderr, "*** %s:  Invalid parameter K:  %s\n", argv[0], argv[3]);
 		exit(1); 
 	}
 
@@ -128,7 +133,19 @@ int main(int argc, char **argv)
 	four_sweep(&r, &l, &u);
 	ua_ft delta= ifub(&r, u, l, k);
 
-	printf("%" PR_fua "\n", delta);
+	FILE *out= fopen(filename_output, "w");
+	if (out == NULL) {
+		perror(filename_output);
+		exit(1); 
+	}
+	fprintf(out, "%" PR_fua "\n", delta);
+	if (0 != fclose(out)) {
+		perror(filename_output); 
+		exit(1);
+	}
+
+	fclose(log_);
+	/* Don't fail when the log file cannot be closed */ 
     
 	exit(0);
 }
