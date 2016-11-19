@@ -1,5 +1,18 @@
 == Bugfixes ==
 
+* The number of nodes in the Konect website is displayed
+incorrectly if the networks are bipartite. For example, in
+
+    http://konect.uni-koblenz.de/networks/jester2
+
+it says
+
+    101,524 = 50,832 + 50,692 vertices (users + jokes)
+
+But the number of jokes is 150 and the correct total number of vertices is
+50,832. It seems that the total number is being used for the first
+partition. This error is present in many bipartite networks. 
+
 * dat/dep.statistic-attribute.diameff90:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff90.m, needed by [dat/dep.statistic-attribute.diameff90]
 * dat/dep.statistic-attribute.diameff50:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff50.m, needed by [dat/dep.statistic-attribute.diameff50]
 
