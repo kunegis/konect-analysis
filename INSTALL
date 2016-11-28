@@ -43,7 +43,7 @@ For each network dataset, there must be two files in the uni/ directory:
 where $network is the name of the network.  For instance, if your
 network is named 'enron', you need the files 'out.enron' and
 'meta.enron'.  The out.* file contains the network itself (it's a big
-file), and the meta.* contains metadata (it's a small file).
+file), and the meta.* file contains metadata (it's a small file).
 
 If you analyse datasets from KONECT, you can get the files on the KONECT
 website by following the "TSV" download link.  For instance, you can get
@@ -51,9 +51,9 @@ the files for the 'enron' dataset at
 
 http://konect.uni-koblenz.de/networks/enron
 
-If you want to analysis your own dataset, you must create these two
-files for each of your dataset.  These exact format of these two files
-is described in the KONECT Handbook, in Section 9 (File Formats).  The
+If you want to analyse your own dataset, you must create these two files
+for each of your dataset.  The exact format of these two files is
+described in the KONECT Handbook, in Section 9 (File Formats).  The
 KONECT Handbook is available here:
 
 http://konect.uni-koblenz.de/downloads/konect-handbook.pdf
@@ -75,8 +75,7 @@ $ mkdir ~/data/dat
 
 (4) Connect directories to KONECT Analysis
 
-Use 'ln -s' to link the certain directories to konect-analysis/.  While in
-the directory konect-analysis/, do
+Use 'ln -s' to link the certain directories to konect-analysis/:
 
 $ cd ~/work/konect-analysis/
 $ ln -s ~/work/konect-toolbox ./
