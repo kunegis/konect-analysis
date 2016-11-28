@@ -5,15 +5,14 @@ http://konect.uni-koblenz.de/
 
 This package allows to run analyses of KONECT networks in parallel,
 based on using the Stu tool (see 'INSTALL' for installation
-instructions).  The code here is executed at the University of
-Koblenz-Landau for the KONECT project, and will very probably not work
-out of the box.  If you want to run it, see the file 'INSTALL'.  The
-analysis code uses a mix of Matlab, Octave, Julia, C99, Perl 5, and the
-shell.  We use this also as a testing ground for using new programming
-languages, so consolidating everything on a single language is not the
-goal.
+instructions).  The code here is executed by the KONECT project, and
+will very probably not work out of the box.  If you want to run it, see
+the file 'INSTALL'.  The analysis code uses a mix of Matlab, Octave,
+Julia, C99, Perl 5, and the shell.  We use this also as a testing ground
+for using new programming languages, so consolidating everything on a
+single language is not the goal.
 
-* Matlab (*.m):  Most code is written in Matlan.  Matlab has excellent
+* Matlab (*.m):  Most code is written in Matlab.  Matlab has excellent
   plotting functionality.  The drawback is that it's proprietary
   software, and as a result it is very unportable and unpredictable.
   Some parts of Matlab just show its age, like the '...' line
