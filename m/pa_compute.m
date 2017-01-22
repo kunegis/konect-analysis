@@ -13,7 +13,7 @@
 %		Parameters of the fits
 %		.pa
 %			.a, .u, .v (existence depending on the format)
-%			.$method (see konect_pa_full.m in KONECT-Toolbox)
+%			.$method (see konect_pa_full_full.m in KONECT-Toolbox)
 %	dat/pa_data.$network.mat
 %		Additional data used to plot the fits 
 %
@@ -60,32 +60,32 @@ pa = struct();
 if info.format == consts.ASYM 
 
     letter = 'u'
-    [ pa.u pa_data.u ] = konect_pa_full(T_1(:,1), w_1, T_2(:,1), w_2); 
+    [ pa.u pa_data.u ] = konect_pa_full_full(T_1(:,1), w_1, T_2(:,1), w_2); 
     letter = 'v'
-    [ pa.v pa_data.v ] = konect_pa_full(T_1(:,2), w_1, T_2(:,2), w_2); 
+    [ pa.v pa_data.v ] = konect_pa_full_full(T_1(:,2), w_1, T_2(:,2), w_2); 
 
     i_1 = [ T_1(:,1) ; T_1(:,2) ]; 
     i_2 = [ T_2(:,1) ; T_2(:,2) ]; 
     
     letter = 'a'
-    [ pa.a pa_data.a ] = konect_pa_full(i_1, ww_1, i_2, ww_2);
+    [ pa.a pa_data.a ] = konect_pa_full_full(i_1, ww_1, i_2, ww_2);
 
 elseif info.format == consts.SYM 
 
     i_1 = [ T_1(:,1) ; T_1(:,2) ]; 
     i_2 = [ T_2(:,1) ; T_2(:,2) ]; 
 
-    [ pa.a pa_data.a ] = konect_pa_full(i_1, ww_1, i_2, ww_2);
+    [ pa.a pa_data.a ] = konect_pa_full_full(i_1, ww_1, i_2, ww_2);
 
 elseif info.format == consts.BIP
 
-    [ pa.u pa_data.u ] = konect_pa_full(T_1(:,1), w_1, T_2(:,1), w_2); 
-    [ pa.v pa_data.v ] = konect_pa_full(T_1(:,2), w_1, T_2(:,2), w_2); 
+    [ pa.u pa_data.u ] = konect_pa_full_full(T_1(:,1), w_1, T_2(:,1), w_2); 
+    [ pa.v pa_data.v ] = konect_pa_full_full(T_1(:,2), w_1, T_2(:,2), w_2); 
 
     i_1 = [ T_1(:,1) ; (T_1(:,2) + info.n1) ]; 
     i_2 = [ T_2(:,1) ; (T_2(:,2) + info.n1) ]; 
 
-    [ pa.a pa_data.a ] = konect_pa_full(i_1, ww_1, i_2, ww_2);
+    [ pa.a pa_data.a ] = konect_pa_full_full(i_1, ww_1, i_2, ww_2);
 
 else
     error('*** Invalid format'); 
