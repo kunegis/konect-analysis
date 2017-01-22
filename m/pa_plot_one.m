@@ -4,8 +4,8 @@
 % PARAMETERS 
 %	network
 %	letter		For output filename
-%	pa_x		Curve fitting values (see pa_compute_one)
-%	pa_data_x	Plotting data (see pa_compute_one) 
+%	pa_x		Curve fitting values (see konect_pa_full.m)
+%	pa_data_x	Plotting data (see konect_pa_full.m) 
 %
 % OUTPUT FILES 
 %	plot/pa.[a...]$letter.$network.eps	

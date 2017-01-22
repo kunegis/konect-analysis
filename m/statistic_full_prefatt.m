@@ -3,7 +3,8 @@
 % by reading the 'dat/pa.%.mat' files. 
 %
 % We only compute this for temporal networks, even though
-% non-temporal networks also have a SPLIT.  
+% non-temporal networks also have a SPLIT, but since that split is
+% random, it wouldn't be interesting. 
 %
 % PARAMETERS 
 %	$network
