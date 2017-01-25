@@ -1,3 +1,9 @@
+== Migration ==
+* Copy current version to new URL
+* Compile again 
+
+* https://share.osf.io/registration/
+
 == Bugfixes ==
 
 * The number of nodes in the Konect website is displayed
