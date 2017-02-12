@@ -18,9 +18,9 @@ font_size = 24;
 
 if length(q) == 0, q = 1; end
 degrees = full(sparse(p, 1, q, max(p), 1)); 
-degrees = degrees(find(degrees));
+degrees = degrees(find(degrees));  % Remove zero-degree nodes 
 
-konect_power_law_plot(degrees, [], enable_normalization, colors.(type)); 
+konect_plot_power_law(degrees, [], enable_normalization, colors.(type)); 
 
 if enable_normalization
     xlabel(sprintf('Relative %s (%s / D)', name, symbol), 'FontSize', font_size);

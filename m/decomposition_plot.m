@@ -1,14 +1,14 @@
 %
-% Plot spectrum.  
+% Plot the spectrum.
 % 
 % PARAMETERS 
 %	$network
 %	$decomposition
 %
-% INPUT 
+% INPUT FILES 
 %	dat/decomposition.$decomposition.$network.mat
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	plot/decomposition.{...}.$decomposition.$network.eps 
 %
 
@@ -197,7 +197,7 @@ konect_print(sprintf('plot/decomposition.log.%s.%s.eps', decomposition, network)
 % Used to inspect eigenvalue power-law exponents visually. 
 %
 
-konect_power_law_plot(abs(spectrum_sorted), [], 0, color_neutral, 1); 
+konect_plot_power_law(abs(spectrum_sorted), [], 0, color_neutral, 1); 
 
 matrix = data_decomposition.matrix 
 

@@ -1,13 +1,13 @@
 %
-% Plot the edge weight and multiplicity distributions.  
+% Plot the edge weight and multiplicity distributions of a network.   
 %
 % PARAMETERS 
 %	$network	Network name, must not have format UNWEIGHTED
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	plot/weights.{a}.$network.eps 
 %
 
@@ -104,7 +104,7 @@ if info.weights == consts.POSITIVE | info.weights == consts.MULTIWEIGHTED
     degree_print(ws, NaN, NaN, NaN, 'Edge multiplicity (w)', 'weight');
     konect_print(sprintf('plot/weights.c.%s.eps', network)); 
 
-    konect_power_law_plot(ws, [], 0, colors.weight);
+    konect_plot_power_law(ws, [], 0, colors.weight);
 
     xlabel('Edge multiplicity (w)', 'FontSize', font_size);
     ylabel('P(x \geq w)', 'FontSize', font_size); 
@@ -118,4 +118,3 @@ end
 
 plot(0);
 konect_print(sprintf('plot/weights.a.%s.eps', network)); 
-
