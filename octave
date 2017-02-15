@@ -46,7 +46,7 @@ OCTAVE_PATH="$OCTAVE_PATH:$MATLABPATH"
 OCTAVE_PATH="$DIR_SCRIPT:$OCTAVE_PATH"
 export OCTAVE_PATH
 exec 3>$LOG 
-ISPLAY= GNUTERM=dumb octave -qf "$SCRIPT" "$LOG" >&3 2>&1  ||
+ISPLAY= GNUTERM=dumb DISPLAY= octave -q -f -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
 	echo >&2 "*** error in $LOG"
 	echo >&6 "*** error in $LOG"
