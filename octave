@@ -48,14 +48,24 @@ export OCTAVE_PATH
 exec 3>$LOG 
 ISPLAY= GNUTERM=dumb DISPLAY= octave -q -f -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
-	<"$LOG" sed -n -E -e '
-		/^parse error/!d
-		s,^parse error near line ([0-9]+) of file (.+)$,\2:\1:,;p
-		:next;n;p;bnext;
+	# The error message of Octave don't conform to any standard, and
+	# usually don't even show the location first.  Therefore, we
+	# first extract all "location" lines, and then output the full
+	# log. 
+
+	<"$LOG" sed >&2 -E -e '
+		s|^error:\s*(.*) at line ([0-9]+), column ([0-9]+)\s*$|\1:\2:\3|;t
+		s,^parse error near line ([0-9]+) of file (.+)$,\2:\1:,;t
+		d
+	'
+
+ 	<"$LOG" sed >&2 -n -E -e '
+		/^(error:|parse error)/,$p
 	'
 
 	echo >&2 "*** error in $LOG"
 	echo >&6 "*** error in $LOG"
+
 	exit 1
 }
 
