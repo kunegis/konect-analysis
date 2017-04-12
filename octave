@@ -26,7 +26,6 @@ for NAME in $(set | sed -e 's,=.*$,,;/^[a-z][a-z_-]*$/!d') ; do
 	eval VALUE=\"\$"$NAME"\"
 	LOGNAME="$LOGNAME"."$VALUE"
 done
-echo >&2 LOGNAME="$LOGNAME"
 
 export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
 echo >&2 "   $LOG"
