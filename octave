@@ -48,6 +48,12 @@ export OCTAVE_PATH
 exec 3>$LOG 
 ISPLAY= GNUTERM=dumb DISPLAY= octave -q -f -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
+	<"$LOG" sed -n -E -e '
+		/^parse error/!d
+		s,^parse error near line ([0-9]+) of file (.+)$,\2:\1:,;p
+		:next;n;p;bnext;
+	'
+
 	echo >&2 "*** error in $LOG"
 	echo >&6 "*** error in $LOG"
 	exit 1
