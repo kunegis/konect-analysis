@@ -54,7 +54,7 @@ ISPLAY= GNUTERM=dumb DISPLAY= octave -q -f -W --no-gui --no-window-system "$SCRI
 	# log. 
 
 	<"$LOG" sed >&2 -E -e '
-		s|^error:\s*(.*) at line ([0-9]+), column ([0-9]+)\s*$|\1:\2:\3|;t
+		s|^error:\s*(.*) at line ([0-9]+), column ([0-9]+)\s*$|\1:\2:\3:|;t
 		s,^parse error near line ([0-9]+) of file (.+)$,\2:\1:,;t
 		d
 	'
