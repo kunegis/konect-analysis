@@ -20,12 +20,13 @@ LOGNAME="$(basename "$SCRIPT" .m)"
 # Error log
 exec 6>>error.log
 
-# This is a list of variables we want to be used in the log filename to
-# make it unique.
-[ "$type"    ]     	&& LOGNAME="$LOGNAME"."$type"
-[ "$name"   ]      	&& LOGNAME="$LOGNAME"."$name"
-[ "$network" ]		&& LOGNAME="$LOGNAME"."$network"
-[ "$decomposition" ]	&& LOGNAME="$LOGNAME"."$decomposition"
+# Words to use in the logfile are the lowercase environment variables.
+# This may break in some cases. 
+for NAME in $(set | sed -e 's,=.*$,,;/^[a-z][a-z_-]*$/!d') ; do
+	eval VALUE=\"\$"$NAME"\"
+	LOGNAME="$LOGNAME"."$VALUE"
+done
+echo >&2 LOGNAME="$LOGNAME"
 
 export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
 echo >&2 "   $LOG"
