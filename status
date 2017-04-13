@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Show the currently running MATLAB processes started with ./matlab.
+# Show the currently running processes started with ./{octave,matlab,julia}.
 # This calls ps(1) and presents the results in a nice way.   
 #
 # All shown runtimes are CPU times, not wall clock times. 
@@ -39,22 +39,18 @@ do
 
 	# Don't show clearly non-computational processes.  For instance,
 	# 'less' is often used to look at logfiles. 
-	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] ; then
+	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] || [ "$command" = sed ] ; then
 		continue
 	fi
 
-##	if expr "$logfile" : '.*\.log' >/dev/null ; then
-		# 'tac' may report an error if the logfile was not (yet)
-		# created.  Ignore this error.  
-		left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
-		if [ -z "$left" ] ; then
-			# If there is a time left informatioln available
-			# for a sub-task, show that prefixed with '+'. 
-			left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left}/!d;s,^.*\{(.*) left\}.*$,+\1,;q')"
-		fi
-##	else
-##		left='??'
-##	fi
+	# 'tac' may report an error if the logfile was not (yet)
+	# created.  Ignore this error.  
+	left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
+	if [ -z "$left" ] ; then
+		# If there is a time left informatioln available
+		# for a sub-task, show that prefixed with '+'. 
+		left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left}/!d;s,^.*\{(.*) left\}.*$,+\1,;q')"
+	fi
 
 	logfile_color="$(echo "$logfile" | sed -E -e 's,^(.*)/([^.]+)\.(.+).log$,\1/\2.[1m\3[m.log,')"
 	
