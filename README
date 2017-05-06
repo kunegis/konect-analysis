@@ -1,7 +1,7 @@
-This is the KONECT analysis component (KONECT-Analysis), part of the
-KONECT project (Koblenz Network Collection) by Jérôme Kunegis at the
-University of Namur, Belgium, with hosting provided by the Institute for
-Web Science and Technologies, University of Koblenz-Landau, Germany. 
+This is the network analysis component of the KONECT project (Koblenz
+Network Collection) by Jérôme Kunegis at the University of Namur,
+Belgium, with web hosting provided by the Institute for Web Science and
+Technologies, University of Koblenz-Landau, Germany.
 
 http://konect.uni-koblenz.de/
 
@@ -45,8 +45,8 @@ single language is not the goal.
 
 See the file INSTALL for installation and usage instructions. 
 
-For questions bug reports and other comments, please write to Jérôme
-Kunegis <jerome.kunegis@unamur.be>.
+For questions bug reports and other comments, write to Jérôme Kunegis
+<jerome.kunegis@unamur.be>.
 
 == Requirements ==
 
