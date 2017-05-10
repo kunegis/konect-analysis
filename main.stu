@@ -1827,7 +1827,7 @@ plot/zipf.a.$network.eps:
 
 @inter:  [dat/dep.inter];
 
->dat/dep.inter:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter.,' }
+>dat/dep.inter:  <dat/NETWORKS_TIME  { sed -E -e 's,^,@inter.,' ; }
 
 @inter.$network
 plot/inter.a.$network.png:  dat/out2.$network jl/inter.jl
@@ -1841,7 +1841,7 @@ plot/inter.a.$network.png:  dat/out2.$network jl/inter.jl
 
 @inter2:  [dat/dep.inter2];
 
->dat/dep.inter2:  <dat/NETWORKS_TIME  { sed -e 's,^,@inter2.,' }
+>dat/dep.inter2:  <dat/NETWORKS_TIME  { sed -E -e 's,^,@inter2.,' ; }
 
 @inter2.$network
 plot/inter2.a.$network.png:
