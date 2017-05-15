@@ -117,6 +117,7 @@ sequential.
 * directed networks count staistics:  Number of directed triangles,
 number of cyclic triangles.
 * https://marketplace.gephi.org/plugin/openord-layout/
+* Second largest eigenvalue of N:  spectral gap, as per Martin Gueuning 
 
 == Hard == 
 * better graph visualization for the website 
