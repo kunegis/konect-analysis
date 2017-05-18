@@ -42,7 +42,10 @@ do
 	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] || [ "$command" = sed ] ; then
 		continue
 	fi
-
+	if printf "%s\n" "$command" | grep -E ^main.stu >/dev/null ; then
+		continue
+	fi
+	
 	# 'tac' may report an error if the logfile was not (yet)
 	# created.  Ignore this error.  
 	left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"

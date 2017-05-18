@@ -20,7 +20,7 @@ is_log
 offset = 0.1; 
 
 % When the axis is logarithmic, there cannot be nonpositive values 
-assert((~is_log) | sum(x <= 0) == 0); 
+%% assert((~is_log) | sum(x <= 0) == 0); 
 
 % Filter out nonpositive values when is_log
 if is_log

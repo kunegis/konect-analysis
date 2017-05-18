@@ -15,6 +15,11 @@
 # general, we are migrating everything to Julia, but the bulk is still
 # in Matlab.
 #
+# It is nearly impossible to execute everything with the current set of
+# KONECT networks.  Instead, all targets are written to depend on all
+# networks from smallest to largest, so that we can build as much as
+# possible. 
+#
 
 % version 2.4
 
