@@ -9,6 +9,9 @@
  * PARAMETERS 
  *	$network 	Name of the network
  * 
+ * ARGUMENTS
+ *      $1		Logfile (unused) 
+ *
  * INPUT
  *  	dat/info.$network
  *	uni/out.$network (only when the network is POSITIVE)

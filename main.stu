@@ -28,6 +28,7 @@
 #
 
 @all:   @all.everything;
+
 @test:   dat/check-meta @all.test;
 
 @all.$class:  [dat/dep.all.$class];
@@ -348,11 +349,14 @@ bin
 # Info files
 #
 
->dat/info.$network:  
+dat/info.$network:  
 	sh/network-info 
-	<uni/out.$network 
+	uni/out.$network 
 {
-	sh/network-info 
+	tmpfile="${TMPDIR:-/tmp}"/p.network-info."$network"
+	echo "tmpfile='$tmpfile'"
+	sh/network-info <uni/out."$network" "$tmpfile" >"$tmpfile"
+	cp "$tmpfile" dat/info."$network"
 }
 
 >dat/info.$TRANSFORM~$network:
@@ -714,7 +718,7 @@ dat/statistic.volume.$network:
 	bin/statistic_volume 
 	uni/out.$network
 {
-	 bin/statistic_volume 
+	 bin/statistic_volume "${TMPDIR:-/tmp}"/c.statistic_volume."$network".log
 }
 
 >dat/statistic.volume.$transform~$network:
@@ -1901,3 +1905,30 @@ plot/degcc.a.$network.eps:
 {
 	./matlab m/degcc.m 
 }
+
+#
+# All plots for the KONECT Handbook
+#
+
+@handbook:
+	@layout.moreno_highschool 
+	@time_histogram.elec
+	@weights.movielens-1m
+	@weights.edit-dewiki
+	@degree.elec
+	@bidd.elec
+	@lorenz.elec
+	@outin.elec
+	@assortativity.elec
+	@cluscod.facebook-wosn-links
+	@decomposition.sym.elec
+	@distr.sym-n.elec
+	@decomposition.diag.elec
+	@decomposition.diag.opsahl-ucsocial
+	@hopdistr.elec
+	@hopdistr_time.full.elec
+	@map.sym.ucidata-zachary
+	@map.sym-n.ucidata-zachary
+	@map.lap.ucidata-zachary
+	@scatter.size.avgdegree.everything
+;
