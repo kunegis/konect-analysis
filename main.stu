@@ -482,7 +482,6 @@ dat/sg1.$network:
 	$[command = dat/dep.c.sgraph1_create.$network] [dat/dep.c.sgraph1_create.$network]
 	dat/sg0.$network
 {
-##	echo $command dat/sg0.$network dat/sg1.$network ## rm 
 	$command dat/sg0.$network dat/sg1.$network "${TMPDIR:-/tmp}"/c.sgraph1_create."$network".log
 }
 
@@ -1543,7 +1542,7 @@ plot/map.a.$decomposition.$network.eps:
 {
 	sh/mkrdf "$network" 
 	head dat/download.rdf."$network".n3 -n 10000 | 
-	rdfpipe --stdin --input-format n3 --output n3 >/dev/null 
+	rdfpipe --input-format n3 --output n3 - >/dev/null 
 }
 
 @rdf: [dat/dep.rdf];
@@ -1574,7 +1573,7 @@ lib/HTML/Entities.pm: lib/HTML-Parser-3.72.tar.gz
 	cd lib
 	tar -xf HTML-Parser-3.72.tar.gz
 	mv HTML-Parser-3.72/lib/HTML ./
-	rm -rf HTML-Parser-3.72
+	rm -Rf HTML-Parser-3.72
 	touch HTML/Entities.pm
 }
 
@@ -1599,7 +1598,7 @@ lib/BibTeX/Parser.pm: lib/BibTeX-Parser-0.67.tar.gz
 	cd lib
 	tar -xf BibTeX-Parser-0.67.tar.gz
 	mv BibTeX-Parser-0.67/lib/BibTeX ./
-	rm -rf BibTeX-Parser-0.67
+	rm -Rf BibTeX-Parser-0.67
 	touch BibTeX/Parser.pm
 }
 
@@ -1608,7 +1607,7 @@ lib/LaTeX/ToUnicode.pm: lib/LaTeX-ToUnicode-0.04.tar.gz
 	cd lib
 	tar -xf LaTeX-ToUnicode-0.04.tar.gz
 	mv LaTeX-ToUnicode-0.04/lib/LaTeX ./
-	rm -rf LaTeX-ToUnicode-0.04
+	rm -Rf LaTeX-ToUnicode-0.04
 	touch LaTeX/ToUnicode.pm
 }
 
@@ -1643,7 +1642,8 @@ dat/download.tsv.$network.tar.bz2:
 	 -p dat-tmp
 {
 	DIR="dat-tmp/$network"
-
+	DATDIR="$(pwd)/dat"
+	
 	rm -Rf "$DIR"
 	mkdir "$DIR"
 
@@ -1659,8 +1659,11 @@ dat/download.tsv.$network.tar.bz2:
 	done
 
 	cd dat-tmp
-	tar -hcvj -f ../dat/download.tsv."$network".tar.bz2 "$network"
-	rm -rf "dat-tmp/$network"
+	pwd
+#	touch -- "$DATDIR"/download.tsv."$network".tar.bz2
+#	rm -- "$DATDIR"/download.tsv."$network".tar.bz2
+	tar -hcvj -f "$DATDIR"/download.tsv."$network".tar.bz2 "$network"
+	rm -Rf "dat-tmp/$network"
 }  
 
 dat-tmp;
