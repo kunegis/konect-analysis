@@ -10,6 +10,8 @@
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
 #	@network.$network	Build everything for one network
+#	@handbook		Everything used in the handbook; this is
+# 				a good test that everything works 
 #
 # Some commands use Matlab, others Octave, and yet other Julia.  In
 # general, we are migrating everything to Julia, but the bulk is still
@@ -18,7 +20,10 @@
 # It is nearly impossible to execute everything with the current set of
 # KONECT networks.  Instead, all targets are written to depend on all
 # networks from smallest to largest, so that we can build as much as
-# possible. 
+# possible.
+#
+# Note that KONECT-Analysis is the "testbed" for Stu, which means that
+# this Stufile often uses the most recent Stu features. 
 #
 
 % version 2.4
@@ -1803,7 +1808,10 @@ plot/outin.a.$network.eps:
 }
 
 #
-# Runtime 
+# Runtime -- This is ancient code meant to estimate the rank of the
+# decompositions to reasonable in function of the network size/volume.
+# The file 'runtime.source' represents the test data collected by hand
+# in the early times of KONECT, long before it even was named "KONECT". 
 #
 
 >tmp.runtime:  sh/mkstat <runtime.source

@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Show the currently running processes started with ./{octave,matlab,julia}.
+# Show the currently running KONECT-Analysis processes.
 # This calls ps(1) and presents the results in a nice way.   
 #
 # All shown runtimes are CPU times, not wall clock times. 
@@ -13,7 +13,19 @@
 #     [TIMESPEC left]
 #
 # where TIMESPEC is the time left in free form.  The string does not
-# need to be alone on a line. 
+# need to be alone on a line.
+#
+# Additionally, each program that should be inspected in this way should
+# be started with a logfile name as (any) positional argument, which
+# must start with the value of $TMPDIR.  This is done automatically by
+# the wrappers {octave,matlab,julia}, but must be implemented by hand
+# with other languages.  This is the reason why certain C or Perl
+# programs are passed a logfile name that they don't even use. 
+#
+# TODO
+#
+#   * Manage the situation when the list is too long.  Currently, we
+#     just make the window higher in that case. 
 #
 
 # Format for the printf(1) command
