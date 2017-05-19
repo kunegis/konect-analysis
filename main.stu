@@ -627,8 +627,8 @@ plot/assortativity.a.$network.eps:
 #
 
 dat/statistic.$statistic.$network:
-	m/statistic_comp.m 
-	$[ -t MATLABPATH]
+	-t matlab m/statistic_comp.m 
+	$[-t MATLABPATH]
 	dat/data.$network.mat dat/info.$network dat/meansi.$network.mat
 	konect-toolbox/m/konect_statistic_$statistic.m
 {
@@ -1762,6 +1762,17 @@ plot/syngraphy.a.$network.eps:
 		echo @syngraphy."$network"
 	done
 }
+
+# The runtime to compute the SynGraphy plots 
+>dat/statistic.syngraphyruntime.$network:
+	dat/statistic.threestars.$network
+	dat/statistic.fourstars.$network
+	dat/statistic.squares.$network
+{
+	awk 'BEGIN{ print '"$(tail -1 dat/statistic.threestars."$network")"' + '"$(tail -1 dat/statistic.fourstars."$network")"' + '"$(tail -1 dat/statistic.squares."$network")"' }'   
+}
+
+dat/statistic-attribute.syngraphyruntime = {SQUARE}
 
 #
 # Out- vs indegree plot for directed networks
