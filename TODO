@@ -1,3 +1,5 @@
+== Bugs ==
+
 * The number of nodes in the Konect website is displayed
 incorrectly if the networks are bipartite. For example, in
 
@@ -25,43 +27,6 @@ As extra info, the hop distribution in the case of Epinions that I get with the 
    1.0e+09 * [0.0009    0.0737    1.0452    3.5683    5.1949    5.6443    5.7354    5.7527    5.7564    5.7572    5.7573 5.7573    5.7573    5.7573    5.7573]
 
 * Count the runtime of triangle count computation from within the C code 
-
-== Research ideas == 
-* restore the link prediction stuff from Makefile.old
-
-* @inter, @inter2
-** find a model for the power-law behaviour (should be
-   exponential as per Poisson process) 
-
-* draw the power law exponent in function of the degree
-* apply distrtest to the degree distribution 
-* delaunay
-
-
-* signed nonnegative matrix decomposition:
-** A is the signed adjacency matrix
-** (1) A = UV - WQ 
-*** U, V, W, Q ≥ 0
-** (2) A = U (V - W)
-*** U, V, W ≥ 0
-
-* hypersphere clustering
-** L = D - A = U Lambda U'
-** v_i = U_i / ||U_i||
-** sim(i, j) = v_i ° v_j = cos(v_i, v_j)
-** d(i,j) = acos(v_i, v_j) = angle(v_i, v_j)
-** make it hierarchical based on the inverse eigenvalues 
-** each node has a single direction
-** map to plane by turning onto the center of gravity of sphere points
-
-* algebraic conflict
-
-* LYBL
-
-* compute the Voronoi issue over a 5-cycle graph (as an example)
-
-* Move the stuff from projects/network-category into this directory 
-* https://share.osf.io/registration/
 
 == Easy  ==
 * pearson correlation between outdegree and indegree (logarithmic?) 
@@ -115,6 +80,7 @@ sequential.
 number of cyclic triangles.
 * https://marketplace.gephi.org/plugin/openord-layout/
 * Second largest eigenvalue of N:  spectral gap, as per Martin Gueuning 
+* https://share.osf.io/registration/
 
 == Hard == 
 * better graph visualization for the website 
