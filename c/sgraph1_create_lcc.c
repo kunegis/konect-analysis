@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 		exit(1); 
 	}
 
-	if (0 > sgraph1_advise_a(&r, MADV_RANDOM)) {
+	if (0 > sgraph1_advise_a(&r, MADV_WILLNEED)) {
 		perror(filename_in);
 		exit(1); 
 	}

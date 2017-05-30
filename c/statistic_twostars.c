@@ -32,9 +32,14 @@ int main(int argc, char **argv)
 
 	if (0 > feature_open_read_a(filename, &f)) {
 		perror(filename);
-		exit(0);
+		exit(1);
 	}
 
+	if (0 > feature_advise_a(&f, MADV_SEQUENTIAL)) {
+		perror(filename); 
+		exit(1)
+	}
+	
 	/* 
 	 * Total
 	 */

@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 	if (0 > sgraph1_open_read_a(filename_sg1, &r, 2)) {
 		exit(1); 
 	}
-	if (0 > sgraph1_advise_a(&r, MADV_RANDOM)) {
+	if (0 > sgraph1_advise_a(&r, MADV_WILLNEED)) {
 		perror(filename_sg1);
 		exit(1); 
 	}
