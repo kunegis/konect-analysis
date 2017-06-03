@@ -81,6 +81,7 @@ number of cyclic triangles.
 * https://marketplace.gephi.org/plugin/openord-layout/
 * Second largest eigenvalue of N:  spectral gap, as per Martin Gueuning 
 * https://share.osf.io/registration/
+* statistic:  [hubiness], variance of the degree distribution 
 
 == Hard == 
 * better graph visualization for the website 
