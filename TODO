@@ -82,6 +82,7 @@ number of cyclic triangles.
 * Second largest eigenvalue of N:  spectral gap, as per Martin Gueuning 
 * https://share.osf.io/registration/
 * statistic:  [hubiness], variance of the degree distribution 
+* directed Laplacian:   L = D - A where A is asymmetric.  Has complex spectrum. 
 
 == Hard == 
 * better graph visualization for the website 
