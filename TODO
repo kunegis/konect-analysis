@@ -1,5 +1,15 @@
 == Bugs ==
 
+* Epinions
+
+I tried also for the Epinions (ES) network, and I also get a different result.
+
+For the 90-percentile effective diameter, instead of getting 5.26 edges as indicated (http://konect.uni-koblenz.de/networks/soc-Epinions1), I get 3.9918.
+
+As extra info, the hop distribution in the case of Epinions that I get with the function konect_hopdistr is:
+
+   1.0e+09 * [0.0009    0.0737    1.0452    3.5683    5.1949    5.6443    5.7354    5.7527    5.7564    5.7572    5.7573 5.7573    5.7573    5.7573    5.7573]
+
 * The number of nodes in the Konect website is displayed
 incorrectly if the networks are bipartite. For example, in
 
@@ -13,28 +23,12 @@ But the number of jokes is 150 and the correct total number of vertices is
 50,832. It seems that the total number is being used for the first
 partition. This error is present in many bipartite networks. 
 
-* dat/dep.statistic-attribute.diameff90:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff90.m, needed by [dat/dep.statistic-attribute.diameff90]
-* dat/dep.statistic-attribute.diameff50:1:1: no rule to build konect-toolbox/m/konect_statistic_diameff50.m, needed by [dat/dep.statistic-attribute.diameff50]
-
-* Epinions
-
-I tried also for the Epinions (ES) network, and I also get a different result.
-
-For the 90-percentile effective diameter, instead of getting 5.26 edges as indicated (http://konect.uni-koblenz.de/networks/soc-Epinions1), I get 3.9918.
-
-As extra info, the hop distribution in the case of Epinions that I get with the function konect_hopdistr is:
-
-   1.0e+09 * [0.0009    0.0737    1.0452    3.5683    5.1949    5.6443    5.7354    5.7527    5.7564    5.7572    5.7573 5.7573    5.7573    5.7573    5.7573]
-
-* Count the runtime of triangle count computation from within the C code 
-
 == Easy  ==
 * pearson correlation between outdegree and indegree (logarithmic?) 
 * statistic:  average edge multiplicity 
 * statistic:  median degree 
 * new statistic:  maximal egde multiplicity 
 * statistic:  number of loops
-
 * temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * all standard statistics in function of time
 * mediandist:  actually compute it from hyperanf.  (and add to website) 
@@ -86,6 +80,7 @@ number of cyclic triangles.
 * new node statistic:  k-core number (largest k for which a node has
   degree >0 in the k-core). (as measure of centrality).  Plot the
   corresponding distribution, the k-core distribution. 
+* Count the runtime of triangle count computation from within the C code 
 
 == Hard == 
 * better graph visualization for the website 

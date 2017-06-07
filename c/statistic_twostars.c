@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
 	if (0 > feature_advise_a(&f, MADV_SEQUENTIAL)) {
 		perror(filename); 
-		exit(1)
+		exit(1);
 	}
 	
 	/* 
