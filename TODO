@@ -83,6 +83,9 @@ number of cyclic triangles.
 * https://share.osf.io/registration/
 * statistic:  [hubiness], variance of the degree distribution 
 * directed Laplacian:   L = D - A where A is asymmetric.  Has complex spectrum. 
+* new node statistic:  k-core number (largest k for which a node has
+  degree >0 in the k-core). (as measure of centrality).  Plot the
+  corresponding distribution, the k-core distribution. 
 
 == Hard == 
 * better graph visualization for the website 
@@ -99,8 +102,6 @@ distribution), compute sigma^2/mu. [Four Degrees of Separation,
 WebSci'12]   
 * comparison:  use a scale in which the luminosity increases
 continuously and the hue rotates around the colors.  
-* new node statistic:  k-core number (largest k for which a node has
-degree >0 in the k-core). (as measure of centrality) 
 * new centrality measure:   C(i) = \sum_{j~i} d(i)^{-1}, where d(i) is the degree.
  For directed networks, use the indegree and the out-neighbors. 
 * degree plots: have more and smaller ticks, even when no number is printed.
