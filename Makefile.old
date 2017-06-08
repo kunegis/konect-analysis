@@ -4,26 +4,6 @@
 #
 
 #
-# Steps 
-#
-
-# Full
-dat/stepsi.%:  dat/info.% m/stepsi.m dat/outs.% 
-	NETWORK=$* $(OCTAVE) m/stepsi 
-
-# Split
-dat/steps.%.mat:  dat/split.%.mat dat/means.%.mat m/steps.m
-	NETWORK=$* $(OCTAVE) m/steps
-
-#
-# Plot road networks
-#
-road:  plot/road.roadNet-CA.eps
-
-plot/road.roadNet-CA.eps:  uni/out.roadNet-CA m/road.m
-	NETWORK=roadNet-CA $(OCTAVE) m/road
-
-#
 # Spectral extrapolation (visualization)
 #
 
@@ -283,21 +263,4 @@ plot/trend.$(2).$(1).%.eps: dat/trend.$(2).$(1).%.mat m/trend_plot.m
 
 endef
 $(foreach STATISTIC, $(STATISTICS), $(foreach TYPE, full split, $(eval $(call TEMPLATE_trend,$(STATISTIC),$(TYPE)))))
-
-#
-# Correlation analysis between statistics
-#
-
-STATISTICS_CORRELATION_SQUARE := size uniquevolume twostars triangles
-
-$(foreach CLASS, $(CLASSES), correlation.square.$(CLASS)): \
-correlation.square.%:   dat/correlation.square.%.mat
-
-dat/correlation.square.%.mat:  \
-  $(foreach STATISTIC, $(STATISTICS_CORRELATION_SQUARE), $(foreach NETWORK, $(filter $(NETWORKS_SQUARE), $(NETWORKS_%)), dat/statistic_full.$STATISTIC.$NETWORK)) \
-  m/correlation.m
-	NETWORKS="$(filter $(NETWORKS_SQUARE), $(NETWORKS_$*))" \
-        STATISTICS="$(STATISTICS_CORRELATION_SQUARE)" \
-        CLASS=$* FORMAT=square \
-          $(OCTAVE) m/correlation
 

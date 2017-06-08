@@ -1940,3 +1940,4 @@ plot/degcc.a.$network.eps:
 	@map.lap.ucidata-zachary
 	@scatter.size.avgdegree.everything
 ;
+

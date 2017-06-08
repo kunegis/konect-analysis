@@ -1,18 +1,5 @@
 == Bugs ==
 
-* The number of nodes in the Konect website is displayed
-incorrectly if the networks are bipartite. For example, in
-
-    http://konect.uni-koblenz.de/networks/jester2
-
-it says
-
-    101,524 = 50,832 + 50,692 vertices (users + jokes)
-
-But the number of jokes is 150 and the correct total number of vertices is
-50,832. It seems that the total number is being used for the first
-partition. This error is present in many bipartite networks. 
-
 * convert stuff from Makefile.old to Stu code 
 
 == Easy  ==
