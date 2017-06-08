@@ -1,9 +1,5 @@
-== Bugs ==
-
 * convert stuff from Makefile.old to Stu code 
-
-== Easy  ==
-* pearson correlation between outdegree and indegree (logarithmic?) 
+* statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
 * statistic:  average edge multiplicity 
 * statistic:  median degree 
 * new statistic:  maximal egde multiplicity 
