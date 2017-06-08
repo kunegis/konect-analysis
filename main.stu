@@ -850,14 +850,14 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 
 dat/statistic.meandist.$network:
 	m/statistic_meandist.m $[ -t MATLABPATH]
-     	dat/hopdistr2.$network
+     	dat/hopdistr.$network
 {
 	 ./octave m/statistic_meandist.m 
 }
 
 dat/statistic.diameff$percentile.$network:
 	m/statistic_diameff.m $[ -t MATLABPATH]
-	dat/hopdistr2.$network
+	dat/hopdistr.$network
 {
 	 ./octave m/statistic_diameff.m 
 }
@@ -1306,11 +1306,11 @@ plot/cluscod.a.$network.eps:
 	done
 }
 
-dat/hopdistr2.$network = dat/hopdistr2.simple~$network;
+dat/hopdistr.$network = dat/hopdistr.simple~$network;
 
-dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
+dat/hopdistr.simple~$network = dat/hopdistr.lcc~simple~$network;
 
->dat/hopdistr2.lcc~simple~$network:  
+>dat/hopdistr.lcc~simple~$network:  
 	dat/sg1.lcc~simple~$network
 	$[command = dat/dep.c.hyperanf.lcc~simple~$network] 
 	[dat/dep.c.hyperanf.lcc~simple~$network]
@@ -1321,14 +1321,14 @@ dat/hopdistr2.simple~$network = dat/hopdistr2.lcc~simple~$network;
 @hopdistr.$network
 plot/hopdistr.a.$network.eps:  
 	m/hopdistr_plot.m $[ -t MATLABPATH]
-	dat/hopdistr2.$network 
+	dat/hopdistr.$network 
 {
 	 ./matlab m/hopdistr_plot.m 
 }
 
 dat/hopdistr_distrtest.$network.mat:  
 	m/hopdistr_distrtest.m m/distrtest_multi.m $[ -t MATLABPATH]
-	dat/hopdistr2.$network 
+	dat/hopdistr.$network 
 	dat/info.$network 
 {
 	 ./matlab m/hopdistr_distrtest.m 

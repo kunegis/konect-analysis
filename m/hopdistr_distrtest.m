@@ -6,7 +6,7 @@
 %
 % INPUT 
 %	dat/info.$network
-%	dat/hopdistr2.$network
+%	dat/hopdistr.$network
 %
 % OUTPUT 
 %	dat/hopdistr_distrtest.$network.mat
@@ -20,7 +20,7 @@ network = getenv('network');
 consts = konect_consts();  
 
 info = read_info(network);
-dat = load(sprintf('dat/hopdistr2.%s', network));
+dat = load(sprintf('dat/hopdistr.%s', network));
 
 % Make a column vector
 dat = dat(:)

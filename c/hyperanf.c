@@ -1,23 +1,22 @@
 /*
  * The HyperANF algorithm [1].  Given a simple, connected network,
- * estimate the distance distribution, a.k.a. the hop distribution.   
+ * estimate the distance distribution, a.k.a. the hop distribution.
  *
  * INVOCATION
- * 	$1	SG1 input file; must be simple and connected
+ * 	$1	SG1 input filename; must be simple and connected
  *	$2	Logfile name (nothing is logged at the moment)
  *
- * STDOUT
- *	The cumulated distance distribution as one
- *	integer per line.  The first number is the number of node pairs
- *	in distance a most 0 (i.e., the number of nodes).  The second
- *	number is the number of node
- *	pairs in distance at most 1 (i.e., twice the number of edges),
- *	etc.  The Nth number (counting from 
- *	0) is the number of node pairs at distance at most N.  The
- *	number of output lines equals the (approximated) diameter plus
- *	one.  The last number is thus the square of the number of nodes.
- *	Note that the values are approximations and thus they do not
- *	equal the number of nodes, edges etc. and the diameter exactly.  
+ * STDOUT 
+ *      The cumulated distance distribution as one integer per line.
+ *	The first number is the number of node pairs in distance a most
+ *	0 (i.e., the number of nodes).  The second number is the number
+ *	of node pairs in distance at most 1 (i.e., twice the number of
+ *	edges), etc.  The Nth number (counting from 0) is the number of
+ *	node pairs at distance at most N.  The number of output lines
+ *	equals the (approximated) diameter plus one.  The last number is
+ *	thus the square of the number of nodes.  Note that the values
+ *	are approximations and thus they do not equal the number of
+ *	nodes, edges etc. and the diameter exactly.
  *
  * ABOUT
  * 	Written by Jesús Cabello González during the course of his
@@ -45,7 +44,7 @@
 
 /* 
  * The HyperANF algorithm.  Use the graph from R, and output the
- * cumulated distance distribution on stdout. 
+ * cumulated distance distribution on stdout.
  */
 void hyperanf(struct sgraph1_reader_a *r);
 

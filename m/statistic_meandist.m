@@ -1,21 +1,20 @@
 %
-% Computer average distance
+% Computer the average distance in a network. 
 %
 % PARAMETERS 
 %	$network
 %
-% INPUT 
-%	dat/hopdistr2.$network
+% INPUT FILES 
+%	dat/hopdistr.$network
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	dat/statistic.meandist.$network
 %
 
 network = getenv('network'); 
 
-data = load(sprintf('dat/hopdistr2.%s', network));
+data = load(sprintf('dat/hopdistr.%s', network));
 
 x = konect_diammean(data);
 
 save(sprintf('dat/statistic.meandist.%s', network), 'x', '-ascii');
-

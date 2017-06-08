@@ -4,10 +4,10 @@
 % PARAMETERS 
 %	$network
 %
-% INPUT 
-%	dat/hopdistr2.$network
+% INPUT FILES 
+%	dat/hopdistr.$network
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	plot/hopdistr.[abc...].$network.eps
 %		a - Normal plot
 %		b - logistic axis
@@ -25,19 +25,17 @@ line_width = 3;
 
 consts = konect_consts(); 
 
-data = load(sprintf('dat/hopdistr2.%s', network))
+data = load(sprintf('dat/hopdistr.%s', network))
 info = read_info(network); 
 
-%nn = floor(sqrt(data(end)))
-
 datan = data
-%datan = [nn ; data]
 
 yvalues = datan / max(data); 
 
 %
 % Effective diameters
 %
+
 de9 = konect_diameff(data, 0.9)
 de5 = konect_diameff(data, 0.5)
 dm  = konect_diammean(data)
