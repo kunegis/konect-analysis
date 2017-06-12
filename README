@@ -20,7 +20,7 @@ single language is not the goal.
   The builtin functions such as matrix decompositions are also very
   heavily optimized.  It's slow when code does not make use of
   vectorization. 
-* GNU Octave (*.m):  A clone of Matlab.  It's source code compatible to
+* GNU Octave (*.m):  A clone of Matlab.  It is source code compatible to
   Matlab in theory, but in practice it has many problems:  It is slower,
   it does not support very large matrices (only 32 bit indexes), and
   plotting loses.  We use it in a few places, but don't write much new
