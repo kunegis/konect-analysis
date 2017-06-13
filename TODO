@@ -1,4 +1,6 @@
 * convert stuff from Makefile.old to Stu code 
+* @statistic:  don't go over all network-statistic combinations, as not all are possible. 
+
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
 * statistic:  average edge multiplicity 
 * statistic:  median degree 
