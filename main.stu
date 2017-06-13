@@ -586,6 +586,16 @@ plot/assortativity.a.$network.eps:
 # Statistics
 #
 
+@statistic:  [dat/dep.statistic];
+>dat/dep.statistic:  dat/NETWORKS STATISTICS
+{
+	for network in $(cat dat/NETWORKS) ; do
+		for statistic in $(cat STATISTICS) ; do
+			echo @statistic."$statistic"."$network"
+		done
+	done
+}
+
 @statistic.$statistic:  [dat/dep.statistic.$statistic];
 
 >dat/dep.statistic.$statistic:  
