@@ -1520,9 +1520,7 @@ dat/distr.$decomposition.$network:
 
 @map.$decomposition.$network
 plot/map.a.$decomposition.$network.eps:  
-	m/map.m 
-	m/map_one.m 
-	$[ -t MATLABPATH]
+	m/map.m $[ -t MATLABPATH]
 	dat/decomposition_map.$decomposition.$network.mat
 {
 	./matlab m/map.m 
