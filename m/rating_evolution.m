@@ -3,20 +3,20 @@
 % function of number of ratings.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
-% INPUT 
-%	dat/data.$NETWORK.mat
+% INPUT FILES 
+%	dat/data.$network.mat
 %
-% OUTPUT 
-%	plot/rating_evolution.[ab].$NETWORK.eps
+% OUTPUT FILES 
+%	plot/rating_evolution.[ab].$network.eps
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 data = load(sprintf('dat/data.%s.mat', network));
 
-ids = unique(data.at(:,2));
+ids = unique(data.T(:,2));
 
 %
 % (b) - normalized to zero final mean weight
@@ -24,9 +24,10 @@ ids = unique(data.at(:,2));
 hold on; 
 
 for k = 1:length(ids)
+
   i = ids(k);
 
-  ati = data.at(find(data.at(:,2) == i), 3);
+  ati = data.T(find(data.T(:,2) == i), 3);
 
   n = length(ati); 
  
@@ -46,9 +47,10 @@ konect_print(sprintf('plot/rating_evolution.b.%s.eps', network));
 hold on; 
 
 for k = 1:length(ids)
+
   i = ids(k);
 
-  ati = data.at(find(data.at(:,2) == i), 3);
+  ati = data.T(find(data.T(:,2) == i), 3);
 
   n = length(ati); 
  
@@ -61,4 +63,3 @@ for k = 1:length(ids)
 end
 
 konect_print(sprintf('plot/rating_evolution.a.%s.eps', network)); 
-

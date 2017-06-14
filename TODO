@@ -1,9 +1,10 @@
 == Fixes ==
-* convert stuff from Makefile.old to Stu code 
 * @statistic:  don't go over all network-statistic combinations, as not all are possible. 
 * Count the runtime of triangle count computation from within the C code 
 * read_metadata() and get_tags():  factor them into matlab/ in the form
 that they take filenames as arguments 
+* convert stuff from Makefile.old to Stu code 
+* @all:  add @rating_evolution{,2} 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 

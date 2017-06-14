@@ -3,26 +3,26 @@
 % function of number of ratings.  Plot only the fast stuff.
 %
 % PARAMETERS 
-%	$NETWORK
+%	$network
 %
-% INPUT 
-%	dat/data.$NETWORK.mat
+% INPUT FILES 
+%	dat/data.$network.mat
 %
-% OUTPUT 
-%	plot/rating_evolution.[c].$NETWORK.eps
+% OUTPUT FILES 
+%	plot/rating_evolution.[c].$network.eps
 %
 
-network = getenv('NETWORK');
+network = getenv('network');
 
 bins = 10; 
 font_size = 22; 
 
 data = load(sprintf('dat/data.%s.mat', network));
 
-ids = unique(data.at(:,2));
+ids = unique(data.T(:,2));
 
-rating_min = min(data.at(:,3))
-rating_max = max(data.at(:,3)) 
+rating_min = min(data.T(:,3))
+rating_max = max(data.T(:,3)) 
 
 sums   = zeros(bins, 0); 
 counts = zeros(bins, 0);
@@ -32,8 +32,9 @@ counts = zeros(bins, 0);
 %
 
 for k = 1:length(ids)
+
   i = ids(k);
-  ati = data.at(find(data.at(:,2) == i), 3);
+  ati = data.T(find(data.T(:,2) == i), 3);
   n = length(ati); 
   range = 1:n;
   average = cumsum(ati)' ./ range;
@@ -64,4 +65,3 @@ end
 set(gca, 'FontSize', font_size); 
 
 konect_print(sprintf('plot/rating_evolution2.c.%s.eps', network)); 
-

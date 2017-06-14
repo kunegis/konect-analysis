@@ -227,26 +227,6 @@ plot/approximation.a.%.eps:  m/approximation_plot.m dat/approximation.%.mat
 	NETWORK=$* $(OCTAVE) m/approximation_plot
 
 #
-# Rating evolution
-#
-
-rating_evolution.all:  $(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution.$(NETWORK))
-
-$(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution.$(NETWORK)): \
-rating_evolution.%: plot/rating_evolution.a.%.eps
-
-plot/rating_evolution.a.%.eps: dat/data.%.mat m/rating_evolution.m
-	NETWORK=$* $(OCTAVE) m/rating_evolution
-
-rating_evolution2.all:  $(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution2.$(NETWORK))
-
-$(foreach NETWORK, $(NETWORKS_TIME_WEIGHTED) $(NETWORKS_TIME_SIGNED), rating_evolution2.$(NETWORK)): \
-rating_evolution2.%: plot/rating_evolution2.a.%.eps
-
-plot/rating_evolution2.a.%.eps: dat/data.%.mat m/rating_evolution2.m
-	NETWORK=$* $(OCTAVE) m/rating_evolution2
-
-#
 # Trend estimation
 #
 

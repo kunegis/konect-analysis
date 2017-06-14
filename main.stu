@@ -1948,3 +1948,63 @@ plot/degcc.a.$network.eps:
 	@map.lap.ucidata-zachary
 	@scatter.size.avgdegree.everything
 ;
+
+#
+# Rating evolution
+#
+
+@rating_evolution:  [dat/dep.rating_evolution]; 
+>dat/dep.rating_evolution:
+	<dat/NETWORKS
+	dat/NETWORKS_WEIGHTS_weighted
+	dat/NETWORKS_WEIGHTS_multiweighted
+	dat/NETWORKS_WEIGHTS_signed
+	dat/NETWORKS_WEIGHTS_multisigned
+{
+	while IFS= read -r network ; do
+		if cat dat/NETWORKS_WEIGHTS_weighted \
+		       dat/NETWORKS_WEIGHTS_multiweighted \
+		       dat/NETWORKS_WEIGHTS_signed \
+		       dat/NETWORKS_WEIGHTS_multisigned |
+				grep -qE '^'"$network"'$' ; then
+			echo @rating_evolution."$network"
+		fi
+	done
+}
+
+@rating_evolution.$network:  plot/rating_evolution.a.$network.eps; 
+
+plot/rating_evolution.a.$network.eps:
+	m/rating_evolution.m $[ -t MATLABPATH]
+	dat/data.$network.mat
+{
+	./matlab m/rating_evolution.m 
+}
+
+@rating_evolution2:  [dat/dep.rating_evolution2]; 
+>dat/dep.rating_evolution2:
+	<dat/NETWORKS_TIME
+	dat/NETWORKS_WEIGHTS_weighted
+	dat/NETWORKS_WEIGHTS_multiweighted
+	dat/NETWORKS_WEIGHTS_signed
+	dat/NETWORKS_WEIGHTS_multisigned
+{
+	while IFS= read -r network ; do
+		if cat dat/NETWORKS_WEIGHTS_weighted \
+		       dat/NETWORKS_WEIGHTS_multiweighted \
+		       dat/NETWORKS_WEIGHTS_signed \
+		       dat/NETWORKS_WEIGHTS_multisigned |
+				grep -qE '^'"$network"'$' ; then
+			echo @rating_evolution2."$network"
+		fi
+	done
+}
+
+@rating_evolution2.$network:  plot/rating_evolution2.c.$network.eps;
+
+plot/rating_evolution2.c.$network.eps:
+	m/rating_evolution2.m $[ -t MATLABPATH]
+	dat/data.$network.mat
+{
+	./matlab m/rating_evolution2.m 
+}
