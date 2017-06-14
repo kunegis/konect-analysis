@@ -1,3 +1,7 @@
+== Run ==
+* ...@network.dblp{-author,-cite,_coauthor}
+* @rating_evolution{,2}
+
 == Fixes ==
 * @statistic:  don't go over all network-statistic combinations, as not all are possible. 
 * Count the runtime of triangle count computation from within the C code 
