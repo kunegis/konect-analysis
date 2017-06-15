@@ -1,5 +1,5 @@
 == Run ==
-* ...@network.dblp{-author,-cite,_coauthor}
+* @network.dblp{-author,-cite,_coauthor}
 * @rating_evolution{,2}
 
 == Fixes ==
@@ -9,6 +9,10 @@
 that they take filenames as arguments 
 * convert stuff from Makefile.old to Stu code 
 * @all:  add @rating_evolution{,2} 
+* weights.dblp-cite:  for networks like dblp-cite, there should be no
+  'weights' plot, because it is unweighted+directed, and the generated
+  plot just shows edge multiplicities 1 and 2, for reciprocated and
+  non-reciprocated edges.  Therefore, don't draw that combination. 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
