@@ -25,7 +25,14 @@
 # TODO
 #
 #   * Manage the situation when the list is too long.  Currently, we
-#     just make the window higher in that case. 
+#     just make the window higher in that case.
+#
+# BUGS
+#
+#   * The shown CPU percentage is as returned by ps(1), which gives the
+#     average CPU usage since the process was started.  This is
+#     different (and less useful) to what top(1) is doing, which shows
+#     the CPU usage since the last screen update. 
 #
 
 # Format for the printf(1) command

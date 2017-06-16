@@ -4,15 +4,17 @@
 
 == Fixes ==
 * @statistic:  don't go over all network-statistic combinations, as not all are possible. 
-* Count the runtime of triangle count computation from within the C code 
+* Count the runtime of triangle count and ifub computations from within
+  the C code, and save as last line in statistics file 
 * read_metadata() and get_tags():  factor them into matlab/ in the form
-that they take filenames as arguments 
+  that they take filenames as arguments 
 * convert stuff from Makefile.old to Stu code 
 * @all:  add @rating_evolution{,2} 
 * weights.dblp-cite:  for networks like dblp-cite, there should be no
   'weights' plot, because it is unweighted+directed, and the generated
   plot just shows edge multiplicities 1 and 2, for reciprocated and
   non-reciprocated edges.  Therefore, don't draw that combination. 
+* c/ifub.c:  at each step, use a timer-like progress indicator
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
