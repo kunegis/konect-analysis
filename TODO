@@ -75,6 +75,25 @@ sequential.
   (matlab_bgl function core_numbers.m)
 * The spectral radius divided by the spectral norm (a measure of the [a]cyclic-ness)
 * scatter:  draw the QQ plot 
+* make sure the distinction between event-edges and connection-edges is
+  modeled accurately 
+* complex eigenvalues of P=D^-1A for directed networks.  Largest is 1.
+* skew Laplacian:  D + i (A - A').  What are the eigenvalues?
+  eigenvalues have Re(lambda) >= 0 due to circle theorem.
+* average/median path length in function of networj size
+* distribution plot of all statistics.  Also cumulated 
+* Degeneracy:  maximum k-core number
+* Graphon plot:  show the adjacency matrix with nodes sorted by U[L]_i,
+  and reduced to 100x100 blocks, in blsck and white 
+* Fourier transform of timestamps for temporal networks
+** for each T, map timestamps to interval [0,1} via (mod T), and measure
+   the skewness of the resulting distribution. I.e., largest ratio
+   between one half of the interval to another (using any split).  This
+   is a form of the Kolgomorov-Smirnov distance between the actual
+   distribution and the uniform distribution 
+** X axis:  time scale, logarithmically from 1s to several years.  Y
+   axis:   skewness. 
+* plot:  degree vs local clustering coefficient for all nodes of one network
 
 == Hard == 
 * better graph visualization for the website 
