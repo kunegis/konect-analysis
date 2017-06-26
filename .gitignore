@@ -4,6 +4,7 @@ PERL5LIB
 bin
 dat
 plot
+tex
 uni
 octave-workspace
 konect-toolbox

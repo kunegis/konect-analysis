@@ -1,6 +1,6 @@
 == Run ==
-* @network.dblp{-author,-cite,_coauthor}
-* @rating_evolution{,2}
+* @network.dblp{-author,-cite,_coauthor} (done: check results)
+* @rating_evolution{,2} (done: check results) 
 
 == Fixes ==
 * @statistic:  don't go over all network-statistic combinations, as not all are possible. 
@@ -15,6 +15,8 @@
   plot just shows edge multiplicities 1 and 2, for reciprocated and
   non-reciprocated edges.  Therefore, don't draw that combination. 
 * c/ifub.c:  at each step, use a timer-like progress indicator
+* plot/layout.*:  Create it in a way that does not destroy the previous
+  version when an out-of-memory error occurs. 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 

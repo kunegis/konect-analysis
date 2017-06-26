@@ -10,7 +10,7 @@
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
 #	@network.$network	Build everything for one network
-#	@handbook		Everything used in the handbook; this is
+#	@handbook		Everything used in the KONECT Handbook; this is
 # 				a good test that everything works 
 #
 # Some commands use Matlab, others Octave, and yet other Julia.  In
@@ -420,13 +420,13 @@ dat/check-meta:   dat/NETWORKS  sh/checkmeta
 # Data files
 #
 
-dat/data.$network.mat:  uni/out.$network m/data.m 
+dat/data.$network.mat:  uni/out.$network m/data.m $[ -t MATLABPATH]
 {
 	input="uni/out.$network" output="dat/data.$network.mat" ./matlab m/data.m
 }
 
 
-dat/data.$transform~$network.mat:  dat/out.$transform~$network m/data.m 
+dat/data.$transform~$network.mat:  dat/out.$transform~$network m/data.m $[ -t MATLABPATH]
 {
 	input="dat/out.$transform~$network" output="dat/data.$transform~$network.mat" \
 		./matlab m/data.m
@@ -1056,20 +1056,21 @@ plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 # Category table
 #
 
+@category-table:  tex/category-tabular.tex; 
+
 tex/category-tabular.tex:
-	m/mkcategory.m
-	$[ -t MATLABPATH]
+	m/mkcategory.m $[ -t MATLABPATH]
 	dat/NETWORKS
 	[tex/dep.category-tabular.tex]
 {
-	NETWORKS="$(cat dat/NETWORKS)" ./matlab m/mkcategory.m
+	networks="$(cat dat/NETWORKS)" ./matlab m/mkcategory.m
 }
 
 >tex/dep.category-tabular.tex:
 	dat/NETWORKS
 {
 	for network in $(cat dat/NETWORKS) ; do
-		echo uni/meta.$network dat/statistic.format.$network dat/statistic.weights.$network
+		echo uni/meta."$network" dat/statistic.format."$network" dat/statistic.weights."$network"
 	done
 }
 
@@ -1545,7 +1546,7 @@ plot/map.a.$decomposition.$network.eps:
 }
 
 #
-# RDF files
+# RDF files (deprecated) 
 #
 
 @rdf.$network: dat/download.rdf.$network.n3.bz2;
@@ -1927,6 +1928,7 @@ plot/degcc.a.$network.eps:
 #
 
 @handbook:
+	@category-table
 	@layout.moreno_highschool 
 	@time_histogram.elec
 	@weights.movielens-1m

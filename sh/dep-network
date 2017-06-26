@@ -88,7 +88,3 @@ done
 
 echo @tsv."$network"
 
-## if grep -qE '^\s*n3-prefix-m\s*:' uni/meta."$network" ; then
-## 	echo @rdf."$network"
-## fi
-

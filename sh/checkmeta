@@ -14,10 +14,10 @@ found_error=0
 # other arguments:  error message
 error()
 {
-    found_error=1
-    f="$1"
-    shift
-    echo "Error in file $f: $@" >&2
+	found_error=1
+	f="$1"
+	shift
+	echo "Error in file $f: $@" >&2
 }
 
 FILES="$(sed -E -e 's,^,uni/meta.,' dat/NETWORKS)"   
@@ -29,23 +29,33 @@ MANDATORY="name code category entity-names relationship-names"
 
 for file in $FILES 
 do
-    echo >&4 "Checking $f ..."
+	echo >&4 "Checking $f ..."
 
-    # Attribute names must be followed by ':' and not '=' 
-    grep -Eq '^[^:=]*=' "$file" && error "$f" '*** Attribute names must be followed by colon (:), not an equal sign (=)'
+	# Attribute names must be followed by ':' and not '=' 
+	grep -Eq '^[^:=]*=' "$file" && error "$f" '*** Attribute names must be followed by colon (:), not an equal sign (=)'
 
-    # Duplicate codes
-    CODE="$(grep 'code' $file | sed -n -re 's/^\s*code\s*:\s*([a-zA-Z0-9\@]+)\s*$/\1/p')"
-    [ "$CODE" ] || { error "$file" '*** No code given'; continue; }
-    [ "$(echo $CODESANDFILES | egrep '(^| )'$CODE':' )" ] && { error "$file" "*** Uses same code ($CODE) as file $(echo $CODESANDFILES | egrep -o '(^| )'$CODE':[^ ]+' | cut -d':' -f2- )"; continue;  } 
-    CODESANDFILES="$CODESANDFILES $CODE:$file"
+	# Duplicate codes
+	CODE="$(grep 'code' $file | sed -n -re 's/^\s*code\s*:\s*([a-zA-Z0-9\@]+)\s*$/\1/p')"
+	[ "$CODE" ] || { error "$file" '*** No code given'; continue; }
+	[ "$(echo $CODESANDFILES | egrep '(^| )'$CODE':' )" ] && { error "$file" "*** Uses same code ($CODE) as file $(echo $CODESANDFILES | egrep -o '(^| )'$CODE':[^ ]+' | cut -d':' -f2- )"; continue;  } 
+	CODESANDFILES="$CODESANDFILES $CODE:$file"
 
-    # Mandatory fields 
-    for field in $MANDATORY ; do
-	if ! grep -Eq '^\s*'"$field"'\s*:' "$file" ; then
-	    error "$file" "Field '$field' missing"
-	fi
-    done
+	# Mandatory fields 
+	for field in $MANDATORY ; do
+		if ! grep -Eq '^\s*'"$field"'\s*:' "$file" ; then
+			error "$file" "Field '$field' missing"
+		fi
+	done
 done
 
-exit $found_error
+# Check that all meta.* files have a corresponding out.* file
+for file in uni/meta.* ; do
+	out="$(echo "$file" | sed -E -e 's,^uni/meta,uni/out,')"
+	[ -r "$out" ] || {
+		echo >&2 "*** Missing file '$out' corresponding to file '$file'"
+		exit 1
+	}
+done
+
+exit "$found_error"
+

@@ -4,25 +4,23 @@
 % PARAMETERS 
 %	$NETWORKS
 %
-% INPUT 
-%	uni/meta.$NETWORK
-%	dat/statistic.{format,weights}.$NETWORK
+% INPUT FILES 
+%	uni/meta.$network
+%	dat/statistic.{format,weights}.$network
 %
-% 	for all $NETWORK in $NETWORKS
+% 	for all $network in $networks
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	tex/category-tabular.tex
 %
 
-networks = getenv('NETWORKS'); 
-
+networks = getenv('networks'); 
 networks = regexp(networks, '[a-zA-Z0-9_-]+', 'match')
 n = length(networks); 
 
 [consts symbols_format symbols_weights] = konect_consts(); 
 
 OUT = fopen('tex/category-tabular.tex', 'w');
-
 if (0 > OUT)
     error('fopen'); 
 end
@@ -45,6 +43,8 @@ counts = struct();
 % weights ID preceded by 'x'.  Value is always 1. 
 has_format = struct();
 has_weights = struct();
+
+count_running = 0; % For cross-checking that we show all categories 
 
 % Iterate over all networks
 for j = 1 : n
@@ -92,9 +92,15 @@ for i = 1 : k
         end
     end
     fprintf(OUT, ' & ');
-    fprintf(OUT, ' %u ', counts.(category)); 
-    fprintf(OUT, '\\\\\n'); 
+    fprintf(OUT, ' %u', counts.(category)); 
+    fprintf(OUT, '\\\\\n');
+    count_running = count_running + counts.(category); 
 end
+
+assert(count_running == n); 
+
+fprintf(OUT, '\\midrule\n'); 
+fprintf(OUT, '& \\textbf{Total} &&&& \\textbf{%u}\\\\\n', n); 
 
 fprintf(OUT, '\\bottomrule\n');
 fprintf(OUT, '\\end{tabular}\n'); 

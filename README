@@ -51,7 +51,7 @@ For questions bug reports and other comments, write to Jérôme Kunegis
 * Stu:  install from https://github.com/kunegis/stu
 * A C99 compiler (only for triangle count and diameter) 
 * sed -E (this is not (yet) POSIX, but GNU Sed and BSD Sed have it)
-* python-rdflib / python-rdflib-tools (for RDF generation only)
+* python-rdflib / python-rdflib-tools (for RDF generation only, deprecated)
 * Matlab:  This is proprietary, so may be hard to get
 * GNU Octave
 * Perl 5

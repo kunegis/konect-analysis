@@ -1,6 +1,8 @@
 #! /usr/bin/perl
 #
-# Create RDF data for a given network. 
+# Create RDF data for a given network.
+#
+# DEPRECATED -- RDF is not generated anymore due to lack of use 
 #
 # INVOCATION
 #	./mkrdf "$NETWORK" 
