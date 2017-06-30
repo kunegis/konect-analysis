@@ -1,0 +1,32 @@
+#! /bin/sh
+#
+# Output all statistic targets for $network.
+#
+# INPUT FILES
+#	STATISTICS
+#	dat/NETWORKS_$attribute
+#	konect-toolbox/m/konect_statistic_$statistic.m
+#
+
+for statistic in $(cat STATISTICS) ; do
+	# check whether the statistic must be computed for this network 
+	compute=1
+	file="konect-toolbox/m/konect_statistic_$statistic.m"
+	if [ -r "$file" ] ; then
+		for attribute in $(<"$file" sed -E -e 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
+			if [ ! -r dat/NETWORKS_"$attribute" ] ; then 
+				echo >&2 "$file:  unknown attribute '$attribute'" 
+				exit 1
+			fi
+			if ! grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute" ; then
+				compute=0
+			fi
+		done
+	else
+		: # Nothing.  Not all statistics have a file in the toolbox. 
+	fi
+		
+	if [ "$compute" != 0 ] ; then
+		echo @statistic."$statistic"."$network"
+	fi
+done

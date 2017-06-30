@@ -52,6 +52,7 @@
 
 >dat/dep.network.$network:	
 	sh/dep-network 
+	dat/dep.statistic.all.$network
 	STATISTICS
 	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
@@ -590,14 +591,26 @@ plot/assortativity.a.$network.eps:
 >dat/dep.statistic:  dat/NETWORKS STATISTICS
 {
 	for network in $(cat dat/NETWORKS) ; do
-		for statistic in $(cat STATISTICS) ; do
-			echo @statistic."$statistic"."$network"
-		done
+		echo @statistic.all."$network"
+		# for statistic in $(cat STATISTICS) ; do
+		# 	echo @statistic."$statistic"."$network"
+		# done
 	done
 }
 
-@statistic.$statistic:  [dat/dep.statistic.$statistic];
+# All statistics (that apply) for the given network 
+@statistic.all.$network:  [dat/dep.statistic.all.$network];
+>dat/dep.statistic.all.$network:
+	sh/statistic-network
+	STATISTICS
+	# TODO with Stu 2.5:  read this using 'ATTRIBUTES', a list of all valid attributes 
+	dat/NETWORKS_NEGATIVE dat/NETWORKS_SQUARE dat/NETWORKS_SQUARENEGATIVE dat/NETWORKS_SYM dat/NETWORKS_TIME
+	dat/NETWORKS_ASYM dat/NETWORKS_ASYMNEGATIVE dat/NETWORKS_BIP
+{
+	sh/statistic-network
+}
 
+@statistic.$statistic:  [dat/dep.statistic.$statistic];
 >dat/dep.statistic.$statistic:  
 	[dat/dep.dep.statistic.$statistic] dat/dep.dep.statistic.$statistic
 {

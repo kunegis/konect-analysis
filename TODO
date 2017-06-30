@@ -1,9 +1,7 @@
 == Run ==
-* @network.dblp{-author,-cite,_coauthor} (done: check results)
-* @rating_evolution{,2} (done: check results) 
+* @network.bag-{kos,nips,enron,nytimes,pubmed}
 
 == Fixes ==
-* @statistic:  don't go over all network-statistic combinations, as not all are possible. 
 * Count the runtime of triangle count and ifub computations from within
   the C code, and save as last line in statistics file 
 * read_metadata() and get_tags():  factor them into matlab/ in the form
@@ -17,6 +15,7 @@
 * c/ifub.c:  at each step, use a timer-like progress indicator
 * plot/layout.*:  Create it in a way that does not destroy the previous
   version when an out-of-memory error occurs. 
+* sh/dep-network:  re-enable @ft.degree."$network" 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
