@@ -1,5 +1,4 @@
 == Run ==
-* @network.bag-{kos,nips,enron,nytimes,pubmed}
 
 == Fixes ==
 * Count the runtime of triangle count and ifub computations from within
