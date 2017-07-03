@@ -357,12 +357,13 @@ bin
 
 dat/info.$network:  
 	sh/network-info 
-	uni/out.$network 
+	<uni/out.$network 
 {
 	tmpfile="${TMPDIR:-/tmp}"/p.network-info."$network"
-	echo "tmpfile='$tmpfile'"
-	sh/network-info <uni/out."$network" "$tmpfile" >"$tmpfile"
-	cp "$tmpfile" dat/info."$network"
+	stu-utils/output-finally dat/info."$network" sh/network-info "$tmpfile"
+##	echo "tmpfile='$tmpfile'"
+##	sh/network-info <uni/out."$network" "$tmpfile" >"$tmpfile"
+##	cp "$tmpfile" dat/info."$network"
 }
 
 >dat/info.$TRANSFORM~$network:
@@ -592,9 +593,6 @@ plot/assortativity.a.$network.eps:
 {
 	for network in $(cat dat/NETWORKS) ; do
 		echo @statistic.all."$network"
-		# for statistic in $(cat STATISTICS) ; do
-		# 	echo @statistic."$statistic"."$network"
-		# done
 	done
 }
 
@@ -720,11 +718,12 @@ dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
 	./octave m/statistic_size.m
 }
 
->dat/statistic.size.$transform~$network:
+dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR:-/tmp}"/c.size."$network".log
+	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
+	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 }
 
 dat/statistic.lines.$network:  
@@ -734,11 +733,12 @@ dat/statistic.lines.$network:
 	./octave m/statistic_lines.m
 }
 
->dat/statistic.lines.$transform~$network:
+dat/statistic.lines.$transform~$network:
 	$[command = dat/dep.c.lines.$transform~$network] [dat/dep.c.lines.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR:-/tmp}"/c.lines."$network".log
+	stu-utils/output-finally dat/statistic.lines."$transform"~"$network"    \
+		"$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.lines."$network".log
 }
 
 dat/statistic.volume.$network:  
@@ -749,11 +749,12 @@ dat/statistic.volume.$network:
 	 bin/statistic_volume "${TMPDIR:-/tmp}"/c.statistic_volume."$network".log
 }
 
->dat/statistic.volume.$transform~$network:
+dat/statistic.volume.$transform~$network:
 	$[command = dat/dep.c.volume.$transform~$network] [dat/dep.c.volume.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-	$command dat/sg1.$transform~$network "${TMPDIR:-/tmp}"/c.volume."$network".log
+	stu-utils/output-finally dat/statistic.volume."$transform"~"$network" \
+		"$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.volume."$network".log
 }
 
 dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
@@ -762,28 +763,31 @@ dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 # Statistics with special code (simple expressions or C programs) 
 #
 
->dat/statistic.maxdegree.$network:
+dat/statistic.maxdegree.$network:
 	dat/sg1.$network
 	$[command = dat/dep.c.maxdegree.$network] [dat/dep.c.maxdegree.$network]
 {
-	$command dat/sg1.$network "${TMPDIR:-/tmp}"/c.maxdegree."$network".log
+	stu-utils/output-finally dat/statistic.maxdegree."$network" \
+		"$command" dat/sg1."$network" "${TMPDIR:-/tmp}"/c.maxdegree."$network".log
 }
 
 dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 
->dat/statistic.triangles.simple~$network:
+dat/statistic.triangles.simple~$network:
 	dat/sg1.simple~$network
 	$[command = dat/dep.c.triangles.simple~$network] [dat/dep.c.triangles.simple~$network]
 {
-	$command dat/sg1.simple~$network "${TMPDIR:-/tmp}"/c.triangles."$network".log
+	stu-utils/output-finally dat/statistic.triangles.simple~"$network" \
+		$command dat/sg1.simple~$network "${TMPDIR:-/tmp}"/c.triangles."$network".log
 }
 
->dat/statistic.twostars.simple~$network:
+dat/statistic.twostars.simple~$network:
 	$[command = dat/dep.c2.statistic_twostars.simple~$network]
 	[dat/dep.c2.statistic_twostars.simple~$network]
 	dat/ft.degree.simple~$network
 {
-	$command dat/ft.degree.simple~$network "${TMPDIR:-/tmp}"/c.statistic_twostars."$network".log
+	stu-utils/output-finally dat/statistic.twostars.simple~"$network" \
+		"$command" dat/ft.degree.simple~"$network" "${TMPDIR:-/tmp}"/c.statistic_twostars."$network".log
 }
 
 dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;

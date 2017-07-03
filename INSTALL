@@ -27,6 +27,7 @@ $ git clone https://github.com/kunegis/konect-analysis
 $ git clone https://github.com/kunegis/konect-toolbox
 $ git clone https://github.com/kunegis/konect-handbook
 $ git clone https://github.com/kunegis/konect-extr
+$ git clone https://github.com/kunegis/stu-utils
 
 (3) Create uni/
 
@@ -84,6 +85,7 @@ $ cd ~/work/konect-analysis/
 $ ln -s ~/work/konect-toolbox ./
 $ ln -s ~/work/konect-handbook ./
 $ ln -s ~/work/konect-extr ./
+$ ln -s ~/work/stu-utils ./
 $ ln -s ~/data/plot ./
 $ ln -s ~/data/dat ./
 $ ln -s ~/data/tex ./

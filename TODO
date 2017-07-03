@@ -1,17 +1,14 @@
 == Run ==
+* @statistic.{triangles,diam}
 
 == Fixes ==
-* Count the runtime of triangle count and ifub computations from within
-  the C code, and save as last line in statistics file 
-* read_metadata() and get_tags():  factor them into matlab/ in the form
-  that they take filenames as arguments 
-* convert stuff from Makefile.old to Stu code 
 * @all:  add @rating_evolution{,2} 
 * weights.dblp-cite:  for networks like dblp-cite, there should be no
   'weights' plot, because it is unweighted+directed, and the generated
   plot just shows edge multiplicities 1 and 2, for reciprocated and
   non-reciprocated edges.  Therefore, don't draw that combination. 
-* c/ifub.c:  at each step, use a timer-like progress indicator
+* c/ifub.c:  at each step, use a timer-like progress indicator.  Same
+  for triangles.c.  
 * plot/layout.*:  Create it in a way that does not destroy the previous
   version when an out-of-memory error occurs. 
 * sh/dep-network:  re-enable @ft.degree."$network" 
@@ -92,6 +89,7 @@ sequential.
 ** X axis:  time scale, logarithmically from 1s to several years.  Y
    axis:   skewness. 
 * plot:  degree vs local clustering coefficient for all nodes of one network
+* convert stuff from Makefile.old to Stu code 
 
 == Hard == 
 * better graph visualization for the website 

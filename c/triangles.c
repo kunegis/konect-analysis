@@ -2,13 +2,17 @@
  * Count the triangles in a network.  The input file must be an SG1 file
  * representing a simple graph (SYM, UNWEIGHTED, no loops).
  *
- * The result is written in stdout. 
- *
+ * The given LOGFILE is ignored.  
+ * 
  * INVOCATION 
  *	$0 INPUT-FILE LOGILE
  *
- * The LOGFILE is ignored.  
+ * STDOUT 
+ *      [line 1] The number of triangles, an integer
+ *      [line 2] Runtime in seconds, as a floating point number 
  */
+
+#include <time.h>
 
 #include "width.ma.h"
 #include "width.ua.h"
@@ -132,6 +136,9 @@ ma_ft common_elements(ma_ft beg1, ma_ft end1,
 
 int main(int argc, char **argv)
 {
+	clock_t clock_begin= clock();
+	if (clock_begin == (clock_t) -1) {  perror("clock()");  exit(1);  }
+
 	if (argc != 3) {
 		fprintf(stderr, "*** Expected 2 parameters\n");
 		exit(1);
@@ -211,6 +218,16 @@ int main(int argc, char **argv)
 		exit(1); 
 	}
 
+	clock_t clock_end= clock();
+	if (clock_end == (clock_t) -1) {  perror("clock()");  exit(1);  }
+
+	double runtime_s= ((double)clock_end) / CLOCKS_PER_SEC - ((double)clock_begin) / CLOCKS_PER_SEC; 
+	printf("%f\n", runtime_s); 
+
+	if (ferror(stdout)) {
+		perror("stdout");
+		exit(1); 
+	}
+
 	exit(0);
 }
-

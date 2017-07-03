@@ -3,6 +3,15 @@
  * algorithm has a parameter K which determines whether the computation
  * is exact (when k == 0) or an approximation (when k > 0). 
  * 
+ * INVOCATION
+ * 	$1	Input filename in SG1 format; network must be connected
+ *	$2	Output filename
+ *      $3      (unsigned integer) k, parameter of the iFub algorithm;
+ * 		precision; zero means compute the exact diameter, larger
+ * 		values means approximate the diameter with at most that
+ * 		error. 
+ * 	$4 	Log filename
+ * 
  * ABOUT 
  * 	Written by Jesús Cabello González.  Adapted by Jérôme Kunegis. 
  *
@@ -74,20 +83,11 @@ void four_sweep(struct sgraph1_reader_a *r, ua_ft *l, ua_ft *u);
 
 FILE *log_; 
 
-/*
- * Estimate the diameter of a graph using the iFub algorithm. 
- * 
- * INVOCATION
- * 	$1	Input filename in SG1 format; network must be connected
- *	$2	Output filename
- *      $3      (unsigned integer) k, parameter of the iFub algorithm;
- * 		precision; zero means compute the exact diameter, larger
- * 		values means approximate the diameter with at most that
- * 		error. 
- * 	$4 	Log filename
- */
 int main(int argc, char **argv)
 {
+	clock_t clock_begin= clock();
+	if (clock_begin == (clock_t) -1) {  perror("clock()");  exit(1);  }
+
 	if (argc != 5) {
 		fprintf(stderr, "*** Invalid number of arguments\n"); 
 		exit(1); 
@@ -139,13 +139,19 @@ int main(int argc, char **argv)
 		exit(1); 
 	}
 	fprintf(out, "%" PR_fua "\n", delta);
+
+	clock_t clock_end= clock();
+	if (clock_end == (clock_t) -1) {  perror("clock()");  exit(1);  }
+
+	double runtime_s= ((double)clock_end) / CLOCKS_PER_SEC - ((double)clock_begin) / CLOCKS_PER_SEC; 
+	fprintf(out, "%f\n", runtime_s); 
+
 	if (0 != fclose(out)) {
 		perror(filename_output); 
 		exit(1);
 	}
 
-	fclose(log_);
-	/* Don't fail when the log file cannot be closed */ 
+	fclose(log_);  /* Don't fail when the log file cannot be closed */ 
     
 	exit(0);
 }
@@ -360,5 +366,3 @@ void four_sweep(struct sgraph1_reader_a *r, ua_ft *l, ua_ft *u)
 
 	free(d);
 }
-
-
