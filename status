@@ -61,7 +61,11 @@ do
 	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] || [ "$command" = sed ] ; then
 		continue
 	fi
-	if printf "%s\n" "$command" | grep -E ^main.stu >/dev/null ; then
+	if printf "%s\n" "$command" | grep -E -q ^main.stu ; then
+		continue
+	fi
+	if printf "%s\n" "$line" | grep -E -q 'output-finally' ;
+	then
 		continue
 	fi
 	
