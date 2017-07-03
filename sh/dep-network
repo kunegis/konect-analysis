@@ -11,13 +11,15 @@
 #	The list of dependencies in Stu format
 #
 # INPUT FILES
+#	dat/dep.statistic.all.$network
 #	PLOTS
 #	PLOTS_SQUARE
 #	PLOTS_ASYM
 #	PLOTS_TIME
 #	dat/NETWORKS_$attribute
-#	dat/dep.statistic-network.$network
 #
+
+set -e
 
 #
 # Plots
@@ -53,7 +55,7 @@ fi
 # Statistics
 #
 
-cat dat/dep.statistic-network."$network"
+cat dat/dep.statistic.all."$network"
 
 #
 # Features

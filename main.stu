@@ -822,7 +822,7 @@ dat/statistic.ifub$K.lcc~simple~$network:
 	[dat/dep.c.ifub.lcc~simple~$network]
 	dat/sg1.lcc~simple~$network
 {
-	"$command" dat/sg1.lcc~simple~"$network" dat/statistic.ifub"$K".lcc~simple~"$network" "$K" "${TMPDIR:-/tmp}"/c.ifub."$network".log
+	"$command" dat/sg1.lcc~simple~"$network" dat/statistic.ifub"$K".lcc~simple~"$network" "$K" "${TMPDIR:-/tmp}"/c.ifub"$K"."$network".log
 }
 
 dat/statistic.ifub$K.simple~$network = dat/statistic.ifub$K.lcc~simple~$network;
