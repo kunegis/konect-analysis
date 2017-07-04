@@ -1,6 +1,5 @@
 == Run ==
 * @statistic.{triangles,diam}
-* @network.wikilens-ratings 
 
 == Fixes ==
 * @all:  add @rating_evolution{,2} 

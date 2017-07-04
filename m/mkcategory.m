@@ -16,7 +16,7 @@
 
 networks = getenv('networks'); 
 networks = regexp(networks, '[a-zA-Z0-9_-]+', 'match')
-n = length(networks); 
+n = length(networks) 
 
 [consts symbols_format symbols_weights] = konect_consts(); 
 
