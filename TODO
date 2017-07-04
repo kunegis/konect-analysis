@@ -1,5 +1,6 @@
 == Run ==
 * @statistic.{triangles,diam}
+* @network.wikilens-ratings 
 
 == Fixes ==
 * @all:  add @rating_evolution{,2} 
@@ -12,6 +13,9 @@
 * plot/layout.*:  Create it in a way that does not destroy the previous
   version when an out-of-memory error occurs. 
 * sh/dep-network:  re-enable @ft.degree."$network" 
+* @network.wikilens-ratings:  no rule to build m/pa_compute_one.m,
+needed by dat/pa.wikilens-ratings.mat
+* @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
@@ -20,7 +24,8 @@
 * new statistic:  maximal egde multiplicity 
 * statistic:  number of loops
 * temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
-* new plot type:  all standard statistics in function of time
+* new plot type:  all standard statistics in function of time (we have
+to exclude statistics that are themselves based on temporal features) 
 * mediandist:  actually compute it from hyperanf
 * for rating networks:  mean rating, i.e., mean edge weight
 * hopdistr.b:  Y axis labels:  write there the logit-transformed values.

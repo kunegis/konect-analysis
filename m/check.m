@@ -16,14 +16,16 @@ meta = read_meta(network);
 
 tags = get_tags(meta); 
 
-tag_loop = isfield(tags, 'loop')
-tag_acyclic = isfield(tags, 'acyclic')
-tag_nonreciprocal = isfield(tags, 'nonreciprocal')
-tag_zeroweight = isfield(tags, 'zeroweight')
-tag_lcc = isfield(tags, 'lcc')
-tag_incomplete= isfield(tags, 'incomplete')
-tag_tournament= isfield(tags, 'tournament') 
-tag_lowmultiplicity= isfield(tags, 'lowmultiplicity')
+tag_acyclic         = isfield(tags, 'acyclic')
+tag_incomplete      = isfield(tags, 'incomplete')
+tag_lcc             = isfield(tags, 'lcc')
+tag_loop            = isfield(tags, 'loop')
+tag_lowmultiplicity = isfield(tags, 'lowmultiplicity')
+tag_nonreciprocal   = isfield(tags, 'nonreciprocal')
+tag_tournament      = isfield(tags, 'tournament') 
+tag_trianglefree    = isfield(tags, 'trianglefree'); 
+tag_zeroweight      = isfield(tags, 'zeroweight')
+
 
 format = load(sprintf('dat/statistic.format.%s', network));
 weights = load(sprintf('dat/statistic.weights.%s', network));
@@ -40,6 +42,8 @@ else
 end
 
 T = load(sprintf('uni/out.%s', network));
+% T stays constant throughout the whole run, but A and similar matrices
+% are computed for each test separately.
 
 %
 % Check that the category exists
@@ -393,4 +397,23 @@ if tag_tournament
     assert(nnz(A) * 2 == n * (n - 1));
     A_sym = A | A';
     assert(nnz(A_sym) == n * (n - 1)); 
+end
+
+%
+% If the network is unipartite, there must be at least one triangle.  
+%
+
+if format ~= consts.BIP
+  if ~tag_trianglefree
+    n = max(max(T(:,1:2))); 
+    A = sparse(T(:,1), T(:,2), 1, n, n);
+    % Note:  the konect_statistic_triangles() takes care of ignoring
+    % multiple edges and loops. 
+    values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
+    assert(values(1) >= 1, '*** Unipartite network must have at least one triangle, except when #trianglefree is set');
+  end
+else
+  if tag_trianglefree
+    assert(0, '*** The tag #trianglefree must only be used with unipartite networks'); 
+  end
 end
