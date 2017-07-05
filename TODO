@@ -15,6 +15,7 @@
 * @network.wikilens-ratings:  no rule to build m/pa_compute_one.m,
 needed by dat/pa.wikilens-ratings.mat
 * @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
+* m/check.m:  if #trianglefree is set, check that there are no triangles. 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
