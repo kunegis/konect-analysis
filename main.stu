@@ -990,10 +990,16 @@ plot/statistic_time.full.a.$statistic.$network.eps:
 }
 
 #
-# Feature:  degree
+# Features, i.e., node-arrays 
 #
 
-# An array of items 
+@ft.$feature:  [dat/dep.ft.$feature];
+>dat/dep.ft.$feature:   <dat/NETWORKS
+{
+	while IFS= read -r network ; do
+		echo @ft."$feature"."$network"
+	done
+}
 
 @ft.$feature.$network:  dat/ft.$feature.$network; 
 
@@ -1001,7 +1007,7 @@ dat/ft.degree.$network:
 	[dat/dep.c2.feature_degree.$network]
 	dat/sg1.$network
 {
-	$(cat dat/dep.c2.feature_degree.$network) dat/sg1.$network dat/ft.degree.$network
+	$(cat dat/dep.c2.feature_degree.$network) dat/sg1.$network dat/ft.degree.$network "${TMPDIR:-/tmp}"/c.feature_degree."$network".log
 }
 
 >dat/widths.ft.degree.$network:

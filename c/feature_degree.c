@@ -2,7 +2,7 @@
  * Generate the degree vector of a network.
  *
  * INVOCATION
- *     $0 SG1-FILE DEGREE-FILE
+ *     $0 SG1-FILE DEGREE-FILE LOGFILE
  */
 
 #include "width.ma.h"
@@ -22,14 +22,15 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 3) {
+	if (argc != 4) {
 		fprintf(stderr, "*** Invalid number of parameters\n");
 		exit(1);
 	}
 
 	const char *const filename_sg1= argv[1];
 	const char *const filename_ft= argv[2];
-
+	/* The LOGFILE is ignore */
+	
 	struct sgraph1_reader_a r;
 
 	if (0 > sgraph1_open_read_a(filename_sg1, &r, 2)) {
@@ -65,11 +66,11 @@ int main(int argc, char **argv)
 	}
 
 #if FEATURE_N2
-	for (u_ft v= 0;  v < r.h->n2;  ++v) {
-		const m_ft beg= read_m(r.adj_from, v);
-		const m_ft end= v == r.h->n2 - 1 ? r.len_m : read_m(r.adj_from, v + 1);
+	for (ua_ft v= 0;  v < r.h->n2;  ++v) {
+		const ma_ft beg= read_ma(r.adj_from, v);
+		const ma_ft end= v == r.h->n2 - 1 ? r.len_m : read_ma(r.adj_from, v + 1);
 		assert(end - beg < f_max); 
-		writeonzero_f(f.f2, v, end - beg); 
+		writeonzero_fa(f.f2, v, end - beg); 
 	}
 #endif
 

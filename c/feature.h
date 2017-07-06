@@ -57,8 +57,8 @@ int feature_open_write_$(const char *filename,
 	const size_t p1= sizeof(struct header_feature_$);
 	const size_t l1= p1 + arraylen_f$(n1);
 #if FEATURE_N2
-	const size_t p2= round_f(l1);
-	const size_t l2= arraylen_f(n2);
+	const size_t p2= round_f$(l1);
+	const size_t l2= arraylen_f$(n2);
 	const size_t l=  p2 + l2;
 #else 
 	const size_t l= l1;

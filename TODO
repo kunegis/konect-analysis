@@ -1,16 +1,18 @@
 == Run ==
-* @layout
 
 == Fixes ==
-* sh/dep-network:  re-enable @ft.degree."$network" 
+* run @all.test and fix all bugs 
 * @network.wikilens-ratings:  reinsert 'pa' into PLOTS_TIME and fix this bug:  no rule to build m/pa_compute_one.m,
 needed by dat/pa.wikilens-ratings.mat  
 * reinsert 'inter' and 'inter2' into PLOTS_TIME, and fix this bug:
 ** @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
-* run @all.test
+* @ft.degree:  make it work for all networks.  It fails for multiedge
+  networks at the moment, due to a missing implementation.
+** When done, re-insert @ft.degree.$network into @all 
 
 == Easy new features ==
-* statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
+* statistic:  pearson correlation between outdegree and indegree
+  (logarithmic and not) 
 * statistic:  average edge multiplicity 
 * statistic:  median degree 
 * new statistic:  maximal egde multiplicity 
