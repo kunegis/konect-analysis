@@ -28,8 +28,8 @@ if length(networks) == 0
 end
 
 tokens = regexp(kind, '^(.+)\.(.+)$', 'tokens');
-statistic_x = tokens{1}(1); statistic_x = statistic_x{:}; 
-statistic_y = tokens{1}(2); statistic_y = statistic_y{:}; 
+statistic_x = tokens{1}(1); statistic_x = statistic_x{:}
+statistic_y = tokens{1}(2); statistic_y = statistic_y{:}
 
 % One network per line.  Columns:  X, Y, FORMAT, WEIGHTS. 
 s = [];

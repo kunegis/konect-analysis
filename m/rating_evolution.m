@@ -63,3 +63,4 @@ for k = 1:length(ids)
 end
 
 konect_print(sprintf('plot/rating_evolution.a.%s.eps', network)); 
+

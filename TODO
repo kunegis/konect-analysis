@@ -1,21 +1,16 @@
 == Run ==
-* @statistic.{triangles,diam}
 
 == Fixes ==
-* m/check.m:  if #trianglefree is set, check that there are no triangles. :  should be violated in out.tntp-* 
-* @all:  add @rating_evolution{,2} 
-* weights.dblp-cite:  for networks like dblp-cite, there should be no
-  'weights' plot, because it is unweighted+directed, and the generated
-  plot just shows edge multiplicities 1 and 2, for reciprocated and
-  non-reciprocated edges.  Therefore, don't draw that combination. 
 * c/ifub.c:  at each step, use a timer-like progress indicator.  Same
   for triangles.c.  
 * plot/layout.*:  Create it in a way that does not destroy the previous
   version when an out-of-memory error occurs. 
 * sh/dep-network:  re-enable @ft.degree."$network" 
-* @network.wikilens-ratings:  no rule to build m/pa_compute_one.m,
-needed by dat/pa.wikilens-ratings.mat
-* @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
+* @network.wikilens-ratings:  reinsert 'pa' into PLOTS_TIME and fix this bug:  no rule to build m/pa_compute_one.m,
+needed by dat/pa.wikilens-ratings.mat  
+* reinsert 'inter' and 'inter2' into PLOTS_TIME, and fix this bug:
+** @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
+* run @all.test
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
@@ -95,6 +90,7 @@ sequential.
    axis:   skewness. 
 * plot:  degree vs local clustering coefficient for all nodes of one network
 * convert stuff from Makefile.old to Stu code 
+* plot all degree distributions (for one class) on a single plot.  
 
 == Hard == 
 * better graph visualization for the website 

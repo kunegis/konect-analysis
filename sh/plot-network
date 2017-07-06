@@ -1,0 +1,58 @@
+#! /bin/sh
+#
+# Output the plot-dependencies of a given network.
+#
+# PARAMETERS
+#	$network 
+#
+# INPUT FILES 
+#	PLOTS
+#	PLOTS_SQUARE
+#	PLOTS_ASYM
+#	PLOTS_TIME
+#	dat/NETWORKS_$attribute  for all attributes
+#
+
+set -e
+
+for PLOT in $(cat PLOTS) ; do
+	echo @"$PLOT"."$network"
+done
+
+# TODO:  use loop in the following 
+
+if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
+	for PLOT in $(cat PLOTS_SQUARE) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi
+
+if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
+	for PLOT in $(cat PLOTS_ASYM) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi
+
+if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
+	for PLOT in $(cat PLOTS_TIME) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi
+
+if grep -q '^'"$network"'$' dat/NETWORKS_NEGATIVE ; then
+	for PLOT in $(cat PLOTS_NEGATIVE) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi
+
+if grep -q '^'"$network"'$' dat/NETWORKS_TIME_NEGATIVE ; then
+	for PLOT in $(cat PLOTS_TIME_NEGATIVE) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi
+
+if grep -q '^'"$network"'$' dat/NETWORKS_NONUNWEIGHTED ; then
+	for PLOT in $(cat PLOTS_NONUNWEIGHTED) ; do 
+		echo @"$PLOT"."$network"
+	done
+fi

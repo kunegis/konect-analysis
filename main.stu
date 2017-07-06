@@ -37,7 +37,6 @@
 @test:   dat/check-meta @all.test;
 
 @all.$class:  [dat/dep.all.$class];
-
 >dat/dep.all.$class:  $[networks = dat/NETWORKS_CLASS_$class] $[SCATTERS]
 {
 	for network in $networks ; do
@@ -48,11 +47,12 @@
 	done
 }
 
-@network.$network:  @check.$network [dat/dep.network.$network]; 
+@network.$network:  [dat/dep.network.$network]; 
 
 >dat/dep.network.$network:	
 	sh/dep-network 
 	dat/dep.statistic.all.$network
+	dat/dep.plot.all.$network
 	STATISTICS
 	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
@@ -62,12 +62,12 @@
 
 @plot.$network: [dat/dep.plot.$network]; 
 
->dat/dep.plot.$network:	
-	sh/dep-network 
-	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
-	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
+>dat/dep.plot.all.$network:	
+	sh/plot-network
+	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME dat/NETWORKS_NEGATIVE dat/NETWORKS_TIME_NEGATIVE dat/NETWORKS_NONUNWEIGHTED
+	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
 {
-	plots_only=1 sh/dep-network 
+	sh/plot-network
 }
 
 #
@@ -181,6 +181,17 @@ dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 		| sh/sort-networks
 }
 
+# Everything except unweighted networks, i.e., everything for which edge
+# weights are non-trivial in some form. 
+>dat/NETWORKS_NONUNWEIGHTED:   <dat/NETWORKS  dat/NETWORKS_WEIGHTS_unweighted
+{
+	while IFS= read -r network ; do
+		if ! grep -E -q '^'"$network"'$' dat/NETWORKS_WEIGHTS_unweighted ; then
+			echo "$network" 
+		fi
+	done
+}
+
 >dat/NETWORKS_ASYMNEGATIVE:  
 	dat/NETWORKS_NEGATIVE dat/NETWORKS_ASYM
 	sh/intersect
@@ -193,6 +204,15 @@ dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 	sh/intersect
 {
 	sh/intersect dat/NETWORKS_NEGATIVE dat/NETWORKS_SQUARE
+}
+
+>dat/NETWORKS_TIME_NEGATIVE:  <dat/NETWORKS_NEGATIVE dat/NETWORKS_TIME
+{
+	while IFS= read -r network ; do
+		if grep -q -E '^'"$network"'$' dat/NETWORKS_TIME ; then
+			echo "$network"
+		fi
+	done
 }
 
 #
@@ -776,7 +796,12 @@ dat/statistic.triangles.$network = dat/statistic.triangles.simple~$network;
 dat/statistic.triangles.simple~$network:
 	dat/sg1.simple~$network
 	$[command = dat/dep.c.triangles.simple~$network] [dat/dep.c.triangles.simple~$network]
+	dat/NETWORKS_SQUARE	
 {
+	grep -E -q '^'"$network"'$' dat/NETWORKS_SQUARE || {
+		echo "*** $network:  Network must be unipartite to compute triangles"
+		exit 1
+	}
 	stu-utils/output-finally dat/statistic.triangles.simple~"$network" \
 		$command dat/sg1.simple~$network "${TMPDIR:-/tmp}"/c.triangles."$network".log
 }
@@ -1199,9 +1224,17 @@ plot/lorenz.a.$network.eps:
 # Weight distribution 
 #
 
+@weights:  [dat/dep.weights];
+>dat/dep.weights:  <dat/NETWORKS_NONUNWEIGHTED
+{
+	while IFS= read -r network ; do
+		echo @weights."$network"
+	done
+}
+
 @weights.$network
 plot/weights.a.$network.eps:  
-	m/weights_plot.m $[ -t MATLABPATH]
+	m/weights_plot.m $[-t MATLABPATH]
 	dat/data.$network.mat 
 {
 	 ./matlab m/weights_plot.m 
@@ -1974,20 +2007,10 @@ plot/degcc.a.$network.eps:
 
 @rating_evolution:  [dat/dep.rating_evolution]; 
 >dat/dep.rating_evolution:
-	<dat/NETWORKS
-	dat/NETWORKS_WEIGHTS_weighted
-	dat/NETWORKS_WEIGHTS_multiweighted
-	dat/NETWORKS_WEIGHTS_signed
-	dat/NETWORKS_WEIGHTS_multisigned
+	<dat/NETWORKS_NEGATIVE
 {
 	while IFS= read -r network ; do
-		if cat dat/NETWORKS_WEIGHTS_weighted \
-		       dat/NETWORKS_WEIGHTS_multiweighted \
-		       dat/NETWORKS_WEIGHTS_signed \
-		       dat/NETWORKS_WEIGHTS_multisigned |
-				grep -qE '^'"$network"'$' ; then
-			echo @rating_evolution."$network"
-		fi
+		echo @rating_evolution."$network"
 	done
 }
 
@@ -2003,16 +2026,10 @@ plot/rating_evolution.a.$network.eps:
 @rating_evolution2:  [dat/dep.rating_evolution2]; 
 >dat/dep.rating_evolution2:
 	<dat/NETWORKS_TIME
-	dat/NETWORKS_WEIGHTS_weighted
-	dat/NETWORKS_WEIGHTS_multiweighted
-	dat/NETWORKS_WEIGHTS_signed
-	dat/NETWORKS_WEIGHTS_multisigned
+	dat/NETWORKS_NEGATIVE
 {
 	while IFS= read -r network ; do
-		if cat dat/NETWORKS_WEIGHTS_weighted \
-		       dat/NETWORKS_WEIGHTS_multiweighted \
-		       dat/NETWORKS_WEIGHTS_signed \
-		       dat/NETWORKS_WEIGHTS_multisigned |
+		if cat dat/NETWORKS_NEGATIVE |
 				grep -qE '^'"$network"'$' ; then
 			echo @rating_evolution2."$network"
 		fi

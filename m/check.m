@@ -400,20 +400,28 @@ if tag_tournament
 end
 
 %
-% If the network is unipartite, there must be at least one triangle.  
+% If the network is unipartite, there must be at least one triangle,
+% except when #trianglefree is set, in which case the network must be
+% triangle-free.  For bipartite networks, #trianglefree must not be
+% used. 
 %
 
-if format ~= consts.BIP
-  if ~tag_trianglefree
-    n = max(max(T(:,1:2))); 
-    A = sparse(T(:,1), T(:,2), 1, n, n);
-    % Note:  the konect_statistic_triangles() takes care of ignoring
-    % multiple edges and loops. 
-    values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
-    assert(values(1) >= 1, '*** Unipartite network must have at least one triangle, except when #trianglefree is set');
+if format == consts.BIP
+  if tag_trianglefree
+    assert(0, '*** The tag #trianglefree must only be used with unipartite networks');
   end
 else
+  n = max(max(T(:,1:2))); 
+  A = sparse(T(:,1), T(:,2), 1, n, n);
+  % Note:  the konect_statistic_triangles() takes care of ignoring
+  % multiple edges and loops. 
+  values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
+  n_triangles = values(1);
   if tag_trianglefree
-    assert(0, '*** The tag #trianglefree must only be used with unipartite networks'); 
+    assert(n_triangles == 0, ...
+	   sprintf('*** Network must not contain triangles because #trianglefree is set, number of triangles = %u', ...
+		   n_triangles)); 
+  else
+    assert(n_triangles >= 1, '*** Unipartite network must have at least one triangle, except when #trianglefree is set');
   end
 end

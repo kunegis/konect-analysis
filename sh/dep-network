@@ -1,55 +1,40 @@
 #! /bin/sh
 #
-# Generate the dependencies of a network, excluding the @check
-# computation.  
+# Output the dependencies of a network. 
+#
+# The list of dependencies is output in the order in which it is build,
+# which is the same order as things are defined in the KONECT Handbook.  
 #
 # PARAMETERS
 #	$network
-#	$plots_only
+#	$plots_only	Non-empty when only plots should be output 
 #
 # STDOUT
 #	The list of dependencies in Stu format
 #
 # INPUT FILES
 #	dat/dep.statistic.all.$network
+#	dat/dep.plot.all.$network
 #	PLOTS
 #	PLOTS_SQUARE
 #	PLOTS_ASYM
 #	PLOTS_TIME
-#	dat/NETWORKS_$attribute
+#	dat/NETWORKS_$attribute  for all attributes
 #
 
 set -e
 
 #
-# Plots
+# Tests
 #
 
-for PLOT in $(cat PLOTS) ; do
-	echo @"$PLOT"."$network"
-done
+echo @check."$network"
 
-if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
-	for PLOT in $(cat PLOTS_SQUARE) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+#
+# Data files 
+#
 
-if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
-	for PLOT in $(cat PLOTS_ASYM) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
-
-if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
-	for PLOT in $(cat PLOTS_TIME) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
-
-if [ "$plots_only" ] ; then
-	exit 0
-fi
+echo @tsv."$network"
 
 #
 # Statistics
@@ -65,8 +50,7 @@ cat dat/dep.statistic.all."$network"
 ## echo @ft.degree."$network" 
 
 #
-# Data files 
+# Plots
 #
 
-echo @tsv."$network"
-
+cat dat/dep.plot.all."$network"

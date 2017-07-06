@@ -22,6 +22,10 @@ info = read_info(network);
 
 data = load(sprintf('dat/data.%s.mat', network)); 
 
+if info.weights == consts.UNWEIGHTED
+  error('*** Network must not be unweighted'); 
+end
+
 %
 % (b) Edge weight distribution
 %
@@ -118,3 +122,4 @@ end
 
 plot(0);
 konect_print(sprintf('plot/weights.a.%s.eps', network)); 
+
