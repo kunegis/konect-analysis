@@ -4,11 +4,11 @@
 % PARAMETERS 
 %	$network
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %
-% OUTPUT 
-%	plot/layout.{a}.$network.eps
+% OUTPUT FILES 
+%	plot/layout.tmp.a.$network.eps
 %
 
 network = getenv('network'); 
@@ -40,4 +40,4 @@ gplot2(A, X, 'o-', ...
 
 axis off; 
 
-konect_print(sprintf('plot/layout.a.%s.eps', network));
+konect_print(sprintf('plot/layout.tmp.a.%s.eps', network));

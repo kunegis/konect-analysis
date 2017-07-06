@@ -1,10 +1,7 @@
 == Run ==
+* @layout
 
 == Fixes ==
-* c/ifub.c:  at each step, use a timer-like progress indicator.  Same
-  for triangles.c.  
-* plot/layout.*:  Create it in a way that does not destroy the previous
-  version when an out-of-memory error occurs. 
 * sh/dep-network:  re-enable @ft.degree."$network" 
 * @network.wikilens-ratings:  reinsert 'pa' into PLOTS_TIME and fix this bug:  no rule to build m/pa_compute_one.m,
 needed by dat/pa.wikilens-ratings.mat  
@@ -91,6 +88,8 @@ sequential.
 * plot:  degree vs local clustering coefficient for all nodes of one network
 * convert stuff from Makefile.old to Stu code 
 * plot all degree distributions (for one class) on a single plot.  
+* c/ifub.c:  at each step, use a timer-like progress indicator.  Same
+  for triangles.c.  
 
 == Hard == 
 * better graph visualization for the website 

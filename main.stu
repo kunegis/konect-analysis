@@ -1153,7 +1153,10 @@ plot/layout.a.$network.eps:
 	dat/info.$network
 	$[ -t MATLABPATH]
 {
-	 ./matlab m/layout.m
+	rm -f plot/layout.tmp.a."$network".eps
+	if ./matlab m/layout.m ; then
+		mv -f plot/layout.tmp.a."$network".eps plot/layout.a."$network".eps
+	fi
 }
 
 >dat/dep.layout.class.$class:  dat/NETWORKS_CLASS_$class 
