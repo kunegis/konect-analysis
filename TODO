@@ -2,6 +2,7 @@
 * @statistic.{triangles,diam}
 
 == Fixes ==
+* m/check.m:  if #trianglefree is set, check that there are no triangles. :  should be violated in out.tntp-* 
 * @all:  add @rating_evolution{,2} 
 * weights.dblp-cite:  for networks like dblp-cite, there should be no
   'weights' plot, because it is unweighted+directed, and the generated
@@ -15,7 +16,6 @@
 * @network.wikilens-ratings:  no rule to build m/pa_compute_one.m,
 needed by dat/pa.wikilens-ratings.mat
 * @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
-* m/check.m:  if #trianglefree is set, check that there are no triangles. 
 
 == Easy new features ==
 * statistic:  pearson correlation between outdegree and indegree (logarithmic?) 
