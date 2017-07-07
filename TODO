@@ -1,4 +1,5 @@
 == Run ==
+* @scatter.volume.inoutassort 
 
 == Fixes ==
 * run @all.test and fix all bugs 
@@ -11,8 +12,6 @@ needed by dat/pa.wikilens-ratings.mat
 ** When done, re-insert @ft.degree.$network into @all 
 
 == Easy new features ==
-* statistic:  pearson correlation between outdegree and indegree
-  (logarithmic and not) 
 * statistic:  average edge multiplicity 
 * statistic:  median degree 
 * new statistic:  maximal egde multiplicity 
