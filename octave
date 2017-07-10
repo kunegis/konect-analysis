@@ -32,7 +32,6 @@ echo >&2 "   $LOG"
 
 #
 # -q	Quiet
-# -f	Don't read initialization files
 #
 # We'd like to usee --no-window-system but it isn't supported by Octave 3.0 
 #
@@ -46,7 +45,7 @@ OCTAVE_PATH="$OCTAVE_PATH:$MATLABPATH"
 OCTAVE_PATH="$DIR_SCRIPT:$OCTAVE_PATH"
 export OCTAVE_PATH
 exec 3>$LOG 
-ISPLAY= GNUTERM=dumb DISPLAY= octave -q -f -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
+ISPLAY= GNUTERM=dumb DISPLAY= octave -q -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
 	# The error message of Octave don't conform to any standard, and
 	# usually don't even show the location first.  Therefore, we
