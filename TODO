@@ -2,7 +2,7 @@
 * @network.arnetminer
 
 == Fixes ==
-* run @test and fix all bugs 
+* run @all.test and fix all bugs 
 
 == Easy new features ==
 * statistic:  average edge multiplicity 
@@ -103,6 +103,7 @@ needed by dat/pa.wikilens-ratings.mat
 * check.m:  check that the category of the network is one of the allowed
   categories (by comparing with a canonical source) 
 * NCP (network community plot) 
+* run @test
 
 == Hard == 
 * better graph visualization for the website 
