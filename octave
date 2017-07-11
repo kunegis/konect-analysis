@@ -28,7 +28,7 @@ for NAME in $(set | sed -e 's,=.*$,,;/^[a-z][a-z_-]*$/!d') ; do
 done
 
 export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
-echo >&2 "   $LOG"
+printf >&2 '\t%s\n' "$LOG"
 
 #
 # -q	Quiet

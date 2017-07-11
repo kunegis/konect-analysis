@@ -1,7 +1,8 @@
 == Run ==
+* @network.arnetminer
 
 == Fixes ==
-* run @all.test and fix all bugs 
+* run @test and fix all bugs 
 
 == Easy new features ==
 * statistic:  average edge multiplicity 
@@ -90,6 +91,18 @@ needed by dat/pa.wikilens-ratings.mat
 * @ft.degree:  make it work for all networks.  It fails for multiedge
   networks at the moment, due to a missing implementation.
 ** When done, re-insert @ft.degree.$network into @all 
+* check.m:  check that all tags used in each meta.* file are correct,
+  based on the current content of konect-handbook.tex 
+* check.m:  Check that all datasets have a bibtex citation that is present in konect.bib 
+* meta.* of all datasets:   remove all n3-* fields  (write a unit tests
+  to check that only allowed fields are present in meta.*)
+* run @check, and in particular dat/checkmeta
+* Instead of have m/konect_{label,data}_statistic.m, store that
+  information as metadata in each m/konect_statistic_$statistic.m file
+  separately
+* check.m:  check that the category of the network is one of the allowed
+  categories (by comparing with a canonical source) 
+* NCP (network community plot) 
 
 == Hard == 
 * better graph visualization for the website 
