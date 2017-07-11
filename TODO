@@ -1,15 +1,7 @@
 == Run ==
-* @scatter.volume.inoutassort 
 
 == Fixes ==
 * run @all.test and fix all bugs 
-* @network.wikilens-ratings:  reinsert 'pa' into PLOTS_TIME and fix this bug:  no rule to build m/pa_compute_one.m,
-needed by dat/pa.wikilens-ratings.mat  
-* reinsert 'inter' and 'inter2' into PLOTS_TIME, and fix this bug:
-** @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
-* @ft.degree:  make it work for all networks.  It fails for multiedge
-  networks at the moment, due to a missing implementation.
-** When done, re-insert @ft.degree.$network into @all 
 
 == Easy new features ==
 * statistic:  average edge multiplicity 
@@ -91,6 +83,13 @@ sequential.
 * plot all degree distributions (for one class) on a single plot.  
 * c/ifub.c:  at each step, use a timer-like progress indicator.  Same
   for triangles.c.  
+* @network.wikilens-ratings:  reinsert 'pa' into PLOTS_TIME and fix this bug:  no rule to build m/pa_compute_one.m,
+needed by dat/pa.wikilens-ratings.mat  
+* reinsert 'inter' and 'inter2' into PLOTS_TIME, and fix this bug:
+** @network.wikilens-ratings:  command for @inter.wikilens-ratings failed with exit status 127
+* @ft.degree:  make it work for all networks.  It fails for multiedge
+  networks at the moment, due to a missing implementation.
+** When done, re-insert @ft.degree.$network into @all 
 
 == Hard == 
 * better graph visualization for the website 
