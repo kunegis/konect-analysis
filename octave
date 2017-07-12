@@ -68,6 +68,6 @@ ISPLAY= GNUTERM=dumb DISPLAY= octave -q -W --no-gui --no-window-system "$SCRIPT"
 	exit 1
 }
 
-echo >&3 '=== FINISHED ==='
+echo >&3 '=== FINISHED SUCCESSFULLY ==='
 
 exit 0

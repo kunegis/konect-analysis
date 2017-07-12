@@ -158,6 +158,6 @@ grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log &&
 	exit 1
 }
 
-echo >>"$TMP_BASE".log '=== FINISHED ==='
+echo >>"$TMP_BASE".log '=== FINISHED SUCCESSFULLY ==='
 
 exit 0
