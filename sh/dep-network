@@ -14,6 +14,7 @@
 #
 # INPUT FILES
 #	dat/dep.statistic.all.$network
+#	dat/dep.decomposition.all.$network
 #	dat/dep.plot.all.$network
 #	PLOTS
 #	PLOTS_SQUARE
@@ -48,6 +49,12 @@ cat dat/dep.statistic.all."$network"
 
 # Disabled because it does not work for all network types (C code)
 ## echo @ft.degree."$network" 
+
+#
+# Decompositions
+#
+
+cat dat/dep.decomposition.all."$network"
 
 #
 # Plots

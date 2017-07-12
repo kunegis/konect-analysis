@@ -52,6 +52,7 @@
 >dat/dep.network.$network:	
 	sh/dep-network 
 	dat/dep.statistic.all.$network
+	dat/dep.decomposition.all.$network
 	dat/dep.plot.all.$network
 	STATISTICS
 	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
@@ -68,6 +69,21 @@
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
 {
 	sh/plot-network
+}
+
+>dat/dep.decomposition.all.$network:
+	DECOMPOSITIONS
+	DECOMPOSITIONS_ASYM
+	dat/NETWORKS_ASYM		
+{
+	for decomposition in $(cat DECOMPOSITIONS) ; do
+		echo @decomposition."$decomposition"."$network"
+	done
+	if grep -q -E '^'"$network"'$' dat/NETWORKS_ASYM ; then
+		for decomposition in $(cat DECOMPOSITIONS_ASYM) ; do
+			echo @decomposition."$decomposition"."$network"
+		done
+	fi
 }
 
 #
@@ -1148,30 +1164,33 @@ plot/bidd.a.$network.eps:
 #
 # Layout
 #
+# Note:  this is not in the default list of things to run because Matlab
+# segfaults for larger networks. 
+#
 
 @layout:  @layout.class.everything; 
+
 @layout.class.$class:  [dat/dep.layout.class.$class];
-
-@layout.$network
-plot/layout.a.$network.eps:  
-	m/layout.m
-	dat/data.$network.mat  
-	dat/info.$network
-	$[ -t MATLABPATH]
-{
-	rm -f plot/layout.tmp.a."$network".eps
-	if ./matlab m/layout.m ; then
-		mv -f plot/layout.tmp.a."$network".eps plot/layout.a."$network".eps
-	else
-		exit 1
-	fi
-}
-
 >dat/dep.layout.class.$class:  dat/NETWORKS_CLASS_$class 
 {
 	for network in $(cat dat/NETWORKS_CLASS_$class) ; do
 		echo @layout."$network"
 	done
+}
+
+@layout.$network
+plot/layout.a.$network.png:  
+	m/layout.m
+	dat/data.$network.mat  
+	dat/info.$network
+	$[ -t MATLABPATH]
+{
+	rm -f plot/layout.tmp.a."$network".png
+	if ./matlab m/layout.m ; then
+		mv -f plot/layout.tmp.a."$network".png plot/layout.a."$network".png
+	else
+		exit 1
+	fi
 }
 
 #

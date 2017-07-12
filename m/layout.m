@@ -8,7 +8,7 @@
 %	dat/data.$network.mat
 %
 % OUTPUT FILES 
-%	plot/layout.tmp.a.$network.eps
+%	plot/layout.tmp.a.$network.png
 %
 
 network = getenv('network'); 
@@ -32,12 +32,13 @@ elseif info.format == consts.BIP
 else
     error('*** Invalid format');
 end
-
+'aaa'
 X = fruchterman_reingold_force_directed_layout(A);
-
+'bbb'
 gplot2(A, X, 'o-', ...
        'MarkerFaceColor', [0 0 0], 'MarkerEdgeColor', [0 0 0]);
-
+'ccc'
 axis off; 
-
-konect_print(sprintf('plot/layout.tmp.a.%s.eps', network));
+'ddd'
+konect_print_bitmap(sprintf('plot/layout.tmp.a.%s.png', network));
+'eee'

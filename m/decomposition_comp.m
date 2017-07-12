@@ -5,12 +5,12 @@
 %	$network
 %	$decomposition
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %	dat/info.$network
 %	dat/meansi.$network.mat
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	dat/decomposition{,_map}.$decomposition.$network.mat
 %		.D	Eigenvalues / Singular value / Middle matrix
 %		.U	Eigenvectors or equivalent
