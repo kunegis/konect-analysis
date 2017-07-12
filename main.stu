@@ -34,7 +34,7 @@
 
 @all:   @all.everything;
 
-@test:   dat/check-meta @all.test;
+@test:  @all.test dat/check-meta;
 
 @all.$class:  [dat/dep.all.$class];
 >dat/dep.all.$class:  $[networks = dat/NETWORKS_CLASS_$class] $[SCATTERS]
@@ -1162,6 +1162,8 @@ plot/layout.a.$network.eps:
 	rm -f plot/layout.tmp.a."$network".eps
 	if ./matlab m/layout.m ; then
 		mv -f plot/layout.tmp.a."$network".eps plot/layout.a."$network".eps
+	else
+		exit 1
 	fi
 }
 

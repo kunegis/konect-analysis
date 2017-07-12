@@ -1,8 +1,7 @@
 == Run ==
-* @network.arnetminer
+* @all.test   completely 
 
 == Fixes ==
-* run @all.test and fix all bugs 
 
 == Easy new features ==
 * statistic:  average edge multiplicity 
