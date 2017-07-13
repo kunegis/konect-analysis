@@ -55,7 +55,7 @@
 	dat/dep.decomposition.all.$network
 	dat/dep.plot.all.$network
 	STATISTICS
-	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME
+	[dat/dep.NETWORKS_ALLGROUPS]
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
 {
 	sh/dep-network 
@@ -65,7 +65,8 @@
 
 >dat/dep.plot.all.$network:	
 	sh/plot-network
-	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME dat/NETWORKS_NEGATIVE dat/NETWORKS_TIME_NEGATIVE dat/NETWORKS_NONUNWEIGHTED
+	[dat/dep.NETWORKS_ALLGROUPS]
+##	dat/NETWORKS_SQUARE dat/NETWORKS_ASYM dat/NETWORKS_TIME dat/NETWORKS_NEGATIVE dat/NETWORKS_TIME_NEGATIVE dat/NETWORKS_NONUNWEIGHTED
 	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
 {
 	sh/plot-network
@@ -139,6 +140,13 @@ dat/CLASSES:  sh/classes dat/networks.asc
 
 dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 
+>dat/dep.NETWORKS_ALLGROUPS:   GROUPS
+{
+	for group in $(cat GROUPS) ; do
+		echo dat/NETWORKS_"$group"
+	done
+}
+
 >dat/NETWORKS_BIP:  dat/networks.asc
 {
 	grep -E " bip " dat/networks.asc | cut -f1 -d ' ' 
@@ -162,6 +170,26 @@ dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 >dat/NETWORKS_TIME:  dat/networks.asc
 {
 	grep ' t ' dat/networks.asc | cut -d ' ' -f 1
+}
+
+>dat/NETWORKS_MULTI:
+	<dat/NETWORKS
+	dat/NETWORKS_WEIGHTS_positive
+	dat/NETWORKS_WEIGHTS_multisigned
+	dat/NETWORKS_WEIGHTS_multiweighted
+	dat/NETWORKS_WEIGHTS_dynamic
+	dat/NETWORKS_WEIGHTS_multiposweighted
+{
+	while IFS= read -r network ; do
+		if grep -q -E '^'"$network"'$' \
+			dat/NETWORKS_WEIGHTS_positive \
+			dat/NETWORKS_WEIGHTS_multisigned \
+			dat/NETWORKS_WEIGHTS_multiweighted \
+			dat/NETWORKS_WEIGHTS_dynamic \
+			dat/NETWORKS_WEIGHTS_multiposweighted ; then
+			echo "$network"
+		fi
+	done
 }
 
 >dat/NETWORKS_CATEGORY_$category:  
@@ -636,10 +664,8 @@ plot/assortativity.a.$network.eps:
 @statistic.all.$network:  [dat/dep.statistic.all.$network];
 >dat/dep.statistic.all.$network:
 	sh/statistic-network
-	STATISTICS
-	# TODO with Stu 2.5:  read this using 'ATTRIBUTES', a list of all valid attributes 
-	dat/NETWORKS_NEGATIVE dat/NETWORKS_SQUARE dat/NETWORKS_SQUARENEGATIVE dat/NETWORKS_SYM dat/NETWORKS_TIME
-	dat/NETWORKS_ASYM dat/NETWORKS_ASYMNEGATIVE dat/NETWORKS_BIP
+	STATISTICS GROUPS
+	[dat/dep.NETWORKS_ALLGROUPS]
 {
 	sh/statistic-network
 }
@@ -662,25 +688,25 @@ plot/assortativity.a.$network.eps:
 
 # The dat/NETWORKS{,_*} file to read
 >dat/dep.dep.statistic.$statistic:
-	dat/statistic-attribute.$statistic
+	dat/statistic-group.$statistic
 {
-	attribute="$(cat dat/statistic-attribute.$statistic)"
-	if [ -z "$attribute" ] ; then
+	group="$(cat dat/statistic-group.$statistic)"
+	if [ -z "$group" ] ; then
 		echo dat/NETWORKS
 	else
-		echo "dat/NETWORKS_$attribute"
+		echo "dat/NETWORKS_$group"
 	fi
 }
 
 # The group used for the given statistic, or empty when all networks
 # should be used
->dat/statistic-attribute.$statistic:
-	sh/attribute [dat/dep.statistic-attribute.$statistic]
+>dat/statistic-group.$statistic:
+	sh/group [dat/dep.statistic-group.$statistic]
 {
-	sh/attribute "$statistic"
+	sh/group "$statistic"
 }
 
->dat/dep.statistic-attribute.$statistic:
+>dat/dep.statistic-group.$statistic:
 {
 	statistic_base="$(echo "$statistic" | sed -E -e 's,\+.+$,,')"
 	echo konect-toolbox/m/konect_statistic_"$statistic_base".m 
@@ -838,19 +864,19 @@ dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
 	dat/statistic.size.$network
 	dat/statistic.avgdegree.$network
 {
-	s="$(head -1 dat/statistic.twostars.$network)"
-	n="$(head -1 dat/statistic.size.$network)"
-	d="$(head -1 dat/statistic.avgdegree.$network)"
-	echo $s $n $d | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1)  }' 
+	s="$(head -1 dat/statistic.twostars."$network")"
+	n="$(head -1 dat/statistic.size."$network")"
+	d="$(head -1 dat/statistic.avgdegree."$network")"
+	echo "$s" "$n" "$d" | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1)  }' 
 }
 
 >dat/statistic.clusco.$network:
 	dat/statistic.triangles.$network
 	dat/statistic.twostars.$network
 {
-	t="$(head -1 dat/statistic.triangles.$network)"
-	s="$(head -1 dat/statistic.twostars.$network)"
-	echo $t $s | awk '{ printf "%.12f\n", 3 * $1 / $2 }' 
+	t="$(head -1 dat/statistic.triangles."$network")"
+	s="$(head -1 dat/statistic.twostars."$network")"
+	echo "$t" "$s" | awk '{ printf "%.12f\n", 3 * $1 / $2 }' 
 }
 
 dat/statistic.avgdegree.$network:
@@ -880,16 +906,16 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 	dat/statistic.maxdegree.$network
 	dat/statistic.avgdegree.$network
 {
-	d_max="$(head -1 dat/statistic.maxdegree.$network)"
-	d="$(head -1 dat/statistic.avgdegree.$network)"
-	echo $d_max $d | awk '{ printf "%.12f\n", $1 / $2 }' 
+	d_max="$(head -1 dat/statistic.maxdegree."$network")"
+	d="$(head -1 dat/statistic.avgdegree."$network")"
+	echo "$d_max" "$d" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
 >dat/statistic.coco.$network:
 	dat/statistic.coco.simple~$network
 {
 	coco="$(head -1 dat/statistic.coco.simple~$network)"
-	echo $coco 
+	echo "$coco"
 }
 
 >dat/statistic.coco.simple~$network:
@@ -902,18 +928,18 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 	dat/statistic.coco.$network
 	dat/statistic.size.$network
 {
-	coco="$(head -1 dat/statistic.coco.$network)"
-	n="$(head -1 dat/statistic.size.$network)"
-	echo $coco $n | awk '{ printf "%.12f\n", $1 / $2 }' 
+	coco="$(head -1 dat/statistic.coco."$network")"
+	n="$(head -1 dat/statistic.size."$network")"
+	echo "$coco" "$n" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
 >dat/statistic.cocorelinv.$network:
 	dat/statistic.coco.$network
 	dat/statistic.size.$network
 {
-	coco="$(head -1 dat/statistic.coco.$network)"
-	n="$(head -1 dat/statistic.size.$network)"
-	echo $coco $n | awk '{ printf "%.12f\n", 1.0 - ($1) / ($2 + 1) }' 
+	coco="$(head -1 dat/statistic.coco."$network")"
+	n="$(head -1 dat/statistic.size."$network")"
+	echo "$coco" "$n" | awk '{ printf "%.12f\n", 1.0 - ($1) / ($2 + 1) }' 
 }
 
 dat/statistic.meandist.$network:
@@ -928,6 +954,15 @@ dat/statistic.diameff$percentile.$network:
 	dat/hopdistr.$network
 {
 	 ./octave m/statistic_diameff.m 
+}
+
+>dat/statistic.avgmult.$network:
+	dat/statistic.volume.$network
+	dat/statistic.uniquevolume.$network
+{
+	m="$(head -1 dat/statistic.volume."$network")"
+	mu="$(head -1 dat/statistic.uniquevolume."$network")"
+	echo "$m" "$mu" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
 #
@@ -1067,33 +1102,33 @@ plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 
 >dat/NETWORKS.$statistic_x.$statistic_y.$class:
 	dat/NETWORKS_CLASS_$class
-	dat/statistic-attribute.$statistic_x
-	dat/statistic-attribute.$statistic_y
+	dat/statistic-group.$statistic_x
+	dat/statistic-group.$statistic_y
 {
 	networks="$(cat dat/NETWORKS_CLASS_$class)"
 
-	attribute_x="$(cat dat/statistic-attribute.$statistic_x)"
-	if [ "$attribute_x" ] 
+	group_x="$(cat dat/statistic-group.$statistic_x)"
+	if [ "$group_x" ] 
 	then
 		networks_old="$networks"
 		networks=
 		for network in $networks_old 
 		do
-			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_x" 
+			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$group_x" 
 			then
 				networks="$networks $network"
 			fi
 		done
 	fi
 
-	attribute_y="$(cat dat/statistic-attribute.$statistic_y)"
-	if [ "$attribute_y" ] 
+	group_y="$(cat dat/statistic-group.$statistic_y)"
+	if [ "$group_y" ] 
 	then
 		networks_old="$networks"
 		networks=
 		for network in $networks_old 
 		do
-			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute_y" 
+			if grep -Eq '^'"$network"'$' "dat/NETWORKS_$group_y" 
 			then
 				networks="$networks $network"
 			fi
@@ -1870,7 +1905,7 @@ plot/syngraphy.a.$network.eps:
 	awk 'BEGIN{ print '"$(tail -1 dat/statistic.threestars."$network")"' + '"$(tail -1 dat/statistic.fourstars."$network")"' + '"$(tail -1 dat/statistic.squares."$network")"' }'   
 }
 
-dat/statistic-attribute.syngraphyruntime = {SQUARE}
+dat/statistic-group.syngraphyruntime = {SQUARE}
 
 #
 # Out- vs indegree plot for directed networks

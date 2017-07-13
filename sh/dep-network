@@ -20,7 +20,7 @@
 #	PLOTS_SQUARE
 #	PLOTS_ASYM
 #	PLOTS_TIME
-#	dat/NETWORKS_$attribute  for all attributes
+#	dat/NETWORKS_$group  for all groups
 #
 
 set -e

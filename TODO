@@ -3,7 +3,6 @@
 == Fixes ==
 
 == Easy new features ==
-* statistic:  average edge multiplicity 
 * statistic:  median degree 
 * new statistic:  maximal egde multiplicity 
 * statistic:  number of loops

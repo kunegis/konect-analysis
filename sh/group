@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Get the attribute of a statistic, i.e., the string describing the set
+# Get the group of a statistic, i.e., the string describing the set
 # of networks that apply to it.
 #
 # If statistic is of the form [a-z]+\+[0-9]+, only the part left of the
@@ -13,7 +13,7 @@
 #	konect-toolbox/m/konect_statistic_$statistic_base.m 
 #
 # STDOUT
-#	The attribute is output.  Nothing is output when no attribute is
+#	The group name is output.  Nothing is output when no group is
 #	known. 
 #
 
@@ -40,11 +40,11 @@ suffix_regexp="$(echo "$suffix" | sed -E -e 's,\+,\\+,')"
 	# Take the first non-empty of the following two:
 
 	# Substatistic-specific group
-	sed -E -e 's,^.*ATTRIBUTE'"$suffix_regexp"'\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
+	sed -E -e 's,^.*GROUP'"$suffix_regexp"'\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
 	tr a-z A-Z
 
 	# Statistic-specific group
-	sed -E -e 's,^.*ATTRIBUTE\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
+	sed -E -e 's,^.*GROUP\s*:\s*([^ 	]+)\s*$,\1,;t;;d' "$file" | 
 	tr a-z A-Z
 } |
 sed -E -e '/^\s*$/d' | sed -E -e '1!d'

@@ -4,7 +4,8 @@
 #
 # INPUT FILES
 #	STATISTICS
-#	dat/NETWORKS_$attribute
+#	GROUPS
+#	dat/NETWORKS_$group  for all groups
 #	konect-toolbox/m/konect_statistic_$statistic.m
 #
 
@@ -13,12 +14,16 @@ for statistic in $(cat STATISTICS) ; do
 	compute=1
 	file="konect-toolbox/m/konect_statistic_$statistic.m"
 	if [ -r "$file" ] ; then
-		for attribute in $(<"$file" sed -E -e 's,^.*ATTRIBUTE\s*:,,;t;d' | tr a-z A-Z) ; do
-			if [ ! -r dat/NETWORKS_"$attribute" ] ; then 
-				echo >&2 "$file:  unknown attribute '$attribute'" 
+		for group in $(<"$file" sed -E -e 's,^.*GROUP\s*:,,;t;d' | tr a-z A-Z) ; do
+			if ! grep -q -E '^\s*'"$group"'\s*$' GROUPS ; then
+				echo >&2 "$file:  unknown group '$group' (1)" 
 				exit 1
 			fi
-			if ! grep -Eq '^'"$network"'$' "dat/NETWORKS_$attribute" ; then
+			if [ ! -r dat/NETWORKS_"$group" ] ; then 
+				echo >&2 "$file:  unknown group '$group' (2)" 
+				exit 1
+			fi
+			if ! grep -Eq '^'"$network"'$' "dat/NETWORKS_$group" ; then
 				compute=0
 			fi
 		done
