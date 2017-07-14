@@ -32,7 +32,7 @@
 # General targets
 #
 
-@all:   @all.everything;
+@all:   @all.test @all.everything;
 
 @test:  @all.test dat/check-meta;
 
