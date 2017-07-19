@@ -151,6 +151,11 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	fprintf(log_,
+		"diameter = %" PR_fua "\n"
+		"=== FINISHED SUCCESSFULLY ===\n",
+		delta);  
+	
 	fclose(log_);  /* Don't fail when the log file cannot be closed */ 
     
 	exit(0);
