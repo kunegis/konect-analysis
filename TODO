@@ -1,5 +1,7 @@
 == Run ==
-* @network.dimacs9-{NY,BAY,COL,FLA,NW,NE,CAL,LKS,E,W,CTR,USA}
+* @basic.[dat/NETWORKS_FAMILY_edit]
+* @network.[dat/NETWORKS_FAMILY_edit]
+
 
 == Fixes ==
 
