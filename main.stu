@@ -425,9 +425,6 @@ dat/info.$network:
 {
 	tmpfile="${TMPDIR:-/tmp}"/p.network-info."$network"
 	stu-utils/output-finally dat/info."$network" sh/network-info "$tmpfile"
-##	echo "tmpfile='$tmpfile'"
-##	sh/network-info <uni/out."$network" "$tmpfile" >"$tmpfile"
-##	cp "$tmpfile" dat/info."$network"
 }
 
 >dat/info.$TRANSFORM~$network:
