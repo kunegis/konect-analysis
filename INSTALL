@@ -1,4 +1,16 @@
-Follow these steps to run the KONECT Analysis. 
+The KONECT Analysis package is used at the University of Namur to
+compute everything shown on the KONECT website, as well as to compute
+many things needed in papers we write.  We also make the code available
+as free software, but that is secondary, and as a result a certain
+amount of tweeking is needed to make it run by other people.  In
+particular, we don't following version numbering or backward
+compatibility, so use it at your own risk.  KONECT itself is used as the
+unit test -- when KONECT works, this package works.  Also, we are not
+strictly compatible with various standards, and many parts of the
+package may fail when used with other compilers, libraries and
+environments than those that we use ourselves. 
+
+Follow these steps to run the KONECT Analysis:
 
 We'll assume you will put all code in the ~/work/ directory, and all
 data in the ~/data/ directory.  Change these paths accordingly in the

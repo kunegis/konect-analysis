@@ -32,14 +32,14 @@ single language is not the goal.
   (2) Some functions are weird, like max()/maximum().  Otherwise it has
   many improvements, in particular when compared to all the weird quirks
   of Matlab. 
-* Perl 5 (executed directly):  This is the perfect language when
-  processing text.  No questions asked.  
+* Perl 5 (executable files):  This is the perfect language when
+  processing text.  No questions asked.   
 * C99 (*.c):  The most memory efficient of all.  It is also the fastest
-  when implementing simple algorithms.  The compilation process is
-  complex and code tends to be very long, so we only use it for a few
-  high-importance but algorithmically simple analyses:  triangle count,
-  diameter, etc.  We have a complex system of compile-time type
-  choosing, which would probably be much easier to realize in C++. 
+  when implementing simple algorithms.  The code tends to be very long,
+  so we only use it for a few high-importance but algorithmically simple
+  analyses:  triangle count, diameter, etc.  We have a complex system of
+  compile-time type choosing, which would probably be much easier to
+  realize in C++.  
 
 See the file INSTALL for installation and usage instructions. 
 
@@ -77,4 +77,3 @@ The full text of the GPLv3 is found in the file COPYING.
 
 This software contains third-party software included in the directory
 lib/.  See there for the respective licenses and copyright information.
-
