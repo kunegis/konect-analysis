@@ -7,6 +7,8 @@ dat
 plot
 tex
 uni
+dat-*
+plot-*
 octave-workspace
 konect-toolbox
 konect-extr

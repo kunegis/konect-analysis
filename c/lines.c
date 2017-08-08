@@ -14,13 +14,13 @@
  *	$0 INPUT-FILE LOGFILE
  */ 
 
-#include "width__m__h"
-#include "width__u__h"
-#include "width__v__h"
-#include "width__w__h"
-#include "width__t__h"
+#include "width.ma.h"
+#include "width.ua.h"
+#include "width.va.h"
+#include "width.wa.h"
+#include "width.ta.h"
 
-#include "sgraph1_io.h"
+#include "sgraph1_io.a.h"
 
 int main(int argc, char **argv)
 {
@@ -31,9 +31,9 @@ int main(int argc, char **argv)
 
 	const char *const filename_sg1= argv[1];
 
-	struct sgraph1_reader r;
+	struct sgraph1_reader_a r;
 
-	if (0 > sgraph1_open_read(filename_sg1, &r, 0)) {
+	if (0 > sgraph1_open_read_a(filename_sg1, &r, 0)) {
 		exit(1); 
 	}
 
@@ -41,9 +41,9 @@ int main(int argc, char **argv)
 	   header */ 
 
 
-	const m_ft lines= r.h->m;
+	const ma_ft lines= r.h->m;
 
-	printf("%" PR_fm "\n", lines); 
+	printf("%" PR_fma "\n", lines); 
 
 	exit(0);
 }

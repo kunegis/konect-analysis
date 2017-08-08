@@ -6,13 +6,13 @@
  *    $0 SG1-FILE OUT-FILE
  */
 
-#include "width__m__h"
-#include "width__u__h"
-#include "width__v__h"
-#include "width__w__h"
-#include "width__t__h"
+#include "width.ma.h"
+#include "width.ua.h"
+#include "width.va.h"
+#include "width.wa.h"
+#include "width.ta.h"
 
-#include "sgraph1_io.h"
+#include "sgraph1_io.a.h"
 
 #include <stdio.h>
 
@@ -35,25 +35,25 @@ int main(int argc, char **argv)
 		exit(1); 
 	}
 
-	struct sgraph1_reader r;
+	struct sgraph1_reader_a r;
 
-	if (0 > sgraph1_open_read(filename_sg1, &r, 2)) {
+	if (0 > sgraph1_open_read_a(filename_sg1, &r, 2)) {
 		exit(1); 
 	}
 
-	if (0 > sgraph1_advise(&r, MADV_SEQUENTIAL)) {
+	if (0 > sgraph1_advise_a(&r, MADV_SEQUENTIAL)) {
 		perror(filename_sg1); 
 		exit(1);
 	}
 
 	assert(r.h->format == FORMAT_SYM);
 
-	for (u_ft u= 0;  u < r.h->n1;  ++u) {
+	for (ua_ft u= 0;  u < r.h->n1;  ++u) {
 
-		m_ft end= (u == r.h->n1 - 1) ? r.h->m : read_m(r.adj_to, u + 1);
-		for (m_ft i= read_m(r.adj_to, u);  i < end;  ++i) {
-			v_ft v= read_v(r.to, i);
-			fprintf(out, "%" PR_fu "\t%" PR_fv "\n", u + 1, v + 1); 
+		ma_ft end= (u == r.h->n1 - 1) ? r.h->m : read_ma(r.adj_to, u + 1);
+		for (ma_ft i= read_ma(r.adj_to, u);  i < end;  ++i) {
+			va_ft v= read_va(r.to, i);
+			fprintf(out, "%" PR_fua "\t%" PR_fva "\n", u + 1, v + 1); 
 		}
 	}
 
