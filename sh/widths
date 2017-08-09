@@ -117,14 +117,14 @@ my $ret_w = '-';
 if ($float_w) {
 	$ret_w = '5'; 
 } elsif ($signed_w) {
-	print STDERR "max_w = $max_w\n"; 
+##	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth(2 * $max_w); 
 	$ret_w = uc $ret_w; 
 	if ($ret_w eq "A" && $zero_w) {
 		$ret_w= 'B';
 	}
 } else { # Unsigned 
-	print STDERR "max_w = $max_w\n"; 
+##	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth($max_w);
 	if (!$zero_w && $ret_w eq "a") {
 		$ret_w = '-'; 

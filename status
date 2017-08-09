@@ -82,3 +82,4 @@ do
 	
 	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile_color"
 done				
+printf "%s\n" -
