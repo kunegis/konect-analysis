@@ -1782,8 +1782,8 @@ dat/download.tsv.$network.tar.bz2:
 
 	cd dat-tmp
 	pwd
-#	touch -- "$DATDIR"/download.tsv."$network".tar.bz2
-#	rm -- "$DATDIR"/download.tsv."$network".tar.bz2
+##	touch -- "$DATDIR"/download.tsv."$network".tar.bz2
+##	rm -- "$DATDIR"/download.tsv."$network".tar.bz2
 	tar -hcvj -f "$DATDIR"/download.tsv."$network".tar.bz2 "$network"
 	rm -Rf "dat-tmp/$network"
 }  
