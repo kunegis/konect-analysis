@@ -32,7 +32,7 @@
 # General targets
 #
 
-@all:   @all.test @all.everything;
+@all:  @www @handbook @all.test @all.everything;
 
 @test:  @all.test dat/check-meta;
 
@@ -647,6 +647,9 @@ plot/assortativity.a.$network.eps:
 #
 # Statistics
 #
+
+STATISTICS;
+dat/STATISTICS = STATISTICS; 
 
 @statistic:  [dat/dep.statistic];
 >dat/dep.statistic:  dat/NETWORKS STATISTICS
@@ -2098,3 +2101,10 @@ plot/rating_evolution2.c.$network.eps:
 {
 	./matlab m/rating_evolution2.m 
 }
+
+#
+# WWW
+#
+
+# Files that are needed for the WWW site 
+@www:  dat/STATISTICS;

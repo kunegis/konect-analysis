@@ -1,12 +1,12 @@
 == Run ==
-* @bidd
-* -f ~/work/network-category/analysis/
-* @basic.[dat/NETWORKS_FAMILY_edit]
-* @network.[dat/NETWORKS_FAMILY_edit]
+* @basic.[dat/NETWORKS_FAMILY.edit]
+* @network.[dat/NETWORKS_FAMILY.edit]
+* -j10 -f ~/work/network-category/analysis/
 
 == Fixes ==
 * bidd.uv:   When the red curve extends more to right than the green
   curve, the red curve is cut off.  This should not be. 
+* dat/NETWORKS* :  Use '.' instead of '_' for separation 
 
 == Easy new features ==
 * statistic:  median degree 
