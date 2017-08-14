@@ -1,7 +1,7 @@
 == Run ==
+* -f ~/work/network-category/analysis/
 * @basic.[dat/NETWORKS_FAMILY_edit]
 * @network.[dat/NETWORKS_FAMILY_edit]
-
 
 == Fixes ==
 
