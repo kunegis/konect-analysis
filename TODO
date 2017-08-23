@@ -107,6 +107,7 @@ needed by dat/pa.wikilens-ratings.mat
   categories (by comparing with a canonical source) 
 * NCP (network community plot) 
 * run @test
+* Use https://github.com/franktakes/teexgraph for the BoundingDiameter algorithm to compute the diameter 
 
 == Hard == 
 * better graph visualization for the website 
