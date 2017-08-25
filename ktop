@@ -3,8 +3,11 @@
 # Analogue to top(1) that shows KONECT processes.
 #
 
+set -e 
+
 while : ; do 
 	clear 
 	./status
-	sleep 90 || exit 1
+	printf "%s\n" -
+	sleep 90 
 done
