@@ -866,7 +866,7 @@ dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
 	s="$(head -1 dat/statistic.twostars."$network")"
 	n="$(head -1 dat/statistic.size."$network")"
 	d="$(head -1 dat/statistic.avgdegree."$network")"
-	echo "$s" "$n" "$d" | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1)  }' 
+	echo "$s" "$n" "$d" | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1 >= 0 ? $3 - 1 : 1)  }' 
 }
 
 >dat/statistic.clusco.$network:
