@@ -8,7 +8,7 @@
 %	dat/data.$network.mat
 %
 % OUTPUT 
-%	plot/bidd.[auv]{,x}.$network.dat
+%	plot/bidd.[auv]{,x}.$network.eps
 %		a/u/v - All / left / right
 %		"" / "x" - Normalized / non-normalized
 %
