@@ -10,6 +10,7 @@
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
 #	@network.$network	Build everything for one network
+#	@www			Build everything for the website (but not the website)
 #	@handbook		Everything used in the KONECT Handbook; this is
 # 				a good test that everything works 
 #
@@ -1510,6 +1511,9 @@ dat/outs.$network:
 # Decompositions
 #
 
+dat/DECOMPOSITIONS = DECOMPOSITIONS;
+DECOMPOSITIONS;
+
 @decomposition.$decomposition.$network:   plot/decomposition.a.$decomposition.$network.eps;
 
 dat/decomposition.$decomposition.$network.mat:  
@@ -2107,4 +2111,4 @@ plot/rating_evolution2.c.$network.eps:
 #
 
 # Files that are needed for the WWW site 
-@www:  dat/STATISTICS;
+@www:  dat/STATISTICS dat/DECOMPOSITIONS;
