@@ -9,7 +9,7 @@
 %	dat/distr.$decomposition.$network
 %
 % OUTPUT 
-%	plot/distr.[abcde].$decomposition.$network.eps
+%	plot/distr.$decomposition.[abf].$network.eps
 %		(a) Plain distribution
 %		(b) Stairs, i.e. transposed cumulative distribution
 %		(f) Cumulative distribution
@@ -58,7 +58,7 @@ ylabel(sprintf('%s_k', value_symbol), 'FontSize', font_size);
 
 set(gca, 'FontSize', font_size);
 
-konect_print(sprintf('plot/distr.b.%s.%s.eps', decomposition, network)); 
+konect_print(sprintf('plot/distr.%s.b.%s.eps', decomposition, network)); 
 
 %
 % (f) Cumulative
@@ -79,7 +79,7 @@ axis([begins(1) ends(end) 0 1]);
 
 grid on; 
 		
-konect_print(sprintf('plot/distr.f.%s.%s.eps', decomposition, network)); 
+konect_print(sprintf('plot/distr.%s.f.%s.eps', decomposition, network)); 
 
 
 %
@@ -98,4 +98,4 @@ if ax(4) > 0
     axis(ax); 
 end
 
-konect_print(sprintf('plot/distr.a.%s.%s.eps', decomposition, network)); 
+konect_print(sprintf('plot/distr.%s.a.%s.eps', decomposition, network)); 

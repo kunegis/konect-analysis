@@ -1053,13 +1053,14 @@ plot/statistic_time.full.a.$statistic.$network.eps:
 # Features, i.e., node-arrays 
 #
 
-@ft.$feature:  [dat/dep.ft.$feature];
->dat/dep.ft.$feature:   <dat/NETWORKS
-{
-	while IFS= read -r network ; do
-		echo @ft."$feature"."$network"
-	done
-}
+@ft.$feature:  @ft.$feature.[dat/NETWORKS]; 
+## [dat/dep.ft.$feature];
+## >dat/dep.ft.$feature:   <dat/NETWORKS
+## {
+## 	while IFS= read -r network ; do
+## 		echo @ft."$feature"."$network"
+## 	done
+## }
 
 @ft.$feature.$network:  dat/ft.$feature.$network; 
 
@@ -1620,7 +1621,7 @@ plot/pa.aa.$network.eps:
 #
 
 @distr.$decomposition.$network
-plot/distr.a.$decomposition.$network.eps:  
+plot/distr.$decomposition.a.$network.eps:  
 	m/distr_plot.m $[ -t MATLABPATH]
 	dat/distr.$decomposition.$network
 {
@@ -1642,7 +1643,7 @@ dat/distr.$decomposition.$network:
 #
 
 @map.$decomposition.$network
-plot/map.a.$decomposition.$network.eps:  
+plot/map.$decomposition.a.$network.eps:  
 	m/map.m $[ -t MATLABPATH]
 	dat/decomposition_map.$decomposition.$network.mat
 {

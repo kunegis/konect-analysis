@@ -10,7 +10,7 @@
 %	dat/decomposition_map.$decomposition.$network.mat
 %
 % OUTPUT 
-%	plot/map.[auv].$decomposition.$network.eps 
+%	plot/map.$decomposition.[aucv]{,x}.$network.eps 
 %
 
 size_plot = 30000;  % max number of points shown
@@ -166,12 +166,12 @@ if info.format ~= consts.BIP
     plot(u1, u2, '.', 'Color', colors_letter.a, 'MarkerSize', marker_size);
     axis off square; 
     axis([(mid_u1 - rad_u12), (mid_u1 + rad_u12), (mid_u2 - rad_u12), (mid_u2 + rad_u12)]);
-    konect_print(sprintf('plot/map.a.%s.%s.eps', decomposition, network)); 
+    konect_print(sprintf('plot/map.%s.a.%s.eps', decomposition, network)); 
 
     if enable_line
         % U line plot
         map_line(u1, u2, T, 1);
-        konect_print(sprintf('plot/map.ax.%s.%s.eps', decomposition, network)); 
+        konect_print(sprintf('plot/map.%s.ax.%s.eps', decomposition, network)); 
     end
 
     if enable_v
@@ -180,24 +180,24 @@ if info.format ~= consts.BIP
         plot(v1, v2, '.', 'Color', colors_letter.v, 'MarkerSize', marker_size);
         axis off square; 
         axis([(mid_v1 - rad_v12), (mid_v1 + rad_v12), (mid_v2 - rad_v12), (mid_v2 + rad_v12)]);
-        konect_print(sprintf('plot/map.b.%s.%s.eps', decomposition, network)); 
+        konect_print(sprintf('plot/map.%s.b.%s.eps', decomposition, network)); 
 
         if enable_line
             % V line plot
             map_line(v1, v2, T, 1);
-            konect_print(sprintf('plot/map.bx.%s.%s.eps', decomposition, network)); 
+            konect_print(sprintf('plot/map.%s.bx.%s.eps', decomposition, network)); 
         end
 
         % UV plot 
         plot(u1, v1, '.', 'Color', colors_letter.a, 'MarkerSize', marker_size);
         axis off square; 
         axis([(mid_u1 - rad_uv1), (mid_u1 + rad_uv1), (mid_v1 - rad_uv1), (mid_v1 + rad_uv1)]);
-        konect_print(sprintf('plot/map.c.%s.%s.eps', decomposition, network)); 
+        konect_print(sprintf('plot/map.%s.c.%s.eps', decomposition, network)); 
 
         if enable_line
             % UV line plot
             map_line(u1, v1, T, 1);
-            konect_print(sprintf('plot/map.cx.%s.%s.eps', decomposition, network)); 
+            konect_print(sprintf('plot/map.%s.cx.%s.eps', decomposition, network)); 
         end
     end
 
@@ -209,29 +209,29 @@ else % BIP
     plot(v1, v2, '.', 'Color', colors_letter.v, 'MarkerSize', marker_size);
     axis off square; 
     axis([(mid_uv1 - rad_uv12), (mid_uv1 + rad_uv12), (mid_uv2 - rad_uv12), (mid_uv2 + rad_uv12)]); 
-    konect_print(sprintf('plot/map.a.%s.%s.eps', decomposition, network)); 
+    konect_print(sprintf('plot/map.%s.a.%s.eps', decomposition, network)); 
 
     % Only left nodes
     plot(u1, u2, '.', 'Color', colors_letter.u, 'MarkerSize', marker_size);
     axis off square; 
     axis([(mid_u1 - rad_u12), (mid_u1 + rad_u12), (mid_u2 - rad_u12), (mid_u2 + rad_u12)]); 
-    konect_print(sprintf('plot/map.u.%s.%s.eps', decomposition, network)); 
+    konect_print(sprintf('plot/map.%s.u.%s.eps', decomposition, network)); 
 
     % Only right nodes
     plot(v1, v2, '.', 'Color', colors_letter.v, 'MarkerSize', marker_size);
     axis off square; 
     axis([(mid_v1 - rad_v12), (mid_v1 + rad_v12), (mid_v2 - rad_v12), (mid_v2 + rad_v12)]); 
-    konect_print(sprintf('plot/map.v.%s.%s.eps', decomposition, network)); 
+    konect_print(sprintf('plot/map.%s.v.%s.eps', decomposition, network)); 
 
     if enable_line
         % Line plot
         map_line([u1;v1], [u2;v2], T, 1);
-        konect_print(sprintf('plot/map.ax.%s.%s.eps', decomposition, network)); 
+        konect_print(sprintf('plot/map.%s.ax.%s.eps', decomposition, network)); 
     end
 
     if enable_line
         % Bipartite line plot 
         map_line([zeros(n1,1); (ones(n2,1) * 1.0 * mean(abs([u1;v1])))], [u1;v1], T, 1);
-        konect_print(sprintf('plot/map.ay.%s.%s.eps', decomposition, network)); 
+        konect_print(sprintf('plot/map.%s.ay.%s.eps', decomposition, network)); 
     end
 end

@@ -1,7 +1,6 @@
 degree
-lorenz
-hopdistr
 bidd
+lorenz
 distr.sym
 distr.sym-n
 distr.lap
@@ -10,3 +9,4 @@ map.lap
 map.stoch
 assortativity
 zipf
+hopdistr
