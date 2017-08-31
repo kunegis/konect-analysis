@@ -1,8 +1,8 @@
 == Run ==
-* -j10 -f ~/work/network-category/analysis/
-* @basic.[dat/NETWORKS_FAMILY.edit]
-* @network.[dat/NETWORKS_FAMILY.edit]
-* @network.ca-cit-*
+* @diadens
+* @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
+* @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
+* @network.ca-cit-* (once it's possible)
 
 == Fixes ==
 * bidd.uv:   When the red curve extends more to right than the green
