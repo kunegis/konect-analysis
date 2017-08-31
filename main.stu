@@ -92,6 +92,10 @@
 	cat PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
 }
 
+# Determines which datasets can be shown online or not 
+dat/allowed_src.txt = allowed_src.txt;
+allowed_src.txt
+
 #
 # Matlab
 #
@@ -1794,8 +1798,6 @@ dat/download.tsv.$network.tar.bz2:
 
 	cd dat-tmp
 	pwd
-##	touch -- "$DATDIR"/download.tsv."$network".tar.bz2
-##	rm -- "$DATDIR"/download.tsv."$network".tar.bz2
 	tar -hcvj -f "$DATDIR"/download.tsv."$network".tar.bz2 "$network"
 	rm -Rf "dat-tmp/$network"
 }  
