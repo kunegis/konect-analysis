@@ -10,7 +10,7 @@
 %	dat/statistic_time.full.avgdegree.$network
 %
 % OUTPUT 
-%	plot/diadens.$network.eps
+%	plot/diadens.a.$network.eps
 %
 
 font_size_label = 18; 
@@ -37,4 +37,4 @@ legend('boxoff');
 
 xlabel(konect_label_statistic('volume', 'matlab'), 'FontSize', font_size_label); 
 
-konect_print(sprintf('plot/diadens.%s.eps', network)); 
+konect_print(sprintf('plot/diadens.a.%s.eps', network)); 

@@ -1371,8 +1371,10 @@ plot/time_histogram_signed.a.$network.eps:
 # Diadens
 #
 
+@diadens:  @diadens.[dat/NETWORKS_TIME];
+
 @diadens.$network
-plot/diadens.$network.eps:  
+plot/diadens.a.$network.eps:  
 	m/diadens.m 
 	$[ -t MATLABPATH]
 	dat/stepsi.$network 
