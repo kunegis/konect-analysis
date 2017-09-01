@@ -756,6 +756,16 @@ dat/statistic.$statistic.$network:
 	sed -E -e "$K"'!d'
 }
 
+dat/statistic_time.$type.${statistic}+${K}.$network
+dat/statistic_time_runtime.$type.${statistic}+${K}.$network:
+	dat/statistic_time.$type.$statistic.$network
+	$[-t MATLABPATH] m/statistic_time_slice.m
+{
+	cp dat/statistic_time_runtime."$type"."${statistic}"."$network" \
+	   dat/statistic_time_runtime."$type"."${statistic}"+"${K}"."$network"
+	./octave m/statistic_time_slice.m 	
+}
+
 #
 # Basic statistics, which may have different implementations for simple~
 # networks.   
@@ -829,6 +839,14 @@ dat/statistic.volume.$transform~$network:
 }
 
 dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
+dat/statistic.tconflict.$network     = dat/statistic.cluscoall+5.$network;
+dat/statistic.fconflict.$network     = dat/statistic.conflict+2.$network;
+
+dat/statistic_time.full.tconflict.$network = dat/statistic_time.full.cluscoall+5.$network;
+dat/statistic_time.full.fconflict.$network = dat/statistic_time.full.conflict+2.$network;
+
+dat/statistic_time_runtime.full.tconflict.$network = dat/statistic_time_runtime.full.cluscoall+5.$network;
+dat/statistic_time_runtime.full.fconflict.$network = dat/statistic_time_runtime.full.conflict+2.$network;
 
 #
 # Statistics with special code (simple expressions or C programs) 
@@ -1043,7 +1061,7 @@ dat/statistic_time.full.$statistic.$network:
 plot/statistic_time.full.a.$statistic.$network.eps:   
 	m/statistic_time_plot.m 
 	$[ -t MATLABPATH]
-	dat/statistic_time.full.$statistic.$network 
+	dat/statistic_time_runtime.full.$statistic.$network 
 	dat/stepsi.$network
 {
 	type=full ./matlab m/statistic_time_plot.m 
