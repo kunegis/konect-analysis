@@ -839,13 +839,10 @@ dat/statistic.volume.$transform~$network:
 }
 
 dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
-dat/statistic.tconflict.$network     = dat/statistic.cluscoall+5.$network;
 dat/statistic.fconflict.$network     = dat/statistic.conflict+2.$network;
 
-dat/statistic_time.full.tconflict.$network = dat/statistic_time.full.cluscoall+5.$network;
 dat/statistic_time.full.fconflict.$network = dat/statistic_time.full.conflict+2.$network;
 
-dat/statistic_time_runtime.full.tconflict.$network = dat/statistic_time_runtime.full.cluscoall+5.$network;
 dat/statistic_time_runtime.full.fconflict.$network = dat/statistic_time_runtime.full.conflict+2.$network;
 
 #
