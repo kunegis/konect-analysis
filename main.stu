@@ -756,11 +756,12 @@ dat/statistic.$statistic.$network:
 	sed -E -e "$K"'!d'
 }
 
-dat/statistic_time.$type.${statistic}+${K}.$network
-dat/statistic_time_runtime.$type.${statistic}+${K}.$network:
-	dat/statistic_time.$type.$statistic.$network
+dat/statistic_time.full.${statistic}+${K}.$network
+dat/statistic_time_runtime.full.${statistic}+${K}.$network:
+	dat/statistic_time.full.$statistic.$network
 	$[-t MATLABPATH] m/statistic_time_slice.m
 {
+	export type=full
 	cp dat/statistic_time_runtime."$type"."${statistic}"."$network" \
 	   dat/statistic_time_runtime."$type"."${statistic}"+"${K}"."$network"
 	./octave m/statistic_time_slice.m 	
@@ -1031,7 +1032,8 @@ dat/statistic.oddcycles.$network:
 	done 
 }
 
-dat/statistic_time.full.$statistic.$network:  
+dat/statistic_time.full.$statistic.$network
+dat/statistic_time_runtime.full.$statistic.$network:  
 	m/statistic_time.m 
 	$[ -t MATLABPATH]
 	dat/data.$network.mat 
@@ -1058,7 +1060,7 @@ dat/statistic_time.full.$statistic.$network:
 plot/statistic_time.full.a.$statistic.$network.eps:   
 	m/statistic_time_plot.m 
 	$[ -t MATLABPATH]
-	dat/statistic_time_runtime.full.$statistic.$network 
+	dat/statistic_time_runtime.full.$statistic.$network dat/statistic_time.full.$statistic.$network 
 	dat/stepsi.$network
 {
 	type=full ./matlab m/statistic_time_plot.m 
