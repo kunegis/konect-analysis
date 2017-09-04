@@ -28,6 +28,8 @@ network = getenv('network');
 statistic = getenv('statistic'); 
 type = getenv('type');
 
+format long; 
+
 is_split = strcmp(type, 'split'); 
 
 consts = konect_consts(); 
