@@ -1,3 +1,4 @@
+layout
 degree
 bidd
 lorenz
@@ -10,3 +11,5 @@ map.stoch
 assortativity
 zipf
 hopdistr
+lybl
+delaunay

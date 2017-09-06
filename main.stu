@@ -1832,6 +1832,15 @@ dat-tmp;
 # Delaunay
 #
 
+@delaunay: @delaunay.[dat/NETWORKS];
+
+##>dat/dep.delaunay:  dat/NETWORKS
+##{
+##	for network in $(cat dat/NETWORKS) ; do
+##		echo @delaunay.$network
+##	done
+##}
+
 @delaunay.$network
 plot/delaunay.a.$network.png:
 	m/delaunay_plot.m 
@@ -1842,18 +1851,11 @@ plot/delaunay.a.$network.png:
 	 jvm_enable=1 ./matlab m/delaunay_plot.m 
 }
 
-@delaunay: [dat/dep.delaunay];
-
->dat/dep.delaunay:  dat/NETWORKS
-{
-	for network in $(cat dat/NETWORKS) ; do
-		echo @delaunay.$network
-	done
-}
-
 #
 # Lybl
 #
+
+@lybl: @lybl.[dat/NETWORKS]; 
 
 @lybl.$network:  plot/lybl.a.$network.png; 
 
@@ -1867,14 +1869,12 @@ plot/lybl.a.$network.png:
 	 ./matlab m/lybl.m 
 }
 
-@lybl: [dat/dep.lybl];
-
->dat/dep.lybl:  dat/NETWORKS
-{
-	for network in $(cat dat/NETWORKS) ; do
-		echo @lybl."$network"
-	done
-}
+##>dat/dep.lybl:  dat/NETWORKS
+##{
+##	for network in $(cat dat/NETWORKS) ; do
+##		echo @lybl."$network"
+##	done
+##}
 
 #
 # SynGraphy:  small synthetic networks generated to have similar

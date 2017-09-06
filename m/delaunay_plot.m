@@ -2,12 +2,12 @@
 % PARAMETERS 
 %	$network
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %	dat/info.$network
 %
-% OUTPUT 
-%	plot/delaunay.a.$network.eps
+% OUTPUT FILES 
+%	plot/delaunay.[abcdfgh].$network.eps
 %
 
 consts = konect_consts(); 
@@ -170,5 +170,3 @@ X = kamada_kawai_spring_layout(double(A(vv,vv) | A(vv,vv)'), ...
 
 delaunay_one(A(vv,vv), X); 
 konect_print_bitmap(sprintf('plot/delaunay.f.%s.png', network));
-
-

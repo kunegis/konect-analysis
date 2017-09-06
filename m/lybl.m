@@ -4,10 +4,13 @@
 % PARAMETERS 
 %	$network
 %
-% INPUT 
+% INPUT FILES
 %	dat/info.$network
 %	dat/data.$network.mat
 %	dat/decomposition_map.stoch.$network.mat
+%
+% OUTPUT FILES
+%	plot/lybl.[ab].$network.png
 %
 
 network = getenv('network');
@@ -80,14 +83,9 @@ for i = 1 : n
     Q(i,ii) = Q(i,ii) + Q_i_s_sim';
 end
 
-% B = exp(-0.5 * Q / (l^2));
-
 [U D] = konect_decomposition_stoch1(Q, 3, consts.ASYM, consts.WEIGHTED);
 
 U = U(:,2:3);
-
-%U(:,1) = U(:,1) - mean(U(:,1));
-%U(:,2) = U(:,2) - mean(U(:,2));
 
 delaunay_one(A, U);
 plot(0, 0, '+', 'MarkerSize', 300); 
@@ -96,7 +94,6 @@ konect_print_bitmap(sprintf('plot/lybl.a.%s.png', network));
 h1 = atan2(U(:,2), U(:,1)) / (2 * pi) + 0.5;
 dists = sum(U(:,1).^2 + U(:,2).^2, 2); 
 h3 = ones(n,1); 
-%h3 = dists ./ max(dists);
 hsv = [h1, ones(n,1), h3];
 rgb = hsv2rgb(hsv);
 

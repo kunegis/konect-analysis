@@ -6,8 +6,10 @@
 * @distr.{sym,sym-n,lap}
 * @map.{sym,lap,stoch}
 * @time_histogram 
+* @lybl
 
 == Fixes ==
+* delaunay:  many networks make errors for this
 
 == Easy new features ==
 * statistic:  median degree 
