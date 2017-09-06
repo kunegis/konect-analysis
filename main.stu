@@ -464,6 +464,7 @@ dat/info.$network:
 
 @check.$network:  dat/check.$network;
 
+# The file contains '0' or '1' depending on the test result.
 dat/check.$network:  
 	m/check.m $[ -t MATLABPATH]
 	uni/out.$network uni/meta.$network 
@@ -472,7 +473,7 @@ dat/check.$network:
 	dat/statistic.size.$network
 	dat/statistic.lines.$network
 {
-	./octave m/check.m && echo OK >dat/check.$network
+	./octave m/check.m 
 }
 
 >dat/dep.check:  $[networks = dat/NETWORKS]
