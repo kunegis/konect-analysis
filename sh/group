@@ -3,9 +3,6 @@
 # Get the group of a statistic, i.e., the string describing the set
 # of networks that apply to it.
 #
-# If statistic is of the form [a-z]+\+[0-9]+, only the part left of the
-# underscore is used. 
-#
 # INVOCATION 
 #	$0 $STATISTIC
 #
@@ -25,6 +22,7 @@ fi
 statistic="$1"
 
 statistic_base="$(echo "$statistic" | sed -E -e 's,\+[0-9]+$,,')"
+
 suffix="$(echo "$statistic" | sed -E -e 's,^.*\+,+,;t;d')"
 
 file="konect-toolbox/m/konect_statistic_$statistic_base.m"

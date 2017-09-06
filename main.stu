@@ -51,7 +51,7 @@
 @network.$network:  [dat/dep.network.$network]; 
 
 >dat/dep.network.$network:	
-	sh/dep-network 
+	sh/dep-network sh/statistic-network sh/plot-network 
 	dat/dep.statistic.all.$network
 	dat/dep.decomposition.all.$network
 	dat/dep.plot.all.$network
@@ -1833,13 +1833,6 @@ dat-tmp;
 #
 
 @delaunay: @delaunay.[dat/NETWORKS];
-
-##>dat/dep.delaunay:  dat/NETWORKS
-##{
-##	for network in $(cat dat/NETWORKS) ; do
-##		echo @delaunay.$network
-##	done
-##}
 
 @delaunay.$network
 plot/delaunay.a.$network.png:

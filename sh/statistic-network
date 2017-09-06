@@ -12,7 +12,7 @@
 for statistic in $(cat STATISTICS) ; do
 	# check whether the statistic must be computed for this network 
 	compute=1
-	file="konect-toolbox/m/konect_statistic_$statistic.m"
+	file=konect-toolbox/m/konect_statistic_"$(printf '%s' "$statistic" | tr + _)".m
 	if [ -r "$file" ] ; then
 		for group in $(<"$file" sed -E -e 's,^.*GROUP\s*:,,;t;d' | tr a-z A-Z) ; do
 			if ! grep -q -E '^\s*'"$group"'\s*$' GROUPS ; then
@@ -35,3 +35,4 @@ for statistic in $(cat STATISTICS) ; do
 		echo @statistic."$statistic"."$network"
 	fi
 done
+
