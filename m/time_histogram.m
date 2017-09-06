@@ -9,8 +9,9 @@
 %	uni/meta.$network
 % 
 % OUTPUT 
-%	plot/time_histogram.$network.eps
-%	plot/time_histogram.[b].$network.eps
+%	plot/time_histogram.[ab].$network.eps
+%		(a) Distribution density plot
+%		(b) Cumulative plot 
 %
 
 bins = 90; 
@@ -53,8 +54,6 @@ set(h, 'FaceColor', color_1, 'EdgeColor', color_1)
 xlabel('Time (t)', 'FontSize', font_size);
 ylabel('Growth rate [edges / year]', 'FontSize', font_size); 
 
-%min_timestamps = min(timestamps) 
-
 ax = axis(); 
 ax(1) = min(years);
 ax(2) = max(years);
@@ -64,7 +63,7 @@ set(gca, 'YGrid', 'on');
 
 time_xaxis(min(years), max(years));
 
-konect_print(sprintf('plot/time_histogram.%s.eps', network));   
+konect_print(sprintf('plot/time_histogram.a.%s.eps', network));   
 
 %
 % (b) Cumulative

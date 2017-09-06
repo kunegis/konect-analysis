@@ -1071,13 +1071,6 @@ plot/statistic_time.full.a.$statistic.$network.eps:
 #
 
 @ft.$feature:  @ft.$feature.[dat/NETWORKS]; 
-## [dat/dep.ft.$feature];
-## >dat/dep.ft.$feature:   <dat/NETWORKS
-## {
-## 	while IFS= read -r network ; do
-## 		echo @ft."$feature"."$network"
-## 	done
-## }
 
 @ft.$feature.$network:  dat/ft.$feature.$network; 
 
@@ -1339,23 +1332,16 @@ plot/weights.a.$network.eps:
 	sed -E -e 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
 }
 
+@time_histogram:  @time_histogram.[dat/NETWORKS_TIME];
+
 @time_histogram.$network
-plot/time_histogram.$network.eps:   
+plot/time_histogram.a.$network.eps
+plot/time_histogram.b.$network.eps:   
 	m/time_histogram.m $[ -t MATLABPATH]
 	dat/time.$network 
 	uni/meta.$network 
 {
 	 ./matlab m/time_histogram.m
-}
-
-@time_histogram:  [dat/dep.time_histogram];
-
->dat/dep.time_histogram:
-	dat/NETWORKS_TIME
-{
-	for network in $(cat dat/NETWORKS_TIME) ; do
-		echo @time_histogram."$network"
-	done
 }
 
 #
@@ -2139,4 +2125,3 @@ plot/rating_evolution2.c.$network.eps:
 
 # Files that are needed for the WWW site 
 @www:  dat/STATISTICS dat/DECOMPOSITIONS dat/PLOTS;
-
