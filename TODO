@@ -258,3 +258,4 @@ ohttp://arxiv.org/abs/cond-mat/000835
 * sg1:  for SYM, have an additional variant where each edge is only
   saved once (will make programs such as hyperanf and matrix
   decompositions use half of memory).   
+* Can Kemeny's constant be calculated for large networks?  Does it even make sense?
