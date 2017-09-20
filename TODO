@@ -1,6 +1,6 @@
 == Run ==
-* @distr.sym
-* @distr.{sym-n,lap}
+* @distr.sym-n
+* @distr.lap
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILT.ca-cit] (once it's possible)
