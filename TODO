@@ -1,5 +1,4 @@
 == Run ==
-* @distr.sym-n
 * @distr.lap
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
@@ -113,6 +112,10 @@ needed by dat/pa.wikilens-ratings.mat
 * run @test
 * Use https://github.com/franktakes/teexgraph for the BoundingDiameter algorithm to compute the diameter 
 * dat/NETWORKS* :  Use '.' instead of '_' for separation 
+* actual moments of the degree distribution
+** Root average squared degree, etc.
+* bidd, degree, cluscod:  Put the variable in question on Y axis, to
+  have the "higher curve means higher value" effect.
 
 == Hard == 
 * better graph visualization for the website 
