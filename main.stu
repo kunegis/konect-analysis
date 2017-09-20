@@ -1624,6 +1624,8 @@ plot/pa.aa.$network.eps:
 # Spectral distribution
 #
 
+@distr.$decomposition:  @distr.$decomposition.[dat/NETWORKS]; 
+
 @distr.$decomposition.$network
 plot/distr.$decomposition.a.$network.eps:  
 	m/distr_plot.m $[ -t MATLABPATH]
