@@ -10,6 +10,7 @@
 == Fixes ==
 * delaunay:  many networks make errors for this
 * reciprocity:  there are still some dat/statistic.recoprocity.* files for non-directed networks; they have NaN; remove them
+* re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
 
 == Easy new features ==
 * statistic:  median degree 
