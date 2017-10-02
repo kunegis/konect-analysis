@@ -5,12 +5,13 @@
 #
 # Important targets:
 #
-#	@all			Build everything
-#	@all.$class		Build everything for one class; e.g.,
+#	@all			Everything
+#	@all.$class		Everything for one class; e.g.,
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
-#	@network.$network	Build everything for one network
-#	@www			Build everything for the website (but not the website)
+#	@network.$network	Everything for one network
+#	@plot.$network		All plots for one network
+#	@www			Everything for the website (but not the website)
 #	@handbook		Everything used in the KONECT Handbook; this is
 # 				a good test that everything works 
 #
@@ -1864,13 +1865,6 @@ plot/lybl.a.$network.png:
 	 ./matlab m/lybl.m 
 }
 
-##>dat/dep.lybl:  dat/NETWORKS
-##{
-##	for network in $(cat dat/NETWORKS) ; do
-##		echo @lybl."$network"
-##	done
-##}
-
 #
 # SynGraphy:  small synthetic networks generated to have similar
 # characteristics as the actual networks. 
@@ -2120,4 +2114,7 @@ plot/rating_evolution2.c.$network.eps:
 #
 
 # Files that are needed for the WWW site 
-@www:  dat/STATISTICS dat/DECOMPOSITIONS dat/PLOTS;
+@www:
+	dat/STATISTICS dat/DECOMPOSITIONS dat/PLOTS dat/NETWORKS
+	@statistic.(size volume)
+;

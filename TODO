@@ -6,11 +6,14 @@
 * @time_histogram 
 * @lybl
 * @degree
+* datasets:  amazon0302 amazon0312 amazon0505 p2p-Gnutella04 p2p-Gnutella05 p2p-Gnutella06 p2p-Gnutella08 p2p-Gnutella09 p2p-Gnutella24 p2p-Gnutella25 p2p-Gnutella30 wikispeedia sx-stackoverflow sx-mathoverflow sx-superuser sx-askubuntu CollegeMsg higgs-twitter-social
 
 == Fixes ==
 * delaunay:  many networks make errors for this
 * reciprocity:  there are still some dat/statistic.recoprocity.* files for non-directed networks; they have NaN; remove them
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
+* clusco:  yahoo-song shows a clustering coefficient on its page, but should not because it's bipartite
+* Interaction category:  make sure all networks are bipartite, and move eventual unipartite networks to OnlineContact.
 
 == Easy new features ==
 * statistic:  median degree 
