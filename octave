@@ -1,11 +1,11 @@
 #! /bin/sh
 #
 # Execute an Octave script.  This is a thin wrapper around Octave that
-# is used in KONECT Analysis, but is not necessarily specific to it. 
+# is used in KONECT Analysis, but is not necessarily specific to it.  It
+# is also exported to other projects. 
 #
-# 	$1	FILENAME
-#
-# The given file is usually a *.m script. 
+# ARGUMENTS
+# 	$1	filename of script to execute, usually a .m script 
 #
 # OUTPUT FILES 
 #	error.log	Errors from all runs of this script are appended
@@ -31,9 +31,11 @@ export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
 printf >&2 '\t%s\n' "$LOG"
 
 #
+# Invocation of Octave:
+#
 # -q	Quiet
 #
-# We'd like to usee --no-window-system but it isn't supported by Octave 3.0 
+# Note: --no-window-system is not supported by Octave 3.0 
 #
 
 DIR_SCRIPT="$(dirname "$SCRIPT")"
@@ -45,12 +47,12 @@ OCTAVE_PATH="$OCTAVE_PATH:$MATLABPATH"
 OCTAVE_PATH="$DIR_SCRIPT:$OCTAVE_PATH"
 export OCTAVE_PATH
 exec 3>$LOG 
-ISPLAY= GNUTERM=dumb DISPLAY= octave -q -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
+GNUTERM=dumb DISPLAY= octave -q -W --no-gui --no-window-system "$SCRIPT" "$LOG" >&3 2>&1  ||
 {
-	# The error message of Octave don't conform to any standard, and
-	# usually don't even show the location first.  Therefore, we
-	# first extract all "location" lines, and then output the full
-	# log. 
+	# The error messages of Octave don't conform to a well-defined
+	# standard, and usually don't even show the location first.
+	# Therefore, we first extract all "location" lines, and then
+	# output the full log. 
 
 	<"$LOG" sed >&2 -E -e '
 		s|^error:\s*(.*) at line ([0-9]+), column ([0-9]+)\s*$|\1:\2:\3:|;t
