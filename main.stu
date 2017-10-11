@@ -2116,5 +2116,5 @@ plot/rating_evolution2.c.$network.eps:
 # Files that are needed for the WWW site 
 @www:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/PLOTS dat/NETWORKS
-	@statistic.(size volume)
+	@statistic.(size volume format weights)
 ;
