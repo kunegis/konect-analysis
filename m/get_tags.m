@@ -1,10 +1,10 @@
 %
 % Extract the tags from the metadata of a network. 
 %
-% RESULT 
+% RETURN VALUE 
 %	ret	A struct contain a field for every tag 
 %
-% PARAMETERS 
+% ARGUMENTS 
 %	meta	The metadata, as returned by read_meta() 
 %
 

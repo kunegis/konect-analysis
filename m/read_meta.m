@@ -1,9 +1,9 @@
 %
 % Read metadata from a data file.
 %
-% RESULT 
+% RETURN VALUE 
 %	A struct where field names are the keys and the values are
-%	strings. In key names, '-' is replaced with '_'. 
+%	strings. In key names, '-' is replaced with '_'.
 %
 % PARAMETERS 
 %	network		Network name
