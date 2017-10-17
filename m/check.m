@@ -31,6 +31,18 @@ tag_tournament      = isfield(tags, 'tournament')
 tag_trianglefree    = isfield(tags, 'trianglefree'); 
 tag_zeroweight      = isfield(tags, 'zeroweight')
 
+%
+% Check correctness of the meta file
+%
+
+mandatory_fields = {'name', 'code', 'category'};
+for i = 1 : length(mandatory_fields)
+  f = mandatory_fields{i}; 
+  if ~isfield(meta, f)
+    check_failed(sprintf('*** Missing field "%s" in meta file', f)); 
+  end
+end
+
 format = load(sprintf('dat/statistic.format.%s', network));
 weights = load(sprintf('dat/statistic.weights.%s', network));
 
@@ -459,4 +471,5 @@ else
 end
 
 check_successful();
+
 
