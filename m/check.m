@@ -274,7 +274,7 @@ else
     else
         if count_loops ~= 0
             i = find(loops); i = i(1); 
-            check_failed('*** Loop (%d,%d) detected although #loop is not set', i, i); 
+            check_failed(sprintf('*** Loop (%d,%d) detected although #loop is not set; total loop count = %u', i, i, count_loops)); 
         end
     end
 end
