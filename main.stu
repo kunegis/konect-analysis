@@ -1181,6 +1181,7 @@ plot/scatter.$type.$statistic_x.$statistic_y.$class.eps:
 
 tex/category-tabular.tex:
 	m/mkcategory.m $[ -t MATLABPATH]
+	konect-toolbox/m/konect_consts.m 
 	dat/NETWORKS
 	[tex/dep.category-tabular.tex]
 {
