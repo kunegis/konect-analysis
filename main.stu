@@ -1364,11 +1364,14 @@ plot/time_histogram_signed.a.$network.eps:
 
 >dat/dep.time_histogram_signed:
 	dat/NETWORKS_TIME
-	dat/NETWORKS_WEIGHTS_signed dat/NETWORKS_WEIGHTS_dynamic
+	dat/NETWORKS_WEIGHTS_(signed dynamic multisigned weighted multiweighted)
 {
 	for network in $(cat dat/NETWORKS_TIME) ; do
-		if grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
-			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ; then 
+		if      grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
+			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ||
+			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_multisigned ||
+			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_weighted ||
+			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_multiweighted ; then
 			echo @time_histogram_signed."$network"
 		fi
 	done

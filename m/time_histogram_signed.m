@@ -17,7 +17,12 @@ font_size = 22;
 color_pos = [0 1 0];
 color_neg = [1 0 0];
 
+consts = konect_consts(); 
+[negative, interval_scale] = konect_data_weights(); 
+
 network = getenv('network');
+
+weights = read_statistic('weights', network);  weights = weights(1) 
 
 T = load(sprintf('uni/out.%s', network));
 
@@ -41,8 +46,17 @@ years = T(:,4) / (365.25 * 24 * 60 * 60) + 1970;
 range_step = ((max(years)-min(years))/ bins)
 range = min(years) : range_step : max(years);
 
-i_pos = T(:,3) >= 0;
-i_neg = T(:,3) < 0; 
+if interval_scale(weights)
+  threshold = mean(T(:,3))
+else
+  threshold = 0;
+end
+
+% In the following, values equal to the threshold are counted as
+% positive.  This includes zero weights in non-interval scales when they
+% are allowed. 
+i_pos = T(:,3) >= threshold;
+i_neg = T(:,3) <  threshold; 
 
 nn_pos = histc(years(i_pos), range);
 nn_neg = histc(years(i_neg), range);
