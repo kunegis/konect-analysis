@@ -11,6 +11,8 @@
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.reciprocity
 * @time_histogram_signed 
+* @statistic.clusco
+* @bidd
 
 == Fixes ==
 * delaunay:  many networks make errors for this

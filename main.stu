@@ -1205,7 +1205,7 @@ tex/category-tabular.tex:
 @bidd.$network 
 plot/bidd.a.$network.eps:  
 	m/bidd.m m/bidd_one.m 
-	$[ -t MATLABPATH]
+	-t matlab $[ -t MATLABPATH]
 	dat/info.$network
 	dat/data.$network.mat 
 {
@@ -1247,6 +1247,8 @@ plot/layout.a.$network.png:
 #
 # Degree
 #
+
+@degree:  @degree.[dat/NETWORKS]; 
 
 @degree.$network:  plot/degree.a.$network.eps;
 

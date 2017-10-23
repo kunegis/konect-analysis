@@ -1,20 +1,20 @@
 %
 % Draw degree and edge weight distributions.
 %
-% ENVIRONMENT 
+% PARAMETERS 
 % 	$network		Name of dataset, e.g. "advogato"
 %	$ENABLE_POWER_LAW	"1" to draw the variants with power-law gamma estimation (flat)
 %	$ENABLE_POWER_LAW_2	"1" to draw the variants with power-law gamma estimation (complex)
 %	$ENABLE_POWER_LAW_3	"1" to draw the variants with power-law gamma estimation (p-values)
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %	dat/info.$network
 %	dat/statistic.power.$network	(only when $ENABLE_POWER_LAW is set)
 %	dat/statistic.power2.$network	(only when $ENABLE_POWER_LAW_2 is set)
 %	dat/statistic.power3.$network	(only when $ENABLE_POWER_LAW_3 is set)
 %
-% OUTPUT 
+% OUTPUT FILES 
 %
 %	plot/degree.[auv]{,x,y,3}.$network.eps	Degree distributions
 %		a - Degree of all nodes
@@ -173,9 +173,9 @@ elseif info.format == consts.BIP
 
     degree_print([ sparse(n1,n1) A_x ; A_x' sparse(n2,n2) ], power(1), xmin(1), pvalue(1), 'Degree (d)', 'a');
     konect_print(sprintf('plot/degree.a%s.%s.eps', suffix, network)); 
-    degree_print(A_x, power(2), xmin(2), pvalue(2), 'Degree (d)', 'u');
+    degree_print(A_x, power(2), xmin(2), pvalue(2), 'Left degree (d)', 'u');
     konect_print(sprintf('plot/degree.u%s.%s.eps', suffix, network)); 
-    degree_print(A_x', power(3), xmin(3), pvalue(3), 'Degree (d)', 'v');
+    degree_print(A_x', power(3), xmin(3), pvalue(3), 'Right degree (d)', 'v'); 
     konect_print(sprintf('plot/degree.v%s.%s.eps', suffix, network)); 
 
 end

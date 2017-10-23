@@ -5,12 +5,12 @@
 % distribution".  Normalization is just one aspect of it now. 
 %
 % PARAMETERS 
-%	$network
+%	$network	Internal name of the network 
 %
-% INPUT 
+% INPUT FILES 
 %	dat/data.$network.mat
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	plot/bidd.{a,u,v,uv}{,x}.$network.eps
 %		a/u/v/uv - All / left / right / overlay left and right
 %		"" / "x" - Normalized / non-normalized
@@ -47,8 +47,8 @@ if info.format ~= consts.SYM
         symbol_u = 'd^+';
         symbol_v = 'd^-';
     elseif info.format == consts.BIP
-        name_u = 'Degree';
-        name_v = 'Degree';
+        name_u = 'Left degree';
+        name_v = 'Right degree';
         symbol_u = 'd';
         symbol_v = 'd';
     end
@@ -67,8 +67,13 @@ if info.format ~= consts.SYM
 
     hold on; 
 
-    bidd_one(T(:,1), q, 1, 'u', 'Degree', 'd^{\pm}', 1);
-    bidd_one(T(:,2), q, 1, 'v', 'Degree', 'd^{\pm}', 2); 
+    if info.format == consts.ASYM
+      bidd_one(T(:,1), q, 1, 'u', 'Degree', 'd^{\pm}', 1);
+      bidd_one(T(:,2), q, 1, 'v', 'Degree', 'd^{\pm}', 2);
+    elseif info.format == consts.BIP
+      bidd_one(T(:,1), q, 1, 'u', 'Degree', 'd', 1);
+      bidd_one(T(:,2), q, 1, 'v', 'Degree', 'd', 2);
+    end
 
     if info.format == consts.ASYM
         legend('Outdegree', 'Indegree', 'Location', 'SouthWest'); 
