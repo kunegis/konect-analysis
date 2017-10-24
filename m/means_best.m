@@ -9,7 +9,6 @@ function [U V] = means_best(T, m, n, weights)
 [negative interval_scale] = konect_data_weights(); 
 
 if interval_scale(weights)
-%%if weights == consts.SIGNED | weights == consts.WEIGHTED | weights.
     [U V] = means_euv(T, m, n);
 else
     U = []; 

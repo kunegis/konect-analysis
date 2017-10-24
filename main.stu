@@ -940,9 +940,12 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 
 >dat/statistic.coco.$network:
 	dat/statistic.coco.simple~$network
+	dat/statistic.size.$network
 {
-	coco="$(head -1 dat/statistic.coco.simple~$network)"
-	echo "$coco"
+	coco=$(head -1 dat/statistic.coco.simple~"$network")
+	size=$(head -1 dat/statistic.size."$network")
+	coco_2=$(awk 'BEGIN{ printf("%s\n", '"$coco"' / '"$size"'); }')
+	printf '%s\n%s\n' "$coco" "$coco_2" 
 }
 
 >dat/statistic.coco.simple~$network:
@@ -1535,6 +1538,7 @@ dat/outs.$network:
 #
 
 dat/DECOMPOSITIONS = DECOMPOSITIONS;
+dat/DECOMPOSITIONS_ASYM = DECOMPOSITIONS_ASYM;
 DECOMPOSITIONS;
 
 @decomposition.$decomposition.$network:   plot/decomposition.a.$decomposition.$network.eps;
@@ -2121,6 +2125,6 @@ plot/rating_evolution2.c.$network.eps:
 
 # Files that are needed for the WWW site 
 @www:
-	dat/STATISTICS dat/DECOMPOSITIONS dat/PLOTS dat/NETWORKS
+	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	@statistic.(size volume format weights)
 ;

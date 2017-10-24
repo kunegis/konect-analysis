@@ -13,6 +13,8 @@
 * @time_histogram_signed 
 * @statistic.clusco
 * @bidd
+* @decomposition.diag
+* @statistic.coco 
 
 == Fixes ==
 * delaunay:  many networks make errors for this

@@ -8,12 +8,14 @@ avgdegreeasym
 maxdegree
 fill
 avgmult
+negativity
 twostars
 threestars
 fourstars
 coco
-cocorel
+coco+2
 cocos
+cocos+2
 assortativity
 inoutassort
 snorm
