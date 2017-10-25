@@ -27,7 +27,7 @@ end
 
 fprintf(OUT, '\\begin{tabular}{lllllr}\n');
 fprintf(OUT, '\\toprule\n');
-fprintf(OUT, ['& \\textbf{Category} & \\textbf{Vertices} & \\textbf{Edges} ' ...
+fprintf(OUT, ['& \\textbf{Internal name} & \\textbf{Vertices} & \\textbf{Edges} ' ...
               '& \\textbf{Properties} & \\textbf{Count} \\\\\n']);
 fprintf(OUT, '\\midrule\n');
 
@@ -73,7 +73,7 @@ end
 for i = 1 : k
     category= categories{i}
     fprintf(OUT, '\\textcolor{color%s}{$\\newmoon$} &', category); 
-    fprintf(OUT, '%s & ', category);
+    fprintf(OUT, '\\texttt{%s} & ', category);
     fprintf(OUT, '%s & %s & ', vertices.(category), edges.(category)); 
     for j = 1 : consts.FORMAT_COUNT
         symbol = symbols_format{j};

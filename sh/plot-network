@@ -7,52 +7,69 @@
 #
 # INPUT FILES 
 #	PLOTS
-#	PLOTS_SQUARE
-#	PLOTS_ASYM
-#	PLOTS_TIME
 #	dat/NETWORKS_$group  for all groups
 #
 
 set -e
 
-for PLOT in $(cat PLOTS) ; do
-	echo @"$PLOT"."$network"
+for plot in $(cat PLOTS) ; do
+
+	group=$(<GROUPS-PLOT sed -E -e 's,^\s*'"$plot"'\s+(\S+)\s*$,\1,;t;d')
+	[ "$group" ] || {
+		echo >&2 "*** Error: group for plot '$plot' not found in 'PLOTS'"
+		exit 1
+	}
+
+	# Sanity check:  the network must be in the ALL group
+	grep -q -E '^'"$network"'$' dat/NETWORKS_ALL || {
+		echo >&2 "*** Network '$network' must be in the 'ALL' group"
+		exit 1
+	}
+
+	[ -r dat/NETWORKS_"$group" ] || {
+		echo >&2 "*** Expected file 'dat/NETWORKS_$group' to exist because network '$network' is in group '$group' of plot '$plot'"
+		exit 1
+	}
+	
+	if grep -q -E '^'"$network"'$' dat/NETWORKS_"$group" ; then
+		echo @"$plot"."$network"
+	fi
 done
 
-# TODO:  use loop in the following 
+## # TODO:  use loop in the following 
 
-if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
-	for PLOT in $(cat PLOTS_SQUARE) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_SQUARE ; then
+## 	for PLOT in $(cat PLOTS_SQUARE) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi
 
-if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
-	for PLOT in $(cat PLOTS_ASYM) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_ASYM ; then
+## 	for PLOT in $(cat PLOTS_ASYM) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi
 
-if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
-	for PLOT in $(cat PLOTS_TIME) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_TIME ; then
+## 	for PLOT in $(cat PLOTS_TIME) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi
 
-if grep -q '^'"$network"'$' dat/NETWORKS_NEGATIVE ; then
-	for PLOT in $(cat PLOTS_NEGATIVE) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_NEGATIVE ; then
+## 	for PLOT in $(cat PLOTS_NEGATIVE) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi
 
-if grep -q '^'"$network"'$' dat/NETWORKS_TIME_NEGATIVE ; then
-	for PLOT in $(cat PLOTS_TIME_NEGATIVE) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_TIME_NEGATIVE ; then
+## 	for PLOT in $(cat PLOTS_TIME_NEGATIVE) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi
 
-if grep -q '^'"$network"'$' dat/NETWORKS_NONUNWEIGHTED ; then
-	for PLOT in $(cat PLOTS_NONUNWEIGHTED) ; do 
-		echo @"$PLOT"."$network"
-	done
-fi
+## if grep -q '^'"$network"'$' dat/NETWORKS_NONUNWEIGHTED ; then
+## 	for PLOT in $(cat PLOTS_NONUNWEIGHTED) ; do 
+## 		echo @"$PLOT"."$network"
+## 	done
+## fi

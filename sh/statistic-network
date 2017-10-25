@@ -2,6 +2,9 @@
 #
 # Output all statistic targets for $network.
 #
+# PARAMETERS
+#	$network 
+#
 # INPUT FILES
 #	STATISTICS
 #	GROUPS
@@ -11,24 +14,48 @@
 
 for statistic in $(cat STATISTICS) ; do
 	# check whether the statistic must be computed for this network 
+
+	echo >&2 "statistic='$statistic'" ## RM
 	compute=1
-	file=konect-toolbox/m/konect_statistic_"$(printf '%s' "$statistic" | tr + _)".m
-	if [ -r "$file" ] ; then
-		for group in $(<"$file" sed -E -e 's,^.*GROUP\s*:,,;t;d' | tr a-z A-Z) ; do
+	filename=konect-toolbox/m/konect_statistic_"$(echo "$statistic" | sed -E -e 's,\+.*$,,')".m
+	echo >&2 "filename='$filename'" ## RM
+	if [ -r "$filename" ] ; then
+		echo >&2 "file exists" ## RM
+		if echo "$statistic" | grep -q -F + ; then
+			key=GROUP+$(echo "$statistic" | sed -E -e 's,^.*\+,,')
+		else
+			key=GROUP
+		fi
+		echo >&2 "key='$key'" ## RM
+		key_esc=$(echo "$key" | sed -E -e 's,\+,\\+,g')
+		# The group must match for *both* the main statistic and
+		# the substatistic, hence the loop.  In most cases, only
+		# the main statistic declares a group, which then also
+		# applies to all substatistics.  In some cases,
+		# substatistics however have a more restricted group. 
+		for group in $(<"$filename" sed -E -e 's,^.*(GROUP|'"$key_esc"')\s*:,,;t;d' | tr a-z A-Z) ; do
+			echo >&2 "group='$group'" ## RM 
 			if ! grep -q -E '^\s*'"$group"'\s*$' GROUPS ; then
-				echo >&2 "$file:  unknown group '$group' (1)" 
+				echo >&2 "$filename:  unknown group '$group' (1)" 
 				exit 1
 			fi
 			if [ ! -r dat/NETWORKS_"$group" ] ; then 
-				echo >&2 "$file:  unknown group '$group' (2)" 
+				echo >&2 "$filename:  unknown group '$group' (2)" 
+
 				exit 1
 			fi
 			if ! grep -Eq '^'"$network"'$' "dat/NETWORKS_$group" ; then
+				echo >&2 "exclude" ## RM
 				compute=0
+			else
+				echo >&2 "include" ## RM
 			fi
 		done
 	else
-		: # Nothing.  Not all statistics have a file in the toolbox. 
+		:
+		# Nothing.  Not all statistics have a file in the
+		# toolbox.  Assume the statistic is computed in that
+		# case. 
 	fi
 		
 	if [ "$compute" != 0 ] ; then

@@ -1,9 +1,9 @@
-%
-% Plot the spectrum.
+% 
+% Generate the plots relative to one decomposition for one network. 
 % 
 % PARAMETERS 
-%	$network
-%	$decomposition
+%	$network	Internal name of network
+%	$decomposition	Internal name of decomposition
 %
 % INPUT FILES 
 %	dat/decomposition.$decomposition.$network.mat
@@ -21,10 +21,10 @@ linestyle = '-*';
 font_size = 22; 
 line_width = 3;
 
-network = getenv('network');
-decomposition = getenv('decomposition'); 
+network = getenv('network')
+decomposition = getenv('decomposition')
 
-data_decomposition = konect_data_decomposition(decomposition); 
+data_decomposition = konect_data_decomposition(decomposition) 
 
 info = read_info(network); 
 
@@ -139,28 +139,28 @@ end
 % (complex) Complex eigenvalue plot
 %
 
-if ~isreal(D)
-    close all; 
-    plot(real(spectrum_raw), imag(spectrum_raw), '.', 'MarkerSize', 15, 'Color', [.87 .52 0]); 
-    pbaspect([1 1 1]); 
-    ax = axis(); 
-    diff = max(max(real(spectrum_raw)) - min(real(spectrum_raw)), max(imag(spectrum_raw)) - min(imag(spectrum_raw))); 
-    diff = 1.15 * diff;
-    mid_x = 0.5 * (max(real(spectrum_raw)) + min(real(spectrum_raw)));
-    mid_y = 0.5 * (max(imag(spectrum_raw)) + min(imag(spectrum_raw)));
-    ax(1) = mid_x - 0.5 * diff;
-    ax(2) = mid_x + 0.5 * diff;
-    ax(3) = mid_y - 0.5 * diff;
-    ax(4) = mid_y + 0.5 * diff;
-    axis(ax); 
-    gridxy([0], [0], 'LineStyle', '--', 'Color', 0.7 * [1 1 1]); 
-    xlabel('Re(\lambda_i)', 'FontSize', font_size); 
-    ylabel('Im(\lambda_i)', 'FontSize', font_size); 
-    set(gca, 'FontSize', font_size); 
-    set(gca, 'XMinorTick', 'on');
-    set(gca, 'YMinorTick', 'on'); 
-    set(gca, 'TickLength', [0.05 0.05]); 
-    konect_print(sprintf('plot/decomposition.complex.%s.%s.eps', decomposition, network)); 
+if ~ data_decomposition.real
+  close all; 
+  plot(real(spectrum_raw), imag(spectrum_raw), '.', 'MarkerSize', 15, 'Color', [.87 .52 0]); 
+  pbaspect([1 1 1]); 
+  ax = axis(); 
+  diff = max(max(real(spectrum_raw)) - min(real(spectrum_raw)), max(imag(spectrum_raw)) - min(imag(spectrum_raw))); 
+  diff = 1.15 * diff;
+  mid_x = 0.5 * (max(real(spectrum_raw)) + min(real(spectrum_raw)));
+  mid_y = 0.5 * (max(imag(spectrum_raw)) + min(imag(spectrum_raw)));
+  ax(1) = mid_x - 0.5 * diff;
+  ax(2) = mid_x + 0.5 * diff;
+  ax(3) = mid_y - 0.5 * diff;
+  ax(4) = mid_y + 0.5 * diff;
+  axis(ax); 
+  gridxy([0], [0], 'LineStyle', '--', 'Color', 0.7 * [1 1 1]); 
+  xlabel('Re(\lambda_i)', 'FontSize', font_size); 
+  ylabel('Im(\lambda_i)', 'FontSize', font_size); 
+  set(gca, 'FontSize', font_size); 
+  set(gca, 'XMinorTick', 'on');
+  set(gca, 'YMinorTick', 'on'); 
+  set(gca, 'TickLength', [0.05 0.05]); 
+  konect_print(sprintf('plot/decomposition.complex.%s.%s.eps', decomposition, network)); 
 end
 
 %

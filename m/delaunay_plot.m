@@ -1,6 +1,8 @@
 %
+% Draw the Delaunay plot for one network. 
+%
 % PARAMETERS 
-%	$network
+%	$network	Internal name of the network
 %
 % INPUT FILES 
 %	dat/data.$network.mat
@@ -14,14 +16,16 @@ consts = konect_consts();
 
 network = getenv('network')
 
-info = read_info(network); 
-n = info.n;
+info = read_info(network)
+n = info.n 
 
 %
 % Actual graph 
 %
 data = load(sprintf('dat/data.%s.mat', network)); 
 T = data.T(:,1:2); 
+% Here, A is the adjacency matrix, even for bipartite networks.  A is
+% upper triangular. 
 if info.format ~= consts.BIP
     A = sparse(T(:,1), T(:,2), 1, n, n); 
     A = (A ~= 0);
@@ -33,6 +37,7 @@ else
     A = [ sparse(info.n1,info.n1), A; sparse(info.n2, info.n1+info.n2) ]; 
 end
 
+size_A = size(A)
 assert(size(A,1) == n); 
 assert(size(A,2) == n); 
 
@@ -40,17 +45,24 @@ assert(size(A,2) == n);
 % Original embedding
 %
 
+'original embedding'
+
 [U_l D_l V_l] = konect_decomposition_stoch1(A, 3, consts.SYM, ...
                                             consts.UNWEIGHTED); 
 
-if info.format ~= consts.BIP
+size_U_l = size(U_l)
+size_V_l = size(V_l)
+
+%% if info.format ~= consts.BIP
     x = U_l(:,2);
     y = U_l(:,3); 
-else
-    x = [ U_l(:,2); V_l(:,2)]; 
-    y = [ U_l(:,3); V_l(:,3)]; 
-end
+%% else
+%%     x = [ U_l(:,2); V_l(:,2)]; 
+%%     y = [ U_l(:,3); V_l(:,3)]; 
+%% end
 
+size_x = size(x)
+size_y = size(y)
 assert(size(x,1) == n);
 assert(size(y,1) == n);
 assert(size(x,2) == 1);
@@ -61,6 +73,9 @@ U = [ x y ];
 %
 % Original drawing
 %
+
+'original drawing'
+
 delaunay_one(A, U);
 konect_print_bitmap(sprintf('plot/delaunay.b.%s.png', network));
 
@@ -91,7 +106,7 @@ A_d = triu(A_d);
 %
 % Drawing of Delaunay triangulation on original embedding 
 %
-
+'c'
 delaunay_one(A_d, U);
 konect_print_bitmap(sprintf('plot/delaunay.c.%s.png', network));
 
@@ -105,21 +120,21 @@ V = V(:,2:3);
 %
 % Stretched Delaunay drawing
 %
-
+'d'
 delaunay_one(A_d, V);
 konect_print_bitmap(sprintf('plot/delaunay.d.%s.png', network));
 
 %
 % Delaunay drawing
 %
-
+'a'
 delaunay_one(A, V); 
 konect_print_bitmap(sprintf('plot/delaunay.a.%s.png', network));
 
 %
 % Convex hull of Delaunay triangulation 
 %
-
+'convex hull'
 k = convhull(V(:,1), V(:,2));
 
 %
@@ -145,7 +160,7 @@ end
 % Drawing based on uniformized Delaunay triangulation, showing
 % original graph 
 %
-
+'g'
 delaunay_one(A, V_e);
 konect_print_bitmap(sprintf('plot/delaunay.g.%s.png', network));
 
@@ -153,16 +168,18 @@ konect_print_bitmap(sprintf('plot/delaunay.g.%s.png', network));
 % Drawing based on uniformized Delaunay triangulation, showing
 % the Delaunay triangulation
 %
-
+'h'
 delaunay_one(A_d, V_e);
 konect_print_bitmap(sprintf('plot/delaunay.h.%s.png', network));
 
 %exit(0);
 
 %
-% + Layout; this is not scalable 
+% + Layout; this is not scalable  (therefore disabled)
 %
 
+if 0 
+'f'
 v = konect_connect_square(A);
 vv = find(v); 
 X = kamada_kawai_spring_layout(double(A(vv,vv) | A(vv,vv)'), ...
@@ -170,3 +187,5 @@ X = kamada_kawai_spring_layout(double(A(vv,vv) | A(vv,vv)'), ...
 
 delaunay_one(A(vv,vv), X); 
 konect_print_bitmap(sprintf('plot/delaunay.f.%s.png', network));
+end
+

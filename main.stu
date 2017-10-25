@@ -57,8 +57,9 @@
 	dat/dep.decomposition.all.$network
 	dat/dep.plot.all.$network
 	STATISTICS
-	[dat/dep.NETWORKS_ALLGROUPS]
-	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
+	dat/NETWORKS_[GROUPS]
+##	[dat/dep.NETWORKS_ALLGROUPS]
+	PLOTS ##PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
 {
 	sh/dep-network 
 }
@@ -67,8 +68,9 @@
 
 >dat/dep.plot.all.$network:	
 	sh/plot-network
-	[dat/dep.NETWORKS_ALLGROUPS]
-	PLOTS PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
+	dat/NETWORKS_[GROUPS]
+##	[dat/dep.NETWORKS_ALLGROUPS]
+	PLOTS ##PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
 {
 	sh/plot-network
 }
@@ -88,10 +90,11 @@
 	fi
 }
 
->dat/PLOTS:  PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
-{
-	cat PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
-}
+dat/PLOTS = PLOTS; 
+## >dat/PLOTS:  PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
+## {
+## 	cat PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
+## }
 
 # Determines which datasets can be shown online or not 
 dat/allowed_src.txt = allowed_src.txt;
@@ -119,7 +122,7 @@ allowed_src.txt
 }
 
 #
-# List of networks
+# List of networks (misc) and related lists
 # 
 
 >dat/NETWORKS:  <dat/networks.asc
@@ -143,6 +146,33 @@ allowed_src.txt
 	sh/mkdatasetlist
 }
 
+>dat/CATEGORIES:    uni/meta.[dat/NETWORKS]
+{
+	cd uni
+	ls -1U | grep -E '^meta\.' | xargs cat | sed -E -e 's,^\s*category\s*:\s*(\S+)\s*,\1,;t;d' | sort -u
+}
+
+>dat/NETWORKS_CATEGORY_$category:  
+	sh/category <dat/NETWORKS
+{
+	sh/category
+}
+
+# List of networks in each weight class.  $WEIGHTS is the weights (in all-lowercase). 
+>dat/NETWORKS_WEIGHTS_$weights:  
+	dat/networks.asc
+{
+	expr "$weights" : '[a-z]*' >/dev/null || {
+		echo >&2 "*** Weights '$weights' must be all lowercase"
+		exit 1
+	}
+	grep -F " $weights " dat/networks.asc | cut -d ' ' -f 1 
+}
+
+#
+# Lists of networks by class
+#
+
 dat/CLASSES:  sh/classes dat/networks.asc
 {
 	sh/classes
@@ -150,12 +180,18 @@ dat/CLASSES:  sh/classes dat/networks.asc
 
 dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 
->dat/dep.NETWORKS_ALLGROUPS:   GROUPS
-{
-	for group in $(cat GROUPS) ; do
-		echo dat/NETWORKS_"$group"
-	done
-}
+#
+# Lists of networks by groups
+#
+
+dat/NETWORKS_ALL = dat/NETWORKS; 
+
+## >dat/dep.NETWORKS_ALLGROUPS:   GROUPS
+## {
+## 	for group in $(cat GROUPS) ; do
+## 		echo dat/NETWORKS_"$group"
+## 	done
+## }
 
 >dat/NETWORKS_BIP:  dat/networks.asc
 {
@@ -200,23 +236,6 @@ dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 			echo "$network"
 		fi
 	done
-}
-
->dat/NETWORKS_CATEGORY_$category:  
-	sh/category <dat/NETWORKS
-{
-	sh/category
-}
-
-# List of networks in each weight class.  $WEIGHTS is the weights (in all-lowercase). 
->dat/NETWORKS_WEIGHTS_$weights:  
-	dat/networks.asc
-{
-	expr "$weights" : '[a-z]*' >/dev/null || {
-		echo >&2 "*** Weights '$weights' must be all lowercase"
-		exit 1
-	}
-	grep -F " $weights " dat/networks.asc | cut -d ' ' -f 1 
 }
 
 # Networks that allow negative edges 
@@ -660,7 +679,9 @@ plot/assortativity.a.$network.eps:
 # Statistics
 #
 
+# The complete list of statistics, including substatistics of relevance 
 STATISTICS;
+
 dat/STATISTICS = STATISTICS; 
 
 @statistic:  [dat/dep.statistic];
@@ -676,7 +697,8 @@ dat/STATISTICS = STATISTICS;
 >dat/dep.statistic.all.$network:
 	sh/statistic-network
 	STATISTICS GROUPS
-	[dat/dep.NETWORKS_ALLGROUPS]
+	dat/NETWORKS_[GROUPS]
+##	[dat/dep.NETWORKS_ALLGROUPS]
 {
 	sh/statistic-network
 }
@@ -2126,5 +2148,6 @@ plot/rating_evolution2.c.$network.eps:
 # Files that are needed for the WWW site 
 @www:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
+	dat/CATEGORIES
 	@statistic.(size volume format weights)
 ;

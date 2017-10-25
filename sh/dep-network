@@ -16,11 +16,6 @@
 #	dat/dep.statistic.all.$network
 #	dat/dep.decomposition.all.$network
 #	dat/dep.plot.all.$network
-#	PLOTS
-#	PLOTS_SQUARE
-#	PLOTS_ASYM
-#	PLOTS_TIME
-#	dat/NETWORKS_$group  for all groups
 #
 
 set -e
@@ -46,9 +41,6 @@ cat dat/dep.statistic.all."$network"
 #
 # Features
 #
-
-# Disabled because it does not work for all network types (C code)
-## echo @ft.degree."$network" 
 
 #
 # Decompositions
