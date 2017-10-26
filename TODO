@@ -1,7 +1,6 @@
 == Run ==
-* ...@map.lap
-* @check 
-* @network.slashdot-zoo 
+* ...@check 
+* @network.slashdot-zoo (because we show it off)
 * @network.twitter (because we show it off)
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
@@ -128,6 +127,7 @@ needed by dat/pa.wikilens-ratings.mat
 ** Root average squared degree, etc.
 * bidd, degree, cluscod:  Put the variable in question on Y axis, to
   have the "higher curve means higher value" effect.
+* scatter all edge by the degree of their two connected nodes
 
 == Hard == 
 * better graph visualization for the website 

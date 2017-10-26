@@ -9,8 +9,8 @@
 %	uni/out.$network
 %
 % OUTPUT FILES
-%	dat/check.$network	'1' or '0' depending on test result
-%	dat/check_error.$network	Error message, if failed 
+%	dat/check.$network		'1' or '0' depending on test result
+%	dat/check_error.$network	Error message, if failed ; on success, the file is removed 
 %
 
 network = getenv('network');
@@ -471,5 +471,3 @@ else
 end
 
 check_successful();
-
-
