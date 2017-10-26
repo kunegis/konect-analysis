@@ -153,7 +153,7 @@ allowed_src.txt
 }
 
 >dat/NETWORKS_CATEGORY_$category:  
-	sh/category <dat/NETWORKS
+	sh/category <dat/NETWORKS uni/meta.[dat/NETWORKS]
 {
 	sh/category
 }
@@ -2145,9 +2145,10 @@ plot/rating_evolution2.c.$network.eps:
 # WWW
 #
 
-# Files that are needed for the WWW site 
+# Files that are needed for the WWW site built by the konect-www package 
 @www:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	dat/CATEGORIES
 	@statistic.(size volume format weights)
+	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
 ;
