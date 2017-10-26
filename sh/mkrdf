@@ -1,3 +1,5 @@
+DEPRECATED
+
 #! /usr/bin/perl
 #
 # Create RDF data for a given network.
@@ -23,7 +25,7 @@ my $w_simple= 1;
 my $metafile= readMeta($network);
 my %mfd= %$metafile;
 
-print "# this file is part of the KONECT project: http://konect.uni-koblenz.de\n";
+print "# this file is part of the KONECT project: http://konect.cc\n";
 
 my $i=1;
 while($mfd{"n3-comment-$i"}){
@@ -32,7 +34,7 @@ while($mfd{"n3-comment-$i"}){
 }
 
 print "\@prefix void: <http://rdfs.org/ns/void#> .\n";
-print "\@prefix konect_networks: <http://konect.uni-koblenz.de/networks/> .\n";
+print "\@prefix konect_networks: <http://konect.cc/networks/> .\n";
 print "\@prefix dcterms: <http://purl.org/dc/terms/> .\n";
 print "\@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n";
 

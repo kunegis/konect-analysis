@@ -62,14 +62,14 @@ If you analyse datasets from KONECT, you can get the files on the KONECT
 website by following the "TSV" download link.  For instance, you can get
 the files for the 'enron' dataset at
 
-http://konect.uni-koblenz.de/networks/enron
+http://konect.cc/networks/enron
 
 If you want to analyse your own dataset, you must create these two files
 for each of your dataset.  The exact format of these two files is
 described in the KONECT Handbook, in Section 9 (File Formats).  The
 KONECT Handbook is available here:
 
-http://konect.uni-koblenz.de/downloads/konect-handbook.pdf
+https://github.com/kunegis/konect-handbook/blob/master/konect-handbook.pdf
 
 (4) Create plot/, dat/, and tex/
 

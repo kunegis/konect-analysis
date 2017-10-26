@@ -1,7 +1,7 @@
 This is the network analysis component of the KONECT project (Koblenz
 Network Collection) by Jérôme Kunegis at the University of Namur.
 
-http://konect.uni-koblenz.de/
+http://konect.cc/
 
 This package allows to run analyses of KONECT networks in parallel,
 based on using the Stu tool (see 'INSTALL' for installation

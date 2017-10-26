@@ -1,3 +1,5 @@
+DEPRECATED
+
 #! /usr/bin/perl
 #
 # Print Bibtex for the given target. 
@@ -61,7 +63,7 @@ sub getkonectcite {
 	. " network dataset -- {KONECT}},
     month = $month,
     year = {$year},
-    url = {http://konect.uni-koblenz.de/networks/$network}
+    url = {http://konect.cc/networks/$network}
 }
 ";
 

@@ -56,11 +56,11 @@ if ( $ARGV[1] eq "code" ) {
 	    . "The files in this folder are used to generate the TSV files of the "
 	    . $ARGV[0]
 	    . " network,
-about which more information is provided there: http://konect.uni-koblenz.de/networks/"
+about which more information is provided there: http://konect.cc/networks/"
 . $ARGV[0] . "
 
 
-The extraction code is licensed under GPLv3.\nFor more information concerning license visit http://konect.uni-koblenz.de/license.";
+The extraction code is licensed under GPLv3.\nFor more information concerning license visit http://konect.cc/license.";
 
 }
 elsif ( $ARGV[1] eq "matrices" ) {
@@ -77,7 +77,7 @@ $description
 
 
 More information about the network is provided here: 
-http://konect.uni-koblenz.de/networks/" . $ARGV[0] . "
+http://konect.cc/networks/" . $ARGV[0] . "
 
 Files: 
     meta." . $ARGV[0] . " -- Metadata about the network 
@@ -118,10 +118,10 @@ Files:
 Complete documentation about the file format can be found in the KONECT
 handbook, in the section File Formats, available at:
 
-http://konect.uni-koblenz.de/publications
+http://konect.cc/publications
 
 All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
-For more information concerning license visit http://konect.uni-koblenz.de/license.
+For more information concerning license visit http://konect.cc/license.
 
 
 
@@ -142,7 +142,7 @@ Use the related extraction code for that matter.
 
 
 All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
-For more information concerning license visit http://konect.uni-koblenz.de/license.
+For more information concerning license visit http://konect.cc/license.
 "
 
 }
