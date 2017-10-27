@@ -6,6 +6,10 @@ uniquevolume
 avgdegree
 avgdegreeasym
 maxdegree
+maxdegree+2
+maxdegree+3
+maxdegree+4
+maxdegree+5
 fill
 avgmult
 negativity

@@ -1,8 +1,8 @@
-DEPRECATED
-
 #! /usr/bin/perl
 #
-# Print Bibtex for the given target. 
+# Print Bibtex for the given target.
+#
+# DEPRECATED
 #
 # INVOCATION
 #

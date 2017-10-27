@@ -299,17 +299,17 @@ CFLAGS=
 	-std=c99 -pedantic -Wall -Wextra -Werror 
 	-Wundef -D_GNU_SOURCE 
 	-lm 
-	-O3 -DNDEBUG -s
+	-O3 -DNDEBUG -s  
 }
 
 bin/$name:
-	[dat/depc.$name.c] $[ -t CFLAGS] -p bin
+	[dat/depc.$name.c] $[-t CFLAGS] -p bin
 {
 	gcc $CFLAGS c/$name.c -o bin/$name
 }
 
 bin/$name.$parameters:
-	[dat/depc.$name.c] $[ -t CFLAGS]  -p bin
+	[dat/depc.$name.c] $[-t CFLAGS]  -p bin
 {
 	m="$(echo "$parameters" | sed -E -e 's,^(.).......$,\1,')"
 	u="$(echo "$parameters" | sed -E -e 's,^.(.)......$,\1,')"

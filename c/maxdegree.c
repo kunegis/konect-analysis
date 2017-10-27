@@ -8,7 +8,12 @@
  *    	$SG1_FILENAME
  *
  * STDOUT
- *	The maximum degree is printed on stdout
+ *	The maximum degree is printed on stdout, per line:
+ *         [1] Overall
+ *     	   [2] Max outdegree (ASYM)
+ *	   [3] Max indegree (ASYM)
+ *         [4] Max left degree (BIP)
+ *         [5] Max right degree (BIP) 
  */
 
 #include <stddef.h>
@@ -91,7 +96,8 @@ int main(int argc, char **argv)
 
 	printf("%" PR_fma "\n"
 	       "%" PR_fma "\n"
-	       "%" PR_fma "\n",
+	       "%" PR_fma "\n"
+	       "NaN\nNaN\n",
 	       deg_max_total,
 	       deg_max_to,
 	       deg_max_from); 
@@ -99,12 +105,15 @@ int main(int argc, char **argv)
 #elif FORMAT_a == FORMAT_BIP
 
 	printf("%" PR_fma "\n"
+	       "NaN\nNaN\n"
 	       "%" PR_fma "\n"
 	       "%" PR_fma "\n",
 	       deg_max_to > deg_max_from ? deg_max_to : deg_max_from,
 	       deg_max_to,
 	       deg_max_from); 
 
+#else
+#   error "Invalid FORMAT_a"
 #endif
 
 	exit(0);

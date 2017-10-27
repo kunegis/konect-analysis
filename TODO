@@ -18,6 +18,8 @@
 * @statistic.coco
 * @delaunay 
 * @decomposition.diag-n
+* @statistic.maxdegree
+* @network.[dat/NETWORKS_FAMILY_wiki_talk_] 
 
 == Fixes ==
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 

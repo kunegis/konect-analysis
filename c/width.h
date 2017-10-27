@@ -234,8 +234,8 @@ const char *parse_$(const char *p,
 		    const char *p_end,
 		    $_ft *x);
 
-/* The parse_* function return the new value of p.  If the value cannot
- * be parsed, p is returned.  
+/* The parse_* function returns the new value of P.  If the value cannot
+ * be parsed, P is returned.  
  */
 
 #if TYPE_$ == 'A' /* sign bit */ 

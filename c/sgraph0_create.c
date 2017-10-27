@@ -302,7 +302,9 @@ int main(int argc, char **argv)
 
 		/* U */ 
 		ua_ft u; 
+		const char *p_old= p;
 		p = parse_ua(p, p_end, &u); 
+		assert(p > p_old); 
 		assert(u != 0);
 		u -= 1; 
 		assert(u <= ua_max);
@@ -310,7 +312,9 @@ int main(int argc, char **argv)
 
 		/* V */ 
 		va_ft v; 
+		p_old= p;
 		p = parse_va(p, p_end, &v); 
+		assert(p > p_old); 
 		assert(v != 0); 
 		v -= 1; 
 		assert(v <= va_max); 
