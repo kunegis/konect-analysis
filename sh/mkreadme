@@ -53,15 +53,11 @@ close $F_IN or die "$!";
 
 if ( $ARGV[1] eq "code" ) {
 	print ""
-	    . "The files in this folder are used to generate the TSV files of the "
+	    . "The files in this directory are used to generate the TSV files of the "
 	    . $ARGV[0]
 	    . " network,
 about which more information is provided there: http://konect.cc/networks/"
-. $ARGV[0] . "
-
-
-The extraction code is licensed under GPLv3.\nFor more information concerning license visit http://konect.cc/license.";
-
+. $ARGV[0] ; 
 }
 elsif ( $ARGV[1] eq "matrices" ) {
     HTML::Entities::decode($description);
@@ -71,9 +67,9 @@ elsif ( $ARGV[1] eq "matrices" ) {
 
 This directory contains the TSV and related files of the "
       . $ARGV[0]
-      . " network:
+      . " network: " .
 
-$description
+$description . "
 
 
 More information about the network is provided here: 
@@ -83,11 +79,13 @@ Files:
     meta." . $ARGV[0] . " -- Metadata about the network 
     out."
       . $ARGV[0]
-      . " -- The adjacency matrix of the network in space separated values format, with one edge per line\n";
+      . " -- The adjacency matrix of the network in whitespace-separated values format, with one edge per line\n";
 
     print "      The meaning of the columns in out." . $ARGV[0] . " are: 
         First column: ID of from node 
-        Second column: ID of to node\n";
+        Second column: ID of to node
+        Third column (if present): weight or multiplicity of edge
+        Fourth column (if present):  timestamp of edges Unix time\n";
 
     open F_INFO, "<dat/info.$network";
     my @lines = <F_INFO>;
@@ -115,16 +113,6 @@ Files:
     #		Fourth column: timestamp of the edge (OPTIONAL)
     print "
 
-Complete documentation about the file format can be found in the KONECT
-handbook, in the section File Formats, available at:
-
-http://konect.cc/publications
-
-All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
-For more information concerning license visit http://konect.cc/license.
-
-
-
 Use the following References for citation:
 
 ";
@@ -139,10 +127,6 @@ Use the following References for citation:
       . $ARGV[0]
       . " network are extracted.
 Use the related extraction code for that matter.
-
-
-All files are licensed under a Creative Commons Attribution-ShareAlike 2.0 Germany License.
-For more information concerning license visit http://konect.cc/license.
 "
 
 }

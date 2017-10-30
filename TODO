@@ -1,5 +1,7 @@
 == Run ==
 * ...@check 
+* ...LARGE
+* @tsv
 * @network.slashdot-zoo (because we show it off)
 * @network.twitter (because we show it off)
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
@@ -20,6 +22,7 @@
 * @decomposition.diag-n
 * @statistic.maxdegree
 * @network.[dat/NETWORKS_FAMILY_wiki_talk_] 
+* @statistic.inoutassort 
 
 == Fixes ==
 * make @feature.ft work 
