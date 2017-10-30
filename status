@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # Show the currently running KONECT-Analysis processes.
-# This calls ps(1) and presents the results in a nice way.   
+# This calls ps(1) and presents the results in a useful way.   
 #
 # All shown runtimes are CPU times, not wall clock times. 
 #
@@ -20,15 +20,14 @@
 # must start with the value of $TMPDIR.  This is done automatically by
 # the wrappers {octave,matlab,julia}, but must be implemented by hand
 # with other languages.  This is the reason why certain C or Perl
-# programs are passed a logfile name that they don't even use. 
-#
-# TODO
-#
-#   * Manage the situation when the list is too long.  Currently, we
-#     just make the window higher in that case.
+# programs are passed a logfile name, even if they do not (yet) make use
+# of it.  In principle however, every program that has a long runtime
+# should log such [... left] message to its logfile. 
 #
 # BUGS
 #
+#   * We don't manage the situation when the list is too long.
+#     Currently, we just make the window higher in that case.
 #   * The shown CPU percentage is as returned by ps(1), which gives the
 #     average CPU usage since the process was started.  This is
 #     different (and less useful) to what top(1) is doing, which shows
@@ -41,44 +40,46 @@ format='%4s %10s %11s %13s %s\n'
 # Header line
 printf "$format" "%CPU" "Mem [k]" "Runtime" "Runtime left" "Log"
 
-TMPDIR="${TMPDIR-/tmp}"
-TMPDIR_esc="$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')"
+TMPDIR=${TMPDIR-/tmp}
+TMPDIR_esc=$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')
 
 ps k-cputime -o %cpu,cputime,vsize,user,command | 
 sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
 while IFS= read -r line
 do
-	cpu="$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')" 
-	vsize="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')"
-	time="$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')"
-	logfile="$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')"
+	cpu=$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')
+	vsize=$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')
+	time=$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')
+	logfile=$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')
 
-	command="$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s.*$,\1,')"
-	command="$(basename "$command")"
+	command=$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s.*$,\1,')
+	command=$(basename "$command")
 
 	# Don't show clearly non-computational processes.  For instance,
-	# 'less' is often used to look at logfiles. 
+	# 'less' is often used to look at logfiles, and would thus show
+	# up here because it has a logfile name as a positional argument 
 	if [ "$command" = less ] || [ "$command" = more ] || [ "$command" = tail ] || [ "$command" = sed ] ; then
 		continue
 	fi
 	if printf "%s\n" "$command" | grep -E -q ^main.stu ; then
 		continue
 	fi
+	# This refers to stu-utils/output-finally 
 	if printf "%s\n" "$line" | grep -E -q 'output-finally' ;
 	then
 		continue
 	fi
 	
-	# 'tac' may report an error if the logfile was not (yet)
+	# 'tac' reports an error if the logfile was not (yet)
 	# created.  Ignore this error.  
-	left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')"
+	left=$(tac "$logfile" 2>/dev/null | sed -E -e '/left]/!d;s,^.*\[(.*) left\].*$,\1,;q')
 	if [ -z "$left" ] ; then
-		# If there is a time left informatioln available
+		# If there is a "time left" information available
 		# for a sub-task, show that prefixed with '+'. 
-		left="$(tac "$logfile" 2>/dev/null | sed -E -e '/left}/!d;s,^.*\{(.*) left\}.*$,+\1,;q')"
+		left=$(tac "$logfile" 2>/dev/null | sed -E -e '/left}/!d;s,^.*\{(.*) left\}.*$,+\1,;q')
 	fi
 
-	logfile_color="$(echo "$logfile" | sed -E -e 's,^(.*)/([^.]+)\.(.+).log$,\1/\2.[1m\3[m.log,')"
+	logfile_color=$(echo "$logfile" | sed -E -e 's,^(.*)/([^.]+)\.(.+).log$,\1/\2.[1m\3[m.log,')
 	
 	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile_color"
 done				
