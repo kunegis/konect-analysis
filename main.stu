@@ -58,8 +58,7 @@
 	dat/dep.plot.all.$network
 	STATISTICS
 	dat/NETWORKS_[GROUPS]
-##	[dat/dep.NETWORKS_ALLGROUPS]
-	PLOTS ##PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME 
+	PLOTS
 {
 	sh/dep-network 
 }
@@ -69,8 +68,7 @@
 >dat/dep.plot.all.$network:	
 	sh/plot-network
 	dat/NETWORKS_[GROUPS]
-##	[dat/dep.NETWORKS_ALLGROUPS]
-	PLOTS ##PLOTS_SQUARE PLOTS_ASYM PLOTS_TIME PLOTS_NONUNWEIGHTED
+	PLOTS
 {
 	sh/plot-network
 }
@@ -91,14 +89,10 @@
 }
 
 dat/PLOTS = PLOTS; 
-## >dat/PLOTS:  PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
-## {
-## 	cat PLOTS PLOTS_ASYM PLOTS_NEGATIVE PLOTS_NONUNWEIGHTED PLOTS_SQUARE PLOTS_TIME PLOTS_TIME_NEGATIVE
-## }
 
 # Determines which datasets can be shown online or not 
 dat/allowed_src.txt = allowed_src.txt;
-allowed_src.txt
+allowed_src.txt; 
 
 #
 # Matlab
@@ -185,13 +179,6 @@ dat/NETWORKS_CLASS_$class:  dat/CLASSES;
 #
 
 dat/NETWORKS_ALL = dat/NETWORKS; 
-
-## >dat/dep.NETWORKS_ALLGROUPS:   GROUPS
-## {
-## 	for group in $(cat GROUPS) ; do
-## 		echo dat/NETWORKS_"$group"
-## 	done
-## }
 
 >dat/NETWORKS_BIP:  dat/networks.asc
 {
@@ -698,7 +685,6 @@ dat/STATISTICS = STATISTICS;
 	sh/statistic-network
 	STATISTICS GROUPS
 	dat/NETWORKS_[GROUPS]
-##	[dat/dep.NETWORKS_ALLGROUPS]
 {
 	sh/statistic-network
 }

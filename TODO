@@ -22,7 +22,9 @@
 * @network.[dat/NETWORKS_FAMILY_wiki_talk_] 
 
 == Fixes ==
+* make @feature.ft work 
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
+* write the "Timer" class for triangle counting 
 
 == Easy new features ==
 * statistic:  median degree 
