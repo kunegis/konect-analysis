@@ -1,6 +1,6 @@
 == Run ==
 * ...@check 
-* ...LARGE
+* ...@statistic.inoutassort 
 * @tsv
 * @network.slashdot-zoo (because we show it off)
 * @network.twitter (because we show it off)
@@ -28,6 +28,8 @@
 * make @feature.ft work 
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
 * write the "Timer" class for triangle counting 
+* distr plots:  those for large networks are often empty 
+* hopdistr .c and .d:  find out the proper names of the underlying distirbutions and re-enable these subplots 
 
 == Easy new features ==
 * statistic:  median degree 
@@ -48,7 +50,7 @@ attraction.  This is used in [357] to draw signed graphs.
 sum-of-weights. 
 ** This is NOT the same as LAPQ (there is no implementation yet) 
 * statistic:  median path length:  compute is properly (as the rounded-up 50-percentile effective diameter) 
-* statistic:  relative strongly connected component
+* implement in C or as function of other statistics:  fill, average degree, inoutassort, etc. 
 * normalized version of the algebraic conflict:  derive as a problem of
 assigning a number to each node such that the number is equal/opposite
 when two nodes are connected, and the algebraic conflict equals the sum

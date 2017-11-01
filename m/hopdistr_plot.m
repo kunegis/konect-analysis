@@ -133,7 +133,7 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.b.%s.eps', network)); 
 
 %
-% c - Tangent
+% c - Tangent -- (which distribution is this?)
 %
 plot(0:(length(data)-1), tan((yvalues + pi/2) / pi), 'ro-', 'LineWidth', line_width);
 
@@ -153,7 +153,7 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.c.%s.eps', network)); 
 
 %
-% d - Artanh
+% d - Artanh -- (which distribution is this?)
 %
 plot(0:(length(data)-1), 0.5 * log((yvalues + 3) / (1 - yvalues)), 'k-', 'LineWidth', line_width);
 
