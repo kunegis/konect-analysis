@@ -34,21 +34,34 @@
 #     the CPU usage since the last screen update. 
 #
 
+# Show all running Stu instances
+# Note: ps -C is not POSIX
+ps -C stu -o user,pid,pcpu,etime,cputime,command
+printf '%s\n' -
+
 # Format for the printf(1) command
-format='%4s %10s %11s %13s %s\n'
+format='%4s %13s %11s %13s %s\n'
 
 # Header line
-printf "$format" "%CPU" "Mem [k]" "Runtime" "Runtime left" "Log"
+printf "$format" "%CPU" "MEM [k]" "TIME" "LEFT" "LOG"
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR_esc=$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')
 
-ps k-cputime -o %cpu,cputime,vsize,user,command | 
+ps k-cputime -o pcpu,cputime,vsize,user,command | 
 sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
 while IFS= read -r line
 do
 	cpu=$(echo "$line" | sed -E -e 's,^\s*(\S+)\s.*$,\1,;s,\.[0-9]$,,')
-	vsize=$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,')
+	vsize=$(echo "$line" | sed -E -e 's,^\s*\S+\s+\S+\s+(\S+)\s.*$,\1,' | sed -E -e '
+s/^([^.]*[0-9])([0-9]{21}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{18}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{15}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{12}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{9}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{6}(\.|$))/\1,\2/
+s/^([^.]*[0-9])([0-9]{3}(\.|$))/\1,\2/
+')
 	time=$(echo "$line" | sed -E -e 's,^\s*,,' | cut -f 2 -d ' ' | sed -E -e 's,^[0:]*(.*....)$,\1,')
 	logfile=$(echo "$line" | sed -E -e 's,^.*\s('"$TMPDIR_esc"'\S+).*$,\1,')
 
@@ -83,3 +96,5 @@ do
 	
 	printf "$format" "$cpu" "$vsize" "$time" "$left" "$logfile_color"
 done				
+
+printf '%s\n' -

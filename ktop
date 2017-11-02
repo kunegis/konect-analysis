@@ -8,6 +8,5 @@ set -e
 while : ; do 
 	clear 
 	./status
-	printf "%s\n" -
 	sleep 90 
 done

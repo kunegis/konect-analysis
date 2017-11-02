@@ -1,13 +1,8 @@
 == Run ==
-* ...@check 
-* ...@statistic.inoutassort 
-* @tsv
-* @network.slashdot-zoo (because we show it off)
-* @network.twitter (because we show it off)
+* ...@time_histogram 
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
 * @network.[dat/NETWORKS_FAMILT.ca-cit] (once it's possible)
-* @time_histogram 
 * @lybl
 * @degree
 * datasets:  amazon0302 amazon0312 amazon0505 p2p-Gnutella04 p2p-Gnutella05 p2p-Gnutella06 p2p-Gnutella08 p2p-Gnutella09 p2p-Gnutella24 p2p-Gnutella25 p2p-Gnutella30 wikispeedia sx-stackoverflow sx-mathoverflow sx-superuser sx-askubuntu CollegeMsg higgs-twitter-social
@@ -23,6 +18,7 @@
 * @statistic.maxdegree
 * @network.[dat/NETWORKS_FAMILY_wiki_talk_] 
 * @statistic.inoutassort 
+* @check 
 
 == Fixes ==
 * make @feature.ft work 

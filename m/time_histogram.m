@@ -15,7 +15,8 @@
 %
 
 bins = 90; 
-font_size = 22; 
+font_size = 22;
+line_width = 3; 
 color_1 = [0 0 1]; 
 
 network = getenv('network'); 
@@ -61,6 +62,9 @@ axis(ax);
 
 set(gca, 'YGrid', 'on'); 
 
+set(gca, 'YMinorTick', 'on'); 
+set(gca, 'TickLength', [0.05 0.05]); 
+
 time_xaxis(min(years), max(years));
 
 konect_print(sprintf('plot/time_histogram.a.%s.eps', network));   
@@ -69,9 +73,20 @@ konect_print(sprintf('plot/time_histogram.a.%s.eps', network));
 % (b) Cumulative
 %
 
-stairs(sort(timestamps), 1:length(timestamps)); 
+stairs(sort(timestamps), 1:length(timestamps), 'LineWidth', line_width, 'Color', color_1); 
 
-xlabel('Time (y)', 'FontSize', font_size); 
+mi = min(timestamps)
+ma = max(timestamps)
+
+axis([(mi - 0.05 * (ma-mi)) (ma + 0.05 * (ma-mi)) 0 length(timestamps)]); 
+
+xlabel('Time (t)', 'FontSize', font_size); 
 ylabel(konect_label_statistic('volume', 'matlab'), 'FontSize', font_size); 
     
+set(gca, 'FontSize', font_size); 
+
+set(gca, 'XMinorTick', 'on');
+set(gca, 'YMinorTick', 'on'); 
+set(gca, 'TickLength', [0.05 0.05]); 
+
 konect_print(sprintf('plot/time_histogram.b.%s.eps', network));   
