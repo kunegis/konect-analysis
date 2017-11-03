@@ -2062,7 +2062,7 @@ plot/degcc.a.$network.eps:
 @handbook:
 	@category-table
 	@layout.moreno_highschool 
-	@time_histogram.elec
+	@time_histogram.edit-enwiki
 	@weights.movielens-1m
 	@weights.edit-dewiki
 	@degree.elec

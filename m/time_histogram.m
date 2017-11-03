@@ -37,6 +37,28 @@ end
 years = timestamps / (365.25 * 24 * 60 * 60) + 1970; 
 
 %
+% (b) Cumulative
+%
+
+stairs(sort(timestamps), 1:length(timestamps), 'LineWidth', line_width, 'Color', color_1); 
+
+mi = min(timestamps)
+ma = max(timestamps)
+
+axis([(mi - 0.05 * (ma-mi)) (ma + 0.05 * (ma-mi)) 0 length(timestamps)]); 
+
+xlabel('Time (t)', 'FontSize', font_size); 
+ylabel(konect_label_statistic('volume', 'matlab'), 'FontSize', font_size); 
+    
+set(gca, 'FontSize', font_size); 
+
+set(gca, 'XMinorTick', 'on');
+set(gca, 'YMinorTick', 'on'); 
+set(gca, 'TickLength', [0.05 0.05]); 
+
+konect_print(sprintf('plot/time_histogram.b.%s.eps', network));   
+
+%
 % Main plot
 % 
 
@@ -68,25 +90,3 @@ set(gca, 'TickLength', [0.05 0.05]);
 time_xaxis(min(years), max(years));
 
 konect_print(sprintf('plot/time_histogram.a.%s.eps', network));   
-
-%
-% (b) Cumulative
-%
-
-stairs(sort(timestamps), 1:length(timestamps), 'LineWidth', line_width, 'Color', color_1); 
-
-mi = min(timestamps)
-ma = max(timestamps)
-
-axis([(mi - 0.05 * (ma-mi)) (ma + 0.05 * (ma-mi)) 0 length(timestamps)]); 
-
-xlabel('Time (t)', 'FontSize', font_size); 
-ylabel(konect_label_statistic('volume', 'matlab'), 'FontSize', font_size); 
-    
-set(gca, 'FontSize', font_size); 
-
-set(gca, 'XMinorTick', 'on');
-set(gca, 'YMinorTick', 'on'); 
-set(gca, 'TickLength', [0.05 0.05]); 
-
-konect_print(sprintf('plot/time_histogram.b.%s.eps', network));   
