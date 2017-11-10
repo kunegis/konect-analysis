@@ -1,6 +1,8 @@
 %
 % Make the X axis labels by correct for year numbers. 
 %
+% DEPRECATED -- use time_xaxis_unix.m 
+%
 % PARAMETERS 
 %	t_min, t_max	Minimum and maximum values to be plotted, in
 %			year numbers 

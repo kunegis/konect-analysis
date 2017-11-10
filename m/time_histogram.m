@@ -56,6 +56,8 @@ set(gca, 'XMinorTick', 'on');
 set(gca, 'YMinorTick', 'on'); 
 set(gca, 'TickLength', [0.05 0.05]); 
 
+time_xaxis_unix(min(timestamps), max(timestamps));
+
 konect_print(sprintf('plot/time_histogram.b.%s.eps', network));   
 
 %
