@@ -2135,6 +2135,7 @@ plot/rating_evolution2.c.$network.eps:
 @www:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	dat/CATEGORIES
+	dat/allowed_src.txt
 	@statistic.(size volume format weights)
 	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
 ;

@@ -1,5 +1,5 @@
 == Run ==
-* ...datasets:  amazon0302 amazon0312 amazon0505 p2p-Gnutella04 p2p-Gnutella05 p2p-Gnutella06 p2p-Gnutella08 p2p-Gnutella09 p2p-Gnutella24 p2p-Gnutella25 p2p-Gnutella30 wikispeedia sx-stackoverflow sx-mathoverflow sx-superuser sx-askubuntu CollegeMsg higgs-twitter-social
+* ...datasets:  amazon0302 amazon0312 amazon0505 p2p-Gnutella04 p2p-Gnutella05 p2p-Gnutella06 p2p-Gnutella08 p2p-Gnutella09 p2p-Gnutella24 p2p-Gnutella25 p2p-Gnutella30 wikispeedia sx-stackoverflow sx-mathoverflow sx-superuser sx-askubuntu CollegeMsg higgs-twitter-social  (and add to announcements)
 * @time_histogram:  check that the new X axis date labels for the (b) plot work 
 * @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible, or with -F)
 * @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)

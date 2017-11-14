@@ -11,6 +11,7 @@ arenas-pgp,matrix
 as20000102,matrix
 as-caida20071105,matrix
 as-skitter,matrix
+bag-nips,matrix
 bibsonomy-2ti,matrix
 bibsonomy-2ui,matrix
 bibsonomy-2ut,matrix
