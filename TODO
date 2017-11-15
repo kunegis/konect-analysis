@@ -20,6 +20,7 @@
 * @network.marvel 
 * @network.komarix-(imdb citeseer)    # and announce page
 * @network.amazon # + announcement
+* @network.wang-{tripadvisor,amazon}  # + annoucement
 
 == Fixes ==
 * make @feature.ft work 
