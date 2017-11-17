@@ -1217,8 +1217,8 @@ tex/category-tabular.tex:
 plot/bidd.a.$network.eps:  
 	m/bidd.m m/bidd_one.m 
 	-t matlab $[ -t MATLABPATH]
-	dat/info.$network
-	dat/data.$network.mat 
+	dat/data.$network.mat
+	dat/statistic.(format weights).$network 
 {
 	 ./matlab m/bidd.m
 }

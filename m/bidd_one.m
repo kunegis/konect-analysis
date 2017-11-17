@@ -13,6 +13,11 @@
 
 function bidd_one(p, q, enable_normalization, type, name, symbol, enable_axis)
 
+'bidd_one()'
+type
+name
+symbol
+  
 colors = konect_colors_letter(); 
 
 font_size = 24; 

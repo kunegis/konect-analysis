@@ -9,6 +9,7 @@
 %
 % INPUT FILES 
 %	dat/data.$network.mat
+%	dat/statistic.(format weights).$network
 %
 % OUTPUT FILES 
 %	plot/bidd.{a,u,v,uv}{,x}.$network.eps
@@ -18,22 +19,37 @@
 
 network = getenv('network');
 
+'Point (a)'
 data = load(sprintf('dat/data.%s.mat', network)); 
 
-T = data.T; 
+'Point (b)'
+T = data.T;  data = [];   
 
+'Point (c)'
 consts = konect_consts(); 
 
-info = read_info(network); 
+%%info = read_info(network); 
 
-if info.weights ~= consts.POSITIVE & size(T,2) >= 3
-    T(:,3:end) = []; 
+format = read_statistic('format', network, 1); 
+weights = read_statistic('weights', network, 1); 
+
+if weights == consts.POSITIVE
+  if size(T,2) >= 3
+    T = T(:,1:3);
+  else
+    T = T(:,1:2); 
+  end
+else
+  T = T(:,1:2); 
 end
+%%if info.weights ~= consts.POSITIVE & size(T,2) >= 3
+%%    T(:,3:end) = []; 
+%%end
 
 %
 % U, V
 %
-if info.format ~= consts.SYM
+if format ~= consts.SYM
 
     if size(T,2) >= 3
         q = T(:,3);
@@ -41,12 +57,12 @@ if info.format ~= consts.SYM
         q = []; 
     end
 
-    if info.format == consts.ASYM
+    if format == consts.ASYM
         name_u = 'Outdegree';
         name_v = 'Indegree';
         symbol_u = 'd^+';
         symbol_v = 'd^-';
-    elseif info.format == consts.BIP
+    elseif format == consts.BIP
         name_u = 'Left degree';
         name_v = 'Right degree';
         symbol_u = 'd';
@@ -67,17 +83,17 @@ if info.format ~= consts.SYM
 
     hold on; 
 
-    if info.format == consts.ASYM
+    if format == consts.ASYM
       bidd_one(T(:,1), q, 1, 'u', 'Degree', 'd^{\pm}', 1);
       bidd_one(T(:,2), q, 1, 'v', 'Degree', 'd^{\pm}', 2);
-    elseif info.format == consts.BIP
+    elseif format == consts.BIP
       bidd_one(T(:,1), q, 1, 'u', 'Degree', 'd', 1);
       bidd_one(T(:,2), q, 1, 'v', 'Degree', 'd', 2);
     end
 
-    if info.format == consts.ASYM
+    if format == consts.ASYM
         legend('Outdegree', 'Indegree', 'Location', 'SouthWest'); 
-    elseif info.format == consts.BIP
+    elseif format == consts.BIP
         legend('Left vertices', 'Right vertices', 'Location', 'SouthWest'); 
     end
     konect_print(sprintf('plot/bidd.uv.%s.eps', network)); 
@@ -87,9 +103,9 @@ if info.format ~= consts.SYM
     bidd_one(T(:,1), q, 0, 'u', 'Degree', 'd^{\pm}', 1);
     bidd_one(T(:,2), q, 0, 'v', 'Degree', 'd^{\pm}', 2); 
 
-    if info.format == consts.ASYM
+    if format == consts.ASYM
         legend('Outdegree', 'Indegree', 'Location', 'SouthWest'); 
-    elseif info.format == consts.BIP
+    elseif format == consts.BIP
         legend('Left vertices', 'Right vertices', 'Location', 'SouthWest'); 
     end
     konect_print(sprintf('plot/bidd.uvx.%s.eps', network)); 
@@ -106,6 +122,8 @@ if size(T,2) >= 3
 else  
     q = []; 
 end
+
+T = []; 
 
 bidd_one(p, q, 1, 'a', 'Degree', 'd', 1); 
 konect_print(sprintf('plot/bidd.a.%s.eps', network)); 
