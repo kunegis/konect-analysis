@@ -95,12 +95,14 @@ dat/allowed_src.txt = allowed_src.txt;
 allowed_src.txt; 
 
 #
-# Matlab
+# Matlab path.  
 #
 
->MATLABPATH:
+# This file is used as the value of the $MATLABPATH variable, almost
+# always with the -t flag. 
+>MATLABPATH:   sh/mkpath
 {
-	printf "$PWD/m/:$PWD/konect-toolbox/m:$PWD/lib/:$PWD/lib/matlab_bgl/:$PWD/lib/wafo-statistics/:$PWD/lib/wafo-misc/:$PWD/lib/gridxy:$PWD/syngraphy/" 
+	sh/mkpath
 }
 
 # TODO Remove the inner '-t' once this syntax is supported. 
@@ -1888,12 +1890,24 @@ plot/lybl.a.$network.png:
 # characteristics as the actual networks. 
 #
 
+@syngraphy:  @syngraphy.[dat/NETWORKS_SQUARE]; 
+##@syngraphy:  [dat/dep.syngraphy];
+
+## >dat/dep.syngraphy:
+## 	dat/NETWORKS_ASYM
+## {
+## 	for network in $(cat dat/NETWORKS_ASYM) ; do
+## 		echo @syngraphy."$network"
+## 	done
+## }
+
 @syngraphy.$network
 plot/syngraphy.a.$network.eps:
 	m/syngraphy_plot.m 
 	$[ -t MATLABPATH]
+	-t -p syngraphy/
 	dat/statistic.size.$network
-	dat/statistic.uniquevolume.$network
+	dat/statistic.volume.simple~$network
 	dat/statistic.twostars.$network
 	dat/statistic.threestars.$network
 	dat/statistic.fourstars.$network
@@ -1903,14 +1917,9 @@ plot/syngraphy.a.$network.eps:
 	./matlab m/syngraphy_plot.m 
 }
 
-@syngraphy:  [dat/dep.syngraphy];
-
->dat/dep.syngraphy:
-	dat/NETWORKS_ASYM
-{
-	for network in $(cat dat/NETWORKS_ASYM) ; do
-		echo @syngraphy."$network"
-	done
+syngraphy/: {
+	echo >&2 "*** Symlink graph-generator/syngraph/ to this directory"
+	exit 1
 }
 
 # The runtime to compute the SynGraphy plots 

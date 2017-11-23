@@ -23,3 +23,4 @@ hopdistr_time.full	TIME
 diadens			TIME
 time_histogram_signed	TIME
 rating_evolution2	TIME
+syngraphy		SQUARE

@@ -21,6 +21,7 @@
 * @network.komarix-(imdb citeseer)    # and announce page
 * @network.amazon # + announcement
 * @network.wang-{tripadvisor,amazon}  # + annoucement
+* @syngraphy 
 
 == Fixes ==
 * make @feature.ft work 

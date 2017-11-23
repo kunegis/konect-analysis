@@ -4,17 +4,17 @@
 % PARAMETERS 
 %	$network
 %
-% INPUT 
+% INPUT FILES 
 %	dat/statistic.size.$network
-%	dat/statistic.uniquevolume.$network
+%	dat/statistic.volume.simple~$network
 %	dat/statistic.twostars.$network
 %	dat/statistic.threestars.$network
 %	dat/statistic.fourstars.$network
 %	dat/statistic.triangles.$network
 %	dat/statistic.squares.$network
 %	
-% OUTPUT 
-%	plot/syngraphy.[a].$network.eps
+% OUTPUT FILES 
+%	plot/syngraphy.[abc].$network.eps
 %
 
 % Fixed parameters of the output
@@ -25,14 +25,13 @@ consts = konect_consts();
 
 network = getenv('network');
 
-statistics = {'size', 'uniquevolume', 'twostars', 'threestars', 'fourstars', ...
-              'triangles', 'squares'};
+statistics = {'size.', 'volume.simple~', 'twostars.', 'threestars.', 'fourstars.', ...
+              'triangles.', 'squares.'};
 
 for i = 1 : length(statistics)
     i
     statistic = statistics{i}
-    data = load(sprintf('dat/statistic.%s.%s', statistic, ...
-                        network))
+    data = load(sprintf('dat/statistic.%s%s', statistic, network))
     values(i) = data(1); 
 end
 
