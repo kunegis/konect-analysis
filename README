@@ -49,7 +49,8 @@ For questions bug reports and other comments, write to Jérôme Kunegis
 == Requirements ==
 
 * Stu:  install from https://github.com/kunegis/stu
-* A C99 compiler (only for triangle count and diameter) 
+* A C99 compiler (for triangle counts, diameters, and a few more simple
+  statistics and measures)  
 * sed -E (this is not (yet) POSIX, but GNU Sed and BSD Sed have it)
 * python-rdflib / python-rdflib-tools (for RDF generation only, deprecated)
 * Matlab:  This is proprietary, so may be hard to get
