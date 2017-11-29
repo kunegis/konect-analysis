@@ -12,7 +12,11 @@ as20000102,matrix
 as-caida20071105,matrix
 as-skitter,matrix
 asoiaf,matrix
+bag-enron,matrix
+bag-kos,matrix
 bag-nips,matrix
+bag-nytimes,matrix
+bag-pubmed,matrix
 bibsonomy-2ti,matrix
 bibsonomy-2ui,matrix
 bibsonomy-2ut,matrix
