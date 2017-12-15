@@ -1,10 +1,7 @@
 == Run ==
-* @time_histogram:  check that the new X axis date labels for the (b) plot work 
-* @basic.[dat/NETWORKS_FAMILY.edit] (once it's possible, or with -F)
-* @network.[dat/NETWORKS_FAMILY.edit] (once it's possible)
-* @network.[dat/NETWORKS_FAMILT.ca-cit] (once it's possible)
+* (...) @network.[dat/NETWORKS_FAMILY.edit] 
+* @network.[dat/NETWORKS_FAMILT.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
-* @time_histogram_signed 
 * @statistic.clusco
 * @bidd
 * @decomposition.diag

@@ -21,6 +21,6 @@ degcc			SQUARE
 time_histogram		TIME
 hopdistr_time.full	TIME
 diadens			TIME
-time_histogram_signed	TIME
+time_histogram_signed	TIME_NEGATIVE
 rating_evolution2	TIME
 syngraphy		SQUARE

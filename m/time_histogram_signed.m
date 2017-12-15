@@ -58,6 +58,15 @@ end
 i_pos = T(:,3) >= threshold;
 i_neg = T(:,3) <  threshold; 
 
+% Fail if there are no negative or no positive values -- this may happen
+% when the network is incorrectly categorised, or when this plot is
+% called for the wrong networks.
+if sum(i_pos) == 0 || sum(i_neg) == 0
+  sum_i_pos = sum(i_pos)
+  sum_i_neg = sum(i_neg) 
+  error('*** There must be both positive and negative edges');
+end  
+
 nn_pos = histc(years(i_pos), range);
 nn_neg = histc(years(i_neg), range);
 
