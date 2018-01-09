@@ -18,6 +18,7 @@
 * @network.amazon # + announcement
 * @network.wang-{tripadvisor,amazon}  # + annoucement
 * @syngraphy 
+* @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
 
 == Fixes ==
 * make @feature.ft work 

@@ -10,6 +10,7 @@
 # 				@all.7 builds everything for the 70
 # 				smallest networks  
 #	@network.$network	Everything for one network
+#	@check.$network		The unit test for one network 
 #	@plot.$network		All plots for one network
 #	@www			Everything for the website (but not the website)
 #	@handbook		Everything used in the KONECT Handbook; this is
