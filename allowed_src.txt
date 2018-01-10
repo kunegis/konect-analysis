@@ -120,6 +120,11 @@ lasagne-yahoo,matrix
 lastfm_band,matrix
 lastfm_song,matrix
 libimseti,matrix
+librec-ciaodvd-movie_ratings,matrix
+librec-ciaodvd-review_ratings,matrix
+librec-ciaodvd-trust,matrix
+librec-filmtrust-ratings,matrix
+librec-filmtrust-trust,matrix
 link-dynamic-dewiki,matrix
 link-dynamic-frwiki,matrix
 link-dynamic-itwiki,matrix
