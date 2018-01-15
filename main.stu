@@ -1401,8 +1401,7 @@ plot/diadens.a.$network.eps:
 	m/diadens.m 
 	$[ -t MATLABPATH]
 	dat/stepsi.$network 
-	dat/statistic_time.full.diameter.$network
-	dat/statistic_time.full.avgdegree.$network
+	dat/statistic_time.full.(diameter avgdegree).$network
 {
 	 ./matlab m/diadens.m 
 }
