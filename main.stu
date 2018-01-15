@@ -1388,22 +1388,6 @@ plot/time_histogram_signed.a.$network.eps:
 }
 
 @time_histogram_signed:   @time_histogram_signed.[dat/NETWORKS_TIME_NEGATIVE]; 
-## @time_histogram_signed:  [dat/dep.time_histogram_signed];
-
-## >dat/dep.time_histogram_signed:
-## 	dat/NETWORKS_TIME
-## 	dat/NETWORKS_WEIGHTS_(signed dynamic multisigned weighted multiweighted)
-## {
-## 	for network in $(cat dat/NETWORKS_TIME) ; do
-## 		if      grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_signed ||
-## 			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_multisigned ||
-## 			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_weighted ||
-## 			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_multiweighted ||
-## 			grep -qE '^\s*'"$network"'\s*$' dat/NETWORKS_WEIGHTS_dynamic ; then 
-## 			echo @time_histogram_signed."$network"
-## 		fi
-## 	done
-## }
 
 #
 # Diadens
@@ -1411,7 +1395,8 @@ plot/time_histogram_signed.a.$network.eps:
 
 @diadens:  @diadens.[dat/NETWORKS_TIME];
 
-@diadens.$network
+@diadens.$network:  plot/diadens.a.$network.eps;
+
 plot/diadens.a.$network.eps:  
 	m/diadens.m 
 	$[ -t MATLABPATH]
