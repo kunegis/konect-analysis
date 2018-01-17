@@ -1,5 +1,5 @@
 == Run ==
-* (...) @network.[dat/NETWORKS_FAMILY.edit] 
+* ... ALL (until Matlab issue is resolved)
 * @network.[dat/NETWORKS_FAMILT.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
