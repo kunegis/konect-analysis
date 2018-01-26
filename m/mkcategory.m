@@ -14,7 +14,7 @@
 %	tex/category-tabular.tex
 %
 
-networks = getenv('networks'); 
+networks = getenv('networks')
 networks = regexp(networks, '[a-zA-Z0-9_-]+', 'match')
 n = length(networks) 
 
@@ -54,8 +54,8 @@ for j = 1 : n
     category= meta.category;
 
     if ~isfield(colors, category) 
-        fprintf(2, '*** No such category:  %s\n', category); 
-        error;
+        fprintf(2, '*** No such category in konect_data_category()/colors:  %s\n', category); 
+        exit(1);
     end
 
     if ~isfield(counts, category)

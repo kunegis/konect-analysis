@@ -1,3 +1,5 @@
+DEPRECATED:::
+
 %
 % Compute the size statistic of a network. 
 %

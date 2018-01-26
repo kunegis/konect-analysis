@@ -22,7 +22,16 @@
 # with other languages.  This is the reason why certain C or Perl
 # programs are passed a logfile name, even if they do not (yet) make use
 # of it.  In principle however, every program that has a long runtime
-# should log such [... left] message to its logfile. 
+# should log such [... left] message to its logfile.
+#
+# Logfiles names have the general format
+#
+#    $TMPDIR/$LETTER.$PROGRAM[.$PARAMETERS].log
+#
+# where $LETTER is a single letter denoting the programming language
+# (usually the programming language's name first letter), $PROGRAM is
+# the general name of the program being run, and [.$PARAMETERS] are
+# optional parameters (such as the network name, etc.)
 #
 # BUGS
 #

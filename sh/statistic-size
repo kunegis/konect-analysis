@@ -1,0 +1,64 @@
+#! /usr/bin/perl
+#
+# Determine network size statistic.
+#
+# PARAMETERS
+#	$network	Internal name of network 
+#
+# STDIN:  uni/out.$network
+# STDOUT: The values, one per line
+#
+# INPUT FILES
+#	dat/statistic.format.$network
+# 
+
+use strict; 
+use warnings FATAL => 'all';
+use Switch; 
+
+my $network = $ENV{"network"};
+
+open(FORMAT, "<dat/statistic.format.$network") or die "$!"; 
+
+my $format_network = <FORMAT>;
+chomp $format_network;
+
+close(FORMAT) or die "$!";
+
+if ($format_network eq "1" or $format_network eq "2") {
+    	my $n= 0; 
+    	while (<STDIN>) {
+    	    next if /^%/;
+    	    /^([0-9]+)\s+([0-9]+).*/ or die "Invalid format in input: '$_'"; 
+    	    my $a= $1;
+    	    my $b= $2; 
+	    if ($a > $n) { $n = $a ; }
+##    	    $n = max($n, $a);
+	    if ($b > $n) { $n = $b ; }
+##    	    $n = max($n, $b);
+    	}
+    	if ($n < 1) { die "Value of n" } 
+    	print "$n\n"; 
+} elsif ($format_network eq "3") {
+    	my $n1= 0;
+    	my $n2= 0;
+    	while (<STDIN>) {
+    	    next if /^%/;
+    	    /^([0-9]+)\s+([0-9]+).*/ or die "Invalid format in input: '$_'"; 
+##    	    /^([0-9]+)\s+([0-9]+).*/ or die "Format: $_"; 
+    	    my $a= $1;
+    	    my $b= $2; 
+	    if ($a > $n1) { $n1 = $a ; }
+##    	    $n1 = max($n1, $a);
+	    if ($b > $n2) { $n2 = $b ; }
+##    	    $n2 = max($n2, $b);
+    	}
+    	if ($n1 < 1) { die "Value of n1" } 
+    	if ($n2 < 1) { die "Value of n1" }
+    	my $n = $n1 + $n2; 
+    	print "$n\n$n1\n$n2\n"; 
+} else {
+	die "*** Invalid format '$format_network'";
+}
+
+close(STDIN) or die "$!";

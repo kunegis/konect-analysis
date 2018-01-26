@@ -19,6 +19,8 @@
 * @network.wang-{tripadvisor,amazon}  # + annoucement
 * @syngraphy 
 * @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
+* @network family dimacs10-
+* @statistic.triangles 
 
 == Fixes ==
 * make @feature.ft work 

@@ -22,9 +22,18 @@ exec 6>>error.log
 
 # Words to use in the logfile are the lowercase environment variables.
 # This may break in some cases. 
-for NAME in $(set | sed -e 's,=.*$,,;/^[a-z][a-z_-]*$/!d') ; do
+
+for NAME in $(set | sed -e 's,=.*$,,;tnext;d;:next;/^[a-z][a-z_-]*$/!d') ; do
 	eval VALUE=\"\$"$NAME"\"
-	LOGNAME="$LOGNAME"."$VALUE"
+	length=$(echo $(echo "$VALUE" | wc -c))
+##	echo >&2 "NAME='$NAME'"
+##	echo >&2 "length='$length'"
+	if [ "$length" -lt 30 ] ; then # Don't insert value if too long
+##		echo >&2 INCLUDE
+		LOGNAME="$LOGNAME"."$VALUE"
+##	else
+##		echo >&2 EXCLUDE
+	fi
 done
 
 export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"

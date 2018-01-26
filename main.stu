@@ -281,7 +281,9 @@ dat/NETWORKS_ALL = dat/NETWORKS;
 #
 # Lists of networks by family, i.e., by names beginning with a certain
 # prefix.  (We could also go further and parse the 'extr' field in
-# meta.*, but that is not done here.)
+# meta.*, but that is not done here.)  No dash is appended to the given
+# $family; this is purely a prefix.  In general, $family will thus end
+# in a dash. 
 #
 
 >dat/NETWORKS_FAMILY.$family:  <dat/NETWORKS
@@ -453,7 +455,7 @@ dat/info.$network:
 	sh/network-info 
 	<uni/out.$network 
 {
-	tmpfile="${TMPDIR:-/tmp}"/p.network-info."$network"
+	tmpfile="${TMPDIR:-/tmp}"/p.network-info."$network".log
 	stu-utils/output-finally dat/info."$network" sh/network-info "$tmpfile"
 }
 
@@ -818,11 +820,22 @@ dat/statistic_time_runtime.full.${statistic}+${K}.$network:
 	sed -E -e 's,^......(.).$,\1,' 
 }
 
-dat/statistic.size.$network:  m/statistic_size.m dat/info.$network
-	$[ -t MATLABPATH]
+dat/statistic.size.$network:
+	<uni/out.$network sh/statistic-size
+	dat/statistic.format.$network 
 {
-	./octave m/statistic_size.m
+	tmpfile="${TMPDIR:-/tmp}"/p.statistic-size."$network".log
+	size=
+	size=$(sh/statistic-size "$tmpfile")
+	[ "$size" ] && echo "$size" >dat/statistic.size."$network"
 }
+
+## dat/statistic.size.$network:  m/statistic_size.m
+## 	dat/info.$network
+## 	$[ -t MATLABPATH]
+## {
+## 	./octave m/statistic_size.m
+## }
 
 dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
@@ -1210,7 +1223,7 @@ tex/category-tabular.tex:
 	dat/NETWORKS
 	[tex/dep.category-tabular.tex]
 {
-	networks="$(cat dat/NETWORKS)" ./matlab m/mkcategory.m
+	networks="$(cat dat/NETWORKS)" ./octave m/mkcategory.m
 }
 
 >tex/dep.category-tabular.tex:
@@ -2139,9 +2152,13 @@ plot/rating_evolution2.c.$network.eps:
 
 # Files that are needed for the WWW site built by the konect-www package 
 @www:
+	@www-fast
+	@statistic.(size volume format weights)
+;
+
+@www-fast:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	dat/CATEGORIES
 	dat/allowed_src.txt
-	@statistic.(size volume format weights)
 	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
 ;
