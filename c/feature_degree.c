@@ -66,10 +66,10 @@ int main(int argc, char **argv)
 	}
 
 #if FEATURE_N2
-	for (ua_ft v= 0;  v < r.h->n2;  ++v) {
+	for (va_ft v= 0;  v < r.h->n2;  ++v) {
 		const ma_ft beg= read_ma(r.adj_from, v);
 		const ma_ft end= v == r.h->n2 - 1 ? r.len_m : read_ma(r.adj_from, v + 1);
-		assert(end - beg < f_max); 
+		assert((ma_ft) (end - beg) < fa_max); 
 		writeonzero_fa(f.f2, v, end - beg); 
 	}
 #endif
@@ -84,3 +84,5 @@ int main(int argc, char **argv)
 
 	exit(0); 
 }
+
+

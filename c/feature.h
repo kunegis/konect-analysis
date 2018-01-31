@@ -35,7 +35,7 @@ int feature_open_write_$(const char *filename,
 			 struct feature_$ *f, 
 			 const u$_ft n1
 #if FEATURE_N2
-		       , const u$_ft n2
+		       , const v$_ft n2
 #endif
 		       )
 {

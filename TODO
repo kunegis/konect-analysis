@@ -1,5 +1,5 @@
 == Run ==
-* ... ALL (until Matlab issue is resolved)
+* ... ALL 
 * @network.[dat/NETWORKS_FAMILT.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
@@ -21,9 +21,9 @@
 * @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
 * @network family dimacs10-
 * @statistic.triangles 
+* @ft.degree 
 
 == Fixes ==
-* make @feature.ft work 
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
 * write the "Timer" class for triangle counting 
 * distr plots:  those for large networks are often empty 
@@ -138,6 +138,9 @@ needed by dat/pa.wikilens-ratings.mat
 * bidd, degree, cluscod:  Put the variable in question on Y axis, to
   have the "higher curve means higher value" effect.
 * scatter all edge by the degree of their two connected nodes
+* diam:  first, remove all degree-1 node, except a single one neighbour for each non-degree-1 node.
+* "directed diameter" in directed networks, i.e., longest shortest directed path 
+* @ft.degree:  make it also work for networks with multiple edges without edge weights. 
 
 == Hard == 
 * better graph visualization for the website 

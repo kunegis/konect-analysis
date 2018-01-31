@@ -295,14 +295,11 @@ dat/NETWORKS_ALL = dat/NETWORKS;
 # C programs
 #
 
-CFLAGS=
+>CFLAGS:  CFLAGS.common CFLAGS.[CFLAGS.mode]
+{
 	# -D_GNU_SOURCE:  for posix_madvise() 
 	# -lm:  used only in hyperanf.c / hyperloglog.h
-{
-	-std=c99 -pedantic -Wall -Wextra -Werror 
-	-Wundef -D_GNU_SOURCE 
-	-lm 
-	-O3 -DNDEBUG -s  
+	cat CFLAGS.common CFLAGS."$(cat CFLAGS.mode)"
 }
 
 bin/$name:

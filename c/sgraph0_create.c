@@ -302,7 +302,9 @@ int main(int argc, char **argv)
 
 		/* U */ 
 		ua_ft u; 
+#ifndef NDEBUG
 		const char *p_old= p;
+#endif
 		p = parse_ua(p, p_end, &u); 
 		assert(p > p_old); 
 		assert(u != 0);
@@ -312,7 +314,9 @@ int main(int argc, char **argv)
 
 		/* V */ 
 		va_ft v; 
+#ifndef NDEBUG
 		p_old= p;
+#endif 
 		p = parse_va(p, p_end, &v); 
 		assert(p > p_old); 
 		assert(v != 0); 

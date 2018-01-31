@@ -18,9 +18,9 @@
  *   UNSIGNED *	  2	0	'b'	{0, ..., 3}
  *   UNSIGNED *   4	0	'c'	{0, ..., 15} enough for 5-star ratings
  *   UNSIGNED *	  8	0	'd'	{0, ..., 255}
- *   UNSIGNED *	 16	0	'e'	    
+ *   UNSIGNED *	 16	0	'e'	{0, ..., 65535}
  *   UNSIGNED *	 32	0	'f'	enough for almost all known networks as node ID
- *   UNSIGNED *  64	0	'g'	there's one network with this at the moment
+ *   UNSIGNED *  64	0	'g'	there're a few networks with this
  *
  *     SIGNED *   1	1 	'A'	{-1, +1} with -1 mapping to 1 (sign bit) (special mapping)
  *     SIGNED *	  2	1	'B'	{-2, -1, 0, +1}; enough for {-1,0,+1} weights
