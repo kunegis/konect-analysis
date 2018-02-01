@@ -295,7 +295,7 @@ dat/NETWORKS_ALL = dat/NETWORKS;
 # C programs
 #
 
->CFLAGS:  CFLAGS.common CFLAGS.[CFLAGS.mode]
+>CFLAGS:  CFLAGS.common CFLAGS.[CFLAGS.mode] CFLAGS.mode
 {
 	# -D_GNU_SOURCE:  for posix_madvise() 
 	# -lm:  used only in hyperanf.c / hyperloglog.h
@@ -564,6 +564,9 @@ dat/sg0.$network:
 	dat/widths.$network uni/out.$network dat/info.$network 
 	$[command = dat/dep.c.sgraph0_create.$network] [dat/dep.c.sgraph0_create.$network]
 {
+	##RM
+	echo $command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
+	
 	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
 }
 

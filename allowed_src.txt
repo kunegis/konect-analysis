@@ -229,11 +229,13 @@ roadNet-PA,matrix
 roadNet-TX,matrix
 slashdot-threads,matrix
 slashdot-zoo,matrix
-soc-Epinions1,matrix
 sociopatterns-hypertext,matrix
 sociopatterns-infectious,matrix
+soc-Epinions1,matrix
 soc-LiveJournal1,matrix
 soc-pokec-relationships,matrix
+soc-sign-bitcoinalpha,matrix
+soc-sign-bitcoinotc,matrix
 stackexchange-stackoverflow,matrix
 subelj_cora,matrix
 subelj_euroroad,matrix

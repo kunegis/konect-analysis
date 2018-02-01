@@ -16,7 +16,7 @@
 #
 
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 
 use Konect; 
 
@@ -35,18 +35,26 @@ my $emn_unused = <INFO> + 0;
 my $format = <INFO> + 0;
 my $weights = <INFO> + 0;
 
+print STDERR "n1=$n1, n2=$n2, m=$m, format=$format, weights=$weights\n";
+
 my $ret_u = Konect::bitwidth($n1);
 my $ret_v = Konect::bitwidth($n2); 
+
+print STDERR "ret_u=$ret_u, ret_v=$ret_v\n";
 
 # For the number of edges, use twice the amount for unipartite networks,
 # since when they are represented as undirected networks (which also
 # happens for directed networks), then each edge is saved twice. 
-my $ret_m = Konect::bitwidth( $format == 3 ? $m : 2 * $m ); 
+my $m_needed=  ($format == 3) ? ($m) : (2 * $m);
+my $ret_m = Konect::bitwidth($m_needed); 
+
+print STDERR "m_needed= $m_needed, ret_m=$ret_m\n";
 
 open(OUT, "<", $filename_out)
     or die "$filename_out:  $!";
 
 my $max_w = -1;    # Maximum encountered value.  Negative values X count as (-x-1)
+my $has_w = 0; 
 my $ret_t = '-'; 
 my $signed_w = 0; 
 my $signed_t = 0; 
@@ -64,32 +72,33 @@ while (<OUT>) {
 
     if ($line =~ /^\s*[0-9]+\s+[0-9]+\s+([0-9.e+-]+).*$/) {
 
-		my $width = $1; 
+	$has_w= 1; 
+	my $width = $1; 
 
-		if ($width =~ /-/) { 
-			$signed_w = 1; 
-			$width =~ s/-//g;
-		}
+	if ($width =~ /-/) { 
+	    $signed_w = 1; 
+	    $width =~ s/-//g;
+	}
 
-		if ($width =~ /[.e]/) {
-			$float_w = 1; 
-		} else {
+	if ($width =~ /[.e]/) {
+	    $float_w = 1; 
+	} else {
 
-			my $weight_value = 0 + $width;
-			if ($weight_value < 0) {
-				$weight_value = -$weight_value - 1; 
-			}
+	    my $weight_value = 0 + $width;
+	    if ($weight_value < 0) {
+		$weight_value = -$weight_value - 1; 
+	    }
+	    
+	    if ($weight_value > $max_w) {
+		$max_w = $weight_value; 
+	    }
+	    
+	    if ($width eq "0") {
+		$zero_w = 1; 
+	    }
+	}
 
-			if ($weight_value > $max_w) {
-				$max_w = $weight_value; 
-			}
-
-			if ($width eq "0") {
-				$zero_w = 1; 
-			}
-		}
-
-		if ($line =~ /^\s*[0-9]+\s+[0-9]+\s+[0-9.e+-]+\s+([0-9.e+-]+).*$/) {
+	if ($line =~ /^\s*[0-9]+\s+[0-9]+\s+[0-9.e+-]+\s+([0-9.e+-]+).*$/) {
 
 			if ($ret_t eq '-') { $ret_t = 'a'; }
 
@@ -108,28 +117,28 @@ while (<OUT>) {
 					$ret_t = $ret_t_new; 
 				}
 			}
-		}
+	}
     }
 }
 
 my $ret_w = '-'; 
 
+if ($has_w == 1) {
 if ($float_w) {
 	$ret_w = '5'; 
 } elsif ($signed_w) {
-##	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth(2 * $max_w); 
 	$ret_w = uc $ret_w; 
 	if ($ret_w eq "A" && $zero_w) {
 		$ret_w= 'B';
 	}
 } else { # Unsigned 
-##	print STDERR "max_w = $max_w\n"; 
 	$ret_w = Konect::bitwidth($max_w);
 	if (!$zero_w && $ret_w eq "a") {
 		$ret_w = '-'; 
 	}
-} 
+}
+}
 
 if ($float_t) {
 	$ret_t = '5';
