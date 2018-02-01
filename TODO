@@ -1,5 +1,4 @@
 == Run ==
-* ... ALL 
 * @network.[dat/NETWORKS_FAMILT.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
@@ -22,6 +21,7 @@
 * @network family dimacs10-
 * @statistic.triangles 
 * @ft.degree 
+* @all (because last time, Matlab was broken)
 
 == Fixes ==
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
