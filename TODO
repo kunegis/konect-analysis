@@ -1,4 +1,5 @@
 == Run ==
+* ... ALL
 * @network.[dat/NETWORKS_FAMILT.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
@@ -25,14 +26,14 @@
 * @network.soc-sign-bitcoin(alpha otc)
 
 == Fixes ==
-* Fixes needed after the switch to Matlab 2016X
-* re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
+* lapdiag:  determine spectrum type
 * write the "Timer" class for triangle counting 
 * distr plots:  those for large networks are often empty 
 * hopdistr .c and .d:  find out the proper names of the underlying distirbutions and re-enable these subplots 
 * make @degree.libimseti work
 * make @degree.netflix work
 * make @degree.yahoo-song work
+* make @time_histogram work 
 
 == Easy new features ==
 * statistic:  median degree 
