@@ -6,7 +6,9 @@
 #
 # PARAMETERS
 # 	$1	    	The Matlab program (with or without .m; may contain directory) 
-# 	$jvm_enable	Enable the JVM; the JVM is disabled by default
+# 	$jvm_enable	Ignored -- the JVM must now always be enabled
+#			due to the new Matlab version's failure.  (was:
+#			Enable the JVM; the JVM is disabled by default) 
 #	$verbose	When set, enable verbose mode (mainly for debugging)
 #	$MATLAB_PARAMS	Space-separated list of environment variables
 #			that are passed to the Matlab script, and
@@ -46,6 +48,9 @@ exec 6>>error.log
 
 # The command to use
 MATLAB=matlab
+
+## Document this
+jvm_enable=1
 
 # The options to use for Matlab 
 MATLAB_OPTIONS="-nodesktop -nosplash"
@@ -142,7 +147,7 @@ EOF
 
 
 # Matlab does not exit(!=0) on error but prints ???. 
-grep -qE '(\?\?\?|^\*\*\* )' $TMP_BASE.log && 
+grep -qE '(\?\?\?|^\*\*\* |^Error (in|using) )' $TMP_BASE.log && 
 {
 	echo "*** error in $TMP_BASE.log"
 	echo >&6 "*** error in $TMP_BASE.log"

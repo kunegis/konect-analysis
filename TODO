@@ -23,9 +23,9 @@
 * @ft.degree 
 * @all (because last time, Matlab was broken)
 * @network.soc-sign-bitcoin(alpha otc)
-* @network.(hiv iceland) [+ announcement]
 
 == Fixes ==
+* Fixes needed after the switch to Matlab 2016X
 * re-enable Hermitian Laplacian D - H, with Mridul (lapherm and lapherm2, as well as other lapherm? cases, see konect_matrix.m), as well as the "directedness" statistic 
 * write the "Timer" class for triangle counting 
 * distr plots:  those for large networks are often empty 
