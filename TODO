@@ -1,6 +1,5 @@
 == Run ==
-* ... ALL
-* @network.[dat/NETWORKS_FAMILT.ca-cit] 
+* ... @network.[dat/NETWORKS_FAMILY.ca-cit] 
 * @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
 * @bidd
@@ -34,6 +33,7 @@
 * make @degree.netflix work
 * make @degree.yahoo-song work
 * make @time_histogram work 
+* rating_evolution2:  make sure it is not executed for (non-rating) edit-* networks 
 
 == Easy new features ==
 * statistic:  median degree 

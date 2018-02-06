@@ -125,11 +125,14 @@ foldoc,matrix
 foodweb-baydry,matrix
 foodweb-baywet,matrix
 friendster,matrix
+gene_fusion,matrix
 github,matrix
 gottron-excellent,matrix
 gottron-reuters,matrix
 gottron-trec,matrix
+hiv,matrix
 hyves,matrix
+iceland,matrix
 jester1,matrix
 jester2,matrix
 lasagne-yahoo,matrix
