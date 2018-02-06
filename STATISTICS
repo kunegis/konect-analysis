@@ -4,6 +4,8 @@ size+3
 volume
 uniquevolume
 avgdegree
+avgdegree+2
+avgdegree+3
 maxdegree
 maxdegree+2
 maxdegree+3
