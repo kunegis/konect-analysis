@@ -8,6 +8,9 @@
 
 function time_xaxis_unix(t_min, t_max)
 
+t_min
+t_max
+  
 assert(t_max > t_min); 
   
 NUM = 7; % Maximum number of ticks to show on the date axis (X axis)
@@ -18,11 +21,10 @@ months = {'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', ...
 
 if t_max - t_min < 1 / 6 * YEAR
   'by day'
-  r = ceil(t_min / 24 / 3600) : floor(t_max / 24 / 3600);
-  r = r - r(1) + 1; 
-%%    r = (ceil(t_min / (24 * 60 * 60)) : floor(t_max / (24 * 60 * 60))) / 365.25 + 1970
+  r = ceil(t_min / 24 / 3600) : floor(t_max / 24 / 3600)
   length_r = length(r)
   if length(r) > 0
+    r = r - r(1) + 1; 
     for i = 1 : length(r)
       l{i} = sprintf('Day %d', i);
     end
@@ -35,12 +37,9 @@ elseif t_max - t_min < (1/12) * YEAR * NUM
   r = ceil(t_min / (3600 * 24 * YEAR / 12)) : ceil(t_max / (3600 * 24 * YEAR / 12));
   r_year = mod(r, 12) + 1970; 
   assert(length(r) > 0); 
-%%  r = (ceil(t_min * 12) / 12):(1/12):(floor(t_max * 12) / 12); 
   set(gca, 'XTick', r);
-%%  rr = ceil(t_min * 12) : floor(t_max * 12);
-%%  assert(length(r) == length(rr));
   for i = 1 : length(r)
-    if (mod(t(i),12) == 0)
+    if (mod(r(i),12) == 0)
       text = sprintf('%u', r_year(i)); 
     else
       month = mod(r(i),12);
@@ -55,10 +54,7 @@ elseif t_max - t_min < (1/6) * NUM
   r = ceil(t_min / (3600 * 24 * YEAR / 12)) : 2 : ceil(t_max / (3600 * 24 * YEAR / 12));
   r_year = mod(r, 12) + 1970; 
   assert(length(r) > 0); 
-%%  r = (ceil(t_min * 6) / 6):(1/6):(floor(t_max * 6) / 6); 
   set(gca, 'XTick', r);
-%%  rr = ceil(t_min * 6) : floor(t_max * 6);
-%%  assert(length(r) == length(rr));
   for i = 1 : length(r)
     if (mod(t(i),12) == 0)
       text = sprintf('%u', r_year(i)); 
@@ -72,18 +68,26 @@ elseif t_max - t_min < (1/6) * NUM
 
 % By years     
 elseif t_max - t_min < 1 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:floor(t_max)));
+  'case A'
+  set(gca, 'XTick', ceil(t_min/YEAR:floor(t_max/YEAR)));
 elseif t_max - t_min < 2 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:2:floor(t_max)));
+  'case B'
+  set(gca, 'XTick', ceil(t_min/YEAR:2:floor(t_max/YEAR)));
+  'B done'
 elseif t_max - t_min < 5 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:5:floor(t_max)));
+  'case C'
+  set(gca, 'XTick', ceil(t_min/YEAR:5:floor(t_max/YEAR)));
 elseif t_max - t_min < 10 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:10:floor(t_max)));
+  'case D'
+  set(gca, 'XTick', ceil(t_min/YEAR:10:floor(t_max/YEAR)));
 elseif t_max - t_min < 20 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:20:floor(t_max)));
+  'case E'
+  set(gca, 'XTick', ceil(t_min/YEAR:20:floor(t_max/YEAR)));
 elseif t_max - t_min < 50 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:50:floor(t_max)));
+  'case F'
+  set(gca, 'XTick', ceil(t_min/YEAR:50:floor(t_max/YEAR)));
 elseif t_max - t_min < 100 * YEAR * NUM
-    set(gca, 'XTick', ceil(t_min:100:floor(t_max)));
+  'case G'
+  set(gca, 'XTick', ceil(t_min/YEAR:100:floor(t_max/YEAR)));
 end
 

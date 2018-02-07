@@ -23,6 +23,8 @@
 * @ft.degree 
 * @all (because last time, Matlab was broken)
 * @network.soc-sign-bitcoin(alpha otc)
+* @time_histogram 
+* @statistic.{nonbip,nonbipn,anticonflict}  [ + announcement]
 
 == Fixes ==
 * lapdiag:  determine spectrum type
@@ -32,7 +34,6 @@
 * make @degree.libimseti work
 * make @degree.netflix work
 * make @degree.yahoo-song work
-* make @time_histogram work 
 * rating_evolution2:  make sure it is not executed for (non-rating) edit-* networks 
 
 == Easy new features ==

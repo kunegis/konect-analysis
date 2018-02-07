@@ -49,6 +49,20 @@ For questions bug reports and other comments, write to Jérôme Kunegis
 
 == Requirements ==
 
+Disclaimer: KONECT-Analysis is academic, experimental, and mostly
+executed by its authors.  As a result, it is _not_ optimized for easy
+installation or compatibility :) While we do take care to be compatible
+with various systems, we don't test KONECT-Analysis on other systems
+that those we use ourselves (which run Ubuntu).  Also, we like to
+experiment with new programming languages from time to time, and as a
+result this project is quite a mix of languages.  We warned you this is
+a geek project.
+
+The good news is:  You don't need _all_ dependencies for all use cases.
+Stu is needed everywhere, but beyond that it depends what you are
+doing.  You go ahead and run things, and you'll notice if something is
+missing. 
+
 * Stu:  install from https://github.com/kunegis/stu
 * A C99 compiler (for triangle counts, diameters, and a few more simple
   statistics and measures)  
@@ -58,6 +72,7 @@ For questions bug reports and other comments, write to Jérôme Kunegis
 * GNU Octave
 * Perl 5
 * Julia (experimental, see lib/JULIA)
+* Matlab-BGL (Boost Graph Library for Matlab) -- see file lib/README
 
 == License ==
 

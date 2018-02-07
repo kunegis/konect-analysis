@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# Create the timestamp file from the out.* file, via stdin/stdout.
+#
+# PARAMETERS
+#	$network (only for the check, not for accessing the file)
+#
+
+set -e
+
+if ! grep -qE '^'"$network"'$' dat/NETWORKS_TIME ; then
+	exit 1
+fi
+
+sed -E -e '
+/^%/d
+s,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,
+'

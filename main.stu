@@ -682,7 +682,8 @@ plot/assortativity.a.$network.eps:
 # Statistics
 #
 
-# The complete list of statistics, including substatistics of relevance 
+# The complete list of statistics, including substatistics of relevance.
+# The file MUST NOT contain spaces. 
 STATISTICS;
 
 dat/STATISTICS = STATISTICS; 
@@ -1367,12 +1368,9 @@ plot/weights.a.$network.eps:
 
 >dat/time.$network:  
 	<uni/out.$network
-	-t dat/NETWORKS_TIME
+	-t dat/NETWORKS_TIME sh/mktime
 {
-	if ! grep -qE '^'"$network"'$' dat/NETWORKS_TIME ; then
-		exit 1
-	fi
-	sed -E -e 's,[0-9]+\s+[0-9]+\s+[^ ]+\s+([0-9-]+),\1,' 
+	sh/mktime
 }
 
 @time_histogram:  @time_histogram.[dat/NETWORKS_TIME];
@@ -1380,11 +1378,11 @@ plot/weights.a.$network.eps:
 @time_histogram.$network
 plot/time_histogram.a.$network.eps
 plot/time_histogram.b.$network.eps:   
-	m/time_histogram.m $[ -t MATLABPATH]
+	m/time_histogram.m -t $[ -t MATLABPATH]
 	dat/time.$network 
 	uni/meta.$network 
 {
-	 ./matlab m/time_histogram.m
+	 ./octave m/time_histogram.m
 }
 
 #
@@ -2081,7 +2079,7 @@ plot/degcc.a.$network.eps:
 @handbook:
 	@category-table
 	@layout.moreno_highschool 
-	@time_histogram.edit-enwiki
+	@time_histogram.soc-sign-bitcoinotc
 	@weights.movielens-1m
 	@weights.edit-dewiki
 	@degree.elec

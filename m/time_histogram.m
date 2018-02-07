@@ -15,13 +15,15 @@
 %
 
 bins = 90; 
-font_size = 22;
-line_width = 3; 
+font_size = 44;
+line_width = 14; 
 color_1 = [0 0 1]; 
 
 network = getenv('network'); 
 
+'loading...'
 timestamps = load(sprintf('dat/time.%s', network)); 
+'\tloaded.'
 
 % If the tag #aggregatetime is set, filter out entries with the
 % lowest timestamp 
@@ -40,16 +42,18 @@ years = timestamps / (365.25 * 24 * 60 * 60) + 1970;
 % (b) Cumulative
 %
 
-stairs(sort(timestamps), 1:length(timestamps), 'LineWidth', line_width, 'Color', color_1); 
+'plot B...'
+
+stairs(sort(timestamps), 1:length(timestamps), 'linewidth', line_width, 'Color', color_1); 
 
 mi = min(timestamps)
 ma = max(timestamps)
 
 axis([(mi - 0.05 * (ma-mi)) (ma + 0.05 * (ma-mi)) 0 length(timestamps)]); 
 
-xlabel('Time (t)', 'FontSize', font_size); 
+xlabel('Time (t)', 'FontSize', font_size);
 ylabel(konect_label_statistic('volume', 'matlab'), 'FontSize', font_size); 
-    
+
 set(gca, 'FontSize', font_size); 
 
 set(gca, 'XMinorTick', 'on');
@@ -63,6 +67,8 @@ konect_print(sprintf('plot/time_histogram.b.%s.eps', network));
 %
 % Main plot
 % 
+
+'plot A...'
 
 set(gca, 'FontSize', font_size); 
 

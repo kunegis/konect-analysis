@@ -25,6 +25,7 @@ assortativity
 assortativity+2
 inoutassort
 snorm
+nonbip
 gini
 power
 power2
@@ -38,4 +39,6 @@ meandist
 reciprocity
 tour4
 squares
+nonbipn
 alcon
+anticonflict
