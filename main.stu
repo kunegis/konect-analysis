@@ -92,8 +92,17 @@
 dat/PLOTS = PLOTS; 
 
 # Determines which datasets can be shown online or not 
-dat/allowed_src.txt = allowed_src.txt;
-allowed_src.txt; 
+##dat/allowed_src.txt = allowed_src.txt;
+##allowed_src.txt; 
+
+# The allowed patterns for files that can be downloaded.
+DOWNLOAD_PATTERNS;
+
+# List of networks for which we allow download of the dataset 
+>dat/NETWORKS_DOWNLOAD:  dat/NETWORKS DOWNLOAD_PATTERNS sh/mkdownloadlist
+{
+	sh/mkdownloadlist	
+}
 
 #
 # Matlab path.  
@@ -1842,22 +1851,24 @@ dat/download.tsv.$network.tar.bz2:
 
 dat-tmp;
 
-@tsv: [dat/dep.tsv];
+@tsv:   @tsv/[dat/NETWORKS_DOWNLOAD]; 
+##@tsv: [dat/dep.tsv];
 
->dat/dep.tsv:  
-	dat/NETWORKS
-	dat/allowed_src.txt
-{
-	cat dat/NETWORKS |
-	while read -r network 
-	do
-		if <dat/allowed_src.txt sed -E -e '/,matrix/!d;s/^(.*),.*$/\1/' | 
-			grep -qE '^'"$network"'$'
-		then
-			echo "@tsv.$network"
-		fi
-	done
-}
+## >dat/dep.tsv:  
+## ##	dat/NETWORKS
+## 	dat/NETWORKS_DOWNLOAD
+## ##	dat/allowed_src.txt
+## {
+## 	cat dat/NETWORKS |
+## 	while read -r network 
+## 	do
+## 		if <dat/NETWORKS_DOWNLOAD grep -E -q '^'"$network"'$'
+## ##		if <dat/allowed_src.txt sed -E -e '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
+## 		then
+## 			echo "@tsv.$network"
+## 		fi
+## 	done
+## }
 
 #
 # Delaunay
@@ -2157,6 +2168,6 @@ plot/rating_evolution2.c.$network.eps:
 @www-fast:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	dat/CATEGORIES
-	dat/allowed_src.txt
+	dat/NETWORKS_DOWNLOAD
 	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
 ;

@@ -25,6 +25,7 @@
 * @network.soc-sign-bitcoin(alpha otc)
 * @time_histogram 
 * @statistic.{nonbip,nonbipn,anticonflict}  [ + announcement]
+* @statistic.own [ + announcement]
 
 == Fixes ==
 * lapdiag:  determine spectrum type
@@ -35,6 +36,7 @@
 * make @degree.netflix work
 * make @degree.yahoo-song work
 * rating_evolution2:  make sure it is not executed for (non-rating) edit-* networks 
+* @statistic.own:   separate values of left/right/out/in-degrees [needs to renumber the substatistics]
 
 == Easy new features ==
 * statistic:  median degree 

@@ -1,0 +1,21 @@
+#! /bin/sh
+#
+# Determine the list of networks that can be downloaded, on stdout.
+#
+# The output preserves the ordering from dat/NETWORKS. 
+#
+# INPUT FILES
+#	dat/NETWORKS		Complete list of networks
+#	DOWNLOAD_PATTERNS	Patterns that are allowed
+#
+
+sed -E -e '
+/^\s*#/d
+/^\s*$/d
+s,$\s+,,g
+s,\s+$,,g
+s,\*,.*,g
+s,^,^,
+s,$,$,
+' DOWNLOAD_PATTERNS |
+grep -E -f - dat/NETWORKS
