@@ -57,6 +57,24 @@ else
     n2 = n_values(3); 
 end
 
+% If 'entity-names' is present and the network is bipartite, there must
+% be two entity names given, i.e., a comma is present.
+if isfield(meta, 'entity_names')
+  if format == consts.BIP
+    if sum(meta.entity_names == ',') ~= 1
+      check_failed('*** Field entity-names must contain two entity names in bipartite network'); 
+    end
+  else
+    if sum(meta.entity_names == ',') ~= 0
+      check_failed('*** Field entity-names must contain only a single entity name'); 
+    end
+  end
+end
+
+%
+% Load data
+%
+
 T = load(sprintf('uni/out.%s', network));
 % T stays constant throughout the whole run, but A and similar matrices
 % are computed for each test separately.

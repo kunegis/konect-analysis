@@ -782,11 +782,12 @@ dat/statistic.$statistic.$network:
 	<dat/statistic.$statistic.$network
 {
 	if [ "$K" -lt 2 ] ; then 
-		echo >&2 'K must be at least 2'
+		echo >&2 '*** Error: K must be at least 2'
 		exit 1
 	fi
 	if [ "$K" -gt "$(wc -l dat/statistic.$statistic.$network | cut -d' ' -f1)" ] ; then
-		echo >&2 'K cannot be larger than size of statistic file'
+		echo >&2 '*** Error: K must not be larger than size of statistic file'
+		echo >&2 "Reading K='$K' from file 'dat/statistic.$statistic.$network'"
 		exit 1
 	fi
 	sed -E -e "$K"'!d'
@@ -840,13 +841,6 @@ dat/statistic.size.$network:
 	[ "$size" ] && echo "$size" >dat/statistic.size."$network"
 }
 
-## dat/statistic.size.$network:  m/statistic_size.m
-## 	dat/info.$network
-## 	$[ -t MATLABPATH]
-## {
-## 	./octave m/statistic_size.m
-## }
-
 dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
@@ -886,16 +880,13 @@ dat/statistic.volume.$transform~$network:
 		"$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.volume."$network".log
 }
 
-dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 dat/statistic.fconflict.$network     = dat/statistic.conflict+2.$network;
+
+dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 
 dat/statistic_time.full.fconflict.$network = dat/statistic_time.full.conflict+2.$network;
 
 dat/statistic_time_runtime.full.fconflict.$network = dat/statistic_time_runtime.full.conflict+2.$network;
-
-#
-# Statistics with special code (simple expressions or C programs) 
-#
 
 dat/statistic.maxdegree.$network:
 	dat/sg1.$network

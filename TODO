@@ -1,6 +1,5 @@
 == Run ==
-* ... @network.[dat/NETWORKS_FAMILY.ca-cit] 
-* @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
+* ... @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
 * @statistic.clusco
 * @bidd
 * @decomposition.diag
@@ -26,6 +25,12 @@
 * @time_histogram 
 * @statistic.{nonbip,nonbipn,anticonflict}  [ + announcement]
 * @statistic.own [ + announcement]
+* @statsitic.loops [ + announcement]
+* @statistic.cluscoasym [ + announcement]
+* @statistic.opnorm [+ announcement]
+* @statistic.maxdiag [+ announcement]
+* @statistic.conflict [+ announcement]
+* @statistic.fconflict [+ announcement]
 
 == Fixes ==
 * lapdiag:  determine spectrum type
@@ -39,14 +44,10 @@
 * @statistic.own:   separate values of left/right/out/in-degrees [needs to renumber the substatistics]
 
 == Easy new features ==
-* statistic:  median degree 
-* new statistic:  maximal egde multiplicity 
-* statistic:  number of loops
 * temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
 * new plot type:  all standard statistics in function of time (we have
 to exclude statistics that are themselves based on temporal features) 
 * mediandist:  actually compute it from hyperanf
-* for rating networks:  mean rating, i.e., mean edge weight
 * hopdistr.b:  Y axis labels:  write there the logit-transformed values.
 * laplacian of signed graph WITHOUT absolute value.  Models real
 repulsion, better than the absolute value, which models antipodal
@@ -84,22 +85,16 @@ and another node are completed by a second edge.
 sequential. 
 * directed networks count statistic:  Number of directed triangles, number of cyclic triangles
 * https://marketplace.gephi.org/plugin/openord-layout/
-* Second largest eigenvalue of N:  spectral gap, as per Martin Gueuning 
 * https://share.osf.io/registration/
 * statistic:  [hubiness], variance of the degree distribution 
 * directed Laplacian:   L = D - A where A is asymmetric.  Has complex spectrum. 
-* new node statistic:  k-core number (largest k for which a node has
-  degree >0 in the k-core). (as measure of centrality).  Plot the
-  corresponding distribution, the k-core distribution. 
-  (matlab_bgl function core_numbers.m)
-* The spectral radius divided by the spectral norm (a measure of the [a]cyclic-ness)
 * scatter:  draw the QQ plot 
 * make sure the distinction between event-edges and connection-edges is
   modeled accurately 
 * complex eigenvalues of P=D^-1A for directed networks.  Largest is 1.
 * skew Laplacian:  D + i (A - A').  What are the eigenvalues?
   eigenvalues have Re(lambda) >= 0 due to circle theorem.
-* average/median path length in function of networj size
+* average/median path length in function of network size
 * distribution plot of all statistics.  Also cumulated 
 * Degeneracy:  maximum k-core number
 * Graphon plot:  show the adjacency matrix with nodes sorted by U[L]_i,
@@ -136,7 +131,6 @@ needed by dat/pa.wikilens-ratings.mat
 * check.m:  check that the category of the network is one of the allowed
   categories (by comparing with a canonical source) 
 * NCP (network community plot) 
-* run @test
 * Use https://github.com/franktakes/teexgraph for the BoundingDiameter algorithm to compute the diameter 
 * dat/NETWORKS* :  Use '.' instead of '_' for separation 
 * actual moments of the degree distribution

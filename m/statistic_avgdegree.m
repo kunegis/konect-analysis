@@ -11,6 +11,8 @@
 %
 % OUTPUT 
 %	dat/statistic.avgdegree.$network
+%		The meaning of the values is the same as that described
+% 		in konect-toolbox/m/konect_statistic_avgdegree.m 
 %
 
 network = getenv('network');

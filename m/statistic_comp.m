@@ -38,5 +38,10 @@ t1 = cputime;
 runtime = t1 - t0; 
 values = [full(values) ; runtime]; 
 
+if sum(isnan(values)) ~= 0
+  values
+  error('*** NaN in statistic computation'); 
+end
+
 save(sprintf('dat/statistic.%s.%s', statistic, network), 'values', ...
      '-ascii', '-double'); 
