@@ -22,6 +22,8 @@ fill
 avgmult
 coco
 coco+2
+coco+3
+coco+5
 cocos
 cocos+2
 diam
@@ -45,7 +47,10 @@ alcon
 reciprocity
 nonbip
 nonbipn
+nonbipal
 anticonflict
 negativity
 conflict
 fconflict
+controllability
+controllability+2

@@ -831,6 +831,12 @@ dat/statistic_time_runtime.full.${statistic}+${K}.$network:
 	sed -E -e 's,^......(.).$,\1,' 
 }
 
+#
+# For the size statistic, for use in principle the c/size.c code, but
+# since that needs the SG1 files, and the SG1 files needs the size, the
+# size computation for the "raw" (non-transformed) datasets is done via
+# a Perl script that accesses the text files directly. 
+#
 dat/statistic.size.$network:
 	<uni/out.$network sh/statistic-size
 	dat/statistic.format.$network 
@@ -845,6 +851,8 @@ dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
+echo 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
+	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
 	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 }
@@ -881,6 +889,7 @@ dat/statistic.volume.$transform~$network:
 }
 
 dat/statistic.fconflict.$network     = dat/statistic.conflict+2.$network;
+dat/statistic.nonbipal.$network     = dat/statistic.anticonflict+2.$network;
 
 dat/statistic.volume.simple~$network = dat/statistic.volume.$network;
 
@@ -974,20 +983,21 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 	echo "$d_max" "$d" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
->dat/statistic.coco.$network:
-	dat/statistic.coco.simple~$network
-	dat/statistic.size.$network
-{
-	coco=$(head -1 dat/statistic.coco.simple~"$network")
-	size=$(head -1 dat/statistic.size."$network")
-	coco_2=$(awk 'BEGIN{ printf("%s\n", '"$coco"' / '"$size"'); }')
-	printf '%s\n%s\n' "$coco" "$coco_2" 
-}
+dat/statistic.coco.$network = dat/statistic.coco.simple~$network; 
+## >dat/statistic.coco.$network:
+## 	dat/statistic.coco.simple~$network
+## 	dat/statistic.size.$network
+## {
+## 	coco=$(head -1 dat/statistic.coco.simple~"$network")
+## 	size=$(head -1 dat/statistic.size."$network")
+## 	coco_2=$(awk 'BEGIN{ printf("%s\n", '"$coco"' / '"$size"'); }')
+## 	printf '%s\n%s\n' "$coco" "$coco_2" 
+## }
 
 >dat/statistic.coco.simple~$network:
 	dat/statistic.size.lcc~simple~$network
 {
-	head -1 dat/statistic.size.lcc~simple~$network
+	sed -E -e 1!d dat/statistic.size.lcc~simple~"$network"
 }
 
 >dat/statistic.cocorel.$network:
@@ -2152,13 +2162,9 @@ plot/rating_evolution2.c.$network.eps:
 
 # Files that are needed for the WWW site built by the konect-www package 
 @www:
-	@www-fast
-	@statistic.(size volume format weights)
-;
-
-@www-fast:
 	dat/STATISTICS dat/DECOMPOSITIONS dat/DECOMPOSITIONS_ASYM dat/PLOTS dat/NETWORKS
 	dat/CATEGORIES
 	dat/NETWORKS_DOWNLOAD
 	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
+	@statistic.(format weights)
 ;

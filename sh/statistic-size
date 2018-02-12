@@ -1,6 +1,8 @@
 #! /usr/bin/perl
 #
-# Determine network size statistic.
+# Determine network size statistic.  This outputs all substatistics of
+# the [size] statistics; see
+# 'konect-toolbox/m/konect_statistic_size.m'. 
 #
 # PARAMETERS
 #	$network	Internal name of network 
@@ -14,6 +16,7 @@
 
 use strict; 
 use warnings FATAL => 'all';
+
 use Switch; 
 
 my $network = $ENV{"network"};
@@ -33,9 +36,7 @@ if ($format_network eq "1" or $format_network eq "2") {
     	    my $a= $1;
     	    my $b= $2; 
 	    if ($a > $n) { $n = $a ; }
-##    	    $n = max($n, $a);
 	    if ($b > $n) { $n = $b ; }
-##    	    $n = max($n, $b);
     	}
     	if ($n < 1) { die "Value of n" } 
     	print "$n\n"; 
@@ -45,13 +46,10 @@ if ($format_network eq "1" or $format_network eq "2") {
     	while (<STDIN>) {
     	    next if /^%/;
     	    /^([0-9]+)\s+([0-9]+).*/ or die "Invalid format in input: '$_'"; 
-##    	    /^([0-9]+)\s+([0-9]+).*/ or die "Format: $_"; 
     	    my $a= $1;
     	    my $b= $2; 
 	    if ($a > $n1) { $n1 = $a ; }
-##    	    $n1 = max($n1, $a);
 	    if ($b > $n2) { $n2 = $b ; }
-##    	    $n2 = max($n2, $b);
     	}
     	if ($n1 < 1) { die "Value of n1" } 
     	if ($n2 < 1) { die "Value of n1" }

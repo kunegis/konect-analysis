@@ -5,6 +5,9 @@
  * primary version of the dataset (at the moment, only simple~[NETWORK]
  * networks). 
  *
+ * The output follows the substatistics described in
+ * 'konect-toolbox/konect_statistic_size.m'. 
+ *
  * The size is printed to stdout.
  *
  * INVOCATION 
@@ -55,3 +58,4 @@ int main(int argc, char **argv)
 
 	exit(0);
 }
+

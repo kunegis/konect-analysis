@@ -1,6 +1,5 @@
 == Run ==
-* ... @network.[dat/NETWORKS_FAMILY.wikipedia_link_] 
-* @statistic.clusco
+* ... @statistic.clusco
 * @bidd
 * @decomposition.diag
 * @statistic.coco
@@ -31,46 +30,10 @@
 * @statistic.maxdiag [+ announcement]
 * @statistic.conflict [+ announcement]
 * @statistic.fconflict [+ announcement]
-
-== Fixes ==
-* lapdiag:  determine spectrum type
-* write the "Timer" class for triangle counting 
-* distr plots:  those for large networks are often empty 
-* hopdistr .c and .d:  find out the proper names of the underlying distirbutions and re-enable these subplots 
-* make @degree.libimseti work
-* make @degree.netflix work
-* make @degree.yahoo-song work
-* rating_evolution2:  make sure it is not executed for (non-rating) edit-* networks 
-* @statistic.own:   separate values of left/right/out/in-degrees [needs to renumber the substatistics]
+* @statistic.nonbipal [+ announcement]
+* @statistic.controllability [+ announcement]
 
 == Easy new features ==
-* temporal histogram:  also plot in modulo YEAR, WEEK and DAY. 
-* new plot type:  all standard statistics in function of time (we have
-to exclude statistics that are themselves based on temporal features) 
-* mediandist:  actually compute it from hyperanf
-* hopdistr.b:  Y axis labels:  write there the logit-transformed values.
-* laplacian of signed graph WITHOUT absolute value.  Models real
-repulsion, better than the absolute value, which models antipodal
-attraction.  This is used in [357] to draw signed graphs. 
-** decomposition: L= D-A without absolute value
-** Is there always an eigenvalue zero with constant eigenvector?
-** Eigenvalues may be negative even if every node has positive
-sum-of-weights. 
-** This is NOT the same as LAPQ (there is no implementation yet) 
-* statistic:  median path length:  compute is properly (as the rounded-up 50-percentile effective diameter) 
-* implement in C or as function of other statistics:  fill, average degree, inoutassort, etc. 
-* normalized version of the algebraic conflict:  derive as a problem of
-assigning a number to each node such that the number is equal/opposite
-when two nodes are connected, and the algebraic conflict equals the sum
-of squared differences.  Normalize by the number of edges, and such that
-the mean square of numbers is one.
-\xi' = \xi * n / 2m = \xi / d
-(the exact definition is in projects/konect/presentations/komepol.opd)
-* scatter over all nodes of one network:  degree vs number of adjacent
-triangles.  There should be a power-law slope of a round 1.5, according
-to [Fast Counting of Triangles in Large Real Networks:
-Algorithms and Laws] p.8, fig 7.
-* size distribution of connected components (directed and undirected)
 * new count:  number of 4-cliques
 * new count:  number of T = [1 2; 1 3; 2 3; 2 4; 3 4].  I.e., K_4 minus
 one edge. 
@@ -95,7 +58,6 @@ sequential.
 * skew Laplacian:  D + i (A - A').  What are the eigenvalues?
   eigenvalues have Re(lambda) >= 0 due to circle theorem.
 * average/median path length in function of network size
-* distribution plot of all statistics.  Also cumulated 
 * Degeneracy:  maximum k-core number
 * Graphon plot:  show the adjacency matrix with nodes sorted by U[L]_i,
   and reduced to 100x100 blocks, in blsck and white 
