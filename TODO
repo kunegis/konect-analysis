@@ -103,6 +103,7 @@ needed by dat/pa.wikilens-ratings.mat
 * diam:  first, remove all degree-1 node, except a single one neighbour for each non-degree-1 node.
 * "directed diameter" in directed networks, i.e., longest shortest directed path 
 * @ft.degree:  make it also work for networks with multiple edges without edge weights. 
+* a combination of [clusco] and [meandist] is a measure of "small-world"ness. See http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0002051
 
 == Hard == 
 * better graph visualization for the website 
