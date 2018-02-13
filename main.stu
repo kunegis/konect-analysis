@@ -1524,6 +1524,12 @@ plot/hopdistr_time.full.a.$network.eps:
 	 type=full ./matlab m/hopdistr_time_plot.m
 }
 
+# Median distance
+dat/statistic.mediandist.$network:  dat/hopdistr.$network m/mediandist.m
+{
+	./octave m/mediandist.m
+}
+
 #
 # Steps
 #
