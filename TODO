@@ -32,6 +32,8 @@
 * @statistic.fconflict [+ announcement]
 * @statistic.nonbipal [+ announcement]
 * @statistic.controllability [+ announcement]
+* @statistic.mediandist [+ announcement]
+* @statistic.separation [+ announcement]
 
 == Easy new features ==
 * new count:  number of 4-cliques

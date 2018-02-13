@@ -29,6 +29,7 @@ cocos+2
 diam
 diameff50
 diameff90
+mediandist
 meandist
 gini
 own
@@ -44,6 +45,7 @@ snorm
 opnorm
 maxdiag
 alcon
+separation
 reciprocity
 nonbip
 nonbipn
