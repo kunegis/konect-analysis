@@ -28,8 +28,6 @@ T = data.T;  data = [];
 'Point (c)'
 consts = konect_consts(); 
 
-%%info = read_info(network); 
-
 format = read_statistic('format', network, 1); 
 weights = read_statistic('weights', network, 1); 
 
@@ -125,8 +123,8 @@ end
 
 T = []; 
 
-bidd_one(p, q, 1, 'a', 'Degree', 'd', 1); 
-konect_print(sprintf('plot/bidd.a.%s.eps', network)); 
-
 bidd_one(p, q, 0, 'a', 'Degree', 'd', 1); 
 konect_print(sprintf('plot/bidd.ax.%s.eps', network)); 
+
+bidd_one(p, q, 1, 'a', 'Degree', 'd', 1); 
+konect_print(sprintf('plot/bidd.a.%s.eps', network)); 

@@ -1,7 +1,5 @@
 == Run ==
-* ... @statistic.clusco
-* @bidd
-* @decomposition.diag
+* ...@decomposition.diag
 * @statistic.coco
 * @delaunay 
 * @decomposition.diag-n
@@ -34,6 +32,7 @@
 * @statistic.controllability [+ announcement]
 * @statistic.mediandist [+ announcement]
 * @statistic.separation [+ announcement]
+* @statistic.tconflict [+ announcement] 
 
 == Easy new features ==
 * new count:  number of 4-cliques
