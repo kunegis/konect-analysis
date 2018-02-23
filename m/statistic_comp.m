@@ -38,7 +38,9 @@ t1 = cputime;
 runtime = t1 - t0; 
 values = [full(values) ; runtime]; 
 
-if sum(isnan(values)) ~= 0
+% The first value must not be NaN -- other can to denote that they don't apply 
+if isnan(values(1))
+%%if sum(isnan(values)) ~= 0
   values
   error('*** NaN in statistic computation'); 
 end

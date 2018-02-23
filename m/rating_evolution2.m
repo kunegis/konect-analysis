@@ -15,7 +15,8 @@
 network = getenv('network');
 
 bins = 10; 
-font_size = 22; 
+font_size = 22;
+line_width = 3; 
 
 data = load(sprintf('dat/data.%s.mat', network));
 
@@ -59,7 +60,8 @@ end
 hold on;
 
 for i = 1 : bins
-  plot(1 : size(sums, 2), sums(i, :) ./ counts(i, :), '-'); 
+  plot(1 : size(sums, 2), sums(i, :) ./ counts(i, :), '-', ...
+      'LineWidth', line_width); 
 end
 
 set(gca, 'FontSize', font_size); 

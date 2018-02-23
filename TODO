@@ -1,38 +1,40 @@
 == Run ==
-* ...@decomposition.diag
-* @statistic.coco
-* @delaunay 
-* @decomposition.diag-n
-* @statistic.maxdegree
-* @network.[dat/NETWORKS_FAMILY_wiki_talk_] 
-* @statistic.inoutassort 
-* @check 
-* @outin
-* @network.marvel     # + announcement 
-* @network.komarix-(imdb citeseer)    # and announce page
-* @network.amazon # + announcement
+* ... @network.amazon # + announcement
+* @network.[dat/NETWORKS_FAMILY_wiki_talk_]   
 * @network.wang-{tripadvisor,amazon}  # + annoucement
+* @statistic.inoutassort 
+* @statistic.nonbip  [ + announcement]
+* @check 
+* @statistic.nonbipn  [ + announcement]
+* @outin
+* @statistic.anticonflict  [ + announcement]
 * @syngraphy 
-* @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
-* @network family dimacs10-
-* @statistic.triangles 
-* @ft.degree 
-* @all (because last time, Matlab was broken)
-* @network.soc-sign-bitcoin(alpha otc)
-* @time_histogram 
-* @statistic.{nonbip,nonbipn,anticonflict}  [ + announcement]
 * @statistic.own [ + announcement]
+* @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
 * @statsitic.loops [ + announcement]
 * @statistic.cluscoasym [ + announcement]
 * @statistic.opnorm [+ announcement]
+* @network family dimacs10-
 * @statistic.maxdiag [+ announcement]
+* @statistic.triangles 
 * @statistic.conflict [+ announcement]
+* @ft.degree 
 * @statistic.fconflict [+ announcement]
+* @all (because last time, Matlab was broken)
 * @statistic.nonbipal [+ announcement]
+* @network.soc-sign-bitcoin(alpha otc)
 * @statistic.controllability [+ announcement]
+* @time_histogram 
 * @statistic.mediandist [+ announcement]
+* @distr.sym
+** those for large networks are often empty 
 * @statistic.separation [+ announcement]
-* @statistic.tconflict [+ announcement] 
+* @distr.sym-n
+* @statistic.tconflict [+ announcement]
+* @distr.lap
+* @hopdistr
+* @degree
+* @rating_evolution2 # + accouncement 
 
 == Easy new features ==
 * new count:  number of 4-cliques
@@ -71,7 +73,6 @@ sequential.
 ** X axis:  time scale, logarithmically from 1s to several years.  Y
    axis:   skewness. 
 * plot:  degree vs local clustering coefficient for all nodes of one network
-* convert stuff from Makefile.old to Stu code 
 * plot all degree distributions (for one class) on a single plot.  
 * c/ifub.c:  at each step, use a timer-like progress indicator.  Same
   for triangles.c.  
@@ -105,6 +106,7 @@ needed by dat/pa.wikilens-ratings.mat
 * "directed diameter" in directed networks, i.e., longest shortest directed path 
 * @ft.degree:  make it also work for networks with multiple edges without edge weights. 
 * a combination of [clusco] and [meandist] is a measure of "small-world"ness. See http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0002051
+* write the "Timer" class for triangle counting 
 
 == Hard == 
 * better graph visualization for the website 

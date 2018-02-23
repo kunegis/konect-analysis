@@ -91,10 +91,6 @@
 
 dat/PLOTS = PLOTS; 
 
-# Determines which datasets can be shown online or not 
-##dat/allowed_src.txt = allowed_src.txt;
-##allowed_src.txt; 
-
 # The allowed patterns for files that can be downloaded.
 DOWNLOAD_PATTERNS;
 
@@ -851,8 +847,8 @@ dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-echo 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
-	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
+##echo 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
+##	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
 	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 }
@@ -870,6 +866,15 @@ dat/statistic.lines.$transform~$network:
 {
 	stu-utils/output-finally dat/statistic.lines."$transform"~"$network"    \
 		"$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.lines."$network".log
+}
+
+dat/statistic.mediandegree.$network:
+	$[command = dat/dep.c.statistic_mediandegree.$network]
+	[dat/dep.c.statistic_mediandegree.$network]
+{
+	stu-utils/output-finally dat/statistic.mediandegree."$network" \
+		 "$command" dat/sg1."$network" \
+		 "${TMPDIR:-/tmp}"/c.statistic.mediandegree."$network".log 
 }
 
 dat/statistic.volume.$network:  
@@ -1859,23 +1864,6 @@ dat/download.tsv.$network.tar.bz2:
 dat-tmp;
 
 @tsv:   @tsv/[dat/NETWORKS_DOWNLOAD]; 
-##@tsv: [dat/dep.tsv];
-
-## >dat/dep.tsv:  
-## ##	dat/NETWORKS
-## 	dat/NETWORKS_DOWNLOAD
-## ##	dat/allowed_src.txt
-## {
-## 	cat dat/NETWORKS |
-## 	while read -r network 
-## 	do
-## 		if <dat/NETWORKS_DOWNLOAD grep -E -q '^'"$network"'$'
-## ##		if <dat/allowed_src.txt sed -E -e '/,matrix/!d;s/^(.*),.*$/\1/' | grep -qE '^'"$network"'$'
-## 		then
-## 			echo "@tsv.$network"
-## 		fi
-## 	done
-## }
 
 #
 # Delaunay

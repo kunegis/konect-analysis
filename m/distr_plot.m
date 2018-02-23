@@ -5,10 +5,10 @@
 %	$network
 %	$decomposition
 %
-% INPUT 
+% INPUT FILES 
 %	dat/distr.$decomposition.$network
 %
-% OUTPUT 
+% OUTPUT FILES 
 %	plot/distr.$decomposition.[abf].$network.eps
 %		(a) Plain distribution
 %		(b) Stairs, i.e. transposed cumulative distribution
@@ -22,14 +22,18 @@
 font_size = 22; 
 line_width = 3; 
 
-color_half = [117 255   0] / 255;
-color_full = [136   0 255] / 255; 
+%%color_half = [117 255   0] / 255;
+%%color_full = [136   0 255] / 255; 
 
 value_name = 'Eigenvalue';
 value_symbol = '\lambda';
 
 network = getenv('network');
 decomposition = getenv('decomposition'); 
+
+[data_decomposition colors_decomposition] = konect_data_decomposition(decomposition)
+field_name= regexprep(decomposition, '-', '_'); 
+color = colors_decomposition.(field_name) 
 
 data = load(sprintf('dat/distr.%s.%s', decomposition, network)); 
 
@@ -67,8 +71,8 @@ konect_print(sprintf('plot/distr.%s.b.%s.eps', decomposition, network));
 hold on; 
 
 ccounts = cumsum(counts_nz / sum(counts_nz)); 
-stairs([begins; ends(end)], [ccounts; ccounts(end)], '-', 'LineWidth', line_width);
-stairs(ends, ccounts, '-', 'LineWidth', line_width); 
+stairs([begins; ends(end)], [ccounts; ccounts(end)], '-', 'LineWidth', line_width, 'Color', color);
+stairs(ends, ccounts, '-', 'LineWidth', line_width, 'Color', color); 
 
 xlabel(sprintf('%s (%s)', value_name, value_symbol), 'FontSize', font_size);
 ylabel(sprintf('P(x \\leq %s)', value_symbol), 'FontSize', font_size);

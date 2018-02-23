@@ -22,5 +22,5 @@ time_histogram		TIME
 hopdistr_time.full	TIME
 diadens			TIME
 time_histogram_signed	TIME_NEGATIVE
-rating_evolution2	TIME
+rating_evolution2	TIME_NEGATIVE
 syngraphy		SQUARE

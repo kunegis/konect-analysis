@@ -9,13 +9,13 @@
 %
 % OUTPUT FILES 
 %	plot/hopdistr.[abc...].$network.eps
-%		a - Normal plot
-%		b - logistic axis
-%		c - tangent
-%		d - artanh
-%		e - inverse error function
-%		f - Weibull function
-%		g - exponential distribution 
+%		a - Unscaled
+%		b - Logistic distribution 
+%		c - Cauchy distribution
+%		d - Hyperbolic secant distribution
+%		e - Normal distribution
+%		f - Weibull distribution 
+%		g - Exponential distribution 
 %
 
 network = getenv('network'); 
@@ -41,7 +41,7 @@ de5 = konect_diameff(data, 0.5)
 dm  = konect_diammean(data)
 
 %
-% a - Normal plot 
+% a - Unscaled plot
 %
 
 hold on; 
@@ -113,7 +113,7 @@ text(xx, yy, ...
 konect_print(sprintf('plot/hopdistr.a.%s.eps', network)); 
 
 %
-% b - Logistic plot
+% b - Logistic distribution 
 %
 plot(0:(length(data) - 1), -log(1 ./ yvalues - 1), 'go-', 'LineWidth', line_width);
 
@@ -133,12 +133,12 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.b.%s.eps', network)); 
 
 %
-% c - Tangent -- (which distribution is this?)
+% c - Cauchy distribution 
 %
-plot(0:(length(data)-1), tan((yvalues + pi/2) / pi), 'ro-', 'LineWidth', line_width);
+plot(0:(length(data)-1), tan((yvalues - 1/2) / pi), 'ro-', 'LineWidth', line_width);
 
 xlabel('Distance (d) [edges]', 'FontSize', font_size);
-ylabel('Tangent (tan((H(d) + \pi / 2) / \pi))', 'FontSize', font_size); 
+ylabel('Cauchy (tan((H(d) - \pi / 2) / \pi))', 'FontSize', font_size); 
 
 set(gca, 'FontSize', font_size); 
 
@@ -153,12 +153,12 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.c.%s.eps', network)); 
 
 %
-% d - Artanh -- (which distribution is this?)
+% d - Hyperbolic secant distribution 
 %
-plot(0:(length(data)-1), 0.5 * log((yvalues + 3) / (1 - yvalues)), 'k-', 'LineWidth', line_width);
+plot(0:(length(data)-1), log(tan(yvalues * (pi/2))), 'k-', 'LineWidth', line_width);
 
 xlabel('Distance (d) [edges]', 'FontSize', font_size);
-ylabel('Artanh (1/2 * log((H(d) + 3) / (1 - H(d))))', 'FontSize', font_size); 
+ylabel('Hyperbolic secant (log(tan(\pi / 2 * H(d))))', 'FontSize', font_size); 
 
 set(gca, 'FontSize', font_size); 
 
@@ -173,7 +173,7 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.d.%s.eps', network)); 
 
 %
-% e - Inverse error function
+% e - Normal distribution
 %
 plot(0:(length(data)-1), erfinv(2 * yvalues - 1), 'mo-', 'LineWidth', line_width);
 
@@ -193,7 +193,7 @@ axis(ax);
 konect_print(sprintf('plot/hopdistr.e.%s.eps', network)); 
 
 %
-% f - Weibull
+% f - Weibull distribution
 %
 loglog(0:(length(data)-1), -log(1-yvalues), 'co-', 'LineWidth', line_width);
 
@@ -213,14 +213,13 @@ konect_print(sprintf('plot/hopdistr.f.%s.eps', network));
 
 
 %
-% g - exponential
+% g - Exponential distribution 
 %
 
-semilogy(0:(length(data)-1), yvalues, 'o-', 'Color', [1 (140/255) 0], 'LineWidth', ...
-         line_width);
+plot(0:(length(data)-1), -log(1-yvalues), 'o-', 'Color', [1 (140/255) 0], 'LineWidth', line_width);
 
 xlabel('Distance (d) [edges]', 'FontSize', font_size); 
-ylabel('H(d)', 'FontSize', font_size);
+ylabel('Exponential (-log(1-H(d)))', 'FontSize', font_size);
 
 set(gca, 'FontSize', font_size);
 set(gca, 'YGrid', 'on');
