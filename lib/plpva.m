@@ -305,7 +305,14 @@ switch f_dattype,
                 fprintf('[%i]\tp = %6.4f\t[%4.2fm]\n',B,sum(nof(1:B)>=gof)./B,toc/60);
             end;
             % -- store distribution of estimated gof values
-            nof(B) = min(dat);
+%%	    B
+%%	    size_dat = size(dat)
+%%	    min(dat)
+            if prod(size(dat))
+	      nof(B) = min(dat);
+%%	    else
+%%	      nof(B) = 0;
+	    end
         end;
         p = sum(nof>=gof)./length(nof);
 

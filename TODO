@@ -1,7 +1,5 @@
 == Run ==
-* @network.[dat/NETWORKS_FAMILY.wiki_talk_]   
-* @network.wang-{tripadvisor,amazon}  # + annoucement
-* @statistic.inoutassort 
+* ... @statistic.power3 [ + blog article ]
 * @statistic.nonbip  [ + announcement]
 * @check 
 * @statistic.nonbipn  [ + announcement]
@@ -35,6 +33,7 @@
 * @degree
 * @rating_evolution2 # + accouncement 
 * @statistic.(squares tour4)
+* @statistic.inoutassort 
 
 == Easy new features ==
 * new count:  number of 4-cliques
