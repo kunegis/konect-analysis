@@ -241,8 +241,12 @@ switch f_dattype,
 
         % compute distribution of gofs from semi-parametric bootstrap
         % of entire data set with fit
+	ktimer = konect_timer(length(nof)); 
         for B=1:length(nof)
-            % semi-parametric bootstrap of data
+	  ktimer = konect_timer_tick(ktimer, B); 
+
+
+  	    % semi-parametric bootstrap of data
             n1 = sum(rand(N,1)>pz);
             q1 = y(ceil(ny.*rand(n1,1)));
             n2 = N-n1;
@@ -314,6 +318,7 @@ switch f_dattype,
 %%	      nof(B) = 0;
 	    end
         end;
+	konect_timer_end(ktimer); 
         p = sum(nof>=gof)./length(nof);
 
     otherwise,

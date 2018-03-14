@@ -1,6 +1,5 @@
 == Run ==
-* ... @statistic.power3 [ + blog article ]
-* @statistic.nonbip  [ + announcement]
+* ... @statistic.nonbip  [ + announcement]
 * @check 
 * @statistic.nonbipn  [ + announcement]
 * @outin
@@ -106,6 +105,7 @@ needed by dat/pa.wikilens-ratings.mat
 * @ft.degree:  make it also work for networks with multiple edges without edge weights. 
 * a combination of [clusco] and [meandist] is a measure of "small-world"ness. See http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0002051
 * write the "Timer" class for triangle counting 
+* statistic:  median degree  [mediandegree]:  solve the C++/C thing
 
 == Hard == 
 * better graph visualization for the website 
