@@ -1,6 +1,5 @@
 == Run ==
-* ... @check 
-* @statistic.nonbipn  [ + announcement]
+* ... @statistic.nonbipn  [ + announcement]
 * @outin
 * @statistic.anticonflict  [ + announcement]
 * @syngraphy 

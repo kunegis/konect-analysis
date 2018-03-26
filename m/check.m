@@ -474,18 +474,23 @@ else
   A = sparse(T(:,1), T(:,2), 1, n, n);
   % Note:  the konect_statistic_triangles() takes care of ignoring
   % multiple edges and loops. 
-  values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
-  n_triangles = values(1);
+  contains_triangle = konect_contains_triangle(A, consts.SYM, consts.UNWEIGHTED); 
+  %%  values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
+%%n_triangles = values(1);
   if tag_trianglefree
-    if ~(n_triangles == 0)
-      check_failed(sprintf('*** Network must not contain triangles because #trianglefree is set, number of triangles = %u', ...
-			   n_triangles));
+    if contains_triangle
+%%  if ~(n_triangles == 0)
+      check_failed('*** Network must not contain triangles because #trianglefree is set'); 
+%%    check_failed(sprintf('*** Network must not contain triangles because #trianglefree is set, number of triangles = %u', ...
+%%			   n_triangles));
     end
   else
-    if ~(n_triangles >= 1)
+    if ~contains_triangle
+    %%    if ~(n_triangles >= 1)
       check_failed('*** Unipartite network must have at least one triangle, except when #trianglefree is set');
     end
   end
 end
 
 check_successful();
+
