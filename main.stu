@@ -2161,4 +2161,5 @@ plot/rating_evolution2.c.$network.eps:
 	dat/NETWORKS_DOWNLOAD
 	dat/NETWORKS_CATEGORY_[dat/CATEGORIES] 
 	@statistic.(format weights)
+	@tsv.[dat/NETWORKS_DOWNLOAD]
 ;
