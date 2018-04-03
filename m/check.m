@@ -22,6 +22,7 @@ meta = read_meta(network);
 tags = get_tags(meta); 
 
 tag_acyclic         = isfield(tags, 'acyclic')
+tag_clique          = isfield(tags, 'clique')
 tag_incomplete      = isfield(tags, 'incomplete')
 tag_lcc             = isfield(tags, 'lcc')
 tag_loop            = isfield(tags, 'loop')
@@ -475,22 +476,67 @@ else
   % Note:  the konect_statistic_triangles() takes care of ignoring
   % multiple edges and loops. 
   contains_triangle = konect_contains_triangle(A, consts.SYM, consts.UNWEIGHTED); 
-  %%  values = konect_statistic_triangles(A, consts.SYM, consts.UNWEIGHTED);
-%%n_triangles = values(1);
   if tag_trianglefree
     if contains_triangle
-%%  if ~(n_triangles == 0)
       check_failed('*** Network must not contain triangles because #trianglefree is set'); 
-%%    check_failed(sprintf('*** Network must not contain triangles because #trianglefree is set, number of triangles = %u', ...
-%%			   n_triangles));
     end
   else
     if ~contains_triangle
-    %%    if ~(n_triangles >= 1)
       check_failed('*** Unipartite network must have at least one triangle, except when #trianglefree is set');
     end
   end
 end
 
-check_successful();
+%
+% Clique
+%
 
+% Number of distinct edges a clique would have
+if format == consts.SYM
+  n = max(max(T(:,1:2))); 
+  if tag_loop
+    n_clique = n * (n + 1) / 2; 
+  else
+    n_clique = n * (n - 1) / 2; 
+  end
+elseif format == consts.ASYM
+  n = max(max(T(:,1:2))); 
+  if tag_loop
+    n_clique = n * n;
+  else
+    n_clique = n * (n - 1); 
+  end
+elseif format == consts.BIP
+  n_clique = max(T(:,1)) * max(T(:,2)); 
+else
+  error('*** Invalid format'); 
+end
+
+% Number of distinct edges the graph has
+n1 = max(T(:,1));
+n2 = max(T(:,2));
+if format == consts.SYM | format == consts.ASYM
+  n1 = max(n1, n2);
+  n2 = n1; 
+end
+A = sparse(T(:,1), T(:,2), 1, n1, n2);
+if format == consts.SYM
+  A = A + A';
+  A = triu(A); 
+end
+n_distinct = nnz(A); 
+
+if tag_clique
+  if n_distinct ~= n_clique
+    check_failed(sprintf('*** Expected network with #clique to have exactly %u distinct edges, but has %u', n_clique, n_distinct)); 
+  end
+else
+  if ~ (n_distinct < n_clique)
+    check_failed(sprintf('*** Expected network without #clique to have less than %u distinct edges, but has %u', n_clique, n_distinct)); 
+  end
+end
+
+%
+% Successful 
+%
+check_successful();
