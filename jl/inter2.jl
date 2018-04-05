@@ -66,7 +66,7 @@ end
 if format == KONECT_BIP
     inter2_one('u', network, T[:,1], T[:,4]);
     inter2_one('v', network, T[:,2], T[:,4]);
-    inter2_one('a', network, [T[:,1]; T[:,2] + max(T[:,1])], [T[:,4]; T[:,4]]); 
+    inter2_one('a', network, [T[:,1]; T[:,2] + maximum(T[:,1])], [T[:,4]; T[:,4]]); 
 elseif format == KONECT_SYM
     inter2_one('a', network, [T[:,1]; T[:,2]], [T[:,4]; T[:,4]]);
 elseif format == KONECT_ASYM

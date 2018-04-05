@@ -12,5 +12,5 @@ How to set up Julia
 * apt-get install julia
 * apt-get install python-matplotlib
 
-From within Julia:
+From within Julia (once, to perform system-wide setup):
 * Pkg.add("PyPlot")

@@ -569,8 +569,7 @@ dat/sg0.$network:
 	dat/widths.$network uni/out.$network dat/info.$network 
 	$[command = dat/dep.c.sgraph0_create.$network] [dat/dep.c.sgraph0_create.$network]
 {
-	##RM
-	echo $command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
+##	echo $command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
 	
 	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
 }
@@ -847,8 +846,6 @@ dat/statistic.size.$transform~$network:
 	$[command = dat/dep.c.size.$transform~$network] [dat/dep.c.size.$transform~$network]
 	dat/sg1.$transform~$network 
 {
-##echo 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
-##	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 	stu-utils/output-finally dat/statistic.size."$transform"~"$network" \
 	      "$command" dat/sg1."$transform"~"$network" "${TMPDIR:-/tmp}"/c.size."$network".log
 }
@@ -989,15 +986,6 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 }
 
 dat/statistic.coco.$network = dat/statistic.coco.simple~$network; 
-## >dat/statistic.coco.$network:
-## 	dat/statistic.coco.simple~$network
-## 	dat/statistic.size.$network
-## {
-## 	coco=$(head -1 dat/statistic.coco.simple~"$network")
-## 	size=$(head -1 dat/statistic.size."$network")
-## 	coco_2=$(awk 'BEGIN{ printf("%s\n", '"$coco"' / '"$size"'); }')
-## 	printf '%s\n%s\n' "$coco" "$coco_2" 
-## }
 
 >dat/statistic.coco.simple~$network:
 	dat/statistic.size.lcc~simple~$network
@@ -1905,15 +1893,6 @@ plot/lybl.a.$network.png:
 #
 
 @syngraphy:  @syngraphy.[dat/NETWORKS_SQUARE]; 
-##@syngraphy:  [dat/dep.syngraphy];
-
-## >dat/dep.syngraphy:
-## 	dat/NETWORKS_ASYM
-## {
-## 	for network in $(cat dat/NETWORKS_ASYM) ; do
-## 		echo @syngraphy."$network"
-## 	done
-## }
 
 @syngraphy.$network
 plot/syngraphy.a.$network.eps:
@@ -2020,9 +1999,7 @@ plot/zipf.a.$network.eps:
 # Global inter-event distribution
 #
 
-@inter:  [dat/dep.inter];
-
->dat/dep.inter:  <dat/NETWORKS_TIME  { sed -E -e 's,^,@inter.,' ; }
+@inter:  @inter.[dat/NETWORKS_TIME];
 
 @inter.$network
 plot/inter.a.$network.png:  dat/out2.$network jl/inter.jl
@@ -2034,9 +2011,7 @@ plot/inter.a.$network.png:  dat/out2.$network jl/inter.jl
 # Per-node inter-event distribution
 #
 
-@inter2:  [dat/dep.inter2];
-
->dat/dep.inter2:  <dat/NETWORKS_TIME  { sed -E -e 's,^,@inter2.,' ; }
+@inter2:  @inter2.[dat/NETWORKS_TIME];
 
 @inter2.$network
 plot/inter2.a.$network.png:

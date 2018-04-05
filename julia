@@ -3,16 +3,23 @@
 # Wrapper for running Julia scripts. 
 #
 
-TMPDIR="${TMPDIR-/tmp}"
+TMPDIR=${TMPDIR-/tmp}
 
-log="$TMPDIR/jl"
+log=$TMPDIR/jl
 
-name="$(basename "$1" | sed -E -e 's,\.jl$,,')"
+name=$(basename "$1" | sed -E -e 's,\.jl$,,')
 
-log="$log.$name"
+log=$log.$name
 
-[ "$network" ] && log="$log.$network"
+[ "$network" ] && log=$log.$network
 
-log="$log.log"
+log=$log.log
 
-exec julia "$1" "$log" >"$log" 2>&1 
+printf >&2 '\t%s\n' "$log"
+
+if ! julia "$1" "$log" >"$log" 2>&1 ; then
+	echo >&2 "*** Error in $log"
+	exit 1
+fi
+
+exit 0

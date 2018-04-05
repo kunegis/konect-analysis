@@ -2,7 +2,11 @@
 #
 # Execute a Matlab script.  This is a wrapper around Matlab that makes
 # it easier to run Matlab in batch mode and log the output of scripts.
-# Used with Matlab 2009B.  
+# Used with Matlab 2009B and 2016b.
+#
+# This wrapper is necessary because Matlab misbehaves.  It does not set
+# a nonzero exit status on error, and tries to execute GUI code by
+# default. 
 #
 # PARAMETERS
 # 	$1	    	The Matlab program (with or without .m; may contain directory) 
@@ -17,8 +21,8 @@
 #			run in parallel. 
 # 
 # FILES
-#	error.log	Errors from all runs of this script are logged
-#			in this file  
+#	error.log	Errors from all runs of this script are appended
+#			to this file  
 #
 # EXAMPLE
 #
@@ -49,7 +53,7 @@ exec 6>>error.log
 # The command to use
 MATLAB=matlab
 
-## Document this
+# Always set to '1' because it breaks the new Matlab version 
 jvm_enable=1
 
 # The options to use for Matlab 
@@ -63,14 +67,14 @@ fi
 export PREFIX
 
 # The name of script within Matlab
-SCRIPT="$1"
+SCRIPT=$1
 export MATLAB_NAME="$(basename $SCRIPT | sed -E -e 's,\.m$,,')"
 echo >&4 "MATLAB_NAME=«$MATLAB_NAME»"
 
 # Check that the file exists
-FILENAME="$SCRIPT"
+FILENAME=$SCRIPT
 if echo "$FILENAME" | grep -qvE '\.m$' ; then
-	FILENAME="$FILENAME.m"
+	FILENAME=$FILENAME.m
 	if ! [ -r "$FILENAME" ] ; then
 		echo >&2 "*** No such file:  $FILENAME"
 		exit 1
@@ -81,19 +85,19 @@ fi
 # Logging
 #
 
-LOGNAME="$MATLAB_NAME"
+LOGNAME=$MATLAB_NAME
 # This is a list of variable we want to be used in the log filename to
 # make it unique.
-[ "$type"    ]     	&& LOGNAME="$LOGNAME"."$type"
-[ "$name"   ]      	&& LOGNAME="$LOGNAME"."$name"
-[ "$decomposition" ]	&& LOGNAME="$LOGNAME"."$decomposition"
-[ "$statistic" ]	&& LOGNAME="$LOGNAME"."$statistic"
-[ "$method" ]		&& LOGNAME="$LOGNAME"."$method"
-[ "$kind"   ]      	&& LOGNAME="$LOGNAME"."$kind"
-[ "$class"   ]      	&& LOGNAME="$LOGNAME"."$class"
-[ "$group"   ]      	&& LOGNAME="$LOGNAME"."$group"
-[ "$year"   ]      	&& LOGNAME="$LOGNAME"."$year"
-[ "$network" ]		&& LOGNAME="$LOGNAME"."`basename "$network"`"
+[ "$type"    ]     	&& LOGNAME=$LOGNAME.$type
+[ "$name"   ]      	&& LOGNAME=$LOGNAME.$name
+[ "$decomposition" ]	&& LOGNAME=$LOGNAME.$decomposition
+[ "$statistic" ]	&& LOGNAME=$LOGNAME.$statistic
+[ "$method" ]		&& LOGNAME=$LOGNAME.$method
+[ "$kind"   ]      	&& LOGNAME=$LOGNAME.$kind
+[ "$class"   ]      	&& LOGNAME=$LOGNAME.$class
+[ "$group"   ]      	&& LOGNAME=$LOGNAME.$group
+[ "$year"   ]      	&& LOGNAME=$LOGNAME.$year
+[ "$network" ]		&& LOGNAME=$LOGNAME.$(basename "$network")
 
 for PARAM in $MATLAB_PARAMS
 do
@@ -119,9 +123,9 @@ DISPLAY=
 # will send them to stderr.  (Matlab has been known to trigger such errors.)  
 export LIBC_FATAL_STDERR_=1
 
-DIR_SCRIPT="$(dirname "$SCRIPT")"
+DIR_SCRIPT=$(dirname "$SCRIPT")
 if echo "$DIR_SCRIPT" | grep -vq '^/' ; then
-	DIR_SCRIPT="$PWD/$DIR_SCRIPT"
+	DIR_SCRIPT=$PWD/$DIR_SCRIPT
 fi
 export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
@@ -135,7 +139,7 @@ EOF
 	# syntax or other "normal" error, so if we are here Matlab
 	# probably crashed or was killed by a signal. 
 
-	exitstatus="$?"
+	exitstatus=$?
 	echo >&2 "*** error in $TMP_BASE.log"
 	echo >&6 "*** error in $TMP_BASE.log"
 	if [ "$exitstatus" = 0 ] ; then

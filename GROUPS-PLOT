@@ -24,3 +24,5 @@ diadens			TIME
 time_histogram_signed	TIME_NEGATIVE
 rating_evolution2	TIME_NEGATIVE
 syngraphy		SQUARE
+inter			TIME
+inter2			TIME

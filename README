@@ -70,10 +70,12 @@ missing.
 * sed -E (this is not [yet] POSIX, but GNU Sed and BSD Sed have it)
 * python-rdflib / python-rdflib-tools (for RDF generation only, deprecated)
 * Matlab:  This is proprietary, so may be hard to get (we're very slowly deprecating it)
-* GNU Octave
+* GNU Octave (we use it occasionally, but not for new code -- it does
+  not support large networks) 
 * Perl 5
 * Julia (experimental, see lib/JULIA)
 * Matlab-BGL (Boost Graph Library for Matlab) -- see file lib/README
+* matplotlib (used from within Julia)
 
 == License ==
 
