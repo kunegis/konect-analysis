@@ -22,14 +22,14 @@
 K=1
 
 [ "$1" ] && echo "$1" | grep '^[0-9]*$' >/dev/null && {
-	K="$1"
+	K=$1
 	shift 
 }
 
 rm -f error.log 
 
 if [ "$MN_RUNTIME" ] ; then 
-	RUNTIME_S="`expr $MN_RUNTIME '*' 3600`"
+	RUNTIME_S=$((MN_RUNTIME * 3600))
 	ulimit -t "$RUNTIME_S"
 fi 
 

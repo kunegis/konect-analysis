@@ -11,10 +11,10 @@
 #	$0 SIZE COMMAND
 #
 
-size="$1"
+size=$1
 shift
 
-mem="$(echo $(ulimit -v))"
+mem=$(echo $(ulimit -v))
 
 if [ "$mem" = unlimited ]
 then
