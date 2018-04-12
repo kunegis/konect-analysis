@@ -569,8 +569,6 @@ dat/sg0.$network:
 	dat/widths.$network uni/out.$network dat/info.$network 
 	$[command = dat/dep.c.sgraph0_create.$network] [dat/dep.c.sgraph0_create.$network]
 {
-##	echo $command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
-	
 	$command uni/out.$network dat/sg0.$network $(head -3 dat/info.$network) "${TMPDIR:-/tmp}"/c.sgraph0_create."$network".log
 }
 
