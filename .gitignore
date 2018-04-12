@@ -1,9 +1,9 @@
-*~
 CFLAGS
 MATLABPATH
 PERL5LIB
 bin
 dat
+dat-tmp
 plot
 tex
 uni
@@ -20,7 +20,6 @@ tmp.runtime
 lib/BibTeX
 lib/LaTeX
 lib/HTML
-dat-tmp
-lib/BibTeX-Parser-0.67.tar.gz
-lib/HTML-Parser-3.72.tar.gz
-lib/LaTeX-ToUnicode-0.04.tar.gz
+lib/BibTeX-Parser-*.tar.gz
+lib/HTML-Parser-*.tar.gz
+lib/LaTeX-ToUnicode-*.tar.gz
