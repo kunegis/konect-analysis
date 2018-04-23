@@ -49,7 +49,7 @@ ps -C stu -o user,pid,pcpu,etime,cputime,command
 printf '%s\n' -
 
 # Format for the printf(1) command
-format='%4s %13s %11s %13s %s\n'
+format='%4s %13s %12s %13s %s\n'
 
 # Header line
 printf "$format" "%CPU" "MEM [k]" "TIME" "LEFT" "LOG"
