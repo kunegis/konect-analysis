@@ -1,6 +1,5 @@
 == Run ==
-* ... @statistic.anticonflict  [ + announcement]
-* @syngraphy 
+* ... @syngraphy 
 * run analysis for work/algebraic-conflict/
 * @statistic.own [ + announcement]
 * @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
