@@ -1,5 +1,4 @@
 == Run ==
-* (...) @network.librec-{filmtrust-{ratings,trust},ciaodvd-{movie_ratings,review_ratings,trust}}
 * run analysis for work/algebraic-conflict/
 * @statsitic.loops [ + announcement]
 * @statistic.cluscoasym [ + announcement]
