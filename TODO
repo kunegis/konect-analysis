@@ -28,6 +28,7 @@
 * @inter [+ announcement]
 * @inter2 [+ announcement]
 * @decomposition.seidel [+announcement]
+* @statistic.seidelnorm [+announcement]
 
 == Easy new features ==
 * new statistic:  maximal egde multiplicity 
