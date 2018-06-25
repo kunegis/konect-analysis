@@ -1,7 +1,6 @@
 == Run ==
 * run analysis for work/algebraic-conflict/
-* @statsitic.loops [ + announcement]
-* @statistic.cluscoasym [ + announcement]
+* ... @statistic.cluscoasym [ + announcement]
 * @statistic.opnorm [+ announcement]
 * @network family dimacs10-
 * @statistic.maxdiag [+ announcement]
@@ -28,6 +27,7 @@
 * @statistic.inoutassort 
 * @inter [+ announcement]
 * @inter2 [+ announcement]
+* @decomposition.seidel [+announcement]
 
 == Easy new features ==
 * new statistic:  maximal egde multiplicity 
