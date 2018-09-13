@@ -1,11 +1,9 @@
 == Run ==
-* run analysis for work/algebraic-conflict/
-* ... @statistic.cluscoasym [ + announcement]
-* @statistic.opnorm [+ announcement]
-* @network family dimacs10-
 * @statistic.maxdiag [+ announcement]
 * @statistic.triangles 
 * @statistic.conflict [+ announcement]
+* run analysis for work/algebraic-conflict/
+* @network family dimacs10-
 * @ft.degree 
 * @statistic.fconflict [+ announcement]
 * @all (because last time, Matlab was broken)
