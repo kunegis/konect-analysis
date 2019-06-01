@@ -12,10 +12,10 @@
 #	                to this file  
 #
 
-SCRIPT="$1"
+SCRIPT=$1
 
 [ "$PREFIX" ] && PREFIX=."$PREFIX"
-LOGNAME="$(basename "$SCRIPT" .m)"
+LOGNAME=$(basename "$SCRIPT" .m)
 
 # Error log
 exec 6>>error.log
@@ -27,7 +27,7 @@ for NAME in $(set | sed -e 's,=.*$,,;tnext;d;:next;/^[a-z][a-z_-]*$/!d') ; do
 	eval VALUE=\"\$"$NAME"\"
 	length=$(echo $(echo "$VALUE" | wc -c))
 	if [ "$length" -lt 30 ] ; then # Don't insert value if too long
-		LOGNAME="$LOGNAME"."$VALUE"
+		LOGNAME=$LOGNAME.$VALUE
 	fi
 done
 
@@ -42,7 +42,7 @@ printf >&2 '\t%s\n' "$LOG"
 # Note: --no-window-system is not supported by Octave 3.0 
 #
 
-DIR_SCRIPT="$(dirname "$SCRIPT")"
+DIR_SCRIPT=$(dirname "$SCRIPT")
 if echo "$DIR_SCRIPT" | grep -vq '^/' ; then
 	DIR_SCRIPT="$PWD/$DIR_SCRIPT"
 fi
