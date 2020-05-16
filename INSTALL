@@ -89,7 +89,7 @@ $ mkdir ~/data/plot
 $ mkdir ~/data/dat
 $ mkdir ~/data/tex
 
-(4) Connect directories to KONECT Analysis
+(5) Connect directories to KONECT Analysis
 
 Use 'ln -s' to link the certain directories to konect-analysis/:
 
@@ -102,8 +102,12 @@ $ ln -s ~/data/plot ./
 $ ln -s ~/data/dat ./
 $ ln -s ~/data/tex ./
 $ ln -s ~/data/uni ./
+$ ln -s /tmp ./dat-tmp
 
-(5) [OPTIONAL] Install Matlab-BGL
+(The last command sets up a specific temporary directory, you can link it to
+somewhere else if necesssary.)
+
+(6) [OPTIONAL] Install Matlab-BGL
 
 See lib/README for full instructions.  Short version:  Download
 Matlab-BGL version 4.x from
@@ -114,7 +118,7 @@ and unpack it in the ~/work/konect-analysis/lib/ directory.  There
 should now be a directory ~/work/konect-analysis/lib/matlab_bgl/
 containing Matlab-BGL.
 
-(6) Install Stu
+(7) Install Stu
 
 $ cd ~/work/
 $ git clone https://github.com/kunegis/stu/
@@ -125,13 +129,13 @@ $ sudo make install
 
 You need G++ to compile Stu, in a version that supports C++11. 
 
-(7) [OPTIONAL] Other libraries 
+(8) [OPTIONAL] Other libraries 
 
 Install libraries as described in lib/README.  Not all targets need
 extra libraries.  You may as well don't do it and wait until you get a
 corresponding error message.  
 
-(8) Run the analysis
+(9) Run the analysis
 
 Execute:
 

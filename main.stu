@@ -1847,6 +1847,7 @@ dat/download.tsv.$network.tar.bz2:
 	rm -Rf "dat-tmp/$network"
 }  
 
+# Temporary directory; typically a symlink to e.g. /tmp/. 
 dat-tmp;
 
 @tsv:   @tsv/[dat/NETWORKS_DOWNLOAD]; 
