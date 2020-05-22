@@ -196,3 +196,8 @@ Examples for <TARGET> are:
 	Compute the given statistic for all networks
 
 Many more targets are described in 'main.stu'.
+
+(10) Other Issues
+
+You may have to install additional libraries for Octave, Matlab, and other
+code.
