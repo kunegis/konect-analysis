@@ -14,3 +14,4 @@ function read_statistic(statistic, network)
 
     return data; 
 end
+

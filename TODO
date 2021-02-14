@@ -290,3 +290,5 @@ ohttp://arxiv.org/abs/cond-mat/000835
   saved once (will make programs such as hyperanf and matrix
   decompositions use half of memory).   
 * Can Kemeny's constant be calculated for large networks?  Does it even make sense?
+* Optimize diameter computation by:  removing all degree-1 nodes except a single
+one for each degree-2+ node that has at least one degree-1 neighbor.

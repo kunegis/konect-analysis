@@ -47,3 +47,4 @@ savefig("plot/inter.a.$network.png");
 xscale("linear");
 
 savefig("plot/inter.al.$network.png");
+

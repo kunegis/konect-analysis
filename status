@@ -35,7 +35,7 @@
 #
 # BUGS
 #
-#   * We don't manage the situation when the list is too long.
+#   * We don't manage the situation when the list is longer than the screen. 
 #     Currently, we just make the window higher in that case.
 #   * The shown CPU percentage is as returned by ps(1), which gives the
 #     average CPU usage since the process was started.  This is
@@ -52,7 +52,7 @@ printf '%s\n' -
 format='%4s %13s %12s %13s %s\n'
 
 # Header line
-printf "$format" "%CPU" "MEM [k]" "TIME" "LEFT" "LOG"
+printf "$format" "%CPU" "MEM [KiB]" "TIME [s]" "LEFT" "LOG"
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR_esc=$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')

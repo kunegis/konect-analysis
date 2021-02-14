@@ -17,3 +17,4 @@ my $n = $ARGV[0];
 my $width = Konect::bitwidth($n);
 
 print "$width\n";
+

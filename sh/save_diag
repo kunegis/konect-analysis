@@ -10,3 +10,4 @@
 #
 
 tail -n900 $1 | tac | sed -e '/^Iteration/Q' | tac | sed -E -e '/^\s*[e+0-9.]+\s*$/!Q'
+

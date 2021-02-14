@@ -2,3 +2,4 @@ KONECT_SYM  = 1;
 KONECT_ASYM = 2;
 KONECT_BIP  = 3;
 
+

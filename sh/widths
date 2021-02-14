@@ -151,3 +151,4 @@ if ($float_t) {
 my $loops= `fgrep tags: uni/meta.$network | fgrep -q '#loop' && echo 1 || echo 0`;
 
 print "$ret_m$ret_u$ret_v$ret_w$ret_t$format$weights$loops\n"; 
+

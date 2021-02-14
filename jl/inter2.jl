@@ -76,3 +76,4 @@ elseif format == KONECT_ASYM
 else
     @assert false
 end
+
