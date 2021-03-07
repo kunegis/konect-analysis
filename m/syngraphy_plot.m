@@ -106,3 +106,4 @@ konect_print(sprintf('plot/syngraphy.b.%s.eps', network));
 gplot2(A, U_l(:,2:3), 'o-', 'MarkerFaceColor', [0 0 0], 'MarkerEdgeColor', [0 0 0]);
 axis equal off; 
 konect_print(sprintf('plot/syngraphy.c.%s.eps', network));
+

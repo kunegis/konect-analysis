@@ -150,8 +150,9 @@ EOF
 }
 
 
-# Matlab does not exit(!=0) on error but prints ???. 
-grep -qE '(\?\?\?|^\*\*\* |^Error (in|using) )' $TMP_BASE.log && 
+# Matlab does not exit(!=0) on error but prints an assortment of unformatted
+# error messages.  
+grep -qE '(\?\?\?|^\*\*\* |^Error (in|using) |Java exception occurred:)' $TMP_BASE.log && 
 {
 	echo "*** error in $TMP_BASE.log"
 	echo >&6 "*** error in $TMP_BASE.log"

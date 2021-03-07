@@ -52,12 +52,12 @@ printf '%s\n' -
 format='%4s %13s %12s %13s %s\n'
 
 # Header line
-printf "$format" "%CPU" "MEM [KiB]" "TIME [s]" "LEFT" "LOG"
+printf "$format" "%CPU" "MEM [KiB]" "TIME" "LEFT" "LOG"
 
 TMPDIR=${TMPDIR-/tmp}
 TMPDIR_esc=$(echo "$TMPDIR" | sed -E -e 's,/,\\/,g')
 
-ps k-cputime -o pcpu,cputime,vsize,user,command | 
+ps -A k-cputime -o pcpu,cputime,vsize,user,command | 
 sed -E -e '1d;/'"$TMPDIR_esc"'/!d' |
 while IFS= read -r line
 do

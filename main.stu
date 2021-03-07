@@ -12,9 +12,10 @@
 #	@network.$network	Everything for one network
 #	@check.$network		The unit test for one network 
 #	@plot.$network		All plots for one network
+#	@test			All tests
 #	@www			Everything for the website (but not the website)
 #	@handbook		Everything used in the KONECT Handbook; this is
-# 				a good test that everything works 
+# 				a good test that everything works
 #
 # Some commands use Matlab, others Octave, and yet other Julia.  In
 # general, we are migrating everything to Julia, but the bulk is still
