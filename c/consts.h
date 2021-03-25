@@ -20,3 +20,4 @@
 #define WEIGHTS_MULTIPOSWEIGHTED 9
 
 #endif /* ! CONSTS_H */
+

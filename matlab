@@ -62,6 +62,10 @@ if [ -z "$jvm_enable" ] ; then
 	MATLAB_OPTIONS="$MATLAB_OPTIONS -nojvm"
 fi
 
+# Perl regular expression that matches all errors in the log or output
+# of Matlab.  When these are encountered, the Matlab process is ended. 
+pre_error='/\?\?\?|^\*\*\*|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory/'
+
 # Prefix
 [ "$PREFIX" ] && PREFIX=.$PREFIX
 export PREFIX
@@ -110,8 +114,9 @@ export LOGNAME
 
 export TMP_BASE="${TMPDIR-/tmp}"/m."$LOGNAME$PREFIX"
 export LOGFILE="$TMP_BASE".log
+export OUTFILE="$TMP_BASE".out
+rm -f -- "$LOGFILE" "$OUTFILE" || { echo >&2 "*** error: rm" ; exit 1 ; }
 printf >&2 '\t%s\n' "$LOGFILE"
-
 
 #
 # Other configurations
@@ -131,42 +136,59 @@ export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
 
 # We have to use <<EOF or else Matlab will read its standard input and hang.
-"$MATLAB" -logfile "$LOGFILE" -r "$MATLAB_NAME" $MATLAB_OPTIONS  \
-	>"$TMP_BASE".out 2>&1 <<EOF  ||
+{
+	"$MATLAB" -logfile "$LOGFILE" -r "$MATLAB_NAME" $MATLAB_OPTIONS >"$OUTFILE" 2>&1 <<EOF
 EOF
-{ 
-	# Note: Matlab normally always exists with exit code 0 on a
-	# syntax or other "normal" error, so if we are here Matlab
-	# probably crashed or was killed by a signal. 
+	matlab_status=$?
+	if [ "$matlab_status" != 0 ] ; then
+		echo >>"$LOGFILE" "*** Error:  Matlab failed with exit status $matlab_status"
+	fi
+	# MATLAB_TERMINATED is needed in case Matlab terminates but perl does not:  in
+	# that case perl would continue to run, hanging this script. 
+	echo >>"$LOGFILE" MATLAB_TERMINATED
+	echo >&2 END OF MATLAB
+	exit 1
+} &
+id_matlab=$!
+echo >&2 "id_matlab=$id_matlab"
 
-	exitstatus=$?
-	echo >&2 "*** error in $TMP_BASE.log"
-	echo >&6 "*** error in $TMP_BASE.log"
-	if [ "$exitstatus" = 0 ] ; then
-		echo >&2 "*** error:  exit status of Matlab was 0"
+# We don't use grep -q here because it doesn't work on the KONECT server.  It
+# did work on newer installs, so maybe this is just a consequence of the KONECT
+# server's config. 
+{
+	tail -q -F "$LOGFILE" "$OUTFILE" 2>/dev/null |
+	perl -e '
+		while (<>) {
+			if ('"$pre_error"') { 
+				print STDERR "Parsed error in line:$_\n"; 
+				exit 1; 
+			}
+			if (/MATLAB_TERMINATED/) { 
+				print STDERR "Found MATLAB_TERMINATED\n"; 
+				exit 0; 
+			}
+		}
+        '
+	perl_status=$?
+	echo >&2 perl_status=$perl_status
+	if [ $perl_status != 0 ] ; then
+		kill $id_matlab
+		wait $id_matlab
+		echo >&2 "*** Error in $TMP_BASE.log"
+		echo >&6 "*** Error in $TMP_BASE.log"
 		exit 1
 	fi
-	exit "$exitstatus"
-}
+} 
 
-
-# Matlab does not exit(!=0) on error but prints an assortment of unformatted
-# error messages.  
-grep -qE '(\?\?\?|^\*\*\* |^Error (in|using) |Java exception occurred:)' $TMP_BASE.log && 
-{
-	echo "*** error in $TMP_BASE.log"
-	echo >&6 "*** error in $TMP_BASE.log"
-	<$TMP_BASE.log >&2 sed -E -e '
-		# Matlab output actually contains { and } sequences. 
-		s,.,,g
-		/\?\?\?|\*\*\*|[Ee]rror/!d
-		s,^(|\?\?\? )Error (in|using) ==> ([^ ]+) at ([0-9]+)$,\3.m:\4: ,
-		T
-		N
-		s,\n,,
-	'
+echo >&2 "WAIT(id=$id_matlab)..."
+wait $id_matlab
+matlab_status=$?
+echo >&2 "DONE WAITING.  matlab_status=$matlab_status"
+if [ "$matlab_status" != 0 ] ; then
+	echo >&2 "*** Error in $TMP_BASE.log"
+	echo >&6 "*** Error in $TMP_BASE.log"
 	exit 1
-}
+fi
 
 echo >>"$TMP_BASE".log '=== FINISHED SUCCESSFULLY ==='
 
