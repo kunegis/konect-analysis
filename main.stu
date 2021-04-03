@@ -1823,10 +1823,10 @@ lib/LaTeX-ToUnicode-0.04.tar.gz:  -p lib
 
 dat/download.tsv.$network.tar.bz2:
 	[dat/dep.download.tsv.$network] 
-	 -p dat-tmp
+##	 -p dat-tmp
 {
-	DIR="dat-tmp/$network"
-	DATDIR="$(pwd)/dat"
+	DIR=${TMPDIR-/tmp}/$network
+	DATDIR=$(pwd)/dat
 	
 	rm -Rf "$DIR"
 	mkdir "$DIR"
@@ -1842,14 +1842,15 @@ dat/download.tsv.$network.tar.bz2:
 		fi
 	done
 
-	cd dat-tmp
+	cd "${TMPDIR-/tmp}"
 	pwd
 	tar -hcvj -f "$DATDIR"/download.tsv."$network".tar.bz2 "$network"
-	rm -Rf "dat-tmp/$network"
+	rm -Rf "$DIR"
+##	rm -Rf "dat-tmp/$network"
 }  
 
-# Temporary directory; typically a symlink to e.g. /tmp/. 
-dat-tmp;
+## # Temporary directory; typically a symlink to e.g. /tmp/. 
+## dat-tmp;
 
 @tsv:   @tsv/[dat/NETWORKS_DOWNLOAD]; 
 

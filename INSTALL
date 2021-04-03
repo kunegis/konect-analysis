@@ -102,7 +102,6 @@ $ ln -s ~/data/plot ./
 $ ln -s ~/data/dat ./
 $ ln -s ~/data/tex ./
 $ ln -s ~/data/uni ./
-$ ln -s /tmp ./dat-tmp
 
 (The last command sets up a specific temporary directory, you can link it to
 somewhere else if necesssary.)

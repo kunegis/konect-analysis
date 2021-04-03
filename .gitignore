@@ -3,7 +3,6 @@ MATLABPATH
 PERL5LIB
 bin
 dat
-dat-tmp
 plot
 tex
 uni
