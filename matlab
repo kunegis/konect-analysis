@@ -64,7 +64,7 @@ fi
 
 # Perl regular expression that matches all errors in the log or output
 # of Matlab.  When these are encountered, the Matlab process is ended. 
-pre_error='/\?\?\?|^\*\*\*|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory/'
+pre_error='/\?\?\?|^\*\*\*[^*]|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory/'
 
 # Prefix
 [ "$PREFIX" ] && PREFIX=.$PREFIX
@@ -146,44 +146,52 @@ EOF
 	# MATLAB_TERMINATED is needed in case Matlab terminates but perl does not:  in
 	# that case perl would continue to run, hanging this script. 
 	echo >>"$LOGFILE" MATLAB_TERMINATED
-	echo >&2 END OF MATLAB
-	exit 1
+	echo >&4 END OF MATLAB
+	exit $matlab_status
 } &
 id_matlab=$!
-echo >&2 "id_matlab=$id_matlab"
+
+tailpidfile=$TMP_BASE.tpf
+export tailpidfile
 
 # We don't use grep -q here because it doesn't work on the KONECT server.  It
 # did work on newer installs, so maybe this is just a consequence of the KONECT
 # server's config. 
 {
-	tail -q -F "$LOGFILE" "$OUTFILE" 2>/dev/null |
-	perl -e '
-		while (<>) {
-			if ('"$pre_error"') { 
-				print STDERR "Parsed error in line:$_\n"; 
-				exit 1; 
+	{
+		tail -q -F "$LOGFILE" "$OUTFILE" 2>/dev/null &
+		tailpid=$!
+		echo $tailpid >"$tailpidfile"
+	} | {
+		perl -e '
+			while (<>) {
+				if ('"$pre_error"') { 
+					print STDERR "Parsed error in line:$_\n"; 
+					exit 1; 
+				}
+				if (/MATLAB_TERMINATED/) { 
+					print STDERR "Found MATLAB_TERMINATED\n"; 
+					exit 0; 
+				}
 			}
-			if (/MATLAB_TERMINATED/) { 
-				print STDERR "Found MATLAB_TERMINATED\n"; 
-				exit 0; 
-			}
-		}
-        '
-	perl_status=$?
-	echo >&2 perl_status=$perl_status
-	if [ $perl_status != 0 ] ; then
-		kill $id_matlab
-		wait $id_matlab
-		echo >&2 "*** Error in $TMP_BASE.log"
-		echo >&6 "*** Error in $TMP_BASE.log"
-		exit 1
-	fi
+	        '
+		perl_status=$?
+		echo >&4 perl_status=$perl_status
+		kill $(echo $(cat $tailpidfile))
+		if [ $perl_status != 0 ] ; then
+			kill $id_matlab
+			wait $id_matlab
+			echo >&2 "*** Error in $TMP_BASE.log"
+			echo >&6 "*** Error in $TMP_BASE.log"
+			exit 1
+		fi
+	}
 } 
 
-echo >&2 "WAIT(id=$id_matlab)..."
+echo >&4 "WAIT(id=$id_matlab)..."
 wait $id_matlab
 matlab_status=$?
-echo >&2 "DONE WAITING.  matlab_status=$matlab_status"
+echo >&4 "DONE WAITING.  matlab_status=$matlab_status"
 if [ "$matlab_status" != 0 ] ; then
 	echo >&2 "*** Error in $TMP_BASE.log"
 	echo >&6 "*** Error in $TMP_BASE.log"
