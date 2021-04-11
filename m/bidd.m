@@ -40,9 +40,12 @@ if weights == consts.POSITIVE
 else
   T = T(:,1:2); 
 end
-%%if info.weights ~= consts.POSITIVE & size(T,2) >= 3
-%%    T(:,3:end) = []; 
-%%end
+
+%% %% RM
+%% fprintf(1, '*** Error\n');
+%% while 1
+%%   akjsdhakhd=1
+%% end
 
 %
 % U, V

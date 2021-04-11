@@ -135,10 +135,18 @@ fi
 export MATLABPATH="$DIR_SCRIPT:$MATLABPATH"
 echo >&4 MATLABPATH=«$MATLABPATH»
 
-# We have to use <<EOF or else Matlab will read its standard input and hang.
+tailpidfile=$TMP_BASE.tpf
+matlabpidfile=$TMP_BASE.mpf
+export tailpidfile matlabpidfile
+echo >&4 matlabpidfile=«$matlabpidfile»
+
 {
-	"$MATLAB" -logfile "$LOGFILE" -r "$MATLAB_NAME" $MATLAB_OPTIONS >"$OUTFILE" 2>&1 <<EOF
+	# We have to use <<EOF or else Matlab will read its standard input and hang.
+	"$MATLAB" -logfile "$LOGFILE" -r "$MATLAB_NAME" $MATLAB_OPTIONS >"$OUTFILE" 2>&1 & <<EOF
 EOF
+	matlabpid=$!
+	echo $matlabpid >"$matlabpidfile"
+	wait $matlabpid
 	matlab_status=$?
 	if [ "$matlab_status" != 0 ] ; then
 		echo >>"$LOGFILE" "*** Error:  Matlab failed with exit status $matlab_status"
@@ -150,9 +158,6 @@ EOF
 	exit $matlab_status
 } &
 id_matlab=$!
-
-tailpidfile=$TMP_BASE.tpf
-export tailpidfile
 
 # We don't use grep -q here because it doesn't work on the KONECT server.  It
 # did work on newer installs, so maybe this is just a consequence of the KONECT
@@ -166,18 +171,19 @@ export tailpidfile
 		perl -e '
 			while (<>) {
 				if ('"$pre_error"') { 
-					print STDERR "Parsed error in line:$_\n"; 
+##					print STDERR "Parsed error in line:$_\n"; 
 					exit 1; 
 				}
 				if (/MATLAB_TERMINATED/) { 
-					print STDERR "Found MATLAB_TERMINATED\n"; 
+##					print STDERR "Found MATLAB_TERMINATED\n"; 
 					exit 0; 
 				}
 			}
 	        '
 		perl_status=$?
 		echo >&4 perl_status=$perl_status
-		kill $(echo $(cat $tailpidfile))
+		kill $(echo $(cat $tailpidfile)) 2>/dev/null
+		kill $(echo $(cat $matlabpidfile)) 2>/dev/null 
 		if [ $perl_status != 0 ] ; then
 			kill $id_matlab
 			wait $id_matlab
@@ -193,7 +199,7 @@ wait $id_matlab
 matlab_status=$?
 echo >&4 "DONE WAITING.  matlab_status=$matlab_status"
 if [ "$matlab_status" != 0 ] ; then
-	echo >&2 "*** Error in $TMP_BASE.log"
+##	echo >&2 "*** Error in $TMP_BASE.log"
 	echo >&6 "*** Error in $TMP_BASE.log"
 	exit 1
 fi
