@@ -64,7 +64,7 @@ fi
 
 # Perl regular expression that matches all errors in the log or output
 # of Matlab.  When these are encountered, the Matlab process is ended. 
-pre_error='/\?\?\?|^\*\*\*[^*]|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory/'
+pre_error='/\?\?\?|^\*\*\*[^*]|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory|^Can'\''t reload '\''/'
 
 # Prefix
 [ "$PREFIX" ] && PREFIX=.$PREFIX
@@ -168,10 +168,10 @@ id_matlab=$!
 		tailpid=$!
 		echo $tailpid >"$tailpidfile"
 	} | {
-		perl -e '
+		perl 2>>"$LOGFILE" -e '
 			while (<>) {
 				if ('"$pre_error"') { 
-##					print STDERR "Parsed error in line:$_\n"; 
+					print STDERR "*** Found error in matlab output:$_\n"; 
 					exit 1; 
 				}
 				if (/MATLAB_TERMINATED/) { 
@@ -179,13 +179,13 @@ id_matlab=$!
 					exit 0; 
 				}
 			}
-	        '
+	        ' 
 		perl_status=$?
 		echo >&4 perl_status=$perl_status
 		kill $(echo $(cat $tailpidfile)) 2>/dev/null
 		kill $(echo $(cat $matlabpidfile)) 2>/dev/null 
 		if [ $perl_status != 0 ] ; then
-			kill $id_matlab
+			kill $id_matlab 2>/dev/null
 			wait $id_matlab
 			echo >&2 "*** Error in $TMP_BASE.log"
 			echo >&6 "*** Error in $TMP_BASE.log"
@@ -200,7 +200,7 @@ matlab_status=$?
 echo >&4 "DONE WAITING.  matlab_status=$matlab_status"
 if [ "$matlab_status" != 0 ] ; then
 ##	echo >&2 "*** Error in $TMP_BASE.log"
-	echo >&6 "*** Error in $TMP_BASE.log"
+##	echo >&6 "*** Error in $TMP_BASE.log"
 	exit 1
 fi
 
