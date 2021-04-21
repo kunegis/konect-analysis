@@ -64,7 +64,7 @@ fi
 
 # Perl regular expression that matches all errors in the log or output
 # of Matlab.  When these are encountered, the Matlab process is ended. 
-pre_error='/\?\?\?|^\*\*\*[^*]|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory|^Can'\''t reload '\''|^thread_monitor Resource temporarily unavailable|^# There is insufficient memory for the Java Runtime Environment to continue/'
+pre_error='/\?\?\?|^\*\*\*[^*]|^Error (in|using) |Java exception occurred:|std::exception|Unexpected error|failed to map segment|Segmentation violation|Abnormal termination|cannot allocate memory|Out of memory|^Can'\''t reload '\''|^thread_monitor Resource temporarily unavailable|^# There is insufficient memory for the Java Runtime Environment to continue|Resource temporarily unavailable/'
 
 # Prefix
 [ "$PREFIX" ] && PREFIX=.$PREFIX
