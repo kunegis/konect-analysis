@@ -34,6 +34,13 @@ done
 export LOG="${TMPDIR-/tmp}/o.$LOGNAME$PREFIX.log"
 printf >&2 '\t%s\n' "$LOG"
 
+## #
+## # Reset locale because Octave outputs some localized number formats with the
+## # wrong locale.  
+## #
+## unset $(set | sed -E 's,^(LC_.*)=.*$,\1,;t;d')
+## set | grep -E '^LC' >&2
+
 #
 # Invocation of Octave:
 #

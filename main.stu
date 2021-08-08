@@ -940,6 +940,7 @@ dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
 	s="$(head -1 dat/statistic.twostars."$network")"
 	n="$(head -1 dat/statistic.size."$network")"
 	d="$(head -1 dat/statistic.avgdegree."$network")"
+	. sh/unset-lc
 	echo "$s" "$n" "$d" | awk '{ printf "%.12f\n", 2 * $1 / $2 / $3 / ($3 - 1 >= 0 ? $3 - 1 : 1)  }' 
 }
 
@@ -949,6 +950,7 @@ dat/statistic.twostars.$network = dat/statistic.twostars.simple~$network;
 {
 	t="$(head -1 dat/statistic.triangles."$network")"
 	s="$(head -1 dat/statistic.twostars."$network")"
+	. sh/unset-lc
 	echo "$t" "$s" | awk '{ printf "%.12f\n", 3 * $1 / $2 }' 
 }
 
@@ -981,6 +983,7 @@ dat/statistic.diam.$network = dat/statistic.ifub0.$network;
 {
 	d_max="$(head -1 dat/statistic.maxdegree."$network")"
 	d="$(head -1 dat/statistic.avgdegree."$network")"
+	. sh/unset-lc
 	echo "$d_max" "$d" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
@@ -998,6 +1001,7 @@ dat/statistic.coco.$network = dat/statistic.coco.simple~$network;
 {
 	coco="$(head -1 dat/statistic.coco."$network")"
 	n="$(head -1 dat/statistic.size."$network")"
+	. sh/unset-lc
 	echo "$coco" "$n" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
@@ -1028,8 +1032,9 @@ dat/statistic.diameff$percentile.$network:
 	dat/statistic.volume.$network
 	dat/statistic.uniquevolume.$network
 {
-	m="$(head -1 dat/statistic.volume."$network")"
-	mu="$(head -1 dat/statistic.uniquevolume."$network")"
+	m=$(head -1 dat/statistic.volume."$network")
+	mu=$(head -1 dat/statistic.uniquevolume."$network")
+	. sh/unset-lc
 	echo "$m" "$mu" | awk '{ printf "%.12f\n", $1 / $2 }' 
 }
 
@@ -1823,7 +1828,6 @@ lib/LaTeX-ToUnicode-0.04.tar.gz:  -p lib
 
 dat/download.tsv.$network.tar.bz2:
 	[dat/dep.download.tsv.$network] 
-##	 -p dat-tmp
 {
 	DIR=${TMPDIR-/tmp}/$network
 	DATDIR=$(pwd)/dat
@@ -1846,11 +1850,7 @@ dat/download.tsv.$network.tar.bz2:
 	pwd
 	tar -hcvj -f "$DATDIR"/download.tsv."$network".tar.bz2 "$network"
 	rm -Rf "$DIR"
-##	rm -Rf "dat-tmp/$network"
 }  
-
-## # Temporary directory; typically a symlink to e.g. /tmp/. 
-## dat-tmp;
 
 @tsv:   @tsv/[dat/NETWORKS_DOWNLOAD]; 
 

@@ -75,4 +75,3 @@ int main(int argc, char **argv)
 	sgraph0_close_a(&r); 
 	exit(1); 
 }
-

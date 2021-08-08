@@ -1,0 +1,6 @@
+#
+# Script to be sourced to unset all locales.  Used to invole awk. 
+#
+
+unset $(set | sed -E 's,^(LC_.*)=.*$,\1,;t;d')
+
