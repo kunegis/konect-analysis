@@ -2,7 +2,7 @@ KONECT-Analysis
 ===============
 
 This is the network analysis component of the KONECT project (Koblenz
-Network Collection) by Jérôme Kunegis at the University of Namur.
+Network Collection) by Jérôme Kunegis.
 
 http://konect.cc/
 
@@ -46,7 +46,7 @@ Perl 5, and the shell:
 See the file INSTALL for installation and usage instructions. 
 
 For questions, bug reports and other comments, write to Jérôme Kunegis
-<jerome.kunegis@unamur.be>.
+<konectproject@outlook.com>.
 
 If you like and want to support the KONECT project, please consider making a
 donation at the following address:
