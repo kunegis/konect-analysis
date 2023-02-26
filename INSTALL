@@ -12,7 +12,7 @@ environments than those that we use ourselves.
 
 Follow these steps to run the KONECT Analysis:
 
-We'll assume you will put all code in the ~/work/ directory, and all
+We'll assume you will put all code in the ~/src/ directory, and all
 data in the ~/data/ directory.  Change these paths accordingly in the
 following instructions, if necessary.
 
@@ -26,7 +26,7 @@ them.  Not all are needed, so you may get away with not installing them.
 
 First, create the necessary directories:
 
-$ mkdir ~/work
+$ mkdir ~/src
 $ mkdir ~/data
 
 (2) Get konect-analysis/ and other KONECT packages from Github
@@ -34,7 +34,7 @@ $ mkdir ~/data
 Get the newest version of the KONECT software packages from Github.  Do
 this:  
 
-$ cd ~/work/
+$ cd ~/src/
 $ git clone https://github.com/kunegis/konect-analysis
 $ git clone https://github.com/kunegis/konect-toolbox
 $ git clone https://github.com/kunegis/konect-handbook
@@ -93,11 +93,11 @@ $ mkdir ~/data/tex
 
 Use 'ln -s' to link the certain directories to konect-analysis/:
 
-$ cd ~/work/konect-analysis/
-$ ln -s ~/work/konect-toolbox ./
-$ ln -s ~/work/konect-handbook ./
-$ ln -s ~/work/konect-extr ./
-$ ln -s ~/work/stu-utils ./
+$ cd ~/src/konect-analysis/
+$ ln -s ~/src/konect-toolbox ./
+$ ln -s ~/src/konect-handbook ./
+$ ln -s ~/src/konect-extr ./
+$ ln -s ~/src/stu-utils ./
 $ ln -s ~/data/plot ./
 $ ln -s ~/data/dat ./
 $ ln -s ~/data/tex ./
@@ -113,13 +113,13 @@ Matlab-BGL version 4.x from
 
 http://www.stanford.edu/~dgleich/programs/matlab_bgl/
 
-and unpack it in the ~/work/konect-analysis/lib/ directory.  There
-should now be a directory ~/work/konect-analysis/lib/matlab_bgl/
+and unpack it in the ~/src/konect-analysis/lib/ directory.  There
+should now be a directory ~/src/konect-analysis/lib/matlab_bgl/
 containing Matlab-BGL.
 
 (7) Install Stu
 
-$ cd ~/work/
+$ cd ~/src/
 $ git clone https://github.com/kunegis/stu/
 $ cd stu
 $ ./configure
@@ -138,7 +138,7 @@ corresponding error message.
 
 Execute:
 
-$ cd ~/work/konect-analysis/
+$ cd ~/src/konect-analysis/
 
 Optionally, you can now setup the maximum amount of memory (i.e., RAM)
 that KONECT will use.  You should do this if you intend to use very

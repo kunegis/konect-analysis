@@ -2,7 +2,7 @@
 * @statistic.maxdiag [+ announcement]
 * @statistic.triangles 
 * @statistic.conflict [+ announcement]
-* run analysis for work/algebraic-conflict/
+* run analysis for src/algebraic-conflict/
 * @network family dimacs10-
 * @ft.degree 
 * @statistic.fconflict [+ announcement]
